@@ -13,7 +13,7 @@ describe("CLI integration", () => {
   });
 
   it("runs as CLI and syncs files", () => {
-    execSync(`node ${join(projectRoot, "dist", "index.js")} sync`, {
+    execSync(`node ${join(projectRoot, "dist", "src", "index.js")} sync`, {
       cwd: tempDir,
     });
 
@@ -24,7 +24,7 @@ describe("CLI integration", () => {
   });
 
   it("creates rules with templated content", () => {
-    execSync(`node ${join(projectRoot, "dist", "index.js")} sync`, {
+    execSync(`node ${join(projectRoot, "dist", "src", "index.js")} sync`, {
       cwd: tempDir,
     });
 
@@ -35,7 +35,7 @@ describe("CLI integration", () => {
   });
 
   it("injects commands into opencode.json", () => {
-    execSync(`node ${join(projectRoot, "dist", "index.js")} sync`, {
+    execSync(`node ${join(projectRoot, "dist", "src", "index.js")} sync`, {
       cwd: tempDir,
     });
 
@@ -45,7 +45,7 @@ describe("CLI integration", () => {
 
   it("skips root files when --skip-opencode is passed", () => {
     execSync(
-      `node ${join(projectRoot, "dist", "index.js")} sync --skip-opencode`,
+      `node ${join(projectRoot, "dist", "src", "index.js")} sync --skip-opencode`,
       { cwd: tempDir },
     );
 

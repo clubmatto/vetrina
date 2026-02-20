@@ -4,7 +4,7 @@
   "description": "Use Club Matto's AI configuration in your projects.",
   "type": "module",
   "bin": {
-    "ai-kit": "./dist/index.js"
+    "ai-kit": "./dist/src/index.js"
   },
   "scripts": {
     "build": "tsc",

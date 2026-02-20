@@ -13,11 +13,11 @@ function colorize(text: string, color: Color): string {
 }
 
 export const log = {
-  logo: (msg = "") =>
-    console.log(colorize(`⬡ ai-kit${msg ? " " + msg : ""}\n`, "blue")),
+  logo: (version: string) =>
+    console.log(colorize(`⬡ ai-kit v${version}\n`, "blue")),
   action: (msg: string) => console.log(colorize(`  ▶ ${msg}`, "blue")),
-  success: (msg: string) => console.log(colorize(`  ✓ ${msg}`, "green")),
-  info: (msg: string) => console.log(colorize(`  ○ ${msg}`, "yellow")),
-  error: (msg: string) => console.log(colorize(`  ✗ ${msg}`, "red")),
-  final: (msg: string) => console.log(colorize(`\n✓ ${msg}`, "green")),
+  section: (msg: string) =>
+    console.log(colorize(`  ▶ Installing ${msg}...`, "blue")),
+  success: (msg: string) => console.log(colorize(`    ✓ ${msg}`, "green")),
+  final: (msg: string) => console.log(colorize(`  ✓ ${msg}`, "green")),
 };

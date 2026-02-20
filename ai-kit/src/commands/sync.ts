@@ -13,7 +13,7 @@ import { log } from "../output.js";
 import { Logger } from "../logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const rootDir = join(__dirname, "..", "..");
+const rootDir = join(__dirname, "..", "..", "..");
 
 export interface SourceDirs {
   rules: string;
@@ -41,10 +41,12 @@ export async function sync(
   sourceDirs: SourceDirs = defaultSourceDirs,
 ): Promise<void> {
   const manifest = readManifest(cwd);
+  logger.logo(version);
 
   if (!manifest) {
-    await doSync(cwd, version, options, logger, sourceDirs);
-    logger.final("ai-kit initialized");
+    logger.action("Initializing ai-kit...");
+    const count = await doSync(cwd, version, options, logger, sourceDirs);
+    logger.final(`ai-kit initialized (${count} files)`);
     return;
   }
 
@@ -53,9 +55,9 @@ export async function sync(
     return;
   }
 
-  logger.action(`Updating from ${manifest.version} to ${version}`);
-  await doSync(cwd, version, options, logger, sourceDirs);
-  logger.final(`Updated to ${version}`);
+  logger.action(`Updating from ${manifest.version} to ${version}...`);
+  const count = await doSync(cwd, version, options, logger, sourceDirs);
+  logger.final(`Updated to ${version} (${count} files)`);
 }
 
 async function doSync(
@@ -64,7 +66,7 @@ async function doSync(
   options: SyncOptions,
   logger: Logger,
   sourceDirs: SourceDirs,
-): Promise<void> {
+): Promise<number> {
   const aiDir = join(cwd, ".agents");
 
   if (!existsSync(aiDir)) {
@@ -75,37 +77,68 @@ async function doSync(
   const rootFiles = getRootFiles(sourceDirs.agents);
   const agentsFile = getAgentsFile(sourceDirs.agents);
 
-  for (const file of contentFiles) {
-    const targetDir = join(aiDir, file.type);
-    if (!existsSync(targetDir)) {
-      mkdirSync(targetDir, { recursive: true });
+  const rules = contentFiles.filter((f) => f.type === "rules");
+  const skills = contentFiles.filter((f) => f.type === "skills");
+
+  let count = 0;
+
+  if (rules.length > 0) {
+    logger.section("rules");
+    for (const file of rules) {
+      const targetDir = join(aiDir, file.type);
+      if (!existsSync(targetDir)) {
+        mkdirSync(targetDir, { recursive: true });
+      }
+      const targetPath = join(targetDir, file.name);
+      const parentDir = dirname(targetPath);
+      if (!existsSync(parentDir)) {
+        mkdirSync(parentDir, { recursive: true });
+      }
+      writeFileSync(targetPath, processTemplate(file.content));
+      logger.success(`${file.type}/${file.name}`);
+      count++;
     }
-    const targetPath = join(targetDir, file.name);
-    const parentDir = dirname(targetPath);
-    if (!existsSync(parentDir)) {
-      mkdirSync(parentDir, { recursive: true });
+  }
+
+  if (skills.length > 0) {
+    logger.section("skills");
+    for (const file of skills) {
+      const targetDir = join(aiDir, file.type);
+      if (!existsSync(targetDir)) {
+        mkdirSync(targetDir, { recursive: true });
+      }
+      const targetPath = join(targetDir, file.name);
+      const parentDir = dirname(targetPath);
+      if (!existsSync(parentDir)) {
+        mkdirSync(parentDir, { recursive: true });
+      }
+      writeFileSync(targetPath, processTemplate(file.content));
+      logger.success(`${file.type}/${file.name}`);
+      count++;
     }
-    writeFileSync(targetPath, processTemplate(file.content));
-    logger.success(`${file.type}/${file.name}`);
   }
 
   const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
     const commandConfig = getCommandConfig(sourceDirs.commands);
-    for (const file of rootFiles) {
-      let content = file.content;
-      if (
-        file.name === "opencode.json" &&
-        Object.keys(commandConfig).length > 0
-      ) {
-        const config = JSON.parse(content);
-        config.command = commandConfig;
-        content = JSON.stringify(config, null, 2) + "\n";
+    if (rootFiles.length > 0) {
+      logger.section("root files");
+      for (const file of rootFiles) {
+        let content = file.content;
+        if (
+          file.name === "opencode.json" &&
+          Object.keys(commandConfig).length > 0
+        ) {
+          const config = JSON.parse(content);
+          config.command = commandConfig;
+          content = JSON.stringify(config, null, 2) + "\n";
+        }
+        const targetPath = join(cwd, file.name);
+        writeFileSync(targetPath, content);
+        logger.success(`${file.name}`);
+        installedRootFiles.push(file.name);
+        count++;
       }
-      const targetPath = join(cwd, file.name);
-      writeFileSync(targetPath, content);
-      logger.success(`${file.name}`);
-      installedRootFiles.push(file.name);
     }
   }
 
@@ -113,6 +146,7 @@ async function doSync(
     const targetPath = join(cwd, agentsFile.name);
     writeFileSync(targetPath, processTemplate(agentsFile.content));
     logger.success(`${agentsFile.name}`);
+    count++;
   }
 
   writeManifest(cwd, {
@@ -120,4 +154,6 @@ async function doSync(
     installedAt: new Date().toISOString(),
     rootFiles: installedRootFiles,
   });
+
+  return count;
 }

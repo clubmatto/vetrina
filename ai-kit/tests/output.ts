@@ -8,20 +8,17 @@ export const testLog = {
   },
   get: (): ReadonlyArray<LogCall> => [...logs],
 
-  logo: (msg = "") => {
-    logs.push(["logo", msg]);
+  logo: (version: string) => {
+    logs.push(["logo", version]);
   },
   action: (msg: string) => {
     logs.push(["action", msg]);
   },
+  section: (msg: string) => {
+    logs.push(["section", msg]);
+  },
   success: (msg: string) => {
     logs.push(["success", msg]);
-  },
-  info: (msg: string) => {
-    logs.push(["info", msg]);
-  },
-  error: (msg: string) => {
-    logs.push(["error", msg]);
   },
   final: (msg: string) => {
     logs.push(["final", msg]);

@@ -122,7 +122,9 @@ describe("sync command", () => {
 
     const logs = testLog.get();
     expect(logs[logs.length - 1][0]).toBe("final");
-    expect(logs[logs.length - 1][1]).toBe("ai-kit initialized");
+    expect(logs[logs.length - 1][1]).toMatch(
+      /^ai-kit initialized \(\d+ files\)$/,
+    );
   });
 
   it("logs all synced files", async () => {
