@@ -13,6 +13,21 @@ import { log } from "../output.js";
 import { Logger } from "../logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const rootDir = join(__dirname, "..", "..");
+
+export interface SourceDirs {
+  rules: string;
+  skills: string;
+  agents: string;
+  commands: string;
+}
+
+const defaultSourceDirs: SourceDirs = {
+  rules: join(rootDir, "rules"),
+  skills: join(rootDir, "skills"),
+  agents: join(rootDir, "agents"),
+  commands: join(rootDir, "commands"),
+};
 
 interface SyncOptions {
   skipOpencode?: boolean;
@@ -23,11 +38,12 @@ export async function sync(
   version: string,
   options: SyncOptions,
   logger: Logger = log,
+  sourceDirs: SourceDirs = defaultSourceDirs,
 ): Promise<void> {
   const manifest = readManifest(cwd);
 
   if (!manifest) {
-    await doSync(cwd, version, options, logger);
+    await doSync(cwd, version, options, logger, sourceDirs);
     logger.final("ai-kit initialized");
     return;
   }
@@ -38,7 +54,7 @@ export async function sync(
   }
 
   logger.action(`Updating from ${manifest.version} to ${version}`);
-  await doSync(cwd, version, options, logger);
+  await doSync(cwd, version, options, logger, sourceDirs);
   logger.final(`Updated to ${version}`);
 }
 
@@ -47,6 +63,7 @@ async function doSync(
   version: string,
   options: SyncOptions,
   logger: Logger,
+  sourceDirs: SourceDirs,
 ): Promise<void> {
   const aiDir = join(cwd, ".agents");
 
@@ -54,12 +71,9 @@ async function doSync(
     mkdirSync(aiDir, { recursive: true });
   }
 
-  const contentFiles = getContentFiles(
-    join(__dirname, "..", "rules"),
-    join(__dirname, "..", "skills"),
-  );
-  const rootFiles = getRootFiles(join(__dirname, "..", "agents"));
-  const agentsFile = getAgentsFile(join(__dirname, "..", "agents"));
+  const contentFiles = getContentFiles(sourceDirs.rules, sourceDirs.skills);
+  const rootFiles = getRootFiles(sourceDirs.agents);
+  const agentsFile = getAgentsFile(sourceDirs.agents);
 
   for (const file of contentFiles) {
     const targetDir = join(aiDir, file.type);
@@ -77,7 +91,7 @@ async function doSync(
 
   const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
-    const commandConfig = getCommandConfig(join(__dirname, "..", "commands"));
+    const commandConfig = getCommandConfig(sourceDirs.commands);
     for (const file of rootFiles) {
       let content = file.content;
       if (
