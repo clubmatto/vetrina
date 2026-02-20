@@ -10,13 +10,14 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "dev:link": "npm run build && npm link",
-    "test": "vitest run",
+    "test": "vitest run --exclude 'tests/integration/**'",
+    "test:integration": "npm run build && vitest run tests/integration",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check .",
     "lint": "prettier --check .",
-    "ci": "npm run typecheck && npm run lint && npm run test"
+    "ci": "npm run typecheck && npm run lint && npm run test && npm run test:integration"
   },
   "dependencies": {
     "commander": "^14.0.3"
