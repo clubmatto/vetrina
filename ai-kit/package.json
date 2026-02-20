@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
+    "dev:link": "npm run build && npm link",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
