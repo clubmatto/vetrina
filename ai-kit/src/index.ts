@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { init } from "./commands/init.js";
-import { update } from "./commands/update.js";
+import { sync } from "./commands/sync.js";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -21,13 +20,8 @@ program
   .option("--skip-opencode", "Skip installing opencode.json to project root");
 
 program
-  .command("init")
-  .description("First-time setup")
-  .action(() => init(process.cwd(), version, program.opts()));
-
-program
-  .command("update")
-  .description("Sync installed content")
-  .action(() => update(process.cwd(), version, program.opts()));
+  .command("sync")
+  .description("Initialize or update AI configuration")
+  .action(() => sync(process.cwd(), version, program.opts()));
 
 program.parse();
