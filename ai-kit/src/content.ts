@@ -93,7 +93,6 @@ function getFiles(dir: string, type: ContentType): ContentFile[] {
 
 export function getContentFiles(): ContentFile[] {
   return [
-    ...getFiles(join(__dirname, "..", "src", "commands"), "commands"),
     ...getFiles(join(__dirname, "..", "src", "rules"), "rules"),
     ...getFiles(join(__dirname, "..", "src", "skills"), "skills"),
   ];

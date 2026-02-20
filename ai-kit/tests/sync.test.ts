@@ -13,8 +13,8 @@ describe("sync command", () => {
   it("initializes when not already initialized", async () => {
     await sync(tempDir, "0.0.1", {});
 
-    expect(fileExists(tempDir, ".ai/.ai-kit")).toBe(true);
-    expect(fileExists(tempDir, ".ai/commands/commit.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/.ai-kit")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules")).toBe(true);
     expect(fileExists(tempDir, "opencode.json")).toBe(true);
     expect(fileExists(tempDir, "AGENTS.md")).toBe(true);
   });
@@ -29,7 +29,7 @@ describe("sync command", () => {
   it("writes correct manifest on init", async () => {
     await sync(tempDir, "0.0.1", {});
 
-    const manifest = JSON.parse(readFile(tempDir, ".ai/.ai-kit")!);
+    const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
     expect(manifest.version).toBe("0.0.1");
     expect(manifest.rootFiles).toContain("opencode.json");
   });
@@ -50,7 +50,7 @@ describe("sync command", () => {
 
     await sync(tempDir, "0.0.2", {});
 
-    const manifest = JSON.parse(readFile(tempDir, ".ai/.ai-kit")!);
+    const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
     expect(manifest.version).toBe("0.0.2");
   });
 
@@ -59,7 +59,7 @@ describe("sync command", () => {
 
     await sync(tempDir, "0.0.2", { skipOpencode: true });
 
-    const manifest = JSON.parse(readFile(tempDir, ".ai/.ai-kit")!);
+    const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
     expect(manifest.rootFiles).toEqual([]);
   });
 

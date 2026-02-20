@@ -7,7 +7,7 @@ export interface Manifest {
   rootFiles?: string[];
 }
 
-const AI_DIR = ".ai";
+const AI_DIR = ".agents";
 const MANIFEST_FILE = ".ai-kit";
 
 export function getManifestPath(cwd: string): string {

@@ -41,7 +41,7 @@ async function doSync(
   options: SyncOptions,
   isUpdate: boolean,
 ): Promise<void> {
-  const aiDir = join(cwd, ".ai");
+  const aiDir = join(cwd, ".agents");
 
   if (!existsSync(aiDir)) {
     mkdirSync(aiDir, { recursive: true });
