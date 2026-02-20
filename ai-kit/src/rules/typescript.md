@@ -97,7 +97,7 @@ function parseUser(input: unknown): User {
   if (isUser(input)) {
     return input;
   }
-  throw new Error('Invalid user');
+  throw new Error("Invalid user");
 }
 
 // ✅ GOOD: Generic types for reusable functions
@@ -111,7 +111,7 @@ function dangerous(data: any) {
 }
 
 // ❌ BAD: Non-null assertions (`!`) without justification
-const element = document.getElementById('myId')!; // Risky
+const element = document.getElementById("myId")!; // Risky
 ```
 
 ### Strict Mode Configuration
@@ -142,7 +142,7 @@ interface User {
   name: string;
 }
 
-const user: Readonly<User> = { id: '1', name: 'Alice' };
+const user: Readonly<User> = { id: "1", name: "Alice" };
 // user.id = '2' // Compile error
 
 // ✅ GOOD: Immutable arrays and objects
@@ -150,7 +150,7 @@ const items: readonly Item[] = [item1, item2];
 const config = { port: 3000 } as const;
 
 // ✅ GOOD: Use functional array methods
-const activeUsers = users.filter(user => user.isActive);
+const activeUsers = users.filter((user) => user.isActive);
 ```
 
 ### Async/Await & Error Handling
@@ -165,8 +165,8 @@ async function fetchUser(id: string): Promise<User> {
     }
     return await response.json();
   } catch (error) {
-    console.error('Failed to fetch user:', error);
-    throw new Error('User fetch failed', { cause: error });
+    console.error("Failed to fetch user:", error);
+    throw new Error("User fetch failed", { cause: error });
   }
 }
 
@@ -175,23 +175,19 @@ const results = await Promise.allSettled(promises);
 const fastest = await Promise.race([fetch1, fetch2]);
 
 // ❌ BAD: Unhandled promise rejections
-fetchUser('123'); // Missing await or catch
+fetchUser("123"); // Missing await or catch
 ```
-
-
 
 ### Error Boundaries & Resilience
 
 ```typescript
 // ✅ GOOD: Discriminated unions for error states
-type Result<T> = 
-  | { type: 'success'; data: T }
-  | { type: 'error'; error: Error };
+type Result<T> = { type: "success"; data: T } | { type: "error"; error: Error };
 
 // ✅ GOOD: Assertion functions
 function assertIsDefined<T>(value: T): asserts value is NonNullable<T> {
   if (value === undefined || value === null) {
-    throw new Error('Value is undefined or null');
+    throw new Error("Value is undefined or null");
   }
 }
 ```
@@ -202,28 +198,28 @@ function assertIsDefined<T>(value: T): asserts value is NonNullable<T> {
 
 ```typescript
 // ✅ GOOD: Descriptive test suites
-describe('calculateTotal', () => {
-  it('returns sum of item prices', () => {
+describe("calculateTotal", () => {
+  it("returns sum of item prices", () => {
     const items = [{ price: 10 }, { price: 20 }];
     expect(calculateTotal(items)).toBe(30);
   });
 
-  it('returns 0 for empty array', () => {
+  it("returns 0 for empty array", () => {
     expect(calculateTotal([])).toBe(0);
   });
 });
 
 // ✅ GOOD: Mocking external dependencies
-import { fetchUser } from './api';
-import { vi } from 'vitest';
+import { fetchUser } from "./api";
+import { vi } from "vitest";
 
-vi.mock('./api');
+vi.mock("./api");
 
-it('fetches user', async () => {
-  const mockUser = { id: '1', name: 'Alice' };
+it("fetches user", async () => {
+  const mockUser = { id: "1", name: "Alice" };
   vi.mocked(fetchUser).mockResolvedValue(mockUser);
 
-  const result = await getUser('1');
+  const result = await getUser("1");
   expect(result).toEqual(mockUser);
 });
 ```
@@ -293,13 +289,13 @@ Always configure linting and formatting:
 // .eslintrc.js
 module.exports = {
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
   ],
   rules: {
-    '@typescript-eslint/no-explicit-any': 'error'
-  }
+    "@typescript-eslint/no-explicit-any": "error",
+  },
 };
 ```
 

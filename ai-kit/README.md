@@ -26,13 +26,13 @@ ai-kit update --skip-opencode
 
 ## What's Installed
 
-| Location | Description |
-|----------|-------------|
-| `.ai/commands/` | Command prompts |
-| `.ai/rules/` | Language/framework rules |
-| `.ai/skills/` | Reusable AI capabilities |
+| Location        | Description                       |
+| --------------- | --------------------------------- |
+| `.ai/commands/` | Command prompts                   |
+| `.ai/rules/`    | Language/framework rules          |
+| `.ai/skills/`   | Reusable AI capabilities          |
 | `opencode.json` | Opencode configuration (optional) |
-| `AGENTS.md` | Agent instructions |
+| `AGENTS.md`     | Agent instructions                |
 
 ## Local Development
 

@@ -96,7 +96,7 @@ dependencies {
     implementation(libs.spring.boot.starter.oauth2.resourceserver)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.slf4j)
-    
+
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.kotest.assertions)
@@ -130,7 +130,7 @@ fun main(args: Array<String>) {
 class ActoApiApplication {
     @Bean
     fun someBean() = ...
-    
+
     @PostConstruct
     fun init() { ... }
 }
@@ -180,7 +180,7 @@ class TeamService(
     ): PagedResult<ManagedEmployee> {
         val (regions, branches) = authentication.user.managerAccessFilters
         val userRepository = repositoryProvider.get<UserRepository>()
-        
+
         // Implementation
     }
 
@@ -328,7 +328,7 @@ suspend fun getEmployeeData(
 
     val employees = employeesDeferred.await()
     val kpis = kpisDeferred.await()
-    
+
     // Combine results
 }
 
@@ -350,7 +350,7 @@ suspend fun badExample() {
 sealed class ApiError(message: String) : Exception(message) {
     data class EntityNotFoundError(val entityType: String, val id: UUID) :
         ApiError("$entityType with ID: $id not found")
-    
+
     data class AuthorizationError(val user: User, val action: String) :
         ApiError("User ${user.id} not authorized for $action")
 }
@@ -382,7 +382,7 @@ class TeamService(
             "Fetching managed employees: regions={}, branches={}",
             regions, branches
         )
-        
+
         WideEventContext.addContext(
             mapOf(
                 "operation" to "team.employees",
@@ -390,7 +390,7 @@ class TeamService(
                 "has_cursor" to (after != null),
             )
         )
-        
+
         // Implementation
     }
 }
@@ -452,7 +452,7 @@ class UserRepositoryIntegrationTest {
             .username(postgresContainer.username)
             .password(postgresContainer.password)
             .build()
-        
+
         repository = UserRepository(DSLContextFactory.from(datasource))
     }
 

@@ -1,15 +1,19 @@
-import { mkdirSync, existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import { getContentFiles, getRootFiles, getAgentsFile } from '../content.js';
-import { writeManifest } from '../manifest.js';
+import { mkdirSync, existsSync, writeFileSync } from "fs";
+import { join } from "path";
+import { getContentFiles, getRootFiles, getAgentsFile } from "../content.js";
+import { writeManifest } from "../manifest.js";
 
 interface InitOptions {
   skipOpencode?: boolean;
 }
 
-export async function init(cwd: string, version: string, options: InitOptions): Promise<void> {
-  const aiDir = join(cwd, '.ai');
-  const manifestPath = join(aiDir, '.ai-kit');
+export async function init(
+  cwd: string,
+  version: string,
+  options: InitOptions,
+): Promise<void> {
+  const aiDir = join(cwd, ".ai");
+  const manifestPath = join(aiDir, ".ai-kit");
 
   if (existsSync(manifestPath)) {
     console.log('Already initialized. Use "ai-kit update" to sync.');
@@ -53,8 +57,8 @@ export async function init(cwd: string, version: string, options: InitOptions): 
   writeManifest(cwd, {
     version,
     installedAt: new Date().toISOString(),
-    rootFiles: installedRootFiles
+    rootFiles: installedRootFiles,
   });
 
-  console.log('\n✓ ai-kit initialized');
+  console.log("\n✓ ai-kit initialized");
 }

@@ -7,14 +7,17 @@ Create a commit with the following format:
 ## Commit Message Format
 
 **First line (one-liner):**
+
 - Use conventional commits format: `<type>: <description>`
 - Examples: `feat: add init command`, `fix: resolve path issue`, `docs: update README`
 
 **Body (bullet list):**
+
 - List the main changes made in this session
 - Each item should be a brief description of a specific change
 
 **Sign-off:**
+
 - End with: `created with the help of <MODEL>`
 - Use the current model name (e.g., "MiniMax", "GPT-4", "Claude")
 

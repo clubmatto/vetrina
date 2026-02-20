@@ -1,9 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "rules": [
-    ".ai/rules/*.md"
-  ],
-  "commands": [
-    ".ai/commands/*.md"
-  ]
+  "rules": [".ai/rules/*.md"],
+  "commands": [".ai/commands/*.md"]
 }

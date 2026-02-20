@@ -17,15 +17,15 @@ Follow this exact structure for all Go projects:
 
 [service-or-lib-name]/
 ├── cmd/ # Application entry points (one per binary)
-│   └── [app-name]/
-│       └── main.go # Minimal main - just parse flags and run
+│ └── [app-name]/
+│ └── main.go # Minimal main - just parse flags and run
 ├── internal/ # Private application code (cannot be imported outside)
-│   ├── handlers/ # HTTP/gRPC handlers
-│   ├── models/ # Domain models/structs
-│   ├── repository/ # Data access layer
-│   └── service/ # Business logic
+│ ├── handlers/ # HTTP/gRPC handlers
+│ ├── models/ # Domain models/structs
+│ ├── repository/ # Data access layer
+│ └── service/ # Business logic
 ├── pkg/ # Public library code (can be imported by other projects)
-│   └── [package-name]/ # Well-documented, stable APIs
+│ └── [package-name]/ # Well-documented, stable APIs
 ├── api/ # Protocol definitions (gRPC)
 ├── scripts/ # Build/deployment scripts
 ├── configs/ # Configuration files
@@ -63,6 +63,7 @@ go vet ./...             # Built-in checks
 # Protocol buffers
 protoc --go_out=. --go-grpc_out=. api/proto/*.proto
 ```
+
 ## 📝 Go Code Standards
 
 ### Imports & Organization
@@ -102,12 +103,12 @@ func ProcessData(ctx context.Context, input string) (Result, error) {
     if err != nil {
         return Result{}, fmt.Errorf("parse input: %w", err)
     }
-    
+
     result, err := calculate(data)
     if err != nil {
         return Result{}, fmt.Errorf("calculate: %w", err)
     }
-    
+
     return result, nil
 }
 
@@ -144,9 +145,9 @@ func NewConfig(addr string) (*Config, error) {
     if addr == "" {
         return nil, errors.New("addr cannot be empty")
     }
-    
+
     logger, _ := zap.NewProduction()
-    
+
     return &Config{
         Addr:    addr,
         Timeout: 30 * time.Second,
@@ -183,12 +184,12 @@ func ProcessConcurrently(ctx context.Context, items []Item) ([]Result, error) {
     var wg sync.WaitGroup
     results := make([]Result, len(items))
     errCh := make(chan error, 1)
-    
+
     for i, item := range items {
         wg.Add(1)
         go func(idx int, it Item) {
             defer wg.Done()
-            
+
             select {
             case <-ctx.Done():
                 return // Respect cancellation
@@ -205,24 +206,24 @@ func ProcessConcurrently(ctx context.Context, items []Item) ([]Result, error) {
             }
         }(i, item)
     }
-    
+
     wg.Wait()
     close(errCh)
-    
+
     if err := <-errCh; err != nil {
         return nil, err
     }
-    
+
     return results, nil
 }
 ```
 
 ## 🧪 Testing Standards
 
-* Use `testify/assert` for assertions
-* Use `testify/mock` for mocking
-* Use `testify/require` for preconditions
-* Always `require.NoError(t, err)` for errors
+- Use `testify/assert` for assertions
+- Use `testify/mock` for mocking
+- Use `testify/require` for preconditions
+- Always `require.NoError(t, err)` for errors
 
 ### Table-Driven Tests (PREFERRED)
 
@@ -240,16 +241,16 @@ func TestCalculate(t *testing.T) {
         {"zero", 0, 0, false},
         {"negative number", -3, 0, true},
     }
-    
+
     for _, tt := range tests {
         t.Run(tt.name, func(t *testing.T) {
             result, err := Calculate(tt.input)
-            
+
             if tt.hasError {
                 require.Error(t, err)
                 return
             }
-            
+
             require.NoError(t, err)
             assert.Equal(t, tt.expected, result)
         })
@@ -258,13 +259,13 @@ func TestCalculate(t *testing.T) {
 ```
 
 ## 📦 Dependency Management
-  
+
 ### Module Rules
 
-* Always use Go modules (go.mod must be present)
-* Pin specific versions – no floating dependencies 
-* Minimize external dependencies - stdlib first
-* Upgrade systematically – test thoroughly after upgrades
+- Always use Go modules (go.mod must be present)
+- Pin specific versions – no floating dependencies
+- Minimize external dependencies - stdlib first
+- Upgrade systematically – test thoroughly after upgrades
 
 ### Version Guidelines
 
@@ -288,23 +289,23 @@ require (
 
 ### Never Do These:
 
-* ❌ Never use panic() in production code (except in main() or during initialization)
-* ❌ Never ignore errors (_ = functionThatReturnsError())
-* ❌ Never use global variables for application state
-* ❌ Never write if err != nil { return nil } (always return the error)
+- ❌ Never use panic() in production code (except in main() or during initialization)
+- ❌ Never ignore errors (\_ = functionThatReturnsError())
+- ❌ Never use global variables for application state
+- ❌ Never write if err != nil { return nil } (always return the error)
 
 ## 🔍 Context Usage (IMPORTANT)
 
 Always pass context.Context as the first parameter to functions that:
 
-* Make network calls
-* Do I/O operations
-* Could be long-running
-* Should respect cancellation/timeout
+- Make network calls
+- Do I/O operations
+- Could be long-running
+- Should respect cancellation/timeout
 
 ## 📚 Recommended Reading (for agent understanding)
 
-* Effective Go: https://go.dev/doc/effective_go
-* Go Proverbs: https://go-proverbs.github.io/
+- Effective Go: https://go.dev/doc/effective_go
+- Go Proverbs: https://go-proverbs.github.io/
 
 Last updated: [2026-01-14]. This file extends the global rules in @AGENTS.md. Always check both files.

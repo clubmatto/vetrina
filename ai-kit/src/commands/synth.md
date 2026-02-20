@@ -38,4 +38,3 @@ collaborating with an LLM, document them here.
 1. First, review the entire session's conversation history and code changes.
 2. Then, synthesize the content strictly following the section structure above.
 3. The final output must be a complete, standalone Markdown document.
-
