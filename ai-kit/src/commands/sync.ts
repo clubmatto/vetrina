@@ -1,6 +1,11 @@
 import { mkdirSync, existsSync, writeFileSync } from "fs";
 import { join } from "path";
-import { getContentFiles, getRootFiles, getAgentsFile } from "../content.js";
+import {
+  getContentFiles,
+  getRootFiles,
+  getAgentsFile,
+  getCommandConfig,
+} from "../content.js";
 import { readManifest, writeManifest } from "../manifest.js";
 
 interface SyncOptions {
@@ -59,9 +64,19 @@ async function doSync(
 
   const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
+    const commandConfig = getCommandConfig();
     for (const file of rootFiles) {
+      let content = file.content;
+      if (
+        file.name === "opencode.json" &&
+        Object.keys(commandConfig).length > 0
+      ) {
+        const config = JSON.parse(content);
+        config.command = commandConfig;
+        content = JSON.stringify(config, null, 2) + "\n";
+      }
       const targetPath = join(cwd, file.name);
-      writeFileSync(targetPath, file.content);
+      writeFileSync(targetPath, content);
       const verb = isUpdate ? "Updated" : "Created";
       console.log(`  ${verb} ${file.name}`);
       installedRootFiles.push(file.name);

@@ -62,4 +62,15 @@ describe("sync command", () => {
     const manifest = JSON.parse(readFile(tempDir, ".ai/.ai-kit")!);
     expect(manifest.rootFiles).toEqual([]);
   });
+
+  it("includes commands in opencode.json", async () => {
+    await sync(tempDir, "0.0.1", {});
+
+    const opencodeJson = JSON.parse(readFile(tempDir, "opencode.json")!);
+    expect(opencodeJson).toHaveProperty("command");
+    expect(opencodeJson.command).toHaveProperty("commit");
+    expect(opencodeJson.command.commit.description).toBe(
+      "Commit the work done in this session with a structured commit message.",
+    );
+  });
 });

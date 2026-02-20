@@ -26,7 +26,7 @@ ai-kit sync --skip-opencode
 ## What's Installed
 
 | Location        | Description                       |
-|-----------------|-----------------------------------|
+| --------------- | --------------------------------- |
 | `.ai/commands/` | Command prompts                   |
 | `.ai/rules/`    | Language/framework rules          |
 | `.ai/skills/`   | Reusable AI capabilities          |
