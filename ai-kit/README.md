@@ -2,6 +2,9 @@
 
 Use Club Matto's AI configuration in your projects.
 
+Note: the project is early in development so it's more opinionated than we might want it to be long term. Check out the
+roadmap for more details
+
 ## Install
 
 ```bash
@@ -13,15 +16,11 @@ npm link
 ## Usage
 
 ```bash
-# First-time setup
-ai-kit init
-
-# Sync installed content
-ai-kit update
+# Initialize or update
+ai-kit sync
 
 # Skip installing opencode.json to project root
-ai-kit init --skip-opencode
-ai-kit update --skip-opencode
+ai-kit sync --skip-opencode
 ```
 
 ## What's Installed
@@ -44,7 +43,7 @@ npm run build
 npm link
 
 # Test in any directory
-ai-kit init
+ai-kit sync
 ```
 
 ## Version
