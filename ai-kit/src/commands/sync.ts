@@ -8,6 +8,7 @@ import {
   getCommandConfig,
 } from "../content.js";
 import { readManifest, writeManifest } from "../manifest.js";
+import { processTemplate } from "../template.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -67,7 +68,7 @@ async function doSync(
     if (!existsSync(parentDir)) {
       mkdirSync(parentDir, { recursive: true });
     }
-    writeFileSync(targetPath, file.content);
+    writeFileSync(targetPath, processTemplate(file.content));
     const verb = isUpdate ? "Updated" : "Created";
     console.log(`  ${verb} ${file.type}/${file.name}`);
   }
@@ -95,7 +96,7 @@ async function doSync(
 
   if (agentsFile) {
     const targetPath = join(cwd, agentsFile.name);
-    writeFileSync(targetPath, agentsFile.content);
+    writeFileSync(targetPath, processTemplate(agentsFile.content));
     const verb = isUpdate ? "Updated" : "Created";
     console.log(`  ${verb} ${agentsFile.name}`);
   }

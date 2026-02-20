@@ -309,4 +309,4 @@ Include `.editorconfig` for consistent formatting across editors.
 - Effective TypeScript: https://effectivetypescript.com/
 - Node.js Best Practices: https://github.com/goldbergyoni/nodebestpractices
 
-Last updated: [2026-01-27]. This file extends the global rules in @AGENTS.md. Always check both files.
+{{FOOTER}}

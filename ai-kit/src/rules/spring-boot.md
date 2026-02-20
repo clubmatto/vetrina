@@ -554,4 +554,4 @@ testing = ["junit5-jupiter", "kotest-assertions", "mockk"]
 - Spring GraphQL: https://docs.spring.io/spring-graphql/reference/
 - Netflix DGS: https://netflix.github.io/dgs/
 
-Last updated: [2026-02-12]. This file extends the global rules in @AGENTS.md. Always check both files.
+{{FOOTER}}

@@ -308,4 +308,4 @@ Always pass context.Context as the first parameter to functions that:
 - Effective Go: https://go.dev/doc/effective_go
 - Go Proverbs: https://go-proverbs.github.io/
 
-Last updated: [2026-01-14]. This file extends the global rules in @AGENTS.md. Always check both files.
+{{FOOTER}}

@@ -6,6 +6,7 @@ import {
   getRootFiles,
   getAgentsFile,
 } from "../src/content.js";
+import { processTemplate } from "../src/template.js";
 
 const fixturesDir = join(__dirname, "fixtures");
 const commandsDir = join(fixturesDir, "commands");
@@ -147,5 +148,46 @@ describe("getAgentsFile", () => {
   it("returns null when monorepo.md does not exist", () => {
     const file = getAgentsFile(rulesDir);
     expect(file).toBeNull();
+  });
+});
+
+describe("processTemplate", () => {
+  it("replaces {{FOOTER}} with full footer text and ISO date", () => {
+    const result = processTemplate("{{FOOTER}}");
+    const today = new Date().toISOString().split("T")[0];
+    expect(result).toBe(
+      `Last updated: ${today}. This file extends the global rules in @AGENTS.md. Always check both files.`,
+    );
+  });
+
+  it("replaces {{AGENTS_FOOTER}} with agents footer text and ISO date", () => {
+    const result = processTemplate("{{AGENTS_FOOTER}}");
+    const today = new Date().toISOString().split("T")[0];
+    expect(result).toBe(
+      `This file was last updated: ${today}. Always check the \`.ai/rules/\` directory for the most current language-specific guidelines.`,
+    );
+  });
+
+  it("replaces multiple placeholders in same content", () => {
+    const result = processTemplate("{{FOOTER}} and {{AGENTS_FOOTER}}");
+    const today = new Date().toISOString().split("T")[0];
+    expect(result).toContain(`Last updated: ${today}`);
+    expect(result).toContain(`This file was last updated: ${today}`);
+  });
+
+  it("leaves non-matching content unchanged", () => {
+    const input = "Some {{OTHER}} content {{NOTREAL}}";
+    const result = processTemplate(input);
+    expect(result).toBe(input);
+  });
+
+  it("handles empty string", () => {
+    const result = processTemplate("");
+    expect(result).toBe("");
+  });
+
+  it("handles content without placeholders", () => {
+    const result = processTemplate("No placeholders here");
+    expect(result).toBe("No placeholders here");
   });
 });

@@ -174,4 +174,4 @@ fun getUserUpdates(userId: Long): Flow<UserUpdate> = callbackFlow {
 - Kotlin Coroutines Guide: https://kotlinlang.org/docs/coroutines-guide.html
 - Effective Kotlin: https://kt.academy/article/ek-effective-kotlin
 
-Last updated: [2026-01-16]. This file extends the global rules in @AGENTS.md. Always check both files.
+{{FOOTER}}

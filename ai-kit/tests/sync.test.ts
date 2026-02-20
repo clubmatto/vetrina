@@ -73,4 +73,21 @@ describe("sync command", () => {
       "Commit the work done in this session with a structured commit message.",
     );
   });
+
+  it("processes template variables in content files", async () => {
+    await sync(tempDir, "0.0.1", {});
+
+    const ruleFiles = readFile(tempDir, ".agents/rules/typescript.md");
+    expect(ruleFiles).toContain("Last updated:");
+    expect(ruleFiles).not.toContain("{{FOOTER}}");
+    expect(ruleFiles).toMatch(/\d{4}-\d{2}-\d{2}/);
+  });
+
+  it("processes template variables in AGENTS.md", async () => {
+    await sync(tempDir, "0.0.1", {});
+
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).not.toContain("{{AGENTS_FOOTER}}");
+    expect(agentsMd).toMatch(/\d{4}-\d{2}-\d{2}/);
+  });
 });

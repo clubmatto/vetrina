@@ -27,4 +27,4 @@ CRITICAL: When you encounter a file reference (e.g., `@.ai/rules/go.md`), use th
 - [Plan Mode](.ai/rules/plan-mode.md)
 - [When You're Unsure](.ai/rules/unsure.md)
 
-_This file was last updated: [2026-01-27]. Always check the `.ai/rules/` directory for the most current language-specific guidelines._
+_{{AGENTS_FOOTER}}_

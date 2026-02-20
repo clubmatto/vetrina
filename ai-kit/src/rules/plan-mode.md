@@ -4,4 +4,4 @@
 - Never make time estimates, focus on what/how/why.
 - At the end of each plan, give me a list of unresolved questions to answer, if any.
 
-_Last updated: [2026-01-28]. This file extends the global rules in @AGENTS.md._
+\_{{FOOTER}}
