@@ -1,33 +1,151 @@
 import { describe, it, expect } from "vitest";
-import { getCommandConfig } from "../src/content.js";
+import { join } from "path";
+import {
+  getCommandConfig,
+  getContentFiles,
+  getRootFiles,
+  getAgentsFile,
+} from "../src/content.js";
+
+const fixturesDir = join(__dirname, "fixtures");
+const commandsDir = join(fixturesDir, "commands");
+const rulesDir = join(fixturesDir, "rules");
+const skillsDir = join(fixturesDir, "skills");
+const agentsDir = join(fixturesDir, "agents");
 
 describe("getCommandConfig", () => {
   it("parses command files and returns config object", () => {
-    const config = getCommandConfig();
+    const config = getCommandConfig(commandsDir);
 
-    expect(config).toHaveProperty("commit");
-    expect(config.commit.description).toBe(
-      "Commit the work done in this session with a structured commit message.",
+    expect(config).toHaveProperty("test");
+    expect(config.test.description).toBe(
+      "A test command for testing purposes.",
     );
-    expect(config.commit.template).toContain("Commit Message Format");
+    expect(config.test.template).toContain("This is a test command template.");
   });
 
   it("includes all command files", () => {
-    const config = getCommandConfig();
+    const config = getCommandConfig(commandsDir);
 
-    expect(config).toHaveProperty("commit");
-    expect(config).toHaveProperty("interview");
-    expect(config).toHaveProperty("synth");
+    expect(config).toHaveProperty("test");
+    expect(config).toHaveProperty("another");
   });
 
   it("has correct structure for opencode.json command format", () => {
-    const config = getCommandConfig();
+    const config = getCommandConfig(commandsDir);
 
-    for (const [name, cmd] of Object.entries(config)) {
+    for (const [_, cmd] of Object.entries(config)) {
       expect(cmd).toHaveProperty("description");
       expect(cmd).toHaveProperty("template");
       expect(typeof cmd.description).toBe("string");
       expect(typeof cmd.template).toBe("string");
     }
+  });
+
+  it("returns empty object for non-existent directory", () => {
+    const config = getCommandConfig("/non/existent/dir");
+    expect(config).toEqual({});
+  });
+});
+
+describe("getContentFiles", () => {
+  it("returns files from rules and skills directories", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    const ruleFiles = files.filter((f) => f.type === "rules");
+    const skillFiles = files.filter((f) => f.type === "skills");
+
+    expect(ruleFiles.length).toBeGreaterThan(0);
+    expect(skillFiles.length).toBeGreaterThan(0);
+  });
+
+  it("includes nested files recursively", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    const nestedRule = files.find(
+      (f) => f.name === "nested/nested-rule.md" && f.type === "rules",
+    );
+    expect(nestedRule).toBeDefined();
+    expect(nestedRule?.content).toContain("Nested Rule");
+  });
+
+  it("returns correct file structure", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    for (const file of files) {
+      expect(file).toHaveProperty("type");
+      expect(file).toHaveProperty("name");
+      expect(file).toHaveProperty("content");
+      expect(["rules", "skills"]).toContain(file.type);
+      expect(file.name.endsWith(".md")).toBe(true);
+    }
+  });
+
+  it("includes skill directory name in file path", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    const skillFile = files.find(
+      (f) => f.type === "skills" && f.name === "test-skill/SKILL.md",
+    );
+    expect(skillFile).toBeDefined();
+    expect(skillFile?.content).toContain("Test Skill");
+  });
+
+  it("includes additional files in skill directories", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    const detailsFile = files.find(
+      (f) => f.type === "skills" && f.name === "test-skill/skill-details.md",
+    );
+    expect(detailsFile).toBeDefined();
+    expect(detailsFile?.content).toContain("Skill Details");
+  });
+
+  it("includes nested references in skill directories", () => {
+    const files = getContentFiles(rulesDir, skillsDir);
+
+    const refFile = files.find(
+      (f) => f.type === "skills" && f.name === "test-skill/nested-refs/doc.md",
+    );
+    expect(refFile).toBeDefined();
+  });
+});
+
+describe("getRootFiles", () => {
+  it("returns JSON files from agents directory", () => {
+    const files = getRootFiles(agentsDir);
+
+    expect(files.length).toBe(2);
+    expect(files.map((f) => f.name).sort()).toEqual([
+      "another.json",
+      "opencode.json",
+    ]);
+  });
+
+  it("returns file content as string", () => {
+    const files = getRootFiles(agentsDir);
+
+    const opencodeFile = files.find((f) => f.name === "opencode.json");
+    expect(opencodeFile?.content).toContain("test-agent");
+  });
+
+  it("returns empty array for non-existent directory", () => {
+    const files = getRootFiles("/non/existent/dir");
+    expect(files).toEqual([]);
+  });
+});
+
+describe("getAgentsFile", () => {
+  it("returns AGENTS.md file content", () => {
+    const file = getAgentsFile(agentsDir);
+
+    expect(file).not.toBeNull();
+    expect(file?.name).toBe("AGENTS.md");
+    expect(file?.content).toContain("AGENTS.md");
+  });
+
+  it("returns null when monorepo.md does not exist", () => {
+    const file = getAgentsFile(rulesDir);
+    expect(file).toBeNull();
   });
 });

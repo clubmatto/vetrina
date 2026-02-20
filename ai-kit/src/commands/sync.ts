@@ -1,5 +1,6 @@
 import { mkdirSync, existsSync, writeFileSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import {
   getContentFiles,
   getRootFiles,
@@ -7,6 +8,8 @@ import {
   getCommandConfig,
 } from "../content.js";
 import { readManifest, writeManifest } from "../manifest.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 interface SyncOptions {
   skipOpencode?: boolean;
@@ -47,9 +50,12 @@ async function doSync(
     mkdirSync(aiDir, { recursive: true });
   }
 
-  const contentFiles = getContentFiles();
-  const rootFiles = getRootFiles();
-  const agentsFile = getAgentsFile();
+  const contentFiles = getContentFiles(
+    join(__dirname, "..", "rules"),
+    join(__dirname, "..", "skills"),
+  );
+  const rootFiles = getRootFiles(join(__dirname, "..", "agents"));
+  const agentsFile = getAgentsFile(join(__dirname, "..", "agents"));
 
   for (const file of contentFiles) {
     const targetDir = join(aiDir, file.type);
@@ -57,6 +63,10 @@ async function doSync(
       mkdirSync(targetDir, { recursive: true });
     }
     const targetPath = join(targetDir, file.name);
+    const parentDir = dirname(targetPath);
+    if (!existsSync(parentDir)) {
+      mkdirSync(parentDir, { recursive: true });
+    }
     writeFileSync(targetPath, file.content);
     const verb = isUpdate ? "Updated" : "Created";
     console.log(`  ${verb} ${file.type}/${file.name}`);
@@ -64,7 +74,7 @@ async function doSync(
 
   const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
-    const commandConfig = getCommandConfig();
+    const commandConfig = getCommandConfig(join(__dirname, "..", "commands"));
     for (const file of rootFiles) {
       let content = file.content;
       if (

@@ -1,8 +1,5 @@
 import { readdirSync, readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { join } from "path";
 
 export type ContentType = "commands" | "rules" | "skills";
 
@@ -43,8 +40,9 @@ function parseFrontmatter(content: string): Record<string, string> {
   return result;
 }
 
-export function getCommandConfig(): Record<string, CommandConfig> {
-  const commandsDir = join(__dirname, "..", "src", "commands");
+export function getCommandConfig(
+  commandsDir: string,
+): Record<string, CommandConfig> {
   const config: Record<string, CommandConfig> = {};
 
   try {
@@ -68,21 +66,28 @@ export function getCommandConfig(): Record<string, CommandConfig> {
   return config;
 }
 
-function getFiles(dir: string, type: ContentType): ContentFile[] {
+function getFiles(
+  dir: string,
+  type: ContentType,
+  baseDir?: string,
+): ContentFile[] {
   if (!readdirSync(dir, { withFileTypes: true }).length) {
     return [];
   }
 
+  const base = baseDir || dir;
+
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const path = join(dir, entry.name);
+    const relativePath = path.slice(base.length + 1);
     if (entry.isDirectory()) {
-      return getFiles(path, type);
+      return getFiles(path, type, base);
     }
     if (entry.name.endsWith(".md")) {
       return [
         {
           type,
-          name: entry.name,
+          name: relativePath,
           content: readFileSync(path, "utf-8"),
         },
       ];
@@ -91,30 +96,27 @@ function getFiles(dir: string, type: ContentType): ContentFile[] {
   });
 }
 
-export function getContentFiles(): ContentFile[] {
-  return [
-    ...getFiles(join(__dirname, "..", "src", "rules"), "rules"),
-    ...getFiles(join(__dirname, "..", "src", "skills"), "skills"),
-  ];
+export function getContentFiles(
+  rulesDir: string,
+  skillsDir: string,
+): ContentFile[] {
+  return [...getFiles(rulesDir, "rules"), ...getFiles(skillsDir, "skills")];
 }
 
-export function getRootFiles(): RootFile[] {
-  const rootDir = join(__dirname, "..", "src", "agents");
-
+export function getRootFiles(agentsDir: string): RootFile[] {
   try {
-    return readdirSync(rootDir, { withFileTypes: true })
+    return readdirSync(agentsDir, { withFileTypes: true })
       .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
       .map((entry) => ({
         name: entry.name,
-        content: readFileSync(join(rootDir, entry.name), "utf-8"),
+        content: readFileSync(join(agentsDir, entry.name), "utf-8"),
       }));
   } catch {
     return [];
   }
 }
 
-export function getAgentsFile(): AgentsFile | null {
-  const agentsDir = join(__dirname, "..", "src", "agents");
+export function getAgentsFile(agentsDir: string): AgentsFile | null {
   const sourcePath = join(agentsDir, "monorepo.md");
 
   try {
