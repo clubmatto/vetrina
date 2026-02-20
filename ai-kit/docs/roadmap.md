@@ -2,14 +2,15 @@
 
 ## Near
 
+- Templating for md files (there's hardcoded dates in them right now)
 - Publish to npm
 
 ## Soon
 
-- Configurable content sources (not just Club Matto)
-- Support for other AI tools beyond opencode
+- AGENTS.md for a single repo (non mono-repo)
+- Selective sync (choose which commands/rules to install)
+- Playwright skill "auto sync" from dev dependency (in case they change it, we change it)
 
 ## Long-term
 
-- Plugin system for custom integrations
-- Selective sync (choose which commands/rules to install)
+- Lang detection for lang rules

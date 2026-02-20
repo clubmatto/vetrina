@@ -2,8 +2,8 @@
 
 Use Club Matto's AI configuration in your projects.
 
-Note: the project is early in development so it's more opinionated than we might want it to be long term. Check out the
-roadmap for more details
+Note: the project is early in development so it's more opinionated than we might want it to be long term. Check out
+the [roadmap](docs/roadmap.md) for more details
 
 ## Install
 
@@ -26,7 +26,7 @@ ai-kit sync --skip-opencode
 ## What's Installed
 
 | Location        | Description                       |
-| --------------- | --------------------------------- |
+|-----------------|-----------------------------------|
 | `.ai/commands/` | Command prompts                   |
 | `.ai/rules/`    | Language/framework rules          |
 | `.ai/skills/`   | Reusable AI capabilities          |
