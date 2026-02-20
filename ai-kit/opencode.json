@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": false
+    },
+    "circleci": {
+      "type": "local",
+      "command": ["npx", "-y", "@circleci/mcp-server-circleci@latest"],
+      "environment": {
+        "CIRCLECI_TOKEN": "{env:CIRCLECI_TOKEN}",
+        "CIRCLECI_BASE_URL": "https://circleci.com"
+      },
+      "enabled": false
+    }
+  }
+}
