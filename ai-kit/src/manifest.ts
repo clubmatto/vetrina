@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
-export interface Manifest {
+interface Manifest {
   version: string;
   installedAt: string;
   rootFiles?: string[];
@@ -10,7 +10,7 @@ export interface Manifest {
 const AI_DIR = ".agents";
 const MANIFEST_FILE = ".ai-kit";
 
-export function getManifestPath(cwd: string): string {
+function getManifestPath(cwd: string): string {
   return join(cwd, AI_DIR, MANIFEST_FILE);
 }
 

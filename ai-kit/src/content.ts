@@ -1,25 +1,25 @@
 import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 
-export type ContentType = "commands" | "rules" | "skills";
+type ContentType = "commands" | "rules" | "skills";
 
-export interface ContentFile {
+interface ContentFile {
   type: ContentType;
   name: string;
   content: string;
 }
 
-export interface RootFile {
+interface RootFile {
   name: string;
   content: string;
 }
 
-export interface AgentsFile {
+interface AgentsFile {
   name: string;
   content: string;
 }
 
-export interface CommandConfig {
+interface CommandConfig {
   template: string;
   description: string;
 }
@@ -34,8 +34,7 @@ function parseFrontmatter(content: string): Record<string, string> {
     const colonIndex = line.indexOf(":");
     if (colonIndex === -1) continue;
     const key = line.slice(0, colonIndex).trim();
-    const value = line.slice(colonIndex + 1).trim();
-    result[key] = value;
+    result[key] = line.slice(colonIndex + 1).trim();
   }
   return result;
 }

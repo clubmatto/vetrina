@@ -1,4 +1,4 @@
-export type LogCall = [string, ...unknown[]];
+type LogCall = [string, string];
 
 const logs: LogCall[] = [];
 
