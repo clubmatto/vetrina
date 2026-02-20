@@ -9,6 +9,8 @@ import {
 } from "../content.js";
 import { readManifest, writeManifest } from "../manifest.js";
 import { processTemplate } from "../template.js";
+import { log } from "../output.js";
+import { Logger } from "../logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -20,30 +22,31 @@ export async function sync(
   cwd: string,
   version: string,
   options: SyncOptions,
+  logger: Logger = log,
 ): Promise<void> {
   const manifest = readManifest(cwd);
 
   if (!manifest) {
-    await doSync(cwd, version, options, false);
-    console.log("\n✓ ai-kit initialized");
+    await doSync(cwd, version, options, logger);
+    logger.final("ai-kit initialized");
     return;
   }
 
   if (manifest.version === version) {
-    console.log(`Already at latest version (${version})`);
+    logger.success(`Already at latest version (${version})`);
     return;
   }
 
-  console.log(`Updating from ${manifest.version} to ${version}...`);
-  await doSync(cwd, version, options, true);
-  console.log(`\n✓ Updated to ${version}`);
+  logger.action(`Updating from ${manifest.version} to ${version}`);
+  await doSync(cwd, version, options, logger);
+  logger.final(`Updated to ${version}`);
 }
 
 async function doSync(
   cwd: string,
   version: string,
   options: SyncOptions,
-  isUpdate: boolean,
+  logger: Logger,
 ): Promise<void> {
   const aiDir = join(cwd, ".agents");
 
@@ -69,8 +72,7 @@ async function doSync(
       mkdirSync(parentDir, { recursive: true });
     }
     writeFileSync(targetPath, processTemplate(file.content));
-    const verb = isUpdate ? "Updated" : "Created";
-    console.log(`  ${verb} ${file.type}/${file.name}`);
+    logger.success(`${file.type}/${file.name}`);
   }
 
   const installedRootFiles: string[] = [];
@@ -88,8 +90,7 @@ async function doSync(
       }
       const targetPath = join(cwd, file.name);
       writeFileSync(targetPath, content);
-      const verb = isUpdate ? "Updated" : "Created";
-      console.log(`  ${verb} ${file.name}`);
+      logger.success(`${file.name}`);
       installedRootFiles.push(file.name);
     }
   }
@@ -97,8 +98,7 @@ async function doSync(
   if (agentsFile) {
     const targetPath = join(cwd, agentsFile.name);
     writeFileSync(targetPath, processTemplate(agentsFile.content));
-    const verb = isUpdate ? "Updated" : "Created";
-    console.log(`  ${verb} ${agentsFile.name}`);
+    logger.success(`${agentsFile.name}`);
   }
 
   writeManifest(cwd, {

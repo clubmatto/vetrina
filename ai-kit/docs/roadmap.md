@@ -2,8 +2,6 @@
 
 ## Near
 
-- prettier output
-- Templating for md files (there's hardcoded dates in them right now)
 - Publish to npm
 
 ## Soon
