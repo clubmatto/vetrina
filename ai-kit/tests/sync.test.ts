@@ -20,6 +20,18 @@ describe("sync command", () => {
     testLog.clear();
   });
 
+  it("uses default source directories when none provided", async () => {
+    await sync(tempDir, "0.0.1", {}, testLog);
+
+    expect(fileExists(tempDir, ".agents/.ai-kit")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules")).toBe(true);
+    expect(fileExists(tempDir, "opencode.json")).toBe(true);
+    expect(fileExists(tempDir, "AGENTS.md")).toBe(true);
+
+    const ruleFiles = readFile(tempDir, ".agents/rules/typescript.md");
+    expect(ruleFiles).not.toBeNull();
+  });
+
   it("initializes when not already initialized", async () => {
     await sync(tempDir, "0.0.1", {}, testLog, testSourceDirs);
 
