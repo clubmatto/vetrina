@@ -23,10 +23,10 @@ export interface SourceDirs {
 }
 
 const defaultSourceDirs: SourceDirs = {
-  rules: join(rootDir, "rules"),
-  skills: join(rootDir, "skills"),
-  agents: join(rootDir, "agents"),
-  commands: join(rootDir, "commands"),
+  rules: join(rootDir, "src", "rules"),
+  skills: join(rootDir, "src", "skills"),
+  agents: join(rootDir, "src", "agents"),
+  commands: join(rootDir, "src", "commands"),
 };
 
 interface SyncOptions {
