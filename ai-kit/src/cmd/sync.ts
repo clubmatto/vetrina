@@ -42,14 +42,7 @@ export async function sync(
   const manifest = readManifest(cwd);
   logger.logo(version);
 
-  if (!manifest) {
-    logger.welcome();
-    const counts = await doSync(cwd, version, options, logger, sourceDirs);
-    logger.summary(counts);
-    return;
-  }
-
-  if (manifest.version === version) {
+  if (manifest && manifest.version === version) {
     logger.success(`Already at latest version (${version})`);
     return;
   }
