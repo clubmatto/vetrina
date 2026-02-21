@@ -43,7 +43,7 @@ describe("CLI integration", () => {
     expect(opencodeJson).toHaveProperty("command");
   });
 
-  it("skips root files when --skip-opencode is passed", () => {
+  it("skips opencode.json when --skip-opencode is passed", () => {
     execSync(
       `node ${join(projectRoot, "dist", "src", "index.js")} sync --skip-opencode`,
       { cwd: tempDir },

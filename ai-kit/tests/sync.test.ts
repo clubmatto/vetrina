@@ -29,7 +29,7 @@ describe("sync command", () => {
     expect(fileExists(tempDir, "AGENTS.md")).toBe(true);
   });
 
-  it("skips root files when skipOpencode is true", async () => {
+  it("skips opencode.json when skipOpencode is true", async () => {
     await sync(
       tempDir,
       "0.0.1",
