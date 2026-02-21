@@ -11,7 +11,6 @@ The AI configuration CLI from Club Matto. Sync rules, skills, and commands to po
 - **Language Rules** — TypeScript, Go, Kotlin, and more
 - **Skills** — Reusable AI capabilities like Playwright automation
 - **Commands** — Pre-built prompts for common tasks (commit messages, PR reviews)
-- **OpenCode Ready** — Seamlessly integrates with [opencode.ai](https://opencode.ai)
 
 ## Quick Start
 
@@ -36,7 +35,7 @@ ai-kit sync --skip-opencode
 ## What's Installed
 
 | Location        | Description                       |
-|-----------------|-----------------------------------|
+| --------------- | --------------------------------- |
 | `.ai/commands/` | Command prompts                   |
 | `.ai/rules/`    | Language/framework rules          |
 | `.ai/skills/`   | Reusable AI capabilities          |
@@ -46,7 +45,7 @@ ai-kit sync --skip-opencode
 ## Commands
 
 | Command       | Description                        |
-|---------------|------------------------------------|
+| ------------- | ---------------------------------- |
 | `ai-kit sync` | Initialize or update configuration |
 
 ## Local Development
