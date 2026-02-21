@@ -1,7 +1,7 @@
 # ai-kit
 
 [![npm version](https://img.shields.io/npm/v/@clubmatto/ai-kit)](https://www.npmjs.com/package/@clubmatto/ai-kit)
-[![License: MIT](https://img.shields.io/npm/l/@clubmatto/ai-kit)](LICENSE)
+[![License: MIT](https://img.shields.io/npm/l/@clubmatto/ai-kit)](/LICENSE)
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/clubmatto/vetrina/ci)](https://github.com/clubmatto/vetrina/actions)
 
 The AI configuration CLI from Club Matto. Sync rules, skills, and commands to power up your AI coding workflow.
@@ -36,7 +36,7 @@ ai-kit sync --skip-opencode
 ## What's Installed
 
 | Location        | Description                       |
-| --------------- | --------------------------------- |
+|-----------------|-----------------------------------|
 | `.ai/commands/` | Command prompts                   |
 | `.ai/rules/`    | Language/framework rules          |
 | `.ai/skills/`   | Reusable AI capabilities          |
@@ -46,7 +46,7 @@ ai-kit sync --skip-opencode
 ## Commands
 
 | Command       | Description                        |
-| ------------- | ---------------------------------- |
+|---------------|------------------------------------|
 | `ai-kit sync` | Initialize or update configuration |
 
 ## Local Development
@@ -64,4 +64,4 @@ ai-kit sync
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](/LICENSE) for details.
