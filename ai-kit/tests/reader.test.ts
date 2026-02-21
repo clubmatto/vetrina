@@ -2,10 +2,10 @@ import { describe, it, expect } from "vitest";
 import { join } from "path";
 import {
   getCommandConfig,
-  getContentFiles,
-  getRootFiles,
-  getAgentsFile,
-} from "../src/content";
+  readContent,
+  readConfigs,
+  readAgents,
+} from "../src/reader";
 import { processTemplate } from "../src/template";
 
 const fixturesDir = join(__dirname, "fixtures");
@@ -49,9 +49,9 @@ describe("getCommandConfig", () => {
   });
 });
 
-describe("getContentFiles", () => {
+describe("readContent", () => {
   it("returns files from rules and skills directories", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     const ruleFiles = files.filter((f) => f.type === "rules");
     const skillFiles = files.filter((f) => f.type === "skills");
@@ -61,7 +61,7 @@ describe("getContentFiles", () => {
   });
 
   it("includes nested files recursively", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     const nestedRule = files.find(
       (f) => f.name === "nested/nested-rule.md" && f.type === "rules",
@@ -71,7 +71,7 @@ describe("getContentFiles", () => {
   });
 
   it("returns correct file structure", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     for (const file of files) {
       expect(file).toHaveProperty("type");
@@ -83,7 +83,7 @@ describe("getContentFiles", () => {
   });
 
   it("includes skill directory name in file path", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     const skillFile = files.find(
       (f) => f.type === "skills" && f.name === "test-skill/SKILL.md",
@@ -93,7 +93,7 @@ describe("getContentFiles", () => {
   });
 
   it("includes additional files in skill directories", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     const detailsFile = files.find(
       (f) => f.type === "skills" && f.name === "test-skill/skill-details.md",
@@ -103,7 +103,7 @@ describe("getContentFiles", () => {
   });
 
   it("includes nested references in skill directories", () => {
-    const files = getContentFiles(rulesDir, skillsDir);
+    const files = readContent(rulesDir, skillsDir);
 
     const refFile = files.find(
       (f) => f.type === "skills" && f.name === "test-skill/nested-refs/doc.md",
@@ -112,9 +112,9 @@ describe("getContentFiles", () => {
   });
 });
 
-describe("getRootFiles", () => {
+describe("readConfigs", () => {
   it("returns JSON files from agents directory", () => {
-    const files = getRootFiles(agentsDir);
+    const files = readConfigs(agentsDir);
 
     expect(files.length).toBe(2);
     expect(files.map((f) => f.name).sort()).toEqual([
@@ -124,21 +124,21 @@ describe("getRootFiles", () => {
   });
 
   it("returns file content as string", () => {
-    const files = getRootFiles(agentsDir);
+    const files = readConfigs(agentsDir);
 
     const opencodeFile = files.find((f) => f.name === "opencode.json");
     expect(opencodeFile?.content).toContain("test-agent");
   });
 
   it("returns empty array for non-existent directory", () => {
-    const files = getRootFiles("/non/existent/dir");
+    const files = readConfigs("/non/existent/dir");
     expect(files).toEqual([]);
   });
 });
 
-describe("getAgentsFile", () => {
+describe("readAgents", () => {
   it("returns AGENTS.md file content", () => {
-    const file = getAgentsFile(agentsDir);
+    const file = readAgents(agentsDir);
 
     expect(file).not.toBeNull();
     expect(file?.name).toBe("AGENTS.md");
@@ -146,7 +146,7 @@ describe("getAgentsFile", () => {
   });
 
   it("returns null when monorepo.md does not exist", () => {
-    const file = getAgentsFile(rulesDir);
+    const file = readAgents(rulesDir);
     expect(file).toBeNull();
   });
 });

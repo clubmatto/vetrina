@@ -1,11 +1,11 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import {
-  getAgentsFile,
+  readAgents,
   getCommandConfig,
-  getContentFiles,
-  getRootFiles,
-} from "../content";
+  readContent,
+  readConfigs,
+} from "../reader";
 import { readManifest, writeManifest } from "../manifest";
 import { processTemplate } from "../template";
 import { log, SyncStats } from "../output";
@@ -71,9 +71,9 @@ async function doSync(
     mkdirSync(aiDir, { recursive: true });
   }
 
-  const contentFiles = getContentFiles(sourceDirs.rules, sourceDirs.skills);
-  const rootFiles = getRootFiles(sourceDirs.agents);
-  const agentsFile = getAgentsFile(sourceDirs.agents);
+  const contentFiles = readContent(sourceDirs.rules, sourceDirs.skills);
+  const rootFiles = readConfigs(sourceDirs.agents);
+  const agentsFile = readAgents(sourceDirs.agents);
 
   const rules = contentFiles.filter((f) => f.type === "rules");
 

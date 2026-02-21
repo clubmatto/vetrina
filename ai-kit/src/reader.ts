@@ -1,20 +1,10 @@
 import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 
-type ContentType = "commands" | "rules" | "skills";
+type SyncType = "commands" | "rules" | "skills" | "config";
 
-interface ContentFile {
-  type: ContentType;
-  name: string;
-  content: string;
-}
-
-interface RootFile {
-  name: string;
-  content: string;
-}
-
-interface AgentsFile {
+interface SyncItem {
+  type: SyncType;
   name: string;
   content: string;
 }
@@ -65,11 +55,7 @@ export function getCommandConfig(
   return config;
 }
 
-function getFiles(
-  dir: string,
-  type: ContentType,
-  baseDir?: string,
-): ContentFile[] {
+function readFiles(dir: string, type: SyncType, baseDir?: string): SyncItem[] {
   if (!readdirSync(dir, { withFileTypes: true }).length) {
     return [];
   }
@@ -80,7 +66,7 @@ function getFiles(
     const path = join(dir, entry.name);
     const relativePath = path.slice(base.length + 1);
     if (entry.isDirectory()) {
-      return getFiles(path, type, base);
+      return readFiles(path, type, base);
     }
     if (entry.name.endsWith(".md")) {
       return [
@@ -95,18 +81,16 @@ function getFiles(
   });
 }
 
-export function getContentFiles(
-  rulesDir: string,
-  skillsDir: string,
-): ContentFile[] {
-  return [...getFiles(rulesDir, "rules"), ...getFiles(skillsDir, "skills")];
+export function readContent(rulesDir: string, skillsDir: string): SyncItem[] {
+  return [...readFiles(rulesDir, "rules"), ...readFiles(skillsDir, "skills")];
 }
 
-export function getRootFiles(agentsDir: string): RootFile[] {
+export function readConfigs(agentsDir: string): SyncItem[] {
   try {
     return readdirSync(agentsDir, { withFileTypes: true })
       .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
       .map((entry) => ({
+        type: "config",
         name: entry.name,
         content: readFileSync(join(agentsDir, entry.name), "utf-8"),
       }));
@@ -115,11 +99,12 @@ export function getRootFiles(agentsDir: string): RootFile[] {
   }
 }
 
-export function getAgentsFile(agentsDir: string): AgentsFile | null {
+export function readAgents(agentsDir: string): SyncItem | null {
   const sourcePath = join(agentsDir, "monorepo.md");
 
   try {
     return {
+      type: "config",
       name: "AGENTS.md",
       content: readFileSync(sourcePath, "utf-8"),
     };
