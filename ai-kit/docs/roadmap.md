@@ -3,7 +3,6 @@
 ## Near
 
 - Publish to npm
-- Playwright skill auto sync from dev dependency
 
 ## Soon
 
