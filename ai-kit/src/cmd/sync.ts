@@ -5,6 +5,7 @@ import {
   getCommandConfig,
   readContent,
   readConfigs,
+  SyncItem,
 } from "../reader";
 import { readManifest, writeManifest } from "../manifest";
 import { processTemplate } from "../template";
@@ -56,6 +57,19 @@ export async function sync(
   logger.welcome();
   const counts = await doSync(cwd, version, options, logger, sourceDirs);
   logger.summary(counts);
+}
+
+function writeItem(aiDir: string, file: SyncItem): void {
+  const targetDir = join(aiDir, file.type);
+  if (!existsSync(targetDir)) {
+    mkdirSync(targetDir, { recursive: true });
+  }
+  const targetPath = join(targetDir, file.name);
+  const parentDir = dirname(targetPath);
+  if (!existsSync(parentDir)) {
+    mkdirSync(parentDir, { recursive: true });
+  }
+  writeFileSync(targetPath, processTemplate(file.content));
 }
 
 async function doSync(
@@ -120,16 +134,7 @@ async function doSync(
   if (rules.length > 0) {
     logger.section("rules");
     for (const file of rules) {
-      const targetDir = join(aiDir, file.type);
-      if (!existsSync(targetDir)) {
-        mkdirSync(targetDir, { recursive: true });
-      }
-      const targetPath = join(targetDir, file.name);
-      const parentDir = dirname(targetPath);
-      if (!existsSync(parentDir)) {
-        mkdirSync(parentDir, { recursive: true });
-      }
-      writeFileSync(targetPath, processTemplate(file.content));
+      writeItem(aiDir, file);
       logger.success(`${file.name}`);
       stats.rules++;
     }
@@ -145,16 +150,7 @@ async function doSync(
       const dirFiles = skills.filter((f) => f.name.startsWith(dir + "/"));
       logger.success(`${dir} (${dirFiles.length} files)`);
       for (const file of dirFiles) {
-        const targetDir = join(aiDir, file.type);
-        if (!existsSync(targetDir)) {
-          mkdirSync(targetDir, { recursive: true });
-        }
-        const targetPath = join(targetDir, file.name);
-        const parentDir = dirname(targetPath);
-        if (!existsSync(parentDir)) {
-          mkdirSync(parentDir, { recursive: true });
-        }
-        writeFileSync(targetPath, processTemplate(file.content));
+        writeItem(aiDir, file);
       }
     }
   }

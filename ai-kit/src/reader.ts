@@ -3,7 +3,7 @@ import { join } from "path";
 
 type SyncType = "commands" | "rules" | "skills" | "config";
 
-interface SyncItem {
+export interface SyncItem {
   type: SyncType;
   name: string;
   content: string;
