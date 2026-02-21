@@ -11,8 +11,8 @@ export const testLog = {
   logo: (version: string) => {
     logs.push(["logo", version]);
   },
-  action: (msg: string) => {
-    logs.push(["action", msg]);
+  welcome: () => {
+    logs.push(["welcome", ""]);
   },
   section: (msg: string) => {
     logs.push(["section", msg]);
@@ -22,6 +22,9 @@ export const testLog = {
   },
   final: (msg: string) => {
     logs.push(["final", msg]);
+  },
+  summary: (counts: { rules: number; skills: number; commands: number }) => {
+    logs.push(["summary", JSON.stringify(counts)]);
   },
 };
 

@@ -11,8 +11,8 @@ const version = JSON.parse(
 const program = new Command();
 
 program
-  .name("ai-kit")
-  .description("Distribute AI configuration to your project")
+  .name("@clubmatto/ai-kit")
+  .description("The AI configuration CLI from Club Matto")
   .version(version)
   .option("--skip-opencode", "Skip installing opencode.json to project root");
 

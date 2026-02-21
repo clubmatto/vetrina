@@ -8,7 +8,7 @@ import {
 } from "../content";
 import { readManifest, writeManifest } from "../manifest";
 import { processTemplate } from "../template";
-import { log } from "../output";
+import { log, SyncStats } from "../output";
 import { Logger } from "../logger";
 
 const rootDir = join(__dirname, "..", "..", "..");
@@ -42,9 +42,9 @@ export async function sync(
   logger.logo(version);
 
   if (!manifest) {
-    logger.action("Initializing ai-kit...");
-    const count = await doSync(cwd, version, options, logger, sourceDirs);
-    logger.final(`ai-kit initialized (${count} files)`);
+    logger.welcome();
+    const counts = await doSync(cwd, version, options, logger, sourceDirs);
+    logger.summary(counts);
     return;
   }
 
@@ -53,9 +53,9 @@ export async function sync(
     return;
   }
 
-  logger.action(`Updating from ${manifest.version} to ${version}...`);
-  const count = await doSync(cwd, version, options, logger, sourceDirs);
-  logger.final(`Updated to ${version} (${count} files)`);
+  logger.welcome();
+  const counts = await doSync(cwd, version, options, logger, sourceDirs);
+  logger.summary(counts);
 }
 
 async function doSync(
@@ -64,7 +64,7 @@ async function doSync(
   options: SyncOptions,
   logger: Logger,
   sourceDirs: SourceDirs,
-): Promise<number> {
+): Promise<SyncStats> {
   const aiDir = join(cwd, ".agents");
 
   if (!existsSync(aiDir)) {
@@ -76,51 +76,23 @@ async function doSync(
   const agentsFile = getAgentsFile(sourceDirs.agents);
 
   const rules = contentFiles.filter((f) => f.type === "rules");
-  const skills = contentFiles.filter((f) => f.type === "skills");
 
-  let count = 0;
-
-  if (rules.length > 0) {
-    logger.section("rules");
-    for (const file of rules) {
-      const targetDir = join(aiDir, file.type);
-      if (!existsSync(targetDir)) {
-        mkdirSync(targetDir, { recursive: true });
-      }
-      const targetPath = join(targetDir, file.name);
-      const parentDir = dirname(targetPath);
-      if (!existsSync(parentDir)) {
-        mkdirSync(parentDir, { recursive: true });
-      }
-      writeFileSync(targetPath, processTemplate(file.content));
-      logger.success(`${file.type}/${file.name}`);
-      count++;
-    }
-  }
-
-  if (skills.length > 0) {
-    logger.section("skills");
-    for (const file of skills) {
-      const targetDir = join(aiDir, file.type);
-      if (!existsSync(targetDir)) {
-        mkdirSync(targetDir, { recursive: true });
-      }
-      const targetPath = join(targetDir, file.name);
-      const parentDir = dirname(targetPath);
-      if (!existsSync(parentDir)) {
-        mkdirSync(parentDir, { recursive: true });
-      }
-      writeFileSync(targetPath, processTemplate(file.content));
-      logger.success(`${file.type}/${file.name}`);
-      count++;
-    }
-  }
+  const stats: SyncStats = { rules: 0, skills: 0, commands: 0 };
 
   const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
     const commandConfig = getCommandConfig(sourceDirs.commands);
+    stats.commands = Object.keys(commandConfig).length;
+
+    if (Object.keys(commandConfig).length > 0) {
+      logger.section("commands");
+      for (const name of Object.keys(commandConfig)) {
+        logger.success(`${name}.md`);
+      }
+    }
+
     if (rootFiles.length > 0) {
-      logger.section("root files");
+      logger.section("configs");
       for (const file of rootFiles) {
         let content = file.content;
         if (
@@ -135,7 +107,6 @@ async function doSync(
         writeFileSync(targetPath, content);
         logger.success(`${file.name}`);
         installedRootFiles.push(file.name);
-        count++;
       }
     }
   }
@@ -144,7 +115,48 @@ async function doSync(
     const targetPath = join(cwd, agentsFile.name);
     writeFileSync(targetPath, processTemplate(agentsFile.content));
     logger.success(`${agentsFile.name}`);
-    count++;
+  }
+
+  if (rules.length > 0) {
+    logger.section("rules");
+    for (const file of rules) {
+      const targetDir = join(aiDir, file.type);
+      if (!existsSync(targetDir)) {
+        mkdirSync(targetDir, { recursive: true });
+      }
+      const targetPath = join(targetDir, file.name);
+      const parentDir = dirname(targetPath);
+      if (!existsSync(parentDir)) {
+        mkdirSync(parentDir, { recursive: true });
+      }
+      writeFileSync(targetPath, processTemplate(file.content));
+      logger.success(`${file.name}`);
+      stats.rules++;
+    }
+  }
+
+  const skills = contentFiles.filter((f) => f.type === "skills");
+
+  if (skills.length > 0) {
+    logger.section("skills");
+    const skillDirs = [...new Set(skills.map((f) => f.name.split("/")[0]))];
+    stats.skills = skillDirs.length;
+    for (const dir of skillDirs) {
+      const dirFiles = skills.filter((f) => f.name.startsWith(dir + "/"));
+      logger.success(`${dir} (${dirFiles.length} files)`);
+      for (const file of dirFiles) {
+        const targetDir = join(aiDir, file.type);
+        if (!existsSync(targetDir)) {
+          mkdirSync(targetDir, { recursive: true });
+        }
+        const targetPath = join(targetDir, file.name);
+        const parentDir = dirname(targetPath);
+        if (!existsSync(parentDir)) {
+          mkdirSync(parentDir, { recursive: true });
+        }
+        writeFileSync(targetPath, processTemplate(file.content));
+      }
+    }
   }
 
   writeManifest(cwd, {
@@ -153,5 +165,5 @@ async function doSync(
     rootFiles: installedRootFiles,
   });
 
-  return count;
+  return stats;
 }

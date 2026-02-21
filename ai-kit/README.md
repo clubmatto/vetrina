@@ -1,22 +1,32 @@
 # ai-kit
 
-Use Club Matto's AI configuration in your projects.
+[![npm version](https://img.shields.io/npm/v/@clubmatto/ai-kit)](https://www.npmjs.com/package/@clubmatto/ai-kit)
+[![License: MIT](https://img.shields.io/npm/l/@clubmatto/ai-kit)](LICENSE)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/clubmatto/vetrina/ci)](https://github.com/clubmatto/vetrina/actions)
 
-Note: the project is early in development so it's more opinionated than we might want it to be long term. Check out
-the [roadmap](docs/roadmap.md) for more details
+The AI configuration CLI from Club Matto. Sync rules, skills, and commands to power up your AI coding workflow.
 
-## Install
+## Features
+
+- **Language Rules** — TypeScript, Go, Kotlin, and more
+- **Skills** — Reusable AI capabilities like Playwright automation
+- **Commands** — Pre-built prompts for common tasks (commit messages, PR reviews)
+- **OpenCode Ready** — Seamlessly integrates with [opencode.ai](https://opencode.ai)
+
+## Quick Start
 
 ```bash
+# Install globally
 npm install -g @clubmatto/ai-kit
-# or for local development
-npm link
+
+# Sync AI configuration to your project
+ai-kit sync
 ```
 
 ## Usage
 
 ```bash
-# Initialize or update
+# Initialize or update AI configuration
 ai-kit sync
 
 # Skip installing opencode.json to project root
@@ -33,6 +43,12 @@ ai-kit sync --skip-opencode
 | `opencode.json` | Opencode configuration (optional) |
 | `AGENTS.md`     | Agent instructions                |
 
+## Commands
+
+| Command       | Description                        |
+| ------------- | ---------------------------------- |
+| `ai-kit sync` | Initialize or update configuration |
+
 ## Local Development
 
 ```bash
@@ -46,6 +62,6 @@ npm link
 ai-kit sync
 ```
 
-## Version
+## License
 
-Alpha - Not yet published to npm.
+MIT — see [LICENSE](LICENSE) for details.
