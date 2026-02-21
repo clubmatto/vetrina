@@ -5,8 +5,8 @@ import {
   getContentFiles,
   getRootFiles,
   getAgentsFile,
-} from "../src/content.js";
-import { processTemplate } from "../src/template.js";
+} from "../src/content";
+import { processTemplate } from "../src/template";
 
 const fixturesDir = join(__dirname, "fixtures");
 const commandsDir = join(fixturesDir, "commands");

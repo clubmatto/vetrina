@@ -1,18 +1,16 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import {
   getAgentsFile,
   getCommandConfig,
   getContentFiles,
   getRootFiles,
-} from "../content.js";
-import { readManifest, writeManifest } from "../manifest.js";
-import { processTemplate } from "../template.js";
-import { log } from "../output.js";
-import { Logger } from "../logger.js";
+} from "../content";
+import { readManifest, writeManifest } from "../manifest";
+import { processTemplate } from "../template";
+import { log } from "../output";
+import { Logger } from "../logger";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..", "..", "..");
 
 export interface SourceDirs {

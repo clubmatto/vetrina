@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { sync } from "./cmd/sync.js";
+import { sync } from "./cmd/sync";
 import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const version = JSON.parse(
   readFileSync(join(__dirname, "..", "..", "package.json"), "utf-8"),
 ).version;

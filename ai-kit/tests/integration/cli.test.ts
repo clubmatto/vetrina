@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { execSync } from "child_process";
 import { join } from "path";
-import { fileExists, createTempDir, readFile } from "../utils.js";
+import { fileExists, createTempDir, readFile } from "../utils";
 
 const projectRoot = join(__dirname, "..", "..");
 

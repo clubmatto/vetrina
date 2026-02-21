@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { sync, SourceDirs } from "../src/cmd/sync.js";
-import { createTempDir, readFile, fileExists } from "./utils.js";
-import { testLog, findLogs, getLastLog } from "./output.js";
+import { sync, SourceDirs } from "../src/cmd/sync";
+import { createTempDir, readFile, fileExists } from "./utils";
+import { testLog, findLogs, getLastLog } from "./output";
 import { join } from "path";
 
 const fixturesDir = join(__dirname, "fixtures");
