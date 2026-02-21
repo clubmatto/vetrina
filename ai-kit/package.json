@@ -10,6 +10,7 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "dev:link": "npm run build && npm link",
+    "fetch-playwright-skills": "tsx scripts/fetch-playwright-skills.ts v0.1.1",
     "test": "vitest run --exclude 'tests/integration/**'",
     "test:integration": "npm run build && vitest run tests/integration",
     "test:watch": "vitest",
