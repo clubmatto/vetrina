@@ -546,12 +546,4 @@ testing = ["junit5-jupiter", "kotest-assertions", "mockk"]
 - ⚠️ Avoid `!!` operator – use safe calls or `requireNotNull`
 - ⚠️ Avoid complex inheritance hierarchies – prefer composition
 
-## 📚 Recommended Reading
-
-- Spring Boot Reference: https://docs.spring.io/spring-boot/docs/current/reference
-- Spring Framework Kotlin Support: https://docs.spring.io/spring-framework/reference/languages/kotlin.html
-- Kotlin Coroutines Guide: https://kotlinlang.org/docs/coroutines-guide.html
-- Spring GraphQL: https://docs.spring.io/spring-graphql/reference/
-- Netflix DGS: https://netflix.github.io/dgs/
-
 {{FOOTER}}

@@ -303,9 +303,4 @@ Always pass context.Context as the first parameter to functions that:
 - Could be long-running
 - Should respect cancellation/timeout
 
-## 📚 Recommended Reading (for agent understanding)
-
-- Effective Go: https://go.dev/doc/effective_go
-- Go Proverbs: https://go-proverbs.github.io/
-
 {{FOOTER}}

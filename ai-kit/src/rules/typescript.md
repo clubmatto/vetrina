@@ -299,14 +299,4 @@ module.exports = {
 };
 ```
 
-### Editor Configuration
-
-Include `.editorconfig` for consistent formatting across editors.
-
-## 📚 Recommended Reading
-
-- TypeScript Handbook: https://www.typescriptlang.org/docs/handbook/intro.html
-- Effective TypeScript: https://effectivetypescript.com/
-- Node.js Best Practices: https://github.com/goldbergyoni/nodebestpractices
-
 {{FOOTER}}

@@ -9,12 +9,12 @@ checking out README.md.
 
 - **Kotlin/Java**: Gradle (Kotlin DSL). Use `./gradlew` commands.
 - **Go**: Go modules. Use `go` commands.
-- **TypeScript**: (Planned) `npm`.
+- **TypeScript**: Use `npm`.
 
 ## How to Find the Right Rules
 
 1. **Identify the primary language** of the file(s) you're working with.
-2. **Navigate to `.ai/rules/`** and open the corresponding file:
+2. **Navigate to `.agents/rules/`** and open the corresponding file:
    - TypeScript → `typescript.md`
    - Go → `go.md`
    - Kotlin → `kotlin.md`
@@ -24,7 +24,7 @@ CRITICAL: When you encounter a file reference (e.g., `@.ai/rules/go.md`), use th
 
 ## Additional Guidelines
 
-- [Plan Mode](.ai/rules/plan-mode.md)
-- [When You're Unsure](.ai/rules/unsure.md)
+- [Plan Mode](.agents/rules/plan-mode.md)
+- [When You're Unsure](.agents/rules/unsure.md)
 
 _{{AGENTS_FOOTER}}_

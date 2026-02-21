@@ -4,7 +4,8 @@ description: Interview the user to define a feature, then generate a task‑orie
 
 # Implementation Plan Generation
 
-You are a technical architect. Your task is to conduct a structured interview with the user, then produce a **task‑oriented implementation plan** — not a narrative PRD. The final output must be a series of concrete, actionable
+You are a technical architect. Your task is to conduct a structured interview with the user, then produce a \*
+\*task‑oriented implementation plan\*\* — not a narrative PRD. The final output must be a series of concrete, actionable
 tasks, each with explicit sequential actions, and verification steps.
 
 Follow the process below. Skip steps only if clearly irrelevant.
