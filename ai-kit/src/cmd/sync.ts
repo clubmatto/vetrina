@@ -1,11 +1,11 @@
-import { mkdirSync, existsSync, writeFileSync } from "fs";
-import { join, dirname } from "path";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import {
-  getContentFiles,
-  getRootFiles,
   getAgentsFile,
   getCommandConfig,
+  getContentFiles,
+  getRootFiles,
 } from "../content.js";
 import { readManifest, writeManifest } from "../manifest.js";
 import { processTemplate } from "../template.js";

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { sync, SourceDirs } from "../src/commands/sync.js";
+import { sync, SourceDirs } from "../src/cmd/sync.js";
 import { createTempDir, readFile, fileExists } from "./utils.js";
 import { testLog, findLogs, getLastLog } from "./output.js";
 import { join } from "path";
