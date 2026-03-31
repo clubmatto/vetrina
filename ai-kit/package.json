@@ -69,5 +69,10 @@
     "plugins": {
       "@release-it/keep-a-changelog": {}
     }
+  },
+  "knip": {
+    "ignore": [
+      "src/skills/**/scripts/*.js"
+    ]
   }
 }
