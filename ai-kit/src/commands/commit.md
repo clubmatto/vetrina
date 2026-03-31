@@ -19,7 +19,7 @@ Create a commit with the following format:
 **Sign-off:**
 
 - End with: `created with the help of <MODEL>`
-- Use the current model name (e.g., "MiniMax", "GPT-4", "Claude")
+- Use the current model name (e.g. "MiniMax", "GPT-4", "Claude")
 
 ## Example
 
