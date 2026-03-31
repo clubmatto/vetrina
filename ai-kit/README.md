@@ -1,5 +1,6 @@
 # ai-kit
 
+[![CircleCI](https://circleci.com/gh/clubmatto/vetrina.svg?style=shield)](https://circleci.com/gh/clubmatto/vetrina)
 [![npm version](https://img.shields.io/npm/v/@clubmatto/ai-kit)](https://www.npmjs.com/package/@clubmatto/ai-kit)
 [![License: MIT](https://img.shields.io/npm/l/@clubmatto/ai-kit)](/LICENSE)
 

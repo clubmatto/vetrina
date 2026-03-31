@@ -1,7 +1,5 @@
 # Club Matto
 
-[![CircleCI](https://circleci.com/gh/clubmatto/vetrina.svg?style=shield)](https://circleci.com/gh/clubmatto/vetrina)
-
 This is the monorepo for all Club Matto public projects. It contains various
 projects including web applications, CLI tools, mobile apps, and more.
 
