@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/clubmatto/vetrina/issues"
   },
-  "homepage": "https://github.com/clubmatto/vetrina#readme",
+  "homepage": "https://github.com/clubmatto/vetrina/tree/main/ai-kit",
   "bin": {
     "ai-kit": "./dist/src/index.js"
   },
