@@ -14,14 +14,12 @@ jobs:
     executor: node-executor
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run:
-                name: Install dependencies
-                command: cd ai-kit && npm ci
-            - run:
-                name: Run CI checks
-                command: cd ai-kit && npm run ci
+      - node/install-packages:
+          app-directory: ~/project/ai-kit
+          pkg-manager: npm
+      - run:
+          name: Run CI checks
+          command: cd ai-kit && npm run ci
       - store_test_results:
           path: ~/project/ai-kit/test-results
 
@@ -29,11 +27,9 @@ jobs:
     executor: node-executor
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run:
-                name: Install dependencies
-                command: cd ai-kit && npm ci
+      - node/install-packages:
+          app-directory: ~/project/ai-kit
+          pkg-manager: npm
       - run:
           name: Configure git
           command: |
