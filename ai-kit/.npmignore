@@ -1,0 +1,8 @@
+tests/
+dist/tests/
+vitest.config.*
+docs/
+scripts/
+src/**/*.test.ts
+src/**/*.test.ts.map
+tsconfig.json
