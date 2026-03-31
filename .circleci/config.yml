@@ -7,7 +7,7 @@ executors:
   node-executor:
     docker:
       - image: cimg/node:20.18.1
-    working_directory: ~/project
+    working_directory: ~/project/ai-kit
 
 jobs:
   ci:
@@ -16,10 +16,10 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd ai-kit && npm ci
+          command: npm ci
       - run:
           name: Run CI checks
-          command: cd ai-kit && npm run ci
+          command: npm run ci
       - store_test_results:
           path: ~/project/ai-kit/test-results
 
@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: cd ai-kit && npm ci
+          command: npm ci
       - run:
           name: Configure git
           command: |
@@ -37,7 +37,7 @@ jobs:
             git config user.name "CircleCI"
       - run:
           name: Release
-          command: cd ai-kit && npm run release
+          command: npm run release
 
 workflows:
   ci-workflow:
