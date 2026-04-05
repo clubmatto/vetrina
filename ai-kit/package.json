@@ -18,7 +18,6 @@
     "dev": "tsx src/index.ts",
     "dev:link": "npm run build && npm link",
     "fetch-playwright-skills": "tsx scripts/fetch-playwright-skills.ts v0.1.1",
-    "release": "release-it",
     "test": "vitest run --config vitest.config.mts --exclude 'tests/integration/**'",
     "test:integration": "npm run build && vitest run --config vitest.config.mts tests/integration",
     "test:watch": "vitest",
@@ -35,12 +34,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@release-it/keep-a-changelog": "^7.0.1",
     "@types/node": "^25.3.0",
     "eslint": "^10.0.1",
     "knip": "^5.85.0",
     "prettier": "^3.4.2",
-    "release-it": "^19.2.4",
     "tsx": "latest",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0",
@@ -55,21 +52,6 @@
     "cli"
   ],
   "license": "MIT",
-  "release-it": {
-    "npm": {
-      "publish": true
-    },
-    "git": {
-      "commitMessage": "chore: release v${version}",
-      "tagName": "ai-kit/v${version}"
-    },
-    "version": {
-      "bump": false
-    },
-    "plugins": {
-      "@release-it/keep-a-changelog": {}
-    }
-  },
   "knip": {
     "ignore": [
       "src/skills/**/scripts/*.js"
