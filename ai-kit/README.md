@@ -34,13 +34,12 @@ ai-kit sync --skip-opencode
 
 ## What's Installed
 
-| Location        | Description                       |
-| --------------- | --------------------------------- |
-| `.ai/commands/` | Command prompts                   |
-| `.ai/rules/`    | Language/framework rules          |
-| `.ai/skills/`   | Reusable AI capabilities          |
-| `opencode.json` | Opencode configuration (optional) |
-| `AGENTS.md`     | Agent instructions                |
+| Location          | Description                       |
+| ----------------- | --------------------------------- |
+| `.agents/rules/`  | Language/framework rules          |
+| `.agents/skills/` | Reusable AI capabilities          |
+| `opencode.json`   | Opencode configuration (optional) |
+| `AGENTS.md`       | Agent instructions                |
 
 ## Commands
 

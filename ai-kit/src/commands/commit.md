@@ -27,7 +27,7 @@ Create a commit with the following format:
 feat: add init and update commands
 
 - Created init command for first-time setup
-- Added manifest tracking in .ai/.ai-kit
+- Added manifest tracking in .agents/.ai-kit
 - Implemented update command for version sync
 - Added --skip-opencode option
 

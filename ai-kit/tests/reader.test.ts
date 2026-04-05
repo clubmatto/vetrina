@@ -164,7 +164,7 @@ describe("processTemplate", () => {
     const result = processTemplate("{{AGENTS_FOOTER}}");
     const today = new Date().toISOString().split("T")[0];
     expect(result).toBe(
-      `This file was last updated: ${today}. Always check the \`.ai/rules/\` directory for the most current language-specific guidelines.`,
+      `This file was last updated: ${today}. Always check the \`.agents/rules/\` directory for the most current language-specific guidelines.`,
     );
   });
 

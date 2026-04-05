@@ -9,6 +9,6 @@ export function processTemplate(content: string): string {
     )
     .replace(
       /\{\{AGENTS_FOOTER}}/g,
-      `This file was last updated: ${isoDate}. Always check the \`.ai/rules/\` directory for the most current language-specific guidelines.`,
+      `This file was last updated: ${isoDate}. Always check the \`.agents/rules/\` directory for the most current language-specific guidelines.`,
     );
 }

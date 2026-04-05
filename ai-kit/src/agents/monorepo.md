@@ -3,13 +3,7 @@
 This is a monorepo containing apps in many languages.
 
 You MUST follow the specific rules for each language. **ALWAYS** start from
-checking out README.md.
-
-## Build Systems
-
-- **Kotlin/Java**: Gradle (Kotlin DSL). Use `./gradlew` commands.
-- **Go**: Go modules. Use `go` commands.
-- **TypeScript**: Use `npm`.
+checking out the closest README.md.
 
 ## How to Find the Right Rules
 
@@ -20,7 +14,7 @@ checking out README.md.
    - Kotlin → `kotlin.md`
    - etc.
 
-CRITICAL: When you encounter a file reference (e.g., `@.ai/rules/go.md`), use the Read tool to load it on a need-to-know basis.
+CRITICAL: When you encounter a file reference (e.g., `@.agents/rules/go.md`), use the Read tool to load it on a need-to-know basis.
 
 ## Additional Guidelines
 
