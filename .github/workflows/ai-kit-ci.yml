@@ -5,10 +5,12 @@ on:
     branches: ["**"]
     paths:
       - "ai-kit/**"
+      - ".github/workflows/ai-kit-*.yml"
   pull_request:
     branches: [main]
     paths:
       - "ai-kit/**"
+      - ".github/workflows/ai-kit-*.yml"
 
 jobs:
   ci:
