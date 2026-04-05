@@ -31,13 +31,10 @@ jobs:
           name: Install dependencies
           command: cd ai-kit && npm install
       - run:
-          name: Configure git
+          name: Publish to npm with OIDC
           command: |
-            git config user.email "circleci@clubmatto.com"
-            git config user.name "CircleCI"
-      - run:
-          name: Release
-          command: cd ai-kit && npm run release
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            cd ai-kit && npm publish --access public
 
 workflows:
   ci-workflow:
@@ -56,4 +53,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/
+              only: /ai-kit\/v[0-9]+(\.[0-9]+)*/
