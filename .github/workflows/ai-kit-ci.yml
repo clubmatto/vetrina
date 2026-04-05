@@ -1,0 +1,30 @@
+name: ai-kit CI
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "ai-kit/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "ai-kit/**"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-kit
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ai-kit/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run ci
