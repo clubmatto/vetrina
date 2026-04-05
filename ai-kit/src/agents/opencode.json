@@ -9,15 +9,6 @@
       },
       "enabled": false
     },
-    "circleci": {
-      "type": "local",
-      "command": ["npx", "-y", "@circleci/mcp-server-circleci@latest"],
-      "environment": {
-        "CIRCLECI_TOKEN": "{env:CIRCLECI_TOKEN}",
-        "CIRCLECI_BASE_URL": "https://circleci.com"
-      },
-      "enabled": false
-    },
     "MiniMax": {
       "type": "local",
       "command": ["uvx", "minimax-coding-plan-mcp", "-y"],
