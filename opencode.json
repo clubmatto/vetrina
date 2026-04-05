@@ -1,0 +1,53 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": false
+    },
+    "circleci": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@circleci/mcp-server-circleci@latest"
+      ],
+      "environment": {
+        "CIRCLECI_TOKEN": "{env:CIRCLECI_TOKEN}",
+        "CIRCLECI_BASE_URL": "https://circleci.com"
+      },
+      "enabled": false
+    },
+    "MiniMax": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "minimax-coding-plan-mcp",
+        "-y"
+      ],
+      "environment": {
+        "MINIMAX_API_KEY": "{env:MINIMAX_API_KEY}",
+        "MINIMAX_API_HOST": "https://api.minimax.io"
+      },
+      "enabled": false
+    }
+  },
+  "command": {
+    "commit": {
+      "description": "Commit the work done in this session with a structured commit message.",
+      "template": "Create a commit with the following format:\n\n## Commit Message Format\n\n**First line (one-liner):**\n\n- Use conventional commits format: `<type>: <description>`\n- Examples: `feat: add init command`, `fix: resolve path issue`, `docs: update README`\n\n**Body (bullet list):**\n\n- List the main changes made in this session\n- Each item should be a brief description of a specific change\n\n**Sign-off:**\n\n- End with: `created with the help of <MODEL>`\n- Use the current model name (e.g. \"MiniMax\", \"GPT-4\", \"Claude\")\n\n## Example\n\n```\nfeat: add init and update commands\n\n- Created init command for first-time setup\n- Added manifest tracking in .agents/.ai-kit\n- Implemented update command for version sync\n- Added --skip-opencode option\n\ncreated with the help of MiniMax\n```\n\n## Process\n\n1. First, review all changes with `git status` and `git diff`\n2. Write a concise one-liner following conventional commits\n3. List the key changes as bullet points\n4. Add the sign-off line with the current model\n5. Commit with `git commit -m \"your message\"`"
+    },
+    "interview": {
+      "description": "Interview the user to define a feature, then generate a task‑oriented implementation plan as a markdown document.",
+      "template": "# Implementation Plan Generation\n\nYou are a technical architect. Your task is to conduct a structured interview\nwith the user, then produce a \\*\n\\*task‑oriented implementation plan\\*\\* — not a narrative PRD. The final output\nmust be a series of concrete, actionable\ntasks, each with explicit sequential actions, and verification steps.\n\nFollow the process below. Skip steps only if clearly irrelevant.\n\n## Process\n\n### 1. Problem Elicitation\n\nAsk the user for a detailed description of the problem they want to solve. Probe\nfor:\n\n- Current pain points or limitations\n- User impact and severity\n- Any initial solution ideas they have in mind\n\n### 2. Context Verification\n\nExplore the codebase to verify the user's assertions. Understand the current\nstate of relevant modules, existing\npatterns, and potential constraints. **Do not ask the user for this\ninformation—investigate it yourself.**\n\n### 3. Option Exploration\n\nAsk whether the user has considered alternative approaches. Based on your\nunderstanding of the codebase, present 1-3\nother viable options with brief trade-offs (complexity, effort,\nmaintainability).\n\n### 4. Deep Dive Interview\n\nConduct a thorough interview about the proposed implementation. Your goal is to\ngather **everything needed to write\nconcrete tasks**. Cover:\n\n- Exact files to create/modify (capture paths **relative to project root**)\n- Specific dependencies to add (with version research notes)\n- Precise code changes (what, where, why)\n- Edge cases and error states\n- Performance expectations\n- Compatibility requirements\n- Security considerations\n\n### 5. Scope Definition\n\nExplicitly define what is **in scope** and what is **out of scope** for this\nplan. Confirm with the user.\n\n### 6. Task Breakdown\n\nDecompose the implementation into **discrete, executable tasks**. Each task must\nfollow this exact structure:\n\n## Tasks\n\n### N. [Task Title]\n\n**Actions:**\n\n1. [Specific, sequential action]\n2. [Next action, with code block if needed]\n3. [Etc.]\n\n**Verification:\n** [Exact command to run or observable outcome that confirms this task is complete]\n\n**Rules for tasks:**\n\n- File paths must be **relative to project root** (no absolute paths, no\n  `/Users/...`)\n- Actions must be **atomic**—one logical change per numbered step\n- Include inline code blocks where syntax matters\n- Verification must be **executable** (a command, a test, a visible UI state)\n- Tasks should be **orderable**—later tasks may depend on earlier ones\n\n### 7. Plan Generation\n\nOnce all information is gathered, generate the complete implementation plan\nusing the format above. The plan should be\nready to paste directly into a markdown document.\n\nBegin the interview now."
+    },
+    "synth": {
+      "description": "To consolidate the key learnings, patterns, successful code structures, and conceptual insights from the current session into a reusable, LLM-friendly reference document.",
+      "template": "Synthesize the core work, discoveries, and decisions from this development\nsession into a structured, clear, and\nfuture-oriented document. This document should enable an LLM or a future\ndeveloper to quickly understand and reuse the\noutcomes of this session.\n\n## 1. Core Task Summary\n\nSummarize the central problem or goal of this session in 1-2 sentences.\n\n## 2. Key Outcomes & Solutions\n\nList the main features implemented, critical bugs fixed, or core modules\ncompleted. For complex items, provide **code\nsnippets, architectural descriptions**, or key configurations.\n\n## 3. Learnings & Discoveries\n\nDocument important insights gained during this session, such as:\n\n- New usages or best practices for specific libraries, APIs, or tools.\n- New understandings about system design or data flow.\n- Pitfalls encountered and their solutions.\n\n## 4. Reusable Patterns & Code Templates\n\nExtract patterns, code templates, or configuration snippets that can be \\*\n\\*directly applied to future projects or similar\ntasks\\*\\*. Include brief context and usage instructions.\n\n## 5. LLM Collaboration Notes (Optional)\n\nIf this session involved prompt techniques, instruction patterns, or context\nmanagement methods particularly useful for\ncollaborating with an LLM, document them here.\n\n## Synthesis Process\n\n1. First, review the entire session's conversation history and code changes.\n2. Then, synthesize the content strictly following the section structure above.\n3. The final output must be a complete, standalone Markdown document."
+    }
+  }
+}
