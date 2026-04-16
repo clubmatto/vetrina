@@ -37,7 +37,8 @@ created with the help of MiniMax
 ## Process
 
 1. First, review all changes with `git status` and `git diff`
-2. Write a concise one-liner following conventional commits
-3. List the key changes as bullet points
-4. Add the sign-off line with the current model
-5. Commit with `git commit -m "your message"`
+2. If there changes you did not make, ask if you should include them
+3. Write a concise one-liner following conventional commits
+4. List the key changes as bullet points
+5. Add the sign-off line with the current model
+6. Commit with `git commit -m "your message"`
