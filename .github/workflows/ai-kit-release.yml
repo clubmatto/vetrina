@@ -17,9 +17,6 @@ jobs:
     defaults:
       run:
         working-directory: ai-kit
-    environment:
-      name: production
-      url: https://www.npmjs.com/package/@clubmatto/ai-kit
     permissions:
       id-token: write
       contents: read
