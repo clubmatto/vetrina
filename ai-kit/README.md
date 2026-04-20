@@ -1,6 +1,6 @@
 # ai-kit
 
-[![CI](https://github.com/clubmatto/vetrina/actions/workflows/ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/ci.yml)
+[![CI](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml)
 [![npm version](https://img.shields.io/npm/v/@clubmatto/ai-kit)](https://www.npmjs.com/package/@clubmatto/ai-kit)
 [![License: MIT](https://img.shields.io/npm/l/@clubmatto%2Fai-kit)](/LICENSE)
 
