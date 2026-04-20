@@ -1,8 +1,8 @@
 # ai-kit
 
-[![CircleCI](https://circleci.com/gh/clubmatto/vetrina.svg?style=shield)](https://circleci.com/gh/clubmatto/vetrina)
+[![CI](https://github.com/clubmatto/vetrina/actions/workflows/ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@clubmatto/ai-kit)](https://www.npmjs.com/package/@clubmatto/ai-kit)
-[![License: MIT](https://img.shields.io/npm/l/@clubmatto/ai-kit)](/LICENSE)
+[![License: MIT](https://img.shields.io/npm/l/@clubmatto%2Fai-kit)](/LICENSE)
 
 The AI configuration CLI from Club Matto. Sync rules, skills, and commands to power up your AI coding workflow.
 
