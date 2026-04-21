@@ -521,7 +521,6 @@ testing = ["junit5-jupiter", "kotest-assertions", "mockk"]
 ### Dependency Rules
 
 - Use version catalogs for centralized dependency management
-- Pin exact versions – avoid floating dependencies like `1.+`
 - Use Spring Boot BOM for transitive dependency versions
 - Prefer platform-specific starters over generic dependencies
 

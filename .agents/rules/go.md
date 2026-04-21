@@ -258,33 +258,6 @@ func TestCalculate(t *testing.T) {
 }
 ```
 
-## 📦 Dependency Management
-
-### Module Rules
-
-- Always use Go modules (go.mod must be present)
-- Pin specific versions – no floating dependencies
-- Minimize external dependencies - stdlib first
-- Upgrade systematically – test thoroughly after upgrades
-
-### Version Guidelines
-
-```go
-# go.mod example
-module github.com/company/service-name
-
-go 1.21  # Minimum version
-
-require (
-    github.com/pkg/errors v0.9.1
-    github.com/stretchr/testify v1.8.4
-    go.uber.org/zap v1.26.0
-)
-
-# ❌ AVOID: Indirect dependencies for direct functionality
-# github.com/some-transitive-dependency v1.2.3
-```
-
 ## 🚫 Go-Specific Restrictions
 
 ### Never Do These:

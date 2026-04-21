@@ -154,8 +154,6 @@ fun getUserUpdates(userId: Long): Flow<UserUpdate> = callbackFlow {
 ### Good Practices
 
 - Use version catalogs (libs.versions.toml) for centralized dependency management
-- Prefer platform BOMs when available (e.g., Kotlin BOM, Spring Boot BOM)
-- Avoid dynamic versions (use exact versions: 1.9.0, not 1.9.+)
 
 ## 🚫 Kotlin-Specific Restrictions
 
