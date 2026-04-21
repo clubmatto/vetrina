@@ -60,6 +60,14 @@ npm link
 ai-kit sync
 ```
 
+## Release
+
+```bash
+# Create git tag with prefix (triggers automated release)
+git tag ai-kit/v<version>
+git push origin ai-kit/v<version>
+```
+
 ## License
 
 MIT — see [LICENSE](/LICENSE) for details.
