@@ -5,4 +5,5 @@ docs/
 scripts/
 src/**/*.test.ts
 src/**/*.test.ts.map
+src/**/*.ts
 tsconfig.json
