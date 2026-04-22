@@ -3,6 +3,7 @@ import { sync, SourceDirs } from "../src/cmd/sync";
 import { createTempDir, readFile, fileExists } from "./utils";
 import { testLog, findLogs, getLastLog } from "./output";
 import { join } from "path";
+import { mkdirSync, writeFileSync } from "fs";
 
 const fixturesDir = join(__dirname, "fixtures");
 const testSourceDirs: SourceDirs = {
@@ -11,6 +12,25 @@ const testSourceDirs: SourceDirs = {
   agents: join(fixturesDir, "agents"),
   commands: join(fixturesDir, "commands"),
 };
+
+const rootDir = join(__dirname, "..");
+const defaultSourceDirs: SourceDirs = {
+  rules: join(rootDir, "src", "rules"),
+  skills: join(rootDir, "src", "skills"),
+  agents: join(rootDir, "src", "agents"),
+  commands: join(rootDir, "src", "commands"),
+};
+
+function createProject(dir: string, files: Record<string, string>): void {
+  for (const [relativePath, content] of Object.entries(files)) {
+    const fullPath = join(dir, relativePath);
+    const dirPath = join(fullPath, "..");
+    if (!fileExists(dir, dirPath)) {
+      mkdirSync(dirPath, { recursive: true });
+    }
+    writeFileSync(fullPath, content);
+  }
+}
 
 describe("sync command", () => {
   let tempDir: string;
@@ -132,5 +152,182 @@ describe("sync command", () => {
     expect(successLogs.some(([, msg]) => msg.includes(".md"))).toBe(true);
     expect(successLogs.some(([, msg]) => msg === "opencode.json")).toBe(true);
     expect(successLogs.some(([, msg]) => msg === "AGENTS.md")).toBe(true);
+  });
+});
+
+describe("sync with language detection", () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = createTempDir();
+    testLog.clear();
+  });
+
+  it("installs only detected language rules for TypeScript project", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test-ts"}',
+      "index.ts": 'console.log("test");',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(false);
+    expect(fileExists(tempDir, ".agents/rules/kotlin.md")).toBe(false);
+    expect(fileExists(tempDir, ".agents/rules/plan-mode.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/unsure.md")).toBe(true);
+  });
+
+  it("installs only detected language rules for Go project", async () => {
+    createProject(tempDir, {
+      "go.mod": "module test",
+      "main.go": "package main",
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(false);
+    expect(fileExists(tempDir, ".agents/rules/kotlin.md")).toBe(false);
+    expect(fileExists(tempDir, ".agents/rules/plan-mode.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/unsure.md")).toBe(true);
+  });
+
+  it("installs all language rules with --all-rules flag", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test"}',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true, allRules: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/kotlin.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/plan-mode.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/unsure.md")).toBe(true);
+  });
+
+  it("installs specified languages with --languages flag", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test"}',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true, languages: ["go", "kotlin"] },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/kotlin.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(false);
+  });
+
+  it("uses single-repo AGENTS.md for single language project", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test-ts"}',
+      "index.ts": 'console.log("test");',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).toContain("typescript");
+    expect(agentsMd).toContain("typescript.md");
+    expect(agentsMd).not.toContain("monorepo");
+  });
+
+  it("uses monorepo AGENTS.md for multi-language project", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test"}',
+      "go.mod": "module test",
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).toContain("monorepo");
+  });
+
+  it("uses monorepo AGENTS.md with --monorepo flag", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test-ts"}',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true, monorepo: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).toContain("monorepo");
+  });
+
+  it("uses single-repo AGENTS.md with --single-repo flag", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test-ts"}',
+      "go.mod": "module test",
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true, singleRepo: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).toContain("typescript");
+    expect(agentsMd).not.toContain("monorepo");
+  });
+
+  it("falls back to all rules for empty directory", async () => {
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/kotlin.md")).toBe(true);
   });
 });

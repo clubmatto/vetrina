@@ -19,6 +19,23 @@ program
 program
   .command("sync")
   .description("Initialize or update AI configuration")
-  .action(() => sync(process.cwd(), version, program.opts()));
+  .option("--all-rules", "Install all language rules regardless of detection")
+  .option("--monorepo", "Force treat project as monorepo")
+  .option("--single-repo", "Force treat project as single repository")
+  .option(
+    "--languages <languages>",
+    "Specify languages to install rules for (comma-separated)",
+  )
+  .action((cmdOptions) => {
+    const options = { ...program.opts(), ...cmdOptions };
+
+    if (options.languages && typeof options.languages === "string") {
+      options.languages = options.languages
+        .split(",")
+        .map((lang: string) => lang.trim());
+    }
+
+    sync(process.cwd(), version, options);
+  });
 
 program.parse();

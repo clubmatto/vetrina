@@ -1,1 +1,1 @@
-declare module 'gradient-string';
+declare module "gradient-string";

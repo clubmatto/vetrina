@@ -26,7 +26,7 @@
     "prettier:check": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint . && knip",
-    "ci": "npm run typecheck && npm run lint && npm run test && npm run test:integration"
+    "ci": "npm run prettier:check && npm run typecheck && npm run lint && npm run test && npm run test:integration"
   },
   "dependencies": {
     "commander": "^14.0.3",

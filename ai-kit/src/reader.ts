@@ -99,14 +99,27 @@ export function readConfigs(agentsDir: string): SyncItem[] {
   }
 }
 
-export function readAgents(agentsDir: string): SyncItem | null {
-  const sourcePath = join(agentsDir, "monorepo.md");
+export function readAgents(
+  agentsDir: string,
+  isMonorepo: boolean = true,
+  primaryLanguage?: string,
+): SyncItem | null {
+  const templateName = isMonorepo ? "monorepo.md" : "single-repo.md";
+  const sourcePath = join(agentsDir, templateName);
 
   try {
+    let content = readFileSync(sourcePath, "utf-8");
+
+    if (!isMonorepo && primaryLanguage) {
+      content = content
+        .replace(/{{LANGUAGE}}/g, primaryLanguage)
+        .replace(/{{LANGUAGE_RULE_FILE}}/g, `${primaryLanguage}.md`);
+    }
+
     return {
       type: "config",
       name: "AGENTS.md",
-      content: readFileSync(sourcePath, "utf-8"),
+      content,
     };
   } catch {
     return null;

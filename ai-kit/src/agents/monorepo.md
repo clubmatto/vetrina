@@ -1,6 +1,6 @@
 # Agents.md
 
-This is a monorepo containing apps in many languages.
+This is a monorepo containing projects in many languages.
 
 You MUST follow the specific rules for each language. **ALWAYS** start from
 checking out the closest README.md.

@@ -11,6 +11,13 @@ import { readManifest, writeManifest } from "../manifest";
 import { processTemplate } from "../template";
 import { log, SyncStats } from "../output";
 import { Logger } from "../logger";
+import {
+  detectLanguages,
+  getRuleFilesForLanguages,
+  getAllRuleFiles,
+  isLanguageSpecificRule,
+} from "../detection/detect";
+import { detectors } from "../detection/language-detectors";
 
 const rootDir = join(__dirname, "..", "..", "..");
 
@@ -30,6 +37,10 @@ const defaultSourceDirs: SourceDirs = {
 
 interface SyncOptions {
   skipOpencode?: boolean;
+  allRules?: boolean;
+  monorepo?: boolean;
+  singleRepo?: boolean;
+  languages?: string[];
 }
 
 export async function sync(
@@ -80,9 +91,52 @@ async function doSync(
 
   const contentFiles = readContent(sourceDirs.rules, sourceDirs.skills);
   const rootFiles = readConfigs(sourceDirs.agents);
-  const agentsFile = readAgents(sourceDirs.agents);
 
-  const rules = contentFiles.filter((f) => f.type === "rules");
+  // Detect languages and determine project type
+  const detectionResult = detectLanguages(cwd);
+  let languages = detectionResult.languages;
+  let isMonorepo = detectionResult.isMonorepo;
+  const primaryLanguage = detectionResult.primaryLanguage;
+
+  // Apply overrides from options
+  if (options.allRules) {
+    languages = detectors.map((d) => d.name);
+    isMonorepo = true;
+  } else if (options.monorepo) {
+    isMonorepo = true;
+  } else if (options.singleRepo) {
+    isMonorepo = false;
+  }
+
+  if (options.languages && options.languages.length > 0) {
+    languages = options.languages;
+    isMonorepo = languages.length > 1;
+  }
+
+  // If no languages detected and no overrides, fall back to all rules (monorepo)
+  if (languages.length === 0) {
+    languages = detectors.map((d) => d.name);
+    isMonorepo = true;
+  }
+
+  const agentsFile = readAgents(sourceDirs.agents, isMonorepo, primaryLanguage);
+
+  // Filter rules based on detected languages
+  const ruleFilesToInclude = options.allRules
+    ? getAllRuleFiles()
+    : getRuleFilesForLanguages(languages);
+
+  const rules = contentFiles.filter((f) => {
+    if (f.type !== "rules") return false;
+
+    // Always include non-language-specific rules (plan-mode.md, unsure.md, etc.)
+    if (!isLanguageSpecificRule(f.name)) {
+      return true;
+    }
+
+    // For language-specific rules, check if they're in the include list
+    return ruleFilesToInclude.includes(f.name);
+  });
 
   const stats: SyncStats = { rules: 0, skills: 0, commands: 0 };
 
