@@ -82,6 +82,9 @@ ai-kit sync
 ## Release
 
 ```bash
+# Bump version in package.json first
+git add package.json && git commit -m "release: bump version to <version>"
+
 # Create git tag with prefix (triggers automated release)
 git tag ai-kit/v<version>
 git push origin ai-kit/v<version>
