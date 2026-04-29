@@ -258,7 +258,10 @@ describe("sync with language detection", () => {
     );
 
     const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).not.toContain("{{LANGUAGE}}");
+    expect(agentsMd).not.toContain("{{LANGUAGE_RULE_FILE}}");
     expect(agentsMd).toContain("typescript");
+    expect(agentsMd).toMatch(/uses typescript\. Follow/);
     expect(agentsMd).toContain("typescript.md");
     expect(agentsMd).not.toContain("monorepo");
   });

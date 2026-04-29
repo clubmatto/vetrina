@@ -149,6 +149,31 @@ describe("readAgents", () => {
     const file = readAgents(rulesDir);
     expect(file).toBeNull();
   });
+
+  it("replaces {{LANGUAGE}} and {{LANGUAGE_RULE_FILE}} for single-repo", () => {
+    const file = readAgents(agentsDir, false, "typescript");
+
+    expect(file).not.toBeNull();
+    expect(file?.content).not.toContain("{{LANGUAGE}}");
+    expect(file?.content).not.toContain("{{LANGUAGE_RULE_FILE}}");
+    expect(file?.content).toContain("typescript");
+    expect(file?.content).toMatch(/uses typescript\. Follow/);
+    expect(file?.content).toContain("typescript.md");
+  });
+
+  it("does not replace language placeholders for monorepo", () => {
+    const file = readAgents(agentsDir, true, "typescript");
+
+    expect(file).not.toBeNull();
+    expect(file?.content).not.toContain("{{LANGUAGE}}");
+  });
+
+  it("handles missing primaryLanguage gracefully for single-repo", () => {
+    const file = readAgents(agentsDir, false);
+
+    expect(file).not.toBeNull();
+    expect(file?.content).toContain("{{LANGUAGE}}");
+  });
 });
 
 describe("processTemplate", () => {
