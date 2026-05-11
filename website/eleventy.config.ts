@@ -4,7 +4,7 @@ import { formatDate } from "./src/_filters/date.js";
 import { asset } from "./src/_filters/asset.js";
 import { posts, postsByYear } from "./src/_collections/posts.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
-import { svgShortcode } from "./src/_shortcodes/svg.js";
+import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
 import { buildAll, buildCss, buildJs, hasChanged } from "./scripts/build.js";
 
 export default function (eleventyConfig: EleventyConfig) {
@@ -32,6 +32,7 @@ export default function (eleventyConfig: EleventyConfig) {
 
   eleventyConfig.addShortcode("lucide", lucideShortcode);
   eleventyConfig.addFilter("lucide", lucideShortcode);
+  eleventyConfig.addShortcode("asset", assetShortcode);
   eleventyConfig.addShortcode("svg", svgShortcode);
 
   eleventyConfig.addLiquidFilter("safe", (value: unknown) => value);
