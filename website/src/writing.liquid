@@ -1,0 +1,28 @@
+---
+layout: page.liquid
+title: Writing
+permalink: /writing/
+description: Read writings from Club Matto - insights on software craftsmanship and creative development.
+display_title: Writing
+---
+{% if collections.posts.length %}
+  <div class="columns">
+    <div class="column">
+      {% for item in collections.postsByYear %}
+        <h2 class="year">{{ item.year }}</h2>
+        <ul class="posts">
+          {% for post in item.posts %}
+            <li class="post">
+              <a href="{{ post.postUrl }}">
+                <span>{{ post.title }}</span>
+                <span class="date">{{ post.formattedDate }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <p>No posts yet. Check back soon!</p>
+{% endif %}

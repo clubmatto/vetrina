@@ -1,0 +1,20 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:title" content="{% if title %}{{ title }} - Club Matto{% else %}Club Matto{% endif %}">
+  <meta
+    property="og:description"
+    content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}"
+  >
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Club Matto">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@clubmatto">
+  <title>
+    {% if title %}{{ title }} - {% endif %}
+    Club Matto
+  </title>
+  <link rel="stylesheet" href="{{ "css/main.css" | asset }}">
+</head>

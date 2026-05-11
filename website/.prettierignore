@@ -1,0 +1,8 @@
+node_modules
+_site
+dist
+*.lock
+*.xml
+src/feed.xml.liquid
+src/sitemap.xml.liquid
+src/robots.txt.liquid

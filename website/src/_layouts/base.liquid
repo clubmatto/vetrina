@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+  {% include 'head' %}
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    {% include 'navigation' %}
+    <main id="main-content">
+      {{ content | safe }}
+    </main>
+    {% include 'footer' %}
+    <script src="{{ "js/main.js" | asset }}"></script>
+  </body>
+</html>

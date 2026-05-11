@@ -1,0 +1,31 @@
+{
+  "name": "website",
+  "version": "0.0.1",
+  "main": "src/assets/js/main.js",
+  "scripts": {
+    "clean": "rm -rf _site",
+    "build": "npm run clean && NODE_ENV=production tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts",
+    "dev": "npm run clean && tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck && prettier --check .",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write ."
+  },
+  "type": "module",
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.2",
+    "@11ty/eleventy-img": "^6.0.4",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^25.2.3",
+    "@types/postcss-import": "^14.0.3",
+    "esbuild": "^0.27.3",
+    "lucide-static": "^0.563.0",
+    "postcss": "^8.5.6",
+    "postcss-import": "^16.1.1",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

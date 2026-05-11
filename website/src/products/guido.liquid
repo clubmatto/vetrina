@@ -1,0 +1,89 @@
+---
+layout: base.liquid
+title: Guido
+permalink: /products/guido/
+description: Your race engineer, on your phone. Turn any device into your sim racing co-driver — real-time telemetry from Gran Turismo 7, built with Kotlin Multiplatform.
+---
+<section class="product-hero">
+  <div class="product-hero-content">
+    <div class="product-hero-icon">{{ 'gauge' | lucide }}</div>
+    <h1 class="product-hero-title">Guido</h1>
+    <p class="product-hero-tagline">Your race engineer, on your phone</p>
+    <div class="product-hero-actions">
+      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">What It Does</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'gauge' | lucide }}</div>
+      <h3 class="product-feature-title">Live Telemetry</h3>
+      <p class="product-feature-desc">
+        RPM rev bar, gear indicator, speed, tire temperatures, fuel level — all streamed in real time from Gran Turismo
+        7 over a Salsa20-encrypted UDP connection.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'bell' | lucide }}</div>
+      <h3 class="product-feature-title">Smart Alerts</h3>
+      <p class="product-feature-desc">
+        Downshift suggestions when you're approaching a corner too hot, rev limit warnings, and assist status indicators
+        — TCS, ABS, ASM at a glance.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'smartphone' | lucide }}</div>
+      <h3 class="product-feature-title">Cross-Platform</h3>
+      <p class="product-feature-desc">
+        Built with Kotlin Multiplatform and Compose. One codebase powers Android, iOS, and Desktop — so you can run your
+        dashboard on whatever screen you have.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-how-it-works" id="how-it-works">
+  <h2 class="product-section-title">How It Works</h2>
+  <div class="product-steps">
+    <div class="product-step">
+      <div class="product-step-number">1</div>
+      <div class="product-step-icon">{{ 'radar' | lucide }}</div>
+      <h3 class="product-step-title">Discover</h3>
+      <p class="product-step-desc">
+        Launch Guido and it auto-discovers your PS5 on the local network. No IP configuration needed.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">2</div>
+      <div class="product-step-icon">{{ 'plug' | lucide }}</div>
+      <h3 class="product-step-title">Connect</h3>
+      <p class="product-step-desc">
+        Guido connects to GT7's telemetry stream on port 33739 and decrypts the Salsa20-encrypted UDP packets in real
+        time.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">3</div>
+      <div class="product-step-icon">{{ 'flag' | lucide }}</div>
+      <h3 class="product-step-title">Race</h3>
+      <p class="product-step-desc">
+        Full-screen landscape dashboard with a 16-LED rev bar, tire temp gradients, and gear indicator — designed for
+        the track, not the pit lane.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="product-cta">
+  <div class="product-cta-content">
+    <h2 class="product-cta-title">Turn any screen into your race engineer</h2>
+    <p class="product-cta-desc">Real-time GT7 telemetry on Android, iOS, and Desktop.</p>
+    <a href="#" class="btn btn-primary">Get Started</a>
+  </div>
+</section>

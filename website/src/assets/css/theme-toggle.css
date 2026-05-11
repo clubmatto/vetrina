@@ -1,0 +1,57 @@
+.theme-option .lucide-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: middle;
+  margin-inline-end: 0.5rem;
+}
+
+.theme-option[data-option="light"] .lucide-icon {
+  color: var(--gradient-3);
+}
+
+.theme-option[data-option="dark"] .lucide-icon {
+  color: var(--gradient-5);
+}
+
+.theme-toggle-btn {
+  color: var(--text);
+  border: none;
+  background: transparent;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  opacity: 1;
+}
+
+.theme-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .theme-icon.theme-icon-dark {
+    display: flex;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .theme-icon.theme-icon-light {
+    display: flex;
+  }
+}
+
+.theme-toggle-btn .lucide-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}

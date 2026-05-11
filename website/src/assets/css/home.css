@@ -1,0 +1,201 @@
+.prose {
+  text-align: center;
+  margin-inline: auto;
+  display: block;
+  max-width: 800px;
+}
+
+.hero-title {
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(5rem, 12vw, 9rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+  padding: 4rem 2rem 6rem;
+  box-sizing: border-box;
+}
+
+.hero-tagline {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  font-family: var(--font-sans), sans-serif;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
+  color: var(--text-inverse);
+  box-shadow: 0 4px 20px var(--shadow-color-dense);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px var(--shadow-color-denser);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 2px solid var(--gradient-4);
+}
+
+.btn-secondary:hover {
+  background: var(--gradient-4);
+  color: var(--text-inverse);
+}
+
+.scroll-divider {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-divider:hover {
+  opacity: 0.6;
+}
+
+.scroll-arrow {
+  color: var(--gradient-4);
+  opacity: 0.8;
+  animation: bounceArrow 2s ease-in-out infinite;
+}
+
+.scroll-arrow svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 1.5;
+  transition: transform 0.3s ease;
+}
+
+.scroll-arrow.scrolled-down svg {
+  transform: rotate(180deg);
+}
+
+@keyframes bounceArrow {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+.who-we-are {
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 100vh;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-4-alpha-5) 0%,
+    var(--gradient-5-alpha-5) 50%,
+    var(--gradient-1-alpha-3) 100%
+  );
+}
+
+.who-we-are-content {
+  max-width: 900px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: revealUp 1s ease-out 0.5s forwards;
+}
+
+.who-we-are-text {
+  font-family:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    "DejaVu Sans Mono", monospace;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.9;
+  opacity: 0.95;
+  color: var(--text);
+  font-style: italic;
+  margin: 0;
+}
+
+.quote-wrapper {
+  position: relative;
+  padding: 3rem 3rem 2.5rem;
+}
+
+.quote-mark {
+  color: var(--gradient-4);
+  opacity: 0.25;
+  position: absolute;
+  left: -1rem;
+  top: -1rem;
+  line-height: 1;
+}
+
+.quote-mark svg {
+  width: 64px;
+  height: 64px;
+}
+
+.quote-attribution {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: 2rem;
+  font-style: normal;
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

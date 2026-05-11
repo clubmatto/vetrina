@@ -1,0 +1,90 @@
+---
+layout: base.liquid
+title: Kube Shield
+permalink: /products/kube-shield/
+description: Turnkey vulnerability scanning for your Kubernetes clusters. Automatically detect container images, scan for CVEs, and explore results through an intuitive dashboard.
+---
+<section class="product-hero">
+  <div class="product-hero-content">
+    <div class="product-hero-icon">{{ 'shield' | lucide }}</div>
+    <h1 class="product-hero-title">Kube Shield</h1>
+    <p class="product-hero-tagline">Turnkey vulnerability scanning for your Kubernetes clusters</p>
+    <div class="product-hero-actions">
+      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">What It Does</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'scan-search' | lucide }}</div>
+      <h3 class="product-feature-title">Auto-Discover</h3>
+      <p class="product-feature-desc">
+        Finds container images across your entire cluster — Pods, Deployments, StatefulSets, DaemonSets, ReplicaSets,
+        CronJobs, and more. No manual config needed.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'shield-alert' | lucide }}</div>
+      <h3 class="product-feature-title">Scan with Grype</h3>
+      <p class="product-feature-desc">
+        Powered by Grype under the hood. Identifies CVEs across your images, flags severity levels from Critical to
+        Negligible, and shows available fixes at a glance.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'layout-dashboard' | lucide }}</div>
+      <h3 class="product-feature-title">Intuitive Dashboard</h3>
+      <p class="product-feature-desc">
+        Paginated findings table with severity badges, expandable descriptions, and instant search. Built with HTMX and
+        Alpine.js for a snappy, modern UI.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-how-it-works" id="how-it-works">
+  <h2 class="product-section-title">How It Works</h2>
+  <div class="product-steps">
+    <div class="product-step">
+      <div class="product-step-number">1</div>
+      <div class="product-step-icon">{{ 'plug' | lucide }}</div>
+      <h3 class="product-step-title">Connect</h3>
+      <p class="product-step-desc">
+        Point Kube Shield at your cluster via kubeconfig or in-cluster config. AWS ECR credentials are detected
+        automatically.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">2</div>
+      <div class="product-step-icon">{{ 'radar' | lucide }}</div>
+      <h3 class="product-step-title">Scan</h3>
+      <p class="product-step-desc">
+        Images are discovered across all resource types and scanned for vulnerabilities. Results stream to the dashboard
+        in real time.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">3</div>
+      <div class="product-step-icon">{{ 'wrench' | lucide }}</div>
+      <h3 class="product-step-title">Remediate</h3>
+      <p class="product-step-desc">
+        Review findings by severity, see which images are affected, and check available fixes. Prioritize what matters,
+        fix with confidence.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="product-cta">
+  <div class="product-cta-content">
+    <h2 class="product-cta-title">Secure your clusters today</h2>
+    <p class="product-cta-desc">One command. Full visibility. Zero configuration headaches.</p>
+    <a href="#" class="btn btn-primary">Get Started</a>
+  </div>
+</section>

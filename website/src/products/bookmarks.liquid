@@ -1,0 +1,90 @@
+---
+layout: base.liquid
+title: Bookmarks
+permalink: /products/bookmarks/
+description: Save anything, find everything. A dead-simple bookmark manager with nested tags and instant search — no link you ever saved will ever get forgotten again.
+---
+<section class="product-hero">
+  <div class="product-hero-content">
+    <div class="product-hero-icon">{{ 'bookmark' | lucide }}</div>
+    <h1 class="product-hero-title">Bookmarks</h1>
+    <p class="product-hero-tagline">Save anything, find everything</p>
+    <div class="product-hero-actions">
+      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">What It Does</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'tags' | lucide }}</div>
+      <h3 class="product-feature-title">Nested Tags</h3>
+      <p class="product-feature-desc">
+        Organize with hierarchical tags using slash separators — like
+        <code>programming/go/concurrency</code>. The sidebar renders a recursive tree so you can browse your collection
+        naturally.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'search' | lucide }}</div>
+      <h3 class="product-feature-title">Instant Search</h3>
+      <p class="product-feature-desc">
+        Type-as-you-go search with 100ms debounce. Matches are highlighted across title, URL, and tags. No link you ever
+        saved will ever get forgotten again.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'folder-tree' | lucide }}</div>
+      <h3 class="product-feature-title">Import &amp; Export</h3>
+      <p class="product-feature-desc">
+        CSV import and export so you never lock in your data. Plus a JSON API and browser extension for saving bookmarks
+        from anywhere.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-how-it-works" id="how-it-works">
+  <h2 class="product-section-title">How It Works</h2>
+  <div class="product-steps">
+    <div class="product-step">
+      <div class="product-step-number">1</div>
+      <div class="product-step-icon">{{ 'bookmark' | lucide }}</div>
+      <h3 class="product-step-title">Save</h3>
+      <p class="product-step-desc">
+        Add bookmarks via the web UI, the JSON API, or the browser extension. Title and URL are all you need to start.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">2</div>
+      <div class="product-step-icon">{{ 'folder-tree' | lucide }}</div>
+      <h3 class="product-step-title">Organize</h3>
+      <p class="product-step-desc">
+        Tag with nested hierarchies. Filter by tag and get all child tags included. Mark as read or unread to track what
+        you've consumed.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">3</div>
+      <div class="product-step-icon">{{ 'search' | lucide }}</div>
+      <h3 class="product-step-title">Find</h3>
+      <p class="product-step-desc">
+        Start typing and results appear instantly. Search across title, URL, and tags. Filter by unread, untagged, or
+        any tag in your tree.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="product-cta">
+  <div class="product-cta-content">
+    <h2 class="product-cta-title">Never lose a link again</h2>
+    <p class="product-cta-desc">Dead-simple bookmarking with nested tags and instant search.</p>
+    <a href="#" class="btn btn-primary">Get Started</a>
+  </div>
+</section>

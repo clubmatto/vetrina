@@ -1,0 +1,9 @@
+---
+layout: base.liquid
+---
+<div class="page-content">
+  {% if display_title %}
+    <h1>{{ display_title }}</h1>
+  {% endif %}
+  {{ content | safe }}
+</div>

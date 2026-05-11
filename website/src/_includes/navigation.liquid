@@ -1,0 +1,47 @@
+<nav class="main-nav" aria-label="Main navigation">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="brand-link">
+        {% svg "header-logo.svg", "brand-logo" %}
+        <span class="brand-name">Club Matto</span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a
+        href="/"
+        class="{% if page.url == "/" %}active{% endif %}"
+        {% if page.url == '/' %}
+          aria-current="page"
+        {% endif %}
+        >Home</a
+      >
+      <a
+        href="/writing/"
+        class="{% if page.url == "/writing/" %}active{% endif %}"
+        {% if page.url == '/writing/' %}
+          aria-current="page"
+        {% endif %}
+        >Writing</a
+      >
+      <a
+        href="/products/"
+        class="{% if page.url contains '/products/' %}active{% endif %}"
+        {% if page.url contains '/products/' %}
+          aria-current="page"
+        {% endif %}
+        >Products</a
+      >
+      <a
+        href="/contact/"
+        class="{% if page.url == "/contact/" %}active{% endif %}"
+        {% if page.url == '/contact/' %}
+          aria-current="page"
+        {% endif %}
+        >Contact Us</a
+      >
+    </div>
+    <div class="nav-actions">
+      {% include 'theme-toggle' %}
+    </div>
+  </div>
+</nav>

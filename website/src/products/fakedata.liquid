@@ -1,0 +1,89 @@
+---
+layout: base.liquid
+title: FakeData
+permalink: /products/fakedata/
+description: Zero-config test data for your stack. Generate realistic, output format-ready datasets on demand with 40+ built-in generators.
+---
+<section class="product-hero">
+  <div class="product-hero-content">
+    <div class="product-hero-icon">{{ 'layers' | lucide }}</div>
+    <h1 class="product-hero-title">FakeData</h1>
+    <p class="product-hero-tagline">Zero-config test data for your stack</p>
+    <div class="product-hero-actions">
+      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">What It Does</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'layers' | lucide }}</div>
+      <h3 class="product-feature-title">40+ Generators</h3>
+      <p class="product-feature-desc">
+        Email, country, date, domain, emoji, product names, sentences, and more. Constraint support on integers and
+        enums. Custom values via file generator.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'file-code' | lucide }}</div>
+      <h3 class="product-feature-title">Any Output Format</h3>
+      <p class="product-feature-desc">
+        Column-aligned, SQL INSERT, NDJSON, or full Go templates with helpers like Loop, Odd, and Even. Name your fields
+        with <code>column=generator</code> syntax.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'radio' | lucide }}</div>
+      <h3 class="product-feature-title">Stream Mode</h3>
+      <p class="product-feature-desc">
+        Continuous row generation for pipelines and load testing. Pipe to files, databases, queues, or APIs —
+        <code>fakedata --stream email</code> and never stop.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-how-it-works" id="how-it-works">
+  <h2 class="product-section-title">How It Works</h2>
+  <div class="product-steps">
+    <div class="product-step">
+      <div class="product-step-number">1</div>
+      <div class="product-step-icon">{{ 'terminal' | lucide }}</div>
+      <h3 class="product-step-title">Define</h3>
+      <p class="product-step-desc">
+        Pick your generators: <code>fakedata email country</code>. Add constraints like <code>int:1,100</code> or custom
+        enums.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">2</div>
+      <div class="product-step-icon">{{ 'file-code' | lucide }}</div>
+      <h3 class="product-step-title">Format</h3>
+      <p class="product-step-desc">
+        Choose your output: default columns, <code>--format=sql</code>, <code>--format=ndjson</code>, or pass a Go
+        template for full control.
+      </p>
+    </div>
+    <div class="product-step-connector"></div>
+    <div class="product-step">
+      <div class="product-step-number">3</div>
+      <div class="product-step-icon">{{ 'arrow-right' | lucide }}</div>
+      <h3 class="product-step-title">Pipe</h3>
+      <p class="product-step-desc">
+        Output to stdout, stream continuously, or pipe directly into your stack — databases, queues, APIs, anywhere.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="product-cta">
+  <div class="product-cta-content">
+    <h2 class="product-cta-title">Test data on demand</h2>
+    <p class="product-cta-desc">40+ generators. Any format. Zero configuration.</p>
+    <a href="#" class="btn btn-primary">Get Started</a>
+  </div>
+</section>

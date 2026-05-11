@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+.page-content {
+  padding: 5.5rem 1rem 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-content h1 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  margin-top: 0;
+  border-bottom: 1px solid;
+  margin-inline-start: -1rem;
+  width: calc(100% + 2rem);
+  padding-inline: 1rem;
+  padding-bottom: 1rem;
+  border-image: repeating-linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 8px,
+      color-mix(in srgb, var(--text), transparent 85%) 8px,
+      color-mix(in srgb, var(--text), transparent 85%) 28px
+    )
+    1;
+}
+
+.page-content h1:not(:first-child) {
+  margin-top: 1em;
+}
+
+.page-content h2 {
+  font-size: 1.75em;
+  margin-bottom: 0.5714em;
+}
+
+.page-content h2:not(:first-child) {
+  margin-top: 1.1428em;
+}
+
+.page-content h3 {
+  font-size: 1.5em;
+  margin-bottom: 0.6666em;
+}
+
+.page-content h3:not(:first-child) {
+  margin-top: 1.3333em;
+}
+
+.page-content h4 {
+  font-size: 1.25em;
+  margin-bottom: 0.8em;
+}
+
+.page-content h5 {
+  font-size: 1.125em;
+  margin-bottom: 0.8888em;
+}
+
+.page-content h6 {
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+.page-content p:not(:last-child),
+.page-content dl:not(:last-child),
+.page-content ol:not(:last-child),
+.page-content ul:not(:last-child),
+.page-content blockquote:not(:last-child),
+.page-content pre:not(:last-child),
+.page-content table:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.page-content h4,
+.page-content h5,
+.page-content h6 {
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.page-content blockquote {
+  background-color: var(--theme-toggle-hover);
+  border-left: 8px solid var(--theme-toggle-bg);
+  border-radius: 4px;
+  padding: 1rem;
+  font-style: italic;
+}
+
+.page-content ul {
+  list-style: disc outside;
+  margin-inline-start: 2em;
+  margin-top: 1em;
+}
+
+.page-content ul li ul {
+  list-style: circle outside;
+  margin-inline-start: 1em;
+  margin-top: 0;
+}
+
+.page-content pre {
+  overflow-x: auto;
+  padding: 1.25em 1.5em;
+  white-space: pre;
+  word-wrap: normal;
+  background-color: var(--theme-toggle-hover);
+  border-radius: 4px;
+}
+
+.page-content p code {
+  background-color: var(--theme-toggle-bg);
+  color: var(--text);
+  font-weight: 700;
+  padding: 0.25em;
+  border-radius: 4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9em;
+}
+
+.year {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+ul.posts {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+ul.posts li {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--theme-toggle-bg);
+}
+
+ul.posts li:last-child {
+  border-bottom: none;
+}
+
+ul.posts li a {
+  text-decoration: none;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ul.posts li a:hover {
+  text-decoration: none;
+}
+
+ul.posts li a .date {
+  color: var(--text);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: auto;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+.columns {
+  display: flex;
+}
+
+.columns .column {
+  display: block;
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-shrink: 1;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+}

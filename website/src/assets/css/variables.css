@@ -1,0 +1,82 @@
+:root {
+  /* Layout */
+  --max-width: 1242px;
+
+  /* Background Colors */
+  --bg: light-dark(#f8f8f8, #2e3440);
+  --card-bg: light-dark(#f9f9f9, #3a404d);
+
+  /* Text Colors */
+  --text: light-dark(#1a1a1a, #eceff4);
+  --text-inverse: #ffffff;
+  --product-text: light-dark(#aaa, #6c757d);
+
+  /* Gradient Colors */
+  --gradient-1: light-dark(#ff006e, #bf616a);
+  --gradient-2: light-dark(#fb5607, #d08770);
+  --gradient-3: light-dark(#ffbe0b, #ebcb8b);
+  --gradient-4: light-dark(#8338ec, #b48ead);
+  --gradient-5: light-dark(#3a86ff, #5e81ac);
+
+  /* Theme Toggle Colors */
+  --theme-toggle-bg: light-dark(#ffffff44, #ffffff22);
+  --theme-toggle-hover: light-dark(#0000001a, #ffffff44);
+
+  /* Border Colors */
+  --border-color: light-dark(#d0d0d0, #ffffff22);
+
+  /* Shadow Colors */
+  --shadow-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+  --shadow-color-dense: light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+  --shadow-color-denser: light-dark(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+  --focus-ring-color: light-dark(
+    rgba(255, 0, 110, 0.1),
+    rgba(191, 97, 106, 0.15)
+  );
+  --focus-ring-color-strong: light-dark(
+    rgba(255, 0, 110, 0.3),
+    rgba(191, 97, 106, 0.35)
+  );
+
+  /* Special Gradient Colors (Alpha versions) */
+  --gradient-4-alpha-5: light-dark(
+    rgba(131, 56, 236, 0.05),
+    rgba(180, 142, 173, 0.05)
+  );
+  --gradient-5-alpha-5: light-dark(
+    rgba(58, 134, 255, 0.05),
+    rgba(94, 129, 172, 0.05)
+  );
+  --gradient-1-alpha-3: light-dark(
+    rgba(255, 0, 110, 0.03),
+    rgba(191, 97, 106, 0.03)
+  );
+
+  /* Product Colors */
+  --product-bg: light-dark(#e0e0e0, #4a5263);
+  --product-title-bg: light-dark(#eee, #4a5263);
+
+  /* Fonts */
+  --font-mono:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    "DejaVu Sans Mono", monospace;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  color-scheme: light dark;
+
+  --bg-pattern:
+    radial-gradient(ellipse at 30% 40%, var(--gradient-1) 0%, transparent 70%),
+    radial-gradient(ellipse at 70% 30%, var(--gradient-3) 0%, transparent 75%),
+    radial-gradient(ellipse at 50% 70%, var(--gradient-5) 0%, transparent 80%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 60px,
+      var(--gradient-4) 60px,
+      var(--gradient-4) 62px,
+      transparent 62px,
+      transparent 150px
+    );
+  --bg-pattern-opacity: 0.12;
+}
