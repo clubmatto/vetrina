@@ -87,7 +87,7 @@ git add ai-kit/package.json
 git commit -m "release: bump version to <version>"
 
 # Create git tag and push both (tag triggers automated release)
-git tag ai-kit/v<version>
+git tag -a ai-kit/v<version> -m "v<version>"
 git push origin main --follow-tags
 ```
 
