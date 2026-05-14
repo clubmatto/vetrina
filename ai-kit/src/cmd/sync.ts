@@ -1,15 +1,14 @@
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync, rmSync } from "fs";
 import { dirname, join } from "path";
 import {
   readAgents,
   getCommandConfig,
   readContent,
   readConfigs,
-  SyncItem,
 } from "../reader";
-import { readManifest, writeManifest } from "../manifest";
+import { readManifest, writeManifest, hashContent } from "../manifest";
 import { processTemplate } from "../template";
-import { log, SyncStats } from "../output";
+import { log, SyncChanges } from "../output";
 import { Logger } from "../logger";
 import {
   detectLanguages,
@@ -18,6 +17,14 @@ import {
   isLanguageSpecificRule,
 } from "../detection/detect";
 import { detectors } from "../detection/language-detectors";
+import {
+  DesiredFile,
+  FileAction,
+  FileCategory,
+  diffDesired,
+  mergeOpencodeJson,
+  emptySyncChanges,
+} from "../plan";
 
 const rootDir = join(__dirname, "..", "..", "..");
 
@@ -50,55 +57,43 @@ export async function sync(
   logger: Logger = log,
   sourceDirs: SourceDirs = defaultSourceDirs,
 ): Promise<void> {
-  const manifest = readManifest(cwd);
   logger.logo(version);
-
-  if (manifest && manifest.version === version) {
-    logger.success(`Already at latest version (${version})`);
-    return;
-  }
-
   logger.welcome();
-  const counts = await doSync(cwd, version, options, logger, sourceDirs);
-  logger.summary(counts);
-}
 
-function writeItem(aiDir: string, file: SyncItem): void {
-  const targetDir = join(aiDir, file.type);
-  if (!existsSync(targetDir)) {
-    mkdirSync(targetDir, { recursive: true });
-  }
-  const targetPath = join(targetDir, file.name);
-  const parentDir = dirname(targetPath);
-  if (!existsSync(parentDir)) {
-    mkdirSync(parentDir, { recursive: true });
-  }
-  writeFileSync(targetPath, processTemplate(file.content));
-}
-
-async function doSync(
-  cwd: string,
-  version: string,
-  options: SyncOptions,
-  logger: Logger,
-  sourceDirs: SourceDirs,
-): Promise<SyncStats> {
   const aiDir = join(cwd, ".agents");
-
   if (!existsSync(aiDir)) {
     mkdirSync(aiDir, { recursive: true });
   }
 
+  const manifest = readManifest(cwd);
+  const desired = buildDesiredFiles(sourceDirs, cwd, options);
+  const actions = diffDesired(desired, manifest, cwd);
+  const changes = executeActions(actions, cwd, logger);
+
+  const newFiles: Record<string, { sourceHash: string }> = {};
+  for (const [relPath, df] of desired) {
+    newFiles[relPath] = { sourceHash: df.identity };
+  }
+  writeManifest(cwd, { version, files: newFiles });
+
+  logger.summary(changes);
+}
+
+function buildDesiredFiles(
+  sourceDirs: SourceDirs,
+  cwd: string,
+  options: SyncOptions,
+): Map<string, DesiredFile> {
+  const desired = new Map<string, DesiredFile>();
+
   const contentFiles = readContent(sourceDirs.rules, sourceDirs.skills);
   const rootFiles = readConfigs(sourceDirs.agents);
 
-  // Detect languages and determine project type
   const detectionResult = detectLanguages(cwd);
   let languages = detectionResult.languages;
   let isMonorepo = detectionResult.isMonorepo;
   const primaryLanguage = detectionResult.primaryLanguage;
 
-  // Apply overrides from options
   if (options.allRules) {
     languages = detectors.map((d) => d.name);
     isMonorepo = true;
@@ -113,100 +108,144 @@ async function doSync(
     isMonorepo = languages.length > 1;
   }
 
-  // If no languages detected, use monorepo template (generic, no placeholders)
-  // but don't install any language-specific rules
   if (languages.length === 0) {
     isMonorepo = true;
   }
 
   const agentsFile = readAgents(sourceDirs.agents, isMonorepo, primaryLanguage);
 
-  // Filter rules based on detected languages
   const ruleFilesToInclude = options.allRules
     ? getAllRuleFiles()
     : getRuleFilesForLanguages(languages);
 
   const rules = contentFiles.filter((f) => {
     if (f.type !== "rules") return false;
-
-    // Always include non-language-specific rules (plan-mode.md, unsure.md, etc.)
-    if (!isLanguageSpecificRule(f.name)) {
-      return true;
-    }
-
-    // For language-specific rules, check if they're in the include list
+    if (!isLanguageSpecificRule(f.name)) return true;
     return ruleFilesToInclude.includes(f.name);
   });
 
-  const stats: SyncStats = { rules: 0, skills: 0, commands: 0 };
-
-  const installedRootFiles: string[] = [];
   if (!options.skipOpencode) {
     const commandConfig = getCommandConfig(sourceDirs.commands);
-    stats.commands = Object.keys(commandConfig).length;
-
-    if (Object.keys(commandConfig).length > 0) {
-      logger.section("commands");
-      for (const name of Object.keys(commandConfig)) {
-        logger.success(`${name}.md`);
+    for (const file of rootFiles) {
+      let content = file.content;
+      if (
+        file.name === "opencode.json" &&
+        Object.keys(commandConfig).length > 0
+      ) {
+        const config = JSON.parse(content);
+        config.command = commandConfig;
+        content = JSON.stringify(config, null, 2) + "\n";
       }
-    }
-
-    if (rootFiles.length > 0) {
-      logger.section("configs");
-      for (const file of rootFiles) {
-        let content = file.content;
-        if (
-          file.name === "opencode.json" &&
-          Object.keys(commandConfig).length > 0
-        ) {
-          const config = JSON.parse(content);
-          config.command = commandConfig;
-          content = JSON.stringify(config, null, 2) + "\n";
-        }
-        const targetPath = join(cwd, file.name);
-        writeFileSync(targetPath, content);
-        logger.success(`${file.name}`);
-        installedRootFiles.push(file.name);
-      }
+      desired.set(file.name, {
+        path: file.name,
+        identity: hashContent(content),
+        content,
+        category:
+          file.name === "opencode.json"
+            ? "opencode-json"
+            : ("static" as FileCategory),
+      });
     }
   }
 
   if (agentsFile) {
-    const targetPath = join(cwd, agentsFile.name);
-    writeFileSync(targetPath, processTemplate(agentsFile.content));
-    logger.success(`${agentsFile.name}`);
+    desired.set(agentsFile.name, {
+      path: agentsFile.name,
+      identity: hashContent(agentsFile.content),
+      content: processTemplate(agentsFile.content),
+      category: "agents-md",
+    });
   }
 
-  if (rules.length > 0) {
-    logger.section("rules");
-    for (const file of rules) {
-      writeItem(aiDir, file);
-      logger.success(`${file.name}`);
-      stats.rules++;
-    }
+  for (const file of rules) {
+    const relPath = join(".agents", file.type, file.name);
+    desired.set(relPath, {
+      path: relPath,
+      identity: hashContent(file.content),
+      content: processTemplate(file.content),
+      category: "static",
+    });
   }
 
   const skills = contentFiles.filter((f) => f.type === "skills");
+  for (const file of skills) {
+    const relPath = join(".agents", file.type, file.name);
+    desired.set(relPath, {
+      path: relPath,
+      identity: hashContent(file.content),
+      content: processTemplate(file.content),
+      category: "static",
+    });
+  }
 
-  if (skills.length > 0) {
-    logger.section("skills");
-    const skillDirs = [...new Set(skills.map((f) => f.name.split("/")[0]))];
-    stats.skills = skillDirs.length;
-    for (const dir of skillDirs) {
-      const dirFiles = skills.filter((f) => f.name.startsWith(dir + "/"));
-      logger.success(`${dir} (${dirFiles.length} files)`);
-      for (const file of dirFiles) {
-        writeItem(aiDir, file);
+  return desired;
+}
+
+function executeActions(
+  actions: FileAction[],
+  cwd: string,
+  logger: Logger,
+): SyncChanges {
+  const changes = emptySyncChanges();
+
+  for (const action of actions) {
+    const targetPath = join(cwd, action.relPath);
+
+    switch (action.action) {
+      case "add": {
+        const dir = dirname(targetPath);
+        if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+        writeFileSync(targetPath, action.content!);
+        changes.added++;
+        logger.success(`+ ${action.relPath}`);
+        break;
+      }
+      case "update": {
+        const dir = dirname(targetPath);
+        if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+        writeFileSync(targetPath, action.content!);
+        changes.updated++;
+        logger.success(`~ ${action.relPath}`);
+        break;
+      }
+      case "skip":
+        changes.skipped++;
+        break;
+      case "merge": {
+        const currentContent = readFileSync(targetPath, "utf-8");
+        const merged = mergeOpencodeJson(action.content!, currentContent);
+        writeFileSync(targetPath, merged);
+        changes.merged++;
+        logger.success(`M ${action.relPath}`);
+        break;
+      }
+      case "backup": {
+        const currentContent = readFileSync(targetPath, "utf-8");
+        const backupDir = join(cwd, ".agents");
+        if (!existsSync(backupDir)) mkdirSync(backupDir, { recursive: true });
+        const backupPath = join(
+          backupDir,
+          `${action.relPath}.bak.${Date.now()}`,
+        );
+        writeFileSync(backupPath, currentContent);
+        writeFileSync(targetPath, action.content!);
+        changes.backedUp++;
+        logger.success(`! ${action.relPath}`);
+        break;
+      }
+      case "remove": {
+        rmSync(targetPath, { force: true });
+        changes.removed++;
+        logger.success(`- ${action.relPath}`);
+        break;
+      }
+      case "warn": {
+        changes.warned++;
+        logger.warn(`${action.relPath} (modified — skipped)`);
+        break;
       }
     }
   }
 
-  writeManifest(cwd, {
-    version,
-    installedAt: new Date().toISOString(),
-    rootFiles: installedRootFiles,
-  });
-
-  return stats;
+  return changes;
 }

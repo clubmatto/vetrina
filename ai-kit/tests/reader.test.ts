@@ -6,7 +6,7 @@ import {
   readConfigs,
   readAgents,
 } from "../src/reader";
-import { processTemplate } from "../src/template";
+import { processTemplate, stripDates } from "../src/template";
 
 const fixturesDir = join(__dirname, "fixtures");
 const commandsDir = join(fixturesDir, "commands");
@@ -214,5 +214,42 @@ describe("processTemplate", () => {
   it("handles content without placeholders", () => {
     const result = processTemplate("No placeholders here");
     expect(result).toBe("No placeholders here");
+  });
+});
+
+describe("stripDates", () => {
+  it("reverses processTemplate for {{FOOTER}}", () => {
+    const resolved = processTemplate("prefix\n{{FOOTER}}\nsuffix");
+    const stripped = stripDates(resolved);
+    expect(stripped).toBe("prefix\n{{FOOTER}}\nsuffix");
+  });
+
+  it("reverses processTemplate for {{AGENTS_FOOTER}}", () => {
+    const resolved = processTemplate("prefix\n{{AGENTS_FOOTER}}\nsuffix");
+    const stripped = stripDates(resolved);
+    expect(stripped).toBe("prefix\n{{AGENTS_FOOTER}}\nsuffix");
+  });
+
+  it("reverses both footers in the same content", () => {
+    const resolved = processTemplate("{{FOOTER}}\n{{AGENTS_FOOTER}}");
+    const stripped = stripDates(resolved);
+    expect(stripped).toBe("{{FOOTER}}\n{{AGENTS_FOOTER}}");
+  });
+
+  it("is idempotent on content without dates", () => {
+    const input = "no dates here";
+    expect(stripDates(input)).toBe("no dates here");
+  });
+
+  it("is idempotent on already-stripped content", () => {
+    const input = "{{FOOTER}}\n{{AGENTS_FOOTER}}";
+    expect(stripDates(input)).toBe(input);
+  });
+
+  it("round-trips: processTemplate then stripDates returns original", () => {
+    const original = "# Some content\n{{FOOTER}}\n{{AGENTS_FOOTER}}";
+    const processed = processTemplate(original);
+    const stripped = stripDates(processed);
+    expect(stripped).toBe(original);
   });
 });

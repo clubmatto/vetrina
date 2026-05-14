@@ -67,46 +67,67 @@ describe("sync command", () => {
 
     const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
     expect(manifest.version).toBe("0.0.1");
-    expect(manifest.rootFiles).toContain("opencode.json");
+    expect(manifest.files).toBeDefined();
+    expect(manifest.files["opencode.json"]).toBeDefined();
+    expect(manifest.files["opencode.json"].sourceHash).toBeTruthy();
   });
 
-  it("does not re-initialize if already at latest version", async () => {
+  it("skips unchanged files on repeated sync", async () => {
     await sync(tempDir, "0.0.1", {}, testLog, testSourceDirs);
+    testLog.clear();
 
     await sync(tempDir, "0.0.1", {}, testLog, testSourceDirs);
 
     const lastLog = getLastLog();
-    expect(lastLog).toEqual(["success", "Already at latest version (0.0.1)"]);
+    expect(lastLog![0]).toBe("summary");
+    const counts = JSON.parse(lastLog![1]);
+    expect(counts.skipped).toBeGreaterThan(0);
+    expect(counts.added).toBe(0);
+    expect(counts.updated).toBe(0);
   });
 
-  it("updates when version differs", async () => {
-    await sync(tempDir, "0.0.1", {}, testLog, testSourceDirs);
+  it("updates files when source content changes", async () => {
+    const customRulesDir = join(tempDir, "custom-rules");
+    mkdirSync(customRulesDir, { recursive: true });
+    writeFileSync(join(customRulesDir, "test-rule.md"), "# Version 1");
 
-    await sync(tempDir, "0.0.2", {}, testLog, testSourceDirs);
+    const customSourceDirs: SourceDirs = {
+      ...testSourceDirs,
+      rules: customRulesDir,
+    };
 
-    const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
-    expect(manifest.version).toBe("0.0.2");
-  });
-
-  it("respects skipOpencode option on update", async () => {
     await sync(
       tempDir,
       "0.0.1",
       { skipOpencode: true },
       testLog,
-      testSourceDirs,
+      customSourceDirs,
     );
+
+    expect(readFile(tempDir, ".agents/rules/test-rule.md")).toContain(
+      "Version 1",
+    );
+
+    testLog.clear();
+    writeFileSync(join(customRulesDir, "test-rule.md"), "# Version 2");
 
     await sync(
       tempDir,
-      "0.0.2",
+      "0.0.1",
       { skipOpencode: true },
       testLog,
-      testSourceDirs,
+      customSourceDirs,
     );
 
-    const manifest = JSON.parse(readFile(tempDir, ".agents/.ai-kit")!);
-    expect(manifest.rootFiles).toEqual([]);
+    expect(readFile(tempDir, ".agents/rules/test-rule.md")).toContain(
+      "Version 2",
+    );
+
+    const updates = testLog
+      .get()
+      .filter(([type]) => type === "success")
+      .filter(([, msg]) => msg.startsWith("~"));
+    expect(updates.length).toBe(1);
   });
 
   it("includes commands in opencode.json", async () => {
@@ -151,8 +172,66 @@ describe("sync command", () => {
     const successLogs = findLogs("success");
     expect(successLogs.length).toBeGreaterThan(0);
     expect(successLogs.some(([, msg]) => msg.includes(".md"))).toBe(true);
-    expect(successLogs.some(([, msg]) => msg === "opencode.json")).toBe(true);
-    expect(successLogs.some(([, msg]) => msg === "AGENTS.md")).toBe(true);
+    expect(successLogs.some(([, msg]) => msg.includes("opencode.json"))).toBe(
+      true,
+    );
+    expect(successLogs.some(([, msg]) => msg === "+ AGENTS.md")).toBe(true);
+  });
+
+  it("removes orphaned rules when language is no longer detected", async () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test-ts"}',
+      "index.ts": 'console.log("test");',
+    });
+
+    await sync(
+      tempDir,
+      "0.0.1",
+      { skipOpencode: true },
+      testLog,
+      defaultSourceDirs,
+    );
+
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(false);
+  });
+
+  it("preserves user-added MCP servers on re-sync", async () => {
+    const agentsDir = join(tempDir, "agents");
+    mkdirSync(agentsDir, { recursive: true });
+    writeFileSync(
+      join(agentsDir, "opencode.json"),
+      JSON.stringify({ mcp: { aiServer: {} } }, null, 2) + "\n",
+    );
+    writeFileSync(join(agentsDir, "monorepo.md"), "# Agents\n");
+
+    const sourceDirs: SourceDirs = {
+      ...testSourceDirs,
+      agents: agentsDir,
+    };
+
+    await sync(tempDir, "0.0.1", {}, testLog, sourceDirs);
+    expect(readFile(tempDir, "opencode.json")).toContain("aiServer");
+
+    const existing = JSON.parse(readFile(tempDir, "opencode.json")!);
+    existing.mcp.userServer = { type: "local", command: ["echo", "test"] };
+    writeFileSync(
+      join(tempDir, "opencode.json"),
+      JSON.stringify(existing, null, 2) + "\n",
+    );
+
+    writeFileSync(
+      join(agentsDir, "opencode.json"),
+      JSON.stringify({ mcp: { aiServer: { version: 2 } } }, null, 2) + "\n",
+    );
+
+    testLog.clear();
+    await sync(tempDir, "0.0.2", {}, testLog, sourceDirs);
+
+    const updated = JSON.parse(readFile(tempDir, "opencode.json")!);
+    expect(updated.mcp.userServer).toBeDefined();
+    expect(updated.mcp.userServer.command).toEqual(["echo", "test"]);
+    expect(updated.mcp.aiServer.version).toBe(2);
   });
 });
 

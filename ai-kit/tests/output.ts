@@ -1,3 +1,5 @@
+import { SyncChanges } from "../src/output";
+
 type LogCall = [string, string];
 
 const logs: LogCall[] = [];
@@ -20,10 +22,13 @@ export const testLog = {
   success: (msg: string) => {
     logs.push(["success", msg]);
   },
+  warn: (msg: string) => {
+    logs.push(["warn", msg]);
+  },
   final: (msg: string) => {
     logs.push(["final", msg]);
   },
-  summary: (counts: { rules: number; skills: number; commands: number }) => {
+  summary: (counts: SyncChanges) => {
     logs.push(["summary", JSON.stringify(counts)]);
   },
 };
