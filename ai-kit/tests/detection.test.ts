@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { mkdirSync, writeFileSync, mkdtempSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
-import { hasAnyConfigFile, hasAnySourceFile } from "../src/detection/scanner";
+import { scanTree } from "../src/detection/scanner";
 import {
   detectLanguages,
   getRuleFilesForLanguages,
@@ -14,73 +14,85 @@ function createTestDir(): string {
   return mkdtempSync(join(tmpdir(), "ai-kit-detection-test-"));
 }
 
+function createFiles(dir: string, files: string[]): void {
+  for (const file of files) {
+    const fullPath = join(dir, file);
+    mkdirSync(join(fullPath, ".."), { recursive: true });
+    writeFileSync(fullPath, "");
+  }
+}
+
 describe("scanner", () => {
-  describe("hasAnyConfigFile", () => {
-    it("returns true when config file exists at root", () => {
+  describe("scanTree", () => {
+    it("returns empty for empty directory", () => {
       const dir = createTestDir();
-      writeFileSync(join(dir, "package.json"), "{}");
-      expect(hasAnyConfigFile(dir, ["package.json"])).toBe(true);
+      const result = scanTree(dir);
+      expect(result.allFiles).toEqual([]);
+      expect(result.rootFiles).toEqual([]);
     });
 
-    it("returns false when config file does not exist", () => {
+    it("finds files at root", () => {
       const dir = createTestDir();
-      expect(hasAnyConfigFile(dir, ["package.json"])).toBe(false);
+      createFiles(dir, ["package.json", "index.ts"]);
+      const result = scanTree(dir);
+      expect(result.rootFiles).toContain("package.json");
+      expect(result.rootFiles).toContain("index.ts");
     });
 
-    it("returns true when any of multiple config files exist", () => {
+    it("finds files in nested directories", () => {
       const dir = createTestDir();
-      writeFileSync(join(dir, "go.mod"), "module test");
-      expect(
-        hasAnyConfigFile(dir, ["package.json", "go.mod", "Cargo.toml"]),
-      ).toBe(true);
-    });
-  });
-
-  describe("hasAnySourceFile", () => {
-    it("returns true when source file with matching extension exists", () => {
-      const dir = createTestDir();
-      writeFileSync(join(dir, "index.ts"), "console.log('test');");
-      expect(hasAnySourceFile(dir, [".ts", ".js"], 2)).toBe(true);
+      createFiles(dir, ["src/utils/helper.ts"]);
+      const result = scanTree(dir, 3);
+      expect(result.allFiles).toContain("src/utils/helper.ts");
     });
 
-    it("returns false when no matching source files exist", () => {
+    it("respects max depth", () => {
       const dir = createTestDir();
-      writeFileSync(join(dir, "README.md"), "# Project");
-      expect(hasAnySourceFile(dir, [".ts", ".js"], 2)).toBe(false);
+      createFiles(dir, ["src/deep/nested/path/file.ts"]);
+      const result = scanTree(dir, 2);
+      expect(result.allFiles).not.toContain("src/deep/nested/path/file.ts");
     });
 
-    it("finds source files in nested directories within depth limit", () => {
+    it("excludes node_modules directory", () => {
       const dir = createTestDir();
-      mkdirSync(join(dir, "src", "utils"), { recursive: true });
-      writeFileSync(
-        join(dir, "src", "utils", "helper.ts"),
-        "export const x = 1;",
+      createFiles(dir, ["node_modules/some-pkg/index.ts", "src/index.ts"]);
+      const result = scanTree(dir);
+      expect(result.allFiles).toContain("src/index.ts");
+      expect(result.allFiles).not.toContain("node_modules/some-pkg/index.ts");
+    });
+
+    it("excludes .git directory", () => {
+      const dir = createTestDir();
+      createFiles(dir, [".git/config", "package.json"]);
+      const result = scanTree(dir);
+      expect(result.rootFiles).toContain("package.json");
+      expect(result.allFiles).not.toContain(".git/config");
+    });
+
+    it("excludes dist and build directories", () => {
+      const dir = createTestDir();
+      createFiles(dir, ["dist/output.js", "build/output.js", "src/index.ts"]);
+      const result = scanTree(dir);
+      expect(result.allFiles).toContain("src/index.ts");
+      expect(result.allFiles).not.toContain("dist/output.js");
+      expect(result.allFiles).not.toContain("build/output.js");
+    });
+
+    it("separates root files from nested files", () => {
+      const dir = createTestDir();
+      createFiles(dir, [
+        "package.json",
+        "go.mod",
+        "src/main.go",
+        "src/utils/helper.ts",
+      ]);
+      const result = scanTree(dir);
+      expect(result.rootFiles).toEqual(
+        expect.arrayContaining(["package.json", "go.mod"]),
       );
-      expect(hasAnySourceFile(dir, [".ts"], 2)).toBe(true);
-    });
-
-    it("does not find source files beyond depth limit", () => {
-      const dir = createTestDir();
-      mkdirSync(join(dir, "src", "deep", "nested", "path"), {
-        recursive: true,
-      });
-      writeFileSync(
-        join(dir, "src", "deep", "nested", "path", "file.ts"),
-        "export const x = 1;",
-      );
-      expect(hasAnySourceFile(dir, [".ts"], 2)).toBe(false);
-    });
-
-    it("ignores node_modules and other ignored directories", () => {
-      const dir = createTestDir();
-      mkdirSync(join(dir, "node_modules", "some-package"), {
-        recursive: true,
-      });
-      writeFileSync(
-        join(dir, "node_modules", "some-package", "index.ts"),
-        "export const x = 1;",
-      );
-      expect(hasAnySourceFile(dir, [".ts"], 2)).toBe(false);
+      expect(result.rootFiles).not.toContain("src/main.go");
+      expect(result.allFiles).toContain("src/main.go");
+      expect(result.allFiles).toContain("src/utils/helper.ts");
     });
   });
 });
@@ -105,7 +117,7 @@ describe("detectLanguages", () => {
 
   it("detects TypeScript via .ts files when no config", () => {
     const dir = createTestDir();
-    writeFileSync(join(dir, "index.ts"), "console.log('test');");
+    writeFileSync(join(dir, "index.ts"), 'console.log("test");');
     const result = detectLanguages(dir);
     expect(result.languages).toContain("typescript");
     expect(result.isMonorepo).toBe(false);
@@ -162,7 +174,7 @@ describe("detectLanguages", () => {
     expect(result.languages).toContain("typescript");
     expect(result.languages).toContain("go");
     expect(result.isMonorepo).toBe(true);
-    expect(result.primaryLanguage).toBe("typescript"); // First detected
+    expect(result.primaryLanguage).toBe("typescript");
   });
 
   it("detects Go even with package.json present", () => {
@@ -172,6 +184,67 @@ describe("detectLanguages", () => {
     const result = detectLanguages(dir);
     expect(result.languages).toContain("go");
     expect(result.languages).toContain("typescript");
+  });
+});
+
+describe("detectLanguages — improved monorepo detection", () => {
+  it("detects Go from go.mod in subdirectory", () => {
+    const dir = createTestDir();
+    mkdirSync(join(dir, "services", "api"), { recursive: true });
+    writeFileSync(join(dir, "services", "api", "go.mod"), "module test");
+    const result = detectLanguages(dir);
+    expect(result.languages).toContain("go");
+  });
+
+  it("detects both TypeScript and Go when go.mod is in subdirectory", () => {
+    const dir = createTestDir();
+    writeFileSync(join(dir, "package.json"), '{"name": "test"}');
+    mkdirSync(join(dir, "services", "api"), { recursive: true });
+    writeFileSync(join(dir, "services", "api", "go.mod"), "module test");
+    const result = detectLanguages(dir);
+    expect(result.languages).toContain("typescript");
+    expect(result.languages).toContain("go");
+    expect(result.isMonorepo).toBe(true);
+  });
+
+  it("detects Kotlin from .kt files in nested subdirectory", () => {
+    const dir = createTestDir();
+    mkdirSync(join(dir, "src", "main", "kotlin"), { recursive: true });
+    writeFileSync(
+      join(dir, "src", "main", "kotlin", "App.kt"),
+      "fun main() {}",
+    );
+    const result = detectLanguages(dir);
+    expect(result.languages).toContain("kotlin");
+  });
+
+  it("detects both TypeScript config and Go source in subdirectories", () => {
+    const dir = createTestDir();
+    writeFileSync(join(dir, "package.json"), '{"name": "test"}');
+    mkdirSync(join(dir, "cmd", "server"), { recursive: true });
+    writeFileSync(join(dir, "cmd", "server", "main.go"), "package main");
+    const result = detectLanguages(dir);
+    expect(result.languages).toContain("typescript");
+    expect(result.languages).toContain("go");
+  });
+
+  it("detects TypeScript from package.json in monorepo sub-package", () => {
+    const dir = createTestDir();
+    mkdirSync(join(dir, "packages", "web"), { recursive: true });
+    writeFileSync(
+      join(dir, "packages", "web", "package.json"),
+      '{"name": "web"}',
+    );
+    const result = detectLanguages(dir);
+    expect(result.languages).toContain("typescript");
+  });
+
+  it("does not detect files in ignored directories", () => {
+    const dir = createTestDir();
+    mkdirSync(join(dir, "dist"), { recursive: true });
+    writeFileSync(join(dir, "dist", "bundle.go"), "package main");
+    const result = detectLanguages(dir);
+    expect(result.languages).not.toContain("go");
   });
 });
 
@@ -263,6 +336,6 @@ describe("edge cases", () => {
     writeFileSync(join(dir, "go.mod"), "module test");
     writeFileSync(join(dir, "package.json"), '{"name": "test"}');
     const result = detectLanguages(dir);
-    expect(result.primaryLanguage).toBe("typescript"); // TypeScript detected first
+    expect(result.primaryLanguage).toBe("typescript");
   });
 });

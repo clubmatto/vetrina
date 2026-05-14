@@ -3,11 +3,8 @@ interface LanguageDetector {
   ruleFile: string;
   configFiles: string[];
   extensions: string[];
-  scanDepth?: number;
 }
 
-//TODO this is a good first implementation
-//but we clearly want each detector to come with a detect function
 export const detectors: LanguageDetector[] = [
   {
     name: "typescript",

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { execSync } from "child_process";
+import { writeFileSync } from "fs";
 import { join } from "path";
 import { fileExists, createTempDir, readFile } from "../utils";
 
@@ -24,6 +25,7 @@ describe("CLI integration", () => {
   });
 
   it("creates rules with templated content", () => {
+    writeFileSync(join(tempDir, "package.json"), "{}");
     execSync(`node ${join(projectRoot, "dist", "src", "index.js")} sync`, {
       cwd: tempDir,
     });

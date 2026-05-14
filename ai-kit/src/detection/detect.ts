@@ -1,5 +1,5 @@
 import { detectors } from "./language-detectors";
-import { hasAnyConfigFile, hasAnySourceFile } from "./scanner";
+import { scanTree } from "./scanner";
 
 interface DetectionResult {
   languages: string[];
@@ -7,20 +7,28 @@ interface DetectionResult {
   primaryLanguage?: string;
 }
 
+function hasMatchingFile(files: string[], names: string[]): boolean {
+  return names.some((name) =>
+    files.some((f) => f === name || f.endsWith("/" + name)),
+  );
+}
+
+function hasMatchingExtension(files: string[], extensions: string[]): boolean {
+  return extensions.some((ext) => files.some((f) => f.endsWith(ext)));
+}
+
 export function detectLanguages(cwd: string): DetectionResult {
+  const { allFiles, rootFiles } = scanTree(cwd);
+
   const detected = new Set<string>();
 
   for (const detector of detectors) {
-    if (hasAnyConfigFile(cwd, detector.configFiles)) {
-      detected.add(detector.name);
-    }
-  }
+    const hasConfigAtRoot = hasMatchingFile(rootFiles, detector.configFiles);
+    const hasConfigInTree = hasMatchingFile(allFiles, detector.configFiles);
+    const hasSource = hasMatchingExtension(allFiles, detector.extensions);
 
-  if (detected.size === 0) {
-    for (const detector of detectors) {
-      if (hasAnySourceFile(cwd, detector.extensions, 2)) {
-        detected.add(detector.name);
-      }
+    if (hasConfigAtRoot || hasConfigInTree || hasSource) {
+      detected.add(detector.name);
     }
   }
 

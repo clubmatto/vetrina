@@ -129,4 +129,30 @@ describe("CLI language detection options", () => {
     expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
     expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(false);
   });
+
+  it("auto-detects Go from subdirectory go.mod", () => {
+    createProject(tempDir, {
+      "services/api/go.mod": "module test",
+      "services/api/main.go": "package main",
+    });
+
+    runCli("sync --skip-opencode", tempDir);
+
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(false);
+  });
+
+  it("auto-detects multi-language from source files in subdirectories", () => {
+    createProject(tempDir, {
+      "package.json": '{"name": "test"}',
+      "cmd/server/main.go": "package main",
+    });
+
+    runCli("sync --skip-opencode", tempDir);
+
+    expect(fileExists(tempDir, ".agents/rules/typescript.md")).toBe(true);
+    expect(fileExists(tempDir, ".agents/rules/go.md")).toBe(true);
+    const agentsMd = readFile(tempDir, "AGENTS.md");
+    expect(agentsMd).toContain("monorepo");
+  });
 });

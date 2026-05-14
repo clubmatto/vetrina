@@ -113,9 +113,9 @@ async function doSync(
     isMonorepo = languages.length > 1;
   }
 
-  // If no languages detected and no overrides, fall back to all rules (monorepo)
+  // If no languages detected, use monorepo template (generic, no placeholders)
+  // but don't install any language-specific rules
   if (languages.length === 0) {
-    languages = detectors.map((d) => d.name);
     isMonorepo = true;
   }
 
