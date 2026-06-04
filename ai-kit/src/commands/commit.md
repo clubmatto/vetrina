@@ -12,7 +12,7 @@ Create a commit with the following format:
 - The **scope** is the project subdirectory — determine it from the changed files.
 
   | Changed files             | Scope        |
-  |---------------------------|--------------|
+  | ------------------------- | ------------ |
   | `fakedata/**`             | `fakedata`   |
   | `ai-kit/**`               | `ai-kit`     |
   | Mixed (multiple projects) | Pick primary |
