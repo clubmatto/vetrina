@@ -38,20 +38,4 @@ release:
     Download the latest release for your platform.
   prerelease: auto
 
-brews:
-  - name: fakedata
-    repository:
-      owner: clubmatto
-      name: vetrina
-    directory: brew/FakeData
-    skip_upload: true
-    homepage: https://matto.club/vetrina/fakedata
-    description: "CLI tool to generate fake data rows for testing and development"
-    license: MIT
-    install: |-
-      cd "fakedata" do
-        system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", "-o", bin/"fakedata"
-      end
-    test: |
-      output = shell_output("#{bin}/fakedata --help")
-      assert_match "fakedata", output
+
