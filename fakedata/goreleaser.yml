@@ -2,20 +2,21 @@ version: 2
 
 project_name: fakedata
 
-build:
-  main: .
-  binary: fakedata
-  flags:
-    - -trimpath
-  ldflags:
-    - -s -w -X main.version={{ .Env.VERSION }}
-  goos:
-    - darwin
-    - linux
-    - windows
-  goarch:
-    - amd64
-    - arm64
+builds:
+  -
+    main: .
+    binary: fakedata
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Env.VERSION }}
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
 
 archives:
   - name_template: "{{ .ProjectName }}_{{ .Env.VERSION }}_{{ .Os }}_{{ .Arch }}"
