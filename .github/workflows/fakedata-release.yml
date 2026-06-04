@@ -26,10 +26,10 @@ jobs:
 
       - name: Release
         run: |
-          go run ./tools/go-release \
+          go run -C tools/go-release . \
             --tag-prefix fakedata/ \
             --tag ${{ github.ref_name }} \
             --repo ${{ github.repository }} \
-            --brew ./brew/FakeData/fakedata.rb
+            --brew brew/FakeData/fakedata.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
