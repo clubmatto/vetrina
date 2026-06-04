@@ -28,7 +28,7 @@ jobs:
 
       - uses: golangci/golangci-lint-action@v7
         with:
-          version: v2.0
+          version: "~>2"
           working-directory: fakedata
 
       - run: make test
