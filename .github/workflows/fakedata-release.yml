@@ -7,13 +7,11 @@ on:
     paths:
       - "fakedata/**"
       - ".github/workflows/fakedata-release.yml"
+      - "tools/go-release/**"
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: fakedata
     permissions:
       contents: write
     steps:
@@ -26,24 +24,12 @@ jobs:
           go-version: "1.26"
           cache: true
 
-      - name: Extract version from tag
-        run: echo "VERSION=${GITHUB_REF_NAME#fakedata/v}" >> $GITHUB_ENV
-
-      - uses: goreleaser/goreleaser-action@v6
-        with:
-          distribution: goreleaser
-          version: "~>2"
-          args: release --clean --skip=validate
-          workdir: fakedata
+      - name: Release
+        run: |
+          go run ./tools/go-release \
+            --tag-prefix fakedata/ \
+            --tag ${{ github.ref_name }} \
+            --repo ${{ github.repository }} \
+            --brew ./brew/FakeData/fakedata.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update Homebrew formula
-        run: |
-          VERSION="${GITHUB_REF_NAME#fakedata/v}"
-          ./scripts/update-formula.sh "$VERSION" "../brew/FakeData/fakedata.rb"
-          git config user.name "clubmatto-bot"
-          git config user.email "clubmatto-bot@users.noreply.github.com"
-          git add ../brew/FakeData/fakedata.rb
-          git commit -m "chore(fakedata): update brew formula to v${VERSION}" || echo "No changes to commit"
-          git push origin HEAD:main
