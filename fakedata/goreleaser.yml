@@ -2,6 +2,9 @@ version: 2
 
 project_name: fakedata
 
+git:
+  tag_prefix: fakedata/
+
 build:
   main: .
   binary: fakedata
@@ -37,8 +40,8 @@ brews:
   - name: fakedata
     repository:
       owner: clubmatto
-      name: homebrew-tap
-    directory: Formula
+      name: vetrina
+    directory: brew/FakeData
     homepage: https://matto.club/vetrina/fakedata
     description: "CLI tool to generate fake data rows for testing and development"
     license: MIT

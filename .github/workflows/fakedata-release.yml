@@ -33,4 +33,4 @@ jobs:
           args: release --clean
           workdir: fakedata
         env:
-          GITHUB_TOKEN: ${{ secrets.CLUBMATTO_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
