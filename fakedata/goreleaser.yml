@@ -1,0 +1,51 @@
+version: 2
+
+project_name: fakedata
+
+build:
+  main: .
+  binary: fakedata
+  flags:
+    - -trimpath
+  ldflags:
+    - -s -w -X main.version={{.Version}}
+  goos:
+    - darwin
+    - linux
+    - windows
+  goarch:
+    - amd64
+    - arm64
+
+archives:
+  - formats: tar.gz
+    format_overrides:
+      - goos: windows
+        formats: zip
+
+release:
+  github:
+    owner: clubmatto
+    name: vetrina
+  header: |
+    ## FakeData {{ .Tag }}
+
+    Download the latest release for your platform.
+  prerelease: auto
+
+brews:
+  - name: fakedata
+    repository:
+      owner: clubmatto
+      name: homebrew-tap
+    directory: Formula
+    homepage: https://matto.club/vetrina/fakedata
+    description: "CLI tool to generate fake data rows for testing and development"
+    license: MIT
+    install: |-
+      cd "fakedata" do
+        system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", "-o", bin/"fakedata"
+      end
+    test: |
+      output = shell_output("#{bin}/fakedata --help")
+      assert_match "fakedata", output

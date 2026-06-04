@@ -1,0 +1,33 @@
+unknown generator: unsupportedgenerator
+
+Usage:
+  fakedata [options] [column-spec...]
+
+Examples:
+  fakedata email:int:1,100 name:full_name        generate 10 rows with two columns
+  fakedata -n 5 -f ndjson city country           5 rows in NDJSON format
+
+Column spec syntax: [name:][generator[:args]]
+  email                    column "email" using email generator
+  int:10,20                column "int" with range 10-20
+  login:email              column "login" using email generator
+  count:int:10,20          column "count" using int generator, range 10-20
+
+
+Utility
+  -h, --help                   show this help
+  -v, --version                show version information
+  -C, --completion string      print shell completion function ("bash", "zsh", "fish")
+
+Column mode
+  -f, --format string          output format: column|ndjson (default column)
+  -H, --header                 print a header row with column names
+  -n, --rows int               number of rows to generate (default 10)
+  -s, --separator string       field separator for column format (default "\t")
+    --seed int                 seed for deterministic random generation (default 0)
+  -S, --stream                 stream rows indefinitely
+  -T, --template string        template file to execute
+
+Discovery
+  -g, --generator string       show details and examples for a generator
+  -G, --generators             list available generators

@@ -1,0 +1,75 @@
+---
+layout: base.liquid
+title: FakeData
+permalink: /vetrina/fakedata/
+go_import: true
+description: Open source CLI tool for generating fake/test data. 40+ generators, multiple output formats, streaming, and templates.
+---
+
+<section class="product-hero">
+  <div class="product-hero-content">
+    <div class="product-hero-icon">{{ 'layers' | lucide }}</div>
+    <h1 class="product-hero-title">FakeData</h1>
+    <p class="product-hero-tagline">Zero-config test data for your stack</p>
+    <div class="product-hero-actions">
+      <a href="https://github.com/clubmatto/vetrina" class="btn btn-primary">GitHub</a>
+      <a href="/products/fakedata/" class="btn btn-secondary">Pro Edition</a>
+    </div>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">Install</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Go Install</h3>
+      <p class="product-feature-desc">
+        <code>go install matto.club/vetrina/fakedata@latest</code>
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Homebrew</h3>
+      <p class="product-feature-desc">
+        <code>brew install clubmatto/tap/fakedata</code>
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Build from Source</h3>
+      <p class="product-feature-desc">
+        <code>git clone https://github.com/clubmatto/vetrina && cd vetrina/fakedata && make</code>
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-features">
+  <h2 class="product-section-title">Quick Start</h2>
+  <div class="product-features-grid">
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Basic Usage</h3>
+      <p class="product-feature-desc">
+        <code>fakedata email country --seed 1</code>
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Named Columns</h3>
+      <p class="product-feature-desc">
+        <code>fakedata -n 5 "login:email" "first_name" "last_name"</code>
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <h3 class="product-feature-title">Stream Mode</h3>
+      <p class="product-feature-desc">
+        <code>fakedata --stream email</code>
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="product-cta">
+  <div class="product-cta-content">
+    <h2 class="product-cta-title">Need database integration?</h2>
+    <p class="product-cta-desc">The Pro Edition adds schema introspection, foreign key resolution, and direct Postgres/SQLite generation.</p>
+    <a href="/products/fakedata/" class="btn btn-primary">Learn More</a>
+  </div>
+</section>

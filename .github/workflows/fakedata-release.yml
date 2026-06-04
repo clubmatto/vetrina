@@ -1,0 +1,36 @@
+name: fakedata Release
+
+on:
+  push:
+    tags:
+      - "fakedata/v[0-9]+.[0-9]+.[0-9]+"
+    paths:
+      - "fakedata/**"
+      - ".github/workflows/fakedata-release.yml"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fakedata
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~>2"
+          args: release --clean
+          workdir: fakedata
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLUBMATTO_BOT_TOKEN }}

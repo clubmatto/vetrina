@@ -24,6 +24,14 @@
         >Writing</a
       >
       <a
+        href="/vetrina/"
+        class="{% if page.url contains '/vetrina/' %}active{% endif %}"
+        {% if page.url contains '/vetrina/' %}
+          aria-current="page"
+        {% endif %}
+        >Vetrina</a
+      >
+      <a
         href="/products/"
         class="{% if page.url contains '/products/' %}active{% endif %}"
         {% if page.url contains '/products/' %}
