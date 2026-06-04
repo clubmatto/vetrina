@@ -8,8 +8,21 @@ Create a commit with the following format:
 
 **First line (one-liner):**
 
-- Use conventional commits format: `<type>: <description>`
-- Examples: `feat: add init command`, `fix: resolve path issue`, `docs: update README`
+- Use conventional commits format: `<type>(<scope>): <description>`
+- The **scope** is the project subdirectory — determine it from the changed files.
+
+  | Changed files             | Scope        |
+  |---------------------------|--------------|
+  | `fakedata/**`             | `fakedata`   |
+  | `ai-kit/**`               | `ai-kit`     |
+  | Mixed (multiple projects) | Pick primary |
+
+- If changes span **multiple projects**, pick the one with the most changes, or use
+  `type: description` (without scope) when there is no clear primary project.
+- Root-level files (e.g. `opencode.json`, `.github/`, `AGENTS.md`) and changes
+  spanning **all** projects get no scope.
+- Examples: `feat(fakedata): add csv output`, `fix(ai-kit): resolve sync crash`,
+  `docs: update contributing guide`
 
 **Body (bullet list):**
 
@@ -19,26 +32,41 @@ Create a commit with the following format:
 **Sign-off:**
 
 - End with: `created with the help of <MODEL>`
-- Use the current model name (e.g. "MiniMax", "GPT-4", "Claude")
+- Format the model name as lowercase, hyphenated: `<name>-<variant>`
+- Examples: `DeepSeek V4 Flash` → `deepseek-v4-flash`, `Claude Opus 4` → `claude-opus-4`
 
-## Example
+## Examples
+
+**Single project — use scope:**
 
 ```
-feat: add init and update commands
+feat(fakedata): add csv output format
 
-- Created init command for first-time setup
-- Added manifest tracking in .agents/.ai-kit
-- Implemented update command for version sync
-- Added --skip-opencode option
+- Added --format csv flag to generate command
+- Implemented CSV writer with header detection
+- Added tests for CSV output
 
-created with the help of MiniMax
+created with the help of deepseek-v4-flash
+```
+
+**Cross-project or root — no scope:**
+
+```
+ci: add shared release workflow for Go projects
+
+- Created tools/go-release with build, archive, and formula generation
+- Updated fakedata release workflow to use shared tool
+- Added release documentation
+
+created with the help of deepseek-v4-flash
 ```
 
 ## Process
 
 1. First, review all changes with `git status` and `git diff`
 2. If there changes you did not make, ask if you should include them
-3. Write a concise one-liner following conventional commits
-4. List the key changes as bullet points
-5. Add the sign-off line with the current model
-6. Commit with `git commit -m "your message"`
+3. Determine the scope from the changed file paths
+4. Write a concise one-liner following `<type>(<scope>): <description>`
+5. List the key changes as bullet points
+6. Add the sign-off line with the current model
+7. Commit with `git commit -m "your message"`
