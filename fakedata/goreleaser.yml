@@ -2,16 +2,13 @@ version: 2
 
 project_name: fakedata
 
-git:
-  tag_prefix: fakedata/
-
 build:
   main: .
   binary: fakedata
   flags:
     - -trimpath
   ldflags:
-    - -s -w -X main.version={{.Version}}
+    - -s -w -X main.version={{ .Env.VERSION }}
   goos:
     - darwin
     - linux
@@ -21,7 +18,8 @@ build:
     - arm64
 
 archives:
-  - formats: tar.gz
+  - name_template: "{{ .ProjectName }}_{{ .Env.VERSION }}_{{ .Os }}_{{ .Arch }}"
+    formats: tar.gz
     format_overrides:
       - goos: windows
         formats: zip
@@ -42,6 +40,7 @@ brews:
       owner: clubmatto
       name: vetrina
     directory: brew/FakeData
+    skip_upload: true
     homepage: https://matto.club/vetrina/fakedata
     description: "CLI tool to generate fake data rows for testing and development"
     license: MIT

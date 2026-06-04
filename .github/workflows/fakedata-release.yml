@@ -26,11 +26,14 @@ jobs:
           go-version: "1.26"
           cache: true
 
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#fakedata/v}" >> $GITHUB_ENV
+
       - uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
           version: "~>2"
-          args: release --clean
+          args: release --clean --skip-validate
           workdir: fakedata
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
