@@ -71,7 +71,7 @@ type nameIndex struct {
 func buildNamesFromRecords(
 	records [][]string, minFields, localizedIdx, romanizedIdx int,
 ) ([]personName, map[string]nameIndex) {
-	var names []personName
+	names := make([]personName, 0, len(records))
 
 	indexMap := make(map[string]nameIndex)
 
@@ -131,7 +131,7 @@ func buildNamesFromRecords(
 }
 
 func sortedIndexFromMap(indexMap map[string]nameIndex) []nameIndex {
-	var index []nameIndex
+	index := make([]nameIndex, 0, len(indexMap))
 
 	countryCodes := make([]string, 0, len(indexMap))
 	for code := range indexMap {

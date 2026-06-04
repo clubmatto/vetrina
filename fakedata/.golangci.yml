@@ -15,6 +15,8 @@ linters:
     - depguard
     - wsl
     - testpackage
+    - godox
+    - prealloc
 
 linters-settings:
   wsl_v5:
