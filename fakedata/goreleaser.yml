@@ -25,6 +25,9 @@ archives:
       - goos: windows
         formats: zip
 
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Env.VERSION }}_checksums.txt"
+
 release:
   github:
     owner: clubmatto
