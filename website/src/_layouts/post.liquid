@@ -1,11 +1,18 @@
 ---
-layout: page.liquid
+layout: base.liquid
 ---
 <article class="post">
   <header class="post-header">
     <h1>{{ title }}</h1>
     <div class="post-metadata">
       <time>{{ date | formatDate }}</time>
+      {% if tags %}
+        <span class="tags">
+          {% for tag in tags %}
+            <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </span>
+      {% endif %}
     </div>
   </header>
 

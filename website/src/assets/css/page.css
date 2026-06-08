@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .page-content {
-  padding: 5.5rem 1rem 2rem 1rem;
+  padding: 0 1rem 2rem 1rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -149,9 +149,19 @@ ul.posts li a {
   padding: 0.4rem 0;
   align-items: center;
   justify-content: space-between;
-  white-space: nowrap;
+}
+
+ul.posts li a .post-title {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+ul.posts li a .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 ul.posts li a:hover {
@@ -178,4 +188,27 @@ ul.posts li a .date {
   flex-basis: 0;
   flex-shrink: 1;
   padding: 0.75rem 0.75rem 0.75rem 0;
+}
+
+.post-metadata {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.tags {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--text), transparent 70%);
+  border-radius: 3px;
+  opacity: 0.75;
+  text-transform: lowercase;
 }

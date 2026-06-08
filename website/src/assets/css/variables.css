@@ -1,6 +1,7 @@
 :root {
   /* Layout */
   --max-width: 1242px;
+  --nav-height: 4.5rem;
 
   /* Background Colors */
   --bg: light-dark(#f8f8f8, #2e3440);
@@ -79,4 +80,6 @@
       transparent 150px
     );
   --bg-pattern-opacity: 0.12;
+
+  --post-bg: light-dark(#f5f0eb, #3b4252);
 }

@@ -14,8 +14,17 @@ display_title: Writing
           {% for post in item.posts %}
             <li class="post">
               <a href="{{ post.postUrl }}">
-                <span>{{ post.title }}</span>
-                <span class="date">{{ post.formattedDate }}</span>
+                <span class="post-title">{{ post.title }}</span>
+                <span class="post-meta">
+                  {% if post.tags %}
+                    <span class="tags">
+                      {% for tag in post.tags %}
+                        <span class="tag">{{ tag }}</span>
+                      {% endfor %}
+                    </span>
+                  {% endif %}
+                  <span class="date">{{ post.formattedDate }}</span>
+                </span>
               </a>
             </li>
           {% endfor %}

@@ -1,4 +1,4 @@
 export default {
-  layout: "post.hbs",
+  layout: "post.liquid",
   permalink: "/writing/{{ page.fileSlug }}/",
 };

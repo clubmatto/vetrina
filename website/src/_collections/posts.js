@@ -28,6 +28,7 @@ export function postsByYear(collectionApi) {
       postUrl: post.data.page.url,
       title: post.data.title,
       formattedDate: `${month} ${day}`,
+      tags: post.data.tags,
     });
   });
 

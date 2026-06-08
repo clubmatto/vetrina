@@ -17,8 +17,8 @@
       >
       <a
         href="/writing/"
-        class="{% if page.url == "/writing/" %}active{% endif %}"
-        {% if page.url == '/writing/' %}
+        class="{% if page.url contains '/writing/' %}active{% endif %}"
+        {% if page.url contains '/writing/' %}
           aria-current="page"
         {% endif %}
         >Writing</a
