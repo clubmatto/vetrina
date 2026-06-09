@@ -7,48 +7,12 @@ go_import: true
 description: Explore our open source projects at Club Matto – tools crafted with care, built in the open.
 ---
 <p class="page-intro">
-  This is our open source <em>Vetrina</em>: a monorepo of tools we build in the open, because we believe
-  great software deserves to be shared. Browse our projects below, or head to
+  This is our open source <em>Vetrina</em>: a monorepo of tools we build in the open, because we believe great software
+  deserves to be shared. Browse our projects below, or head to
   <a href="https://github.com/clubmatto/vetrina">GitHub</a> to dive into the code.
 </p>
-<div class="products-grid">
-  <a href="/vetrina/fakedata/" class="product-card">
-    <article>
-      <div class="product-image">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
-        </svg>
-      </div>
-      <div class="product-title">FakeData</div>
-      <div class="product-description">
-        Zero‑config test data for your stack. Generate realistic datasets on demand with 40+ built‑in generators.
-      </div>
-    </article>
-  </a>
-  <a href="/vetrina/ai-kit/" class="product-card">
-    <article>
-      <div class="product-image">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="16 3 21 3 21 8"/>
-          <line x1="4" y1="20" x2="21" y2="3"/>
-          <polyline points="21 16 21 21 16 21"/>
-          <line x1="15" y1="15" x2="21" y2="21"/>
-          <line x1="4" y1="4" x2="9" y2="9"/>
-        </svg>
-      </div>
-      <div class="product-title">AI Kit</div>
-      <div class="product-description">
-        The AI configuration CLI. Sync rules, skills, and commands to power up your AI coding workflow.
-      </div>
-    </article>
-  </a>
+<div class="products-list">
+  {% for card in cards %}
+    {% include 'product-card' %}
+  {% endfor %}
 </div>
-
-<style>
-  .products-grid a.product-card .product-image svg {
-    width: 48px;
-    height: 48px;
-    stroke-width: 1.5;
-  }
-</style>

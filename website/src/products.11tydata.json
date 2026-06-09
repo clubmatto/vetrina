@@ -1,0 +1,40 @@
+{
+  "cards": [
+    {
+      "href": "/products/kube-shield/",
+      "icon": "shield",
+      "title": "Kube Shield",
+      "description": "Turnkey security for your kubernetes clusters. Automatically detect container images, scan for vulnerabilities, and explore results through an intuitive UI."
+    },
+    {
+      "href": "/products/guido/",
+      "icon": "gauge",
+      "title": "Guido",
+      "description": "Your race engineer, on your phone. Turn any device into your sim racing co-driver: serving up essential data whenever you need it, so you can stay focused on your racecraft."
+    },
+    {
+      "href": "/products/fakedata/",
+      "icon": "layers",
+      "title": "FakeData",
+      "description": "Zero‑config test data for your stack. Generate realistic, output format‑ready datasets on demand with 40+ built‑in generators, piping to any destination: queues, streams, databases, or APIs."
+    },
+    {
+      "href": "/products/db-diff/",
+      "icon": "database",
+      "title": "DB Diff",
+      "description": "Know when your data drifts. Compare rows across databases using hash-based checksums: blazing fast when tables match, pinpointing every difference when they don't."
+    },
+    {
+      "href": "/products/bookmarks/",
+      "icon": "bookmark",
+      "title": "Bookmarks",
+      "description": "Save anything, find everything. A dead-simple bookmark manager with nested tags and instant search: no link you ever saved will ever get forgotten again."
+    },
+    {
+      "href": "/products/matto-bar/",
+      "icon": "activity",
+      "title": "Matto Bar",
+      "description": "All your subscription quotas in your menu bar. Monitor every AI provider at a glance: tokens, credits, API call volume, so you never hit limits unexpectedly and can optimize usage across providers."
+    }
+  ]
+}

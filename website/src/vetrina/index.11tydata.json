@@ -1,0 +1,16 @@
+{
+  "cards": [
+    {
+      "href": "/vetrina/fakedata/",
+      "icon": "layers",
+      "title": "FakeData",
+      "description": "Zero‑config test data for your stack. Generate realistic datasets on demand with 40+ built‑in generators."
+    },
+    {
+      "href": "/vetrina/ai-kit/",
+      "icon": "zap",
+      "title": "AI Kit",
+      "description": "The AI configuration CLI. Sync rules, skills, and commands to power up your AI coding workflow."
+    }
+  ]
+}
