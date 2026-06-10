@@ -32,6 +32,23 @@
   /* Border Colors */
   --border-color: light-dark(#d0d0d0, #ffffff22);
 
+  /* Dash Patterns */
+  --dash-color: color-mix(in srgb, var(--text), transparent 85%);
+  --dash-vertical: repeating-linear-gradient(
+    to bottom,
+    var(--dash-color) 0px,
+    var(--dash-color) 20px,
+    transparent 20px,
+    transparent 28px
+  );
+  --dash-horizontal: repeating-linear-gradient(
+    to right,
+    var(--dash-color) 0px,
+    var(--dash-color) 20px,
+    transparent 20px,
+    transparent 28px
+  );
+
   /* Shadow Colors */
   --shadow-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
   --shadow-color-dense: light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));

@@ -62,22 +62,29 @@ main {
 
   text-align: left;
   flex: 1;
-
-  border-inline: 1px solid;
-  border-image: repeating-linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--text), transparent 85%) 0px,
-      color-mix(in srgb, var(--text), transparent 85%) 20px,
-      transparent 20px,
-      transparent 28px
-    )
-    1;
+  position: relative;
 
   padding: var(--nav-height) var(--main-padding-inline) 0
     var(--main-padding-inline);
   min-height: 100vh;
 }
 
+main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--dash-vertical), var(--dash-vertical);
+  background-position:
+    left 0,
+    right 0;
+  background-size:
+    1px 28px,
+    1px 28px;
+  background-repeat: repeat-y, repeat-y;
+}
+
+/*TODO This should be scoped to home page*/
 h1 {
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 800;

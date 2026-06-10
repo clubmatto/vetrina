@@ -4,6 +4,7 @@ layout: base.liquid
 <div class="page-content">
   {% if display_title %}
     <h1>{{ display_title }}</h1>
+    <div class="page-content-divider" aria-hidden="true"></div>
   {% endif %}
   {{ content | safe }}
 </div>
