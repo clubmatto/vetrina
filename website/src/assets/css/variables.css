@@ -3,6 +3,12 @@
   --max-width: 1242px;
   --nav-height: 4.5rem;
 
+  /* Page Padding */
+  --main-padding-inline: 0;
+  --page-padding-inline: 2rem;
+  --page-padding-block-start: 2rem;
+  --page-padding-block-end: 2rem;
+
   /* Background Colors */
   --bg: light-dark(#f8f8f8, #2e3440);
   --card-bg: light-dark(#f9f9f9, #3a404d);

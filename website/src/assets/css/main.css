@@ -73,7 +73,8 @@ main {
     )
     1;
 
-  padding: var(--nav-height) 0 0 0;
+  padding: var(--nav-height) var(--main-padding-inline) 0
+    var(--main-padding-inline);
   min-height: 100vh;
 }
 
