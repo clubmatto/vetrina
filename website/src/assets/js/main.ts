@@ -23,11 +23,9 @@ function applyTheme(theme: string) {
 
   if (!lightIcon || !systemIcon || !darkIcon) return;
 
-  lightIcon.style.display =
-    theme === "system" ? "none" : resolved === "light" ? "flex" : "none";
-  systemIcon.style.display = theme === "system" ? "flex" : "none";
-  darkIcon.style.display =
-    theme === "system" ? "none" : resolved === "dark" ? "flex" : "none";
+  lightIcon.classList.toggle("active", theme !== "system" && resolved === "light");
+  systemIcon.classList.toggle("active", theme === "system");
+  darkIcon.classList.toggle("active", theme !== "system" && resolved === "dark");
 }
 
 function getNextTheme(currentTheme: string): string {
@@ -45,6 +43,39 @@ if (themeToggle) {
 
 const storedTheme = localStorage.getItem("theme");
 applyTheme(storedTheme || "system");
+
+const darkModeMq = window.matchMedia("(prefers-color-scheme: dark)");
+darkModeMq.addEventListener("change", () => {
+  const theme = localStorage.getItem("theme") || "system";
+  if (theme === "system") {
+    applyTheme("system");
+  }
+});
+
+// Mobile navigation toggle
+const hamburger = document.querySelector<HTMLElement>(".hamburger");
+const mainNav = document.querySelector<HTMLElement>(".main-nav");
+
+if (hamburger && mainNav) {
+  hamburger.addEventListener("click", () => {
+    const isOpen = mainNav.classList.toggle("nav-open");
+    hamburger.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!mainNav.contains(e.target as Node)) {
+      mainNav.classList.remove("nav-open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  mainNav.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mainNav.classList.remove("nav-open");
+      hamburger.setAttribute("aria-expanded", "false");
+    });
+  });
+}
 
 // Home page scrolling functionality
 const scrollDivider = document.querySelector<HTMLElement>(".scroll-divider");

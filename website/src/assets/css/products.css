@@ -21,7 +21,7 @@ a.product-card {
 
 .product-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-color-dense);
+  box-shadow: 0 4px 12px var(--shadow-color-md);
 }
 
 .product-card article {
@@ -39,6 +39,22 @@ a.product-card {
   justify-content: center;
   color: var(--text-inverse);
   border-radius: 7px 0 0 7px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 8px,
+      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 9px,
+      transparent 9px,
+      transparent 20px
+    ),
+    radial-gradient(
+      circle at var(--card-glint-x, 70%) var(--card-glint-y, 80%),
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    linear-gradient(160deg, var(--card-gradient-start), var(--card-gradient-end));
 }
 
 .product-card-icon svg {
@@ -76,60 +92,40 @@ a.product-card {
 
 .products-list > .product-card:nth-child(6n + 1) .product-card-icon,
 .products-list > .product-card:nth-child(6n + 4) .product-card-icon {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 9px,
-      transparent 9px,
-      transparent 20px
-    ),
-    radial-gradient(
-      circle at 70% 80%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    linear-gradient(160deg, var(--gradient-4), var(--gradient-5));
+  --card-glint-x: 70%;
+  --card-glint-y: 80%;
+  --card-gradient-start: var(--gradient-4);
+  --card-gradient-end: var(--gradient-5);
 }
 
 .products-list > .product-card:nth-child(6n + 2) .product-card-icon,
 .products-list > .product-card:nth-child(6n + 5) .product-card-icon {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 9px,
-      transparent 9px,
-      transparent 20px
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    linear-gradient(160deg, var(--gradient-2), var(--gradient-4));
+  --card-glint-x: 50%;
+  --card-glint-y: 50%;
+  --card-gradient-start: var(--gradient-2);
+  --card-gradient-end: var(--gradient-4);
 }
 
 .products-list > .product-card:nth-child(6n + 3) .product-card-icon,
 .products-list > .product-card:nth-child(6n + 6) .product-card-icon {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 8px,
-      light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.05)) 9px,
-      transparent 9px,
-      transparent 20px
-    ),
-    radial-gradient(
-      circle at 20% 30%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    linear-gradient(160deg, var(--gradient-1), var(--gradient-3));
+  --card-glint-x: 20%;
+  --card-glint-y: 30%;
+  --card-gradient-start: var(--gradient-1);
+  --card-gradient-end: var(--gradient-3);
+}
+
+@media (max-width: 640px) {
+  .products-list {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card-icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .product-card-icon svg {
+    width: 32px;
+    height: 32px;
+  }
 }

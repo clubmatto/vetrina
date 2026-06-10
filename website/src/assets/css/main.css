@@ -9,6 +9,7 @@
 @import "theme-toggle.css";
 @import "product-pages.css";
 @import "post.css";
+@import "contact.css";
 
 .skip-link {
   position: absolute;
@@ -84,18 +85,10 @@ main::after {
   background-repeat: repeat-y, repeat-y;
 }
 
-/*TODO This should be scoped to home page*/
 h1 {
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    var(--gradient-1) 0%,
-    var(--gradient-2) 25%,
-    var(--gradient-3) 50%,
-    var(--gradient-4) 75%,
-    var(--gradient-5) 100%
-  );
+  background: var(--gradient-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -130,86 +123,13 @@ button:focus-visible {
   transition: all 0.2s ease;
 }
 
-.social-link .lucide-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.contact-subtitle {
-  margin-bottom: 2rem;
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 480px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-.form-group input,
-.form-group textarea {
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 0.5rem;
-  background: transparent;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 1rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.form-group input:focus-visible,
-.form-group textarea:focus-visible {
-  outline: none;
-  border-color: var(--gradient-1);
-  box-shadow: 0 0 0 3px var(--focus-ring-color);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.submit-btn {
-  padding: 1rem 2rem;
-  background: linear-gradient(
-    135deg,
-    var(--gradient-1) 0%,
-    var(--gradient-2) 50%,
-    var(--gradient-3) 100%
-  );
-  color: var(--text-inverse);
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  margin-top: 0.5rem;
-}
-
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--focus-ring-color-strong);
-}
-
-.submit-btn:active {
-  transform: translateY(0);
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

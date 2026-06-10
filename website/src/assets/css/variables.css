@@ -1,7 +1,11 @@
 :root {
   /* Layout */
-  --max-width: 1242px;
+  --max-width: 1242px; /* matching the content width in the Figma design */
   --nav-height: 4.5rem;
+
+  /* Breakpoint reference (CSS custom properties can't be used in @media, these are documentation)
+     --bp-tablet: 768px;
+     --bp-phone: 640px; */
 
   /* Page Padding */
   --main-padding-inline: 0;
@@ -24,6 +28,14 @@
   --gradient-3: light-dark(#ffbe0b, #ebcb8b);
   --gradient-4: light-dark(#8338ec, #b48ead);
   --gradient-5: light-dark(#3a86ff, #5e81ac);
+  --gradient-text: linear-gradient(
+    135deg,
+    var(--gradient-1) 0%,
+    var(--gradient-2) 25%,
+    var(--gradient-3) 50%,
+    var(--gradient-4) 75%,
+    var(--gradient-5) 100%
+  );
 
   /* Theme Toggle Colors */
   --theme-toggle-bg: light-dark(#ffffff44, #ffffff22);
@@ -50,9 +62,9 @@
   );
 
   /* Shadow Colors */
-  --shadow-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-  --shadow-color-dense: light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
-  --shadow-color-denser: light-dark(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+  --shadow-color-sm: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+  --shadow-color-md: light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+  --shadow-color-lg: light-dark(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
   --focus-ring-color: light-dark(
     rgba(255, 0, 110, 0.1),
     rgba(191, 97, 106, 0.15)
@@ -60,20 +72,6 @@
   --focus-ring-color-strong: light-dark(
     rgba(255, 0, 110, 0.3),
     rgba(191, 97, 106, 0.35)
-  );
-
-  /* Special Gradient Colors (Alpha versions) */
-  --gradient-4-alpha-5: light-dark(
-    rgba(131, 56, 236, 0.05),
-    rgba(180, 142, 173, 0.05)
-  );
-  --gradient-5-alpha-5: light-dark(
-    rgba(58, 134, 255, 0.05),
-    rgba(94, 129, 172, 0.05)
-  );
-  --gradient-1-alpha-3: light-dark(
-    rgba(255, 0, 110, 0.03),
-    rgba(191, 97, 106, 0.03)
   );
 
   /* Product Colors */

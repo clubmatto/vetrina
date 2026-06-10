@@ -1,4 +1,5 @@
-.prose {
+.hero-title,
+.hero-tagline {
   text-align: center;
   margin-inline: auto;
   display: block;
@@ -59,12 +60,12 @@
 .btn-primary {
   background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
   color: var(--text-inverse);
-  box-shadow: 0 4px 20px var(--shadow-color-dense);
+  box-shadow: 0 4px 20px var(--shadow-color-md);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px var(--shadow-color-denser);
+  box-shadow: 0 6px 25px var(--shadow-color-lg);
 }
 
 .btn-secondary {
@@ -134,9 +135,9 @@
   position: relative;
   background: linear-gradient(
     135deg,
-    var(--gradient-4-alpha-5) 0%,
-    var(--gradient-5-alpha-5) 50%,
-    var(--gradient-1-alpha-3) 100%
+    color-mix(in srgb, var(--gradient-4), transparent 95%) 0%,
+    color-mix(in srgb, var(--gradient-5), transparent 95%) 50%,
+    color-mix(in srgb, var(--gradient-1), transparent 97%) 100%
   );
 }
 
@@ -145,13 +146,11 @@
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
-  animation: revealUp 1s ease-out 0.5s forwards;
+  animation: fadeUp 1s ease-out 0.5s forwards;
 }
 
 .who-we-are-text {
-  font-family:
-    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
-    "DejaVu Sans Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-size: clamp(1.4rem, 3.5vw, 2rem);
   font-weight: 400;
   line-height: 1.9;
@@ -189,13 +188,18 @@
   font-style: normal;
 }
 
-@keyframes revealUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@media (max-width: 640px) {
+  .hero {
+    padding: 2rem 1rem 4rem;
+    min-height: calc(80vh - var(--nav-height));
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .who-we-are {
+    padding: 2rem 1rem;
+    min-height: auto;
+  }
+
+  .quote-wrapper {
+    padding: 2rem 1.5rem 1.5rem;
   }
 }

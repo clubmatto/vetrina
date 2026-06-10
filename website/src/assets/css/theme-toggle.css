@@ -39,16 +39,8 @@
   justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  .theme-icon.theme-icon-dark {
-    display: flex;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  .theme-icon.theme-icon-light {
-    display: flex;
-  }
+.theme-icon.active {
+  display: flex;
 }
 
 .theme-toggle-btn .lucide-icon {

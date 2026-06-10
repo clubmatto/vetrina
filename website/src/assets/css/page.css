@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 .page-intro {
   margin-bottom: 3rem;
   font-size: 1.1rem;
@@ -27,38 +25,14 @@
   margin-bottom: 1.5rem;
 }
 
-.page-content h2 {
-  font-size: 1.75em;
-  margin-bottom: 0.5714em;
+.page-content :is(h2, h3, h4, h5, h6) {
+  margin: 1.25em 0 0.5em;
 }
-
-.page-content h2:not(:first-child) {
-  margin-top: 1.1428em;
-}
-
-.page-content h3 {
-  font-size: 1.5em;
-  margin-bottom: 0.6666em;
-}
-
-.page-content h3:not(:first-child) {
-  margin-top: 1.3333em;
-}
-
-.page-content h4 {
-  font-size: 1.25em;
-  margin-bottom: 0.8em;
-}
-
-.page-content h5 {
-  font-size: 1.125em;
-  margin-bottom: 0.8888em;
-}
-
-.page-content h6 {
-  font-size: 1em;
-  margin-bottom: 1em;
-}
+.page-content h2 { font-size: 1.75em; }
+.page-content h3 { font-size: 1.5em; }
+.page-content h4 { font-size: 1.25em; }
+.page-content h5 { font-size: 1.125em; }
+.page-content h6 { font-size: 1em; }
 
 .page-content p:not(:last-child),
 .page-content dl:not(:last-child),
@@ -70,7 +44,10 @@
   margin-bottom: 1em;
 }
 
-.page-content h1,
+.page-content h1 {
+    margin-bottom: var(--page-padding-block-end);
+}
+
 .page-content h2,
 .page-content h3,
 .page-content h4,
@@ -182,9 +159,7 @@ ul.posts li a .date {
 
 .columns .column {
   display: block;
-  flex-grow: 1;
-  flex-basis: 0;
-  flex-shrink: 1;
+  flex: 1;
   padding: 0.75rem 0.75rem 0.75rem 0;
 }
 
@@ -209,4 +184,21 @@ ul.posts li a .date {
   border-radius: 3px;
   opacity: 0.75;
   text-transform: lowercase;
+}
+
+@media (max-width: 640px) {
+  .columns {
+    flex-direction: column;
+  }
+
+  ul.posts li a {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  ul.posts li a .post-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
