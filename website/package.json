@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf _site",
     "build": "npm run clean && NODE_ENV=production tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts",
-    "dev": "npm run clean && tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
+    "dev": "npm run clean && NODE_ENV=development tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck && prettier --check .",
     "prettier:check": "prettier --check .",

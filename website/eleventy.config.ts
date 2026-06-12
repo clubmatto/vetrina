@@ -5,7 +5,13 @@ import { asset } from "./src/_filters/asset.js";
 import { posts, postsByYear } from "./src/_collections/posts.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
-import { buildAll, buildCss, buildJs, hasChanged } from "./scripts/build.js";
+import {
+  buildAll,
+  buildCss,
+  buildJs,
+  hasChanged,
+  generateManifest,
+} from "./scripts/build.js";
 
 export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addWatchTarget("src/assets");
@@ -27,6 +33,7 @@ export default function (eleventyConfig: EleventyConfig) {
       if (hasChanged(changedFiles, "js")) {
         await buildJs();
       }
+      await generateManifest();
     }
   });
 
