@@ -32,8 +32,8 @@ a.product-card {
 
 .product-card-icon {
   flex-shrink: 0;
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,6 +70,8 @@ a.product-card {
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0.75rem 0.75rem;
+  max-height: 150px;
+  overflow: hidden;
 }
 
 .product-card-title {
@@ -116,6 +118,10 @@ a.product-card {
 @media (max-width: 640px) {
   .products-list {
     grid-template-columns: 1fr;
+  }
+
+  .product-card-content {
+    max-height: 100px;
   }
 
   .product-card-icon {
