@@ -5,7 +5,6 @@ permalink: /vetrina/fakedata/
 go_import: true
 description: Open source CLI tool for generating fake/test data. 80+ generators, multiple output formats, streaming, and templates.
 ---
-
 <a href="https://github.com/clubmatto/vetrina" class="github-ribbon" aria-label="View on GitHub">
   {{ 'github' | lucide }}
 </a>
@@ -30,8 +29,8 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
       <div class="terminal-body">
         <div class="terminal-comment"># Basic usage — tab-separated columns</div>
         <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata email country</div>
-        <div class="terminal-line terminal-output">cemshid@example.com  Afghanistan</div>
-        <div class="terminal-line terminal-output">LucasPerdidao@example.me  Turkey</div>
+        <div class="terminal-line terminal-output">cemshid@example.com Afghanistan</div>
+        <div class="terminal-line terminal-output">LucasPerdidao@example.me Turkey</div>
 
         <div class="terminal-comment"># Deterministic output with a seed</div>
         <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --seed 42 email country</div>
@@ -42,7 +41,9 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
         <div class="terminal-line terminal-output">keryilmaz@test.name,Vietnam</div>
 
         <div class="terminal-comment"># NDJSON output</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 email country</div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 email country
+        </div>
         <div class="terminal-line terminal-output">{"email":"plbabin@test.org","country":"Lithuania"}</div>
         <div class="terminal-line terminal-output">{"email":"bermonpainter@test.us","country":"Haiti"}</div>
 
@@ -55,15 +56,15 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
   <div class="vetrina-grid-content">
     <p class="vetrina-intro-text">
-      FakeData generates realistic test data right in your terminal: no config
-      files, no setup. Just name the columns you need. It ships with
+      FakeData generates realistic test data right in your terminal: no config files, no setup. Just name the columns
+      you need. It ships with
       <strong>80+ generators</strong>.
     </p>
 
-      <p class="vetrina-intro-text"> Use <strong>templates</strong> for custom output,
-          enable <strong>shell completion</strong> for bash/zsh/fish, or pin results
-          with <strong>deterministic seeding</strong>.
-      </p>
+    <p class="vetrina-intro-text">
+      Use <strong>templates</strong> for custom output, enable <strong>shell completion</strong> for bash/zsh/fish, or
+      pin results with <strong>deterministic seeding</strong>.
+    </p>
   </div>
 </div>
 
@@ -80,17 +81,16 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
       </div>
       <div class="terminal-body">
         <div class="terminal-comment"># With Go</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest</div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest
+        </div>
         <div class="terminal-comment"># Or via Homebrew</div>
         <div class="terminal-line"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
       </div>
     </div>
   </div>
   <div class="vetrina-grid-content">
-    <p class="vetrina-intro-text">
-      There are several ways to install FakeData — pick the one that fits your
-      workflow.
-    </p>
+    <p class="vetrina-intro-text">There are several ways to install FakeData — pick the one that fits your workflow.</p>
   </div>
 </div>
 

@@ -25,11 +25,21 @@
   margin-bottom: 1.5rem;
 }
 
-.page-content h2 { font-size: 1.75em; }
-.page-content h3 { font-size: 1.5em; }
-.page-content h4 { font-size: 1.25em; }
-.page-content h5 { font-size: 1.125em; }
-.page-content h6 { font-size: 1em; }
+.page-content h2 {
+  font-size: 1.75em;
+}
+.page-content h3 {
+  font-size: 1.5em;
+}
+.page-content h4 {
+  font-size: 1.25em;
+}
+.page-content h5 {
+  font-size: 1.125em;
+}
+.page-content h6 {
+  font-size: 1em;
+}
 
 .page-content p:not(:last-of-type),
 .page-content dl:not(:last-of-type),
@@ -42,7 +52,7 @@
 }
 
 .page-content h1 {
-    margin-bottom: var(--page-padding-block-end);
+  margin-bottom: var(--page-padding-block-end);
 }
 
 .page-content h2,
@@ -259,7 +269,7 @@ ul.posts li a .date {
 }
 
 .vetrina-section-title::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: calc(-1 * var(--page-padding-inline));
@@ -356,9 +366,15 @@ ul.posts li a .date {
   border-radius: 50%;
 }
 
-.terminal-dot.red { background: #ff5f57; }
-.terminal-dot.yellow { background: #febc2e; }
-.terminal-dot.green { background: #28c840; }
+.terminal-dot.red {
+  background: #ff5f57;
+}
+.terminal-dot.yellow {
+  background: #febc2e;
+}
+.terminal-dot.green {
+  background: #28c840;
+}
 
 .terminal-title {
   margin-left: 0.5rem;

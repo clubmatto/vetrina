@@ -23,9 +23,15 @@ function applyTheme(theme: string) {
 
   if (!lightIcon || !systemIcon || !darkIcon) return;
 
-  lightIcon.classList.toggle("active", theme !== "system" && resolved === "light");
+  lightIcon.classList.toggle(
+    "active",
+    theme !== "system" && resolved === "light",
+  );
   systemIcon.classList.toggle("active", theme === "system");
-  darkIcon.classList.toggle("active", theme !== "system" && resolved === "dark");
+  darkIcon.classList.toggle(
+    "active",
+    theme !== "system" && resolved === "dark",
+  );
 }
 
 function getNextTheme(currentTheme: string): string {
