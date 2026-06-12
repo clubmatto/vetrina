@@ -3,74 +3,106 @@ layout: page.liquid
 title: FakeData
 permalink: /vetrina/fakedata/
 go_import: true
-description: Open source CLI tool for generating fake/test data. 40+ generators, multiple output formats, streaming, and templates.
+description: Open source CLI tool for generating fake/test data. 80+ generators, multiple output formats, streaming, and templates.
 ---
-<section class="product-hero">
-  <div class="product-hero-content">
-    <div class="product-hero-icon">{{ 'layers' | lucide }}</div>
-    <h1 class="product-hero-title">FakeData</h1>
-    <p class="product-hero-tagline">Zero-config test data for your stack</p>
-    <div class="product-hero-actions">
-      <a href="https://github.com/clubmatto/vetrina" class="btn btn-primary">GitHub</a>
-      <a href="/products/fakedata/" class="btn btn-secondary">Pro Edition</a>
+
+<a href="https://github.com/clubmatto/vetrina" class="github-ribbon" aria-label="View on GitHub">
+  {{ 'github' | lucide }}
+</a>
+
+<div class="vetrina-header">
+  <div class="vetrina-page-icon">{{ 'layers' | lucide }}</div>
+  <h1 class="vetrina-page-title">FakeData</h1>
+  <p class="vetrina-page-tagline">Zero-config test data for your stack</p>
+</div>
+
+<h2 class="vetrina-section-title">Quick Start</h2>
+
+<div class="vetrina-grid">
+  <div class="vetrina-grid-terminal">
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">bash</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-comment"># Basic usage — tab-separated columns</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata email country</div>
+        <div class="terminal-line terminal-output">cemshid@example.com  Afghanistan</div>
+        <div class="terminal-line terminal-output">LucasPerdidao@example.me  Turkey</div>
+
+        <div class="terminal-comment"># Deterministic output with a seed</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --seed 42 email country</div>
+
+        <div class="terminal-comment"># CSV with header row</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata -H -s "," email country</div>
+        <div class="terminal-line terminal-output">email,country</div>
+        <div class="terminal-line terminal-output">keryilmaz@test.name,Vietnam</div>
+
+        <div class="terminal-comment"># NDJSON output</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 email country</div>
+        <div class="terminal-line terminal-output">{"email":"plbabin@test.org","country":"Lithuania"}</div>
+        <div class="terminal-line terminal-output">{"email":"bermonpainter@test.us","country":"Haiti"}</div>
+
+        <div class="terminal-comment"># Stream rows indefinitely</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --stream email</div>
+        <div class="terminal-line terminal-output">syropian@test.cg</div>
+        <div class="terminal-line terminal-output">findingjenny@example.pohl</div>
+      </div>
     </div>
   </div>
-</section>
-
-<section class="product-features">
-  <h2 class="product-section-title">Install</h2>
-  <div class="product-features-grid">
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Go Install</h3>
-      <p class="product-feature-desc">
-        <code>go install matto.club/vetrina/fakedata@latest</code>
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Homebrew</h3>
-      <p class="product-feature-desc">
-        <code>brew install clubmatto/tap/fakedata</code>
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Build from Source</h3>
-      <p class="product-feature-desc">
-        <code>git clone https://github.com/clubmatto/vetrina && cd vetrina/fakedata && make</code>
-      </p>
-    </article>
-  </div>
-</section>
-
-<section class="product-features">
-  <h2 class="product-section-title">Quick Start</h2>
-  <div class="product-features-grid">
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Basic Usage</h3>
-      <p class="product-feature-desc">
-        <code>fakedata email country --seed 1</code>
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Named Columns</h3>
-      <p class="product-feature-desc">
-        <code>fakedata -n 5 "login:email" "first_name" "last_name"</code>
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <h3 class="product-feature-title">Stream Mode</h3>
-      <p class="product-feature-desc">
-        <code>fakedata --stream email</code>
-      </p>
-    </article>
-  </div>
-</section>
-
-<section class="product-cta">
-  <div class="product-cta-content">
-    <h2 class="product-cta-title">Need database integration?</h2>
-    <p class="product-cta-desc">
-      The Pro Edition adds schema introspection, foreign key resolution, and direct Postgres/SQLite generation.
+  <div class="vetrina-grid-content">
+    <p class="vetrina-intro-text">
+      FakeData generates realistic test data right in your terminal: no config
+      files, no setup. Just name the columns you need. It ships with
+      <strong>80+ generators</strong>.
     </p>
-    <a href="/products/fakedata/" class="btn btn-primary">Learn More</a>
+
+      <p class="vetrina-intro-text"> Use <strong>templates</strong> for custom output,
+          enable <strong>shell completion</strong> for bash/zsh/fish, or pin results
+          with <strong>deterministic seeding</strong>.
+      </p>
   </div>
-</section>
+</div>
+
+<h2 class="vetrina-section-title">Install</h2>
+
+<div class="vetrina-grid">
+  <div class="vetrina-grid-terminal">
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">bash</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-comment"># With Go</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest</div>
+        <div class="terminal-comment"># Or via Homebrew</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
+      </div>
+    </div>
+  </div>
+  <div class="vetrina-grid-content">
+    <p class="vetrina-intro-text">
+      There are several ways to install FakeData — pick the one that fits your
+      workflow.
+    </p>
+  </div>
+</div>
+
+<h2 class="vetrina-section-title">Want more?</h2>
+
+<div class="vetrina-more-section">
+  <p class="vetrina-more-text">
+    Need to generate data directly in your database? Connect <strong>FakeData Pro</strong>
+    to your database and watch it generate realistic data automatically.
+  </p>
+
+  <div class="vetrina-ctas">
+    <a href="/products/fakedata/" class="btn btn-primary">FakeData Pro</a>
+  </div>
+</div>
