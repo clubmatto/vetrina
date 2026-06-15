@@ -56,6 +56,9 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/assets/img");
   eleventyConfig.addPassthroughCopy("./src/assets/header-logo.svg");
   eleventyConfig.addPassthroughCopy("./src/assets/logo.svg");
+  eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/fakedata/*.gif": "assets/img/fakedata",
+  });
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);

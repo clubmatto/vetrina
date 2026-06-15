@@ -15,9 +15,57 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   <p class="vetrina-page-tagline">Zero-config test data for your stack</p>
 </div>
 
-<h2 class="vetrina-section-title">Quick Start</h2>
+<div class="terminal-window">
+  <div class="terminal-header">
+    <span class="terminal-dot red"></span>
+    <span class="terminal-dot yellow"></span>
+    <span class="terminal-dot green"></span>
+    <span class="terminal-title">demo</span>
+  </div>
+  <div class="terminal-body terminal-gif">
+    <img src="/assets/img/fakedata/basic-light.gif" alt="FakeData basic usage demo" loading="lazy" class="theme-light">
+    <img src="/assets/img/fakedata/basic-dark.gif" alt="FakeData basic usage demo" loading="lazy" class="theme-dark">
+  </div>
+</div>
+
+<h2 class="vetrina-section-title">Perfect For</h2>
+
+<div class="vetrina-use-cases">
+  <div class="vetrina-use-case">
+    <h3>Testing</h3>
+    <p>Generate realistic test data for your applications without manual creation.</p>
+  </div>
+  <div class="vetrina-use-case">
+    <h3>Load Testing</h3>
+    <p>Stream thousands of rows to test database performance and API limits.</p>
+  </div>
+  <div class="vetrina-use-case">
+    <h3>Development</h3>
+    <p>Quickly populate databases and APIs during development.</p>
+  </div>
+  <div class="vetrina-use-case">
+    <h3>Demos</h3>
+    <p>Create realistic sample data for presentations and documentation.</p>
+  </div>
+</div>
+
+<h2 class="vetrina-section-title">Features</h2>
 
 <div class="vetrina-grid">
+  <div class="vetrina-grid-content">
+    <p class="vetrina-intro-text">
+      FakeData is built for developers who need realistic test data fast.
+    </p>
+
+    <ul class="vetrina-features-list">
+      <li><strong>80+ generators</strong> — People, geography, web, time, types, and fun categories</li>
+      <li><strong>Multiple formats</strong> — Tab-separated, CSV, or NDJSON output</li>
+      <li><strong>Streaming mode</strong> — Generate data indefinitely for load testing</li>
+      <li><strong>Templates</strong> — Custom output with Go templates (JSON, YAML, any format)</li>
+      <li><strong>Deterministic</strong> — Use seeds for reproducible results every time</li>
+      <li><strong>Shell completion</strong> — Bash, zsh, and fish support</li>
+    </ul>
+  </div>
   <div class="vetrina-grid-terminal">
     <div class="terminal-window">
       <div class="terminal-header">
@@ -27,44 +75,58 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
         <span class="terminal-title">bash</span>
       </div>
       <div class="terminal-body">
-        <div class="terminal-comment"># Basic usage — tab-separated columns</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata email country</div>
-        <div class="terminal-line terminal-output">cemshid@example.com Afghanistan</div>
-        <div class="terminal-line terminal-output">LucasPerdidao@example.me Turkey</div>
-
-        <div class="terminal-comment"># Deterministic output with a seed</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --seed 42 email country</div>
-
-        <div class="terminal-comment"># CSV with header row</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata -H -s "," email country</div>
-        <div class="terminal-line terminal-output">email,country</div>
-        <div class="terminal-line terminal-output">keryilmaz@test.name,Vietnam</div>
-
-        <div class="terminal-comment"># NDJSON output</div>
+        <div class="terminal-comment"># Custom output with templates</div>
         <div class="terminal-line">
-          <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 email country
+          <span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 2
         </div>
-        <div class="terminal-line terminal-output">{"email":"plbabin@test.org","country":"Lithuania"}</div>
-        <div class="terminal-line terminal-output">{"email":"bermonpainter@test.us","country":"Haiti"}</div>
+        <div class="terminal-line terminal-output">{"name": "John Doe", "email": "john@example.com"}</div>
 
-        <div class="terminal-comment"># Stream rows indefinitely</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata --stream email</div>
-        <div class="terminal-line terminal-output">syropian@test.cg</div>
-        <div class="terminal-line terminal-output">findingjenny@example.pohl</div>
+        <div class="terminal-comment"># JSON output</div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">$</span> fakedata -f ndjson -n 2 name email
+        </div>
+        <div class="terminal-line terminal-output">{"name": "Jane Smith", "email": "jane@test.com"}</div>
       </div>
     </div>
   </div>
-  <div class="vetrina-grid-content">
-    <p class="vetrina-intro-text">
-      FakeData generates realistic test data right in your terminal: no config files, no setup. Just name the columns
-      you need. It ships with
-      <strong>80+ generators</strong>.
-    </p>
+</div>
 
-    <p class="vetrina-intro-text">
-      Use <strong>templates</strong> for custom output, enable <strong>shell completion</strong> for bash/zsh/fish, or
-      pin results with <strong>deterministic seeding</strong>.
-    </p>
+<h2 class="vetrina-section-title">What Can You Generate?</h2>
+
+<div class="vetrina-categories">
+  <div class="vetrina-category">
+    <h3>People</h3>
+    <p>email, name, username, slug, UUID</p>
+  </div>
+  <div class="vetrina-category">
+    <h3>Geography</h3>
+    <p>country, city, address, phone, timezone</p>
+  </div>
+  <div class="vetrina-category">
+    <h3>Web</h3>
+    <p>URL, domain, company, IP, HTTP methods</p>
+  </div>
+  <div class="vetrina-category">
+    <h3>Time</h3>
+    <p>date, datetime, timestamp, epoch</p>
+  </div>
+  <div class="vetrina-category">
+    <h3>Types</h3>
+    <p>int, float, boolean, enum, JSON</p>
+  </div>
+  <div class="vetrina-category">
+    <h3>Fun</h3>
+    <p>programming_language, dinosaur, cat breed</p>
+  </div>
+</div>
+
+<h2 class="vetrina-section-title">See It In Action</h2>
+
+<div class="vetrina-demos">
+  <div class="vetrina-demo">
+    <h3>Templates</h3>
+    <img src="/assets/img/fakedata/templates-light.gif" alt="FakeData templates demo" loading="lazy" class="theme-light">
+    <img src="/assets/img/fakedata/templates.gif" alt="FakeData templates demo" loading="lazy" class="theme-dark">
   </div>
 </div>
 
@@ -94,15 +156,15 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
 </div>
 
-<h2 class="vetrina-section-title">Want more?</h2>
+<h2 class="vetrina-section-title">FakeData Pro</h2>
 
 <div class="vetrina-more-section">
   <p class="vetrina-more-text">
-    Need to generate data directly in your database? Connect <strong>FakeData Pro</strong>
-    to your database and watch it generate realistic data automatically.
+    Need to generate data directly in your database? <strong>FakeData Pro</strong>
+    connects to your database and generates realistic data automatically — no export/import needed.
   </p>
 
   <div class="vetrina-ctas">
-    <a href="/products/fakedata/" class="btn btn-primary">FakeData Pro</a>
+    <a href="/products/fakedata/" class="btn btn-primary">Learn More</a>
   </div>
 </div>
