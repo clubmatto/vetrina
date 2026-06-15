@@ -492,59 +492,112 @@ ul.posts li a .date {
   line-height: 1.4;
 }
 
-.vetrina-use-cases {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+.vetrina-tabs {
   margin: 2rem 0;
 }
 
-.vetrina-use-case {
-  padding: 1.25rem;
-  border-radius: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+.vetrina-tabs input[type="radio"] {
+  display: none;
 }
 
-.vetrina-use-case h3 {
+.vetrina-tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+.vetrina-tab-nav label {
+  padding: 0.75rem 1.5rem;
   font-family: var(--font-mono), sans-serif;
-  font-size: 1rem;
-  margin: 0 0 0.5rem 0;
-  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  user-select: none;
 }
 
-.vetrina-use-case p {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.9rem;
-  margin: 0;
-  opacity: 0.75;
-  line-height: 1.5;
+.vetrina-tab-nav label:hover {
+  opacity: 0.8;
 }
 
-.vetrina-demos {
+.vetrina-tab-content {
+  display: none;
+}
+
+.vetrina-tab-panel {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  margin: 2rem 0;
+  align-items: start;
 }
 
-.vetrina-demo {
-  text-align: center;
+.vetrina-tab-panel-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.vetrina-demo h3 {
-  font-family: var(--font-mono), sans-serif;
-  font-size: 1rem;
-  margin: 0 0 1rem 0;
-  color: var(--text);
+.vetrina-tab-panel-text p {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  opacity: 0.75;
+  line-height: 1.6;
+  margin: 0;
 }
 
-.vetrina-demo img {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+.vetrina-tab-panel-text .terminal-window {
+  margin: 0;
+}
+
+.terminal-command {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: 6px;
+  line-height: 1.5;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+
+.terminal-command:hover {
+  border-color: var(--text);
+}
+
+.terminal-command.copied::after {
+  content: "Copied!";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.7rem;
+  color: var(--terminal-prompt);
+  font-weight: 600;
+}
+
+.vetrina-tab-panel-demo .terminal-window {
+  margin: 0;
+}
+
+#tab-testing:checked ~ #content-testing,
+#tab-development:checked ~ #content-development,
+#tab-load-testing:checked ~ #content-load-testing,
+#tab-templates:checked ~ #content-templates {
+  display: block;
+}
+
+#tab-testing:checked ~ .vetrina-tab-nav label[for="tab-testing"],
+#tab-development:checked ~ .vetrina-tab-nav label[for="tab-development"],
+#tab-load-testing:checked ~ .vetrina-tab-nav label[for="tab-load-testing"],
+#tab-templates:checked ~ .vetrina-tab-nav label[for="tab-templates"] {
+  opacity: 1;
+  border-bottom-color: var(--gradient-1);
 }
 
 @media (max-width: 768px) {
@@ -556,6 +609,11 @@ ul.posts li a .date {
   .vetrina-more-section {
     flex-direction: column;
     text-align: center;
+  }
+
+  .vetrina-tab-panel {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
@@ -573,29 +631,5 @@ ul.posts li a .date {
   ul.posts li a .post-meta {
     width: 100%;
     justify-content: space-between;
-  }
-}
-
-/* Theme-aware image swapping for GIF demos */
-.vetrina-demo img.theme-light,
-.vetrina-demo img.theme-dark {
-  display: none;
-}
-
-:root[color-scheme="light"] .vetrina-demo img.theme-light,
-:root[color-scheme="dark"] .vetrina-demo img.theme-dark {
-  display: block;
-}
-
-/* Fallback for system preference */
-@media (prefers-color-scheme: light) {
-  :root:not([color-scheme]) .vetrina-demo img.theme-light {
-    display: block;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([color-scheme]) .vetrina-demo img.theme-dark {
-    display: block;
   }
 }
