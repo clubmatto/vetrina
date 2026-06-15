@@ -14,7 +14,7 @@ declare module "@11ty/eleventy" {
     addGlobalData: (name: string, fn: unknown) => void;
     addFilter: (name: string, fn: unknown) => void;
     addLiquidFilter: (name: string, fn: unknown) => void;
-    addPassthroughCopy: (path: string) => void;
+    addPassthroughCopy: (path: string | Record<string, string>) => void;
     addCollection: (name: string, fn: unknown) => void;
     addWatchTarget: (path: string) => void;
     on: (event: string, callback: Function) => void;
@@ -22,7 +22,7 @@ declare module "@11ty/eleventy" {
 }
 
 declare const Alpine: {
-  data: (name: string, setup: () => Record<string, unknown>) => void;
+  data: (name: string, setup: () => Record<string, any>) => void;
 };
 
 declare module "lucide-static/icon-nodes.json" {

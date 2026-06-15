@@ -22,7 +22,6 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
 <div class="terminal-window">
   <div class="terminal-header">
     <span class="terminal-dot red"></span>
-    <span class="terminal-dot yellow"></span>
     <span class="terminal-dot green"></span>
     <span class="terminal-title">demo</span>
   </div>
@@ -254,22 +253,32 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
     <span class="terminal-dot red"></span>
     <span class="terminal-dot yellow"></span>
     <span class="terminal-dot green"></span>
-    <span class="terminal-title">fakedata</span>
+    <span class="terminal-title">search for generators here {{ 'arrow-down' | lucide: size: 14 }}</span>
   </div>
   <div class="terminal-body">
-    <div class="terminal-line">
+    <div class="terminal-line vetrina-browse-line">
       <span class="terminal-prompt">$</span> fakedata
-      <input type="text" x-model="query" class="vetrina-browse-input" placeholder="type to find a generator…" autocomplete="off">
+      <span class="vetrina-browse-cursor" x-show="!query && !focused">█</span>
+      <input type="text" x-model="query" @focus="lastSelected = null; focused = true" @blur="focused = false" class="vetrina-browse-input" autocomplete="off">
+      <button x-show="query" @click="clear" class="vetrina-browse-clear" aria-label="Clear search">&times;</button>
     </div>
-    <div class="vetrina-browse-results" x-show="query.trim() && !lastSelected">
+    <div class="vetrina-browse-results" x-show="query.trim() && !lastSelected && matches.length">
       <template x-for="item in matches" :key="item[0]">
         <div class="vetrina-browse-result" @click="select(item[0], item[1])">
-          <span class="vetrina-browse-result-name" x-text="item[0]"></span>
-          <span class="vetrina-browse-result-desc" x-text="item[1].desc"></span>
+          <span class="vetrina-browse-result-name" x-html="highlight(item[0])"></span>
+          <span class="vetrina-browse-result-desc" x-html="highlight(item[1].desc)"></span>
         </div>
       </template>
     </div>
-    <div class="vetrina-browse-output" x-show="output.length">
+    <div class="vetrina-browse-none" x-show="query.trim() && !lastSelected && !matches.length">
+      <p class="vetrina-browse-none-text">No generators match "<span x-text="query"></span>". Try one of these:</p>
+      <div class="vetrina-browse-suggestions">
+        <template x-for="s in suggestions" :key="s">
+          <span class="vetrina-browse-suggestion" @click="select(s, generators[s])" x-text="s"></span>
+        </template>
+      </div>
+    </div>
+    <div class="vetrina-browse-output" x-show="output.length && lastSelected">
       <template x-for="(line, i) in output" :key="i">
         <div class="vetrina-browse-output-line" x-text="line"></div>
       </template>

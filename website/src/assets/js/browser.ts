@@ -2,6 +2,8 @@ const dataScript = document.getElementById("generators-data");
 const generators: Record<string, { desc: string; samples: string[] }> =
   dataScript ? JSON.parse(dataScript.textContent!) : {};
 
+const SUGGESTIONS = ["email", "name", "address", "phone", "country", "company"];
+
 let browserAnimId = 0;
 
 document.addEventListener("alpine:init", () => {
@@ -10,12 +12,20 @@ document.addEventListener("alpine:init", () => {
     generators,
     output: [] as string[],
     lastSelected: null as string | null,
+    focused: false,
+    suggestions: SUGGESTIONS,
     get matches() {
       const q = this.query.toLowerCase();
-      return Object.entries(this.generators).filter(
+      return (Object.entries(this.generators) as [string, { desc: string; samples: string[] }][]).filter(
         ([name, gen]) =>
           name.includes(q) || gen.desc.toLowerCase().includes(q),
       );
+    },
+    highlight(text: string): string {
+      if (!this.query.trim()) return text;
+      const escaped = this.query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`(${escaped})`, "gi");
+      return text.replace(regex, '<mark class="vetrina-highlight">$1</mark>');
     },
     select(name: string, gen: { desc: string; samples: string[] }) {
       this.lastSelected = name;
@@ -32,6 +42,12 @@ document.addEventListener("alpine:init", () => {
       };
 
       setTimeout(next, 100);
+    },
+    clear() {
+      this.query = "";
+      this.lastSelected = null;
+      this.output = [];
+      browserAnimId++;
     },
     init() {
       this.$watch("query", (val: string) => {
