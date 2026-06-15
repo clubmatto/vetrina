@@ -1,0 +1,1326 @@
+{
+  "address": {
+    "desc": "street address",
+    "samples": [
+      "5072 Spring Cir",
+      "6273 Pine Ct",
+      "6487 Main Ave",
+      "1482 Birch Pl",
+      "2059 Oak Ct",
+      "1615 Oak Ave",
+      "5572 Highland Dr",
+      "3862 Spring St",
+      "5945 Sunset Dr",
+      "5634 River Ave"
+    ]
+  },
+  "adjective": {
+    "desc": "adjective",
+    "samples": [
+      "preserved",
+      "totalled",
+      "scrolled",
+      "draining",
+      "speedy",
+      "uncapped",
+      "warlike",
+      "emissary",
+      "primal",
+      "leather"
+    ]
+  },
+  "animal": {
+    "desc": "animal breed",
+    "samples": [
+      "buffalo",
+      "elk",
+      "leopard",
+      "mouse",
+      "monkey",
+      "jaguar",
+      "deer",
+      "capybara",
+      "gorilla",
+      "wolf"
+    ]
+  },
+  "art_movement": {
+    "desc": "art movement or ism",
+    "samples": [
+      "ottonian",
+      "land art",
+      "kinetic art",
+      "formalism",
+      "divisionism",
+      "carolingian",
+      "primitivism",
+      "aestheticism",
+      "fluxus",
+      "post-impressionism"
+    ]
+  },
+  "boolean": {
+    "desc": "true or false",
+    "samples": [
+      "true",
+      "true",
+      "false",
+      "false",
+      "true",
+      "true",
+      "true",
+      "true",
+      "true",
+      "true"
+    ]
+  },
+  "capital": {
+    "desc": "Capital city",
+    "samples": [
+      "Nuuk",
+      "Port Moresby",
+      "Charlotte Amalie",
+      "Gibraltar",
+      "Dushanbe",
+      "Brasilia",
+      "Islamabad",
+      "Rabat",
+      "Accra",
+      "Djibouti"
+    ]
+  },
+  "cat": {
+    "desc": "cat breed",
+    "samples": [
+      "Turkish Van",
+      "British Semi-longhair",
+      "Korat",
+      "Mekong Bobtail",
+      "Napoleon",
+      "Peterbald",
+      "Turkish Angora",
+      "Raas",
+      "Highlander",
+      "Bambino"
+    ]
+  },
+  "char": {
+    "desc": "single random letter",
+    "samples": [
+      "J",
+      "X",
+      "f",
+      "y",
+      "G",
+      "w",
+      "C",
+      "q",
+      "n",
+      "K"
+    ]
+  },
+  "city": {
+    "desc": "City name",
+    "samples": [
+      "Ouro Verde de Minas",
+      "Brandfort",
+      "Macalva Norte",
+      "Lacasse",
+      "Sintești",
+      "Mira Estrela",
+      "Zhaogezhuang",
+      "Cromer",
+      "Yeraskhahun",
+      "Oirschot"
+    ]
+  },
+  "color": {
+    "desc": "one word color",
+    "samples": [
+      "ivory",
+      "yellow",
+      "orchid",
+      "lavender",
+      "teal",
+      "salmon",
+      "yellow",
+      "orchid",
+      "orange",
+      "salmon"
+    ]
+  },
+  "company": {
+    "desc": "company name",
+    "samples": [
+      "Titan Corp",
+      "Delta Ventures",
+      "Omega Holdings",
+      "Ultra Global",
+      "Commercial Partners",
+      "Pixel Works",
+      "Neo Labs",
+      "Professional LLC",
+      "Tech Corp",
+      "International Holdings"
+    ]
+  },
+  "country": {
+    "desc": "Full country name",
+    "samples": [
+      "Kenya",
+      "Gibraltar",
+      "Malta",
+      "Reunion",
+      "Dominica",
+      "French Southern Territories",
+      "Andorra",
+      "Jordan",
+      "Belarus",
+      "Colombia"
+    ]
+  },
+  "country_code": {
+    "desc": "2-digit country code",
+    "samples": [
+      "MH",
+      "OM",
+      "JO",
+      "CM",
+      "DJ",
+      "KE",
+      "BL",
+      "FR",
+      "NI",
+      "PM"
+    ]
+  },
+  "country_code3": {
+    "desc": "3-digit country code",
+    "samples": [
+      "ARG",
+      "BLR",
+      "SYR",
+      "CHE",
+      "TCD",
+      "PCN",
+      "MYT",
+      "EST",
+      "JEY",
+      "MAF"
+    ]
+  },
+  "country_emoji": {
+    "desc": "Country emoji flag",
+    "samples": [
+      "🇰🇵",
+      "🇳🇺",
+      "🇭🇳",
+      "🇸🇽",
+      "🇹🇫",
+      "🇵🇾",
+      "🇱🇺",
+      "🇹🇹",
+      "🇸🇻",
+      "🇰🇵"
+    ]
+  },
+  "currency": {
+    "desc": "Currency code",
+    "samples": [
+      "EUR",
+      "MGA",
+      "GEL",
+      "NOK",
+      "SLL",
+      "USD",
+      "RWF",
+      "TRY",
+      "CVE",
+      "SHP"
+    ]
+  },
+  "currency_name": {
+    "desc": "Currency name",
+    "samples": [
+      "Sierra Leonean leone",
+      "Euro",
+      "Euro",
+      "Nicaraguan córdoba",
+      "Swiss franc",
+      "British pound",
+      "Eritrean nakfa",
+      "Israeli new shekel",
+      "Indian rupee",
+      "Uruguayan peso"
+    ]
+  },
+  "date": {
+    "desc": "date in the format YYYY-MM-DD. By default, it generates dates in the last year",
+    "samples": [
+      "2026-03-19",
+      "2025-11-02",
+      "2026-01-08",
+      "2025-11-16",
+      "2025-09-15",
+      "2025-06-29",
+      "2025-06-28",
+      "2025-11-13",
+      "2026-05-16",
+      "2025-10-26"
+    ]
+  },
+  "datetime": {
+    "desc": "datetime in the format YYYY-MM-DD HH:MM:SS (without timezone)",
+    "samples": [
+      "2025-07-23 07:04:13",
+      "2026-02-19 00:28:29",
+      "2026-05-23 05:34:36",
+      "2025-12-07 08:54:11",
+      "2026-05-15 22:39:08",
+      "2025-12-20 14:16:13",
+      "2026-02-17 03:36:51",
+      "2025-08-01 12:40:36",
+      "2025-10-31 14:38:51",
+      "2025-10-01 22:01:10"
+    ]
+  },
+  "dinosaur": {
+    "desc": "Dinosaur name",
+    "samples": [
+      "Suuwassea",
+      "Sphenospondylus",
+      "Agrosaurus",
+      "Patricosaurus",
+      "Bienosaurus",
+      "Tatisaurus",
+      "Epichirostenotes",
+      "Majungasaurus",
+      "Dicraeosaurus",
+      "Macrophalangia"
+    ]
+  },
+  "dog": {
+    "desc": "dog breed",
+    "samples": [
+      "Himalayan Sheepdog",
+      "Cão da Serra de Aires",
+      "Schapendoes",
+      "German Spaniel",
+      "Lakeland Terrier",
+      "King Charles Spaniel",
+      "Weimaraner",
+      "Belgian Shepherd Dog (Malinois)",
+      "Basenji",
+      "Norrbottenspets"
+    ]
+  },
+  "domain_name": {
+    "desc": "full domain name",
+    "samples": [
+      "example.au",
+      "example.tv",
+      "example.bo",
+      "test.ms",
+      "test.sv",
+      "example.jp",
+      "example.by",
+      "example.mf",
+      "test.vi",
+      "test.gh"
+    ]
+  },
+  "email": {
+    "desc": "email",
+    "samples": [
+      "juan@test.pn",
+      "luka@test.pt",
+      "panagiotis@example.so",
+      "ariel@test.tj",
+      "daniel@test.cf",
+      "davit@example.pr",
+      "hana@example.fk",
+      "liam@test.do",
+      "imogen@test.gu",
+      "christos@example.jp"
+    ]
+  },
+  "emoji": {
+    "desc": "emoji",
+    "samples": [
+      "🔼",
+      "🐓",
+      "🎾",
+      "☑",
+      "🚓",
+      "🎋",
+      "⛲",
+      "🕔",
+      "🚯",
+      "🎦"
+    ]
+  },
+  "enum": {
+    "desc": "value from an enum. By default, the enum is foo,bar,baz. It accepts a list of comma-separated values",
+    "samples": [
+      "baz",
+      "baz",
+      "foo",
+      "baz",
+      "baz",
+      "baz",
+      "baz",
+      "foo",
+      "bar",
+      "bar"
+    ]
+  },
+  "epoch": {
+    "desc": "Unix timestamp between epoch and now",
+    "samples": [
+      "460516279",
+      "1122850244",
+      "74433548",
+      "1024514998",
+      "904987670",
+      "403286707",
+      "1770569121",
+      "1421043490",
+      "1343452338",
+      "1505570364"
+    ]
+  },
+  "fabric": {
+    "desc": "fabric type",
+    "samples": [
+      "grenfell cloth",
+      "houndstooth",
+      "burlap",
+      "loden",
+      "velour",
+      "khaki drill",
+      "spider silk",
+      "damask",
+      "bizarre silk",
+      "gabardine"
+    ]
+  },
+  "file": {
+    "desc": "value from a file (relative or absolute path). File must contain one value per line",
+    "samples": []
+  },
+  "first_name": {
+    "desc": "capitalized first name",
+    "samples": [
+      "Emma",
+      "Amelia",
+      "Adomas",
+      "James",
+      "Luis",
+      "Zala",
+      "Abdallah",
+      "I-chun",
+      "Roberts",
+      "Livia"
+    ]
+  },
+  "fish": {
+    "desc": "fish species",
+    "samples": [
+      "dungeness crab",
+      "peekytoe crab",
+      "sea urchin",
+      "European sea bass",
+      "rockfish",
+      "fish",
+      "dory",
+      "croaker",
+      "king crab",
+      "Atlantic salmon"
+    ]
+  },
+  "float": {
+    "desc": "decimal number",
+    "samples": [
+      "308.4589",
+      "160.4695",
+      "1469.4360",
+      "-877.3379",
+      "477.6350",
+      "-620.9801",
+      "-783.3641",
+      "-1756.0354",
+      "-588.7918",
+      "-687.6247"
+    ]
+  },
+  "flower": {
+    "desc": "flower name",
+    "samples": [
+      "begonia",
+      "amaryllis",
+      "babys breath",
+      "jasmine",
+      "buttercup",
+      "orange blossom",
+      "anemone",
+      "marigold",
+      "azalea",
+      "water lily"
+    ]
+  },
+  "fruit": {
+    "desc": "fruit",
+    "samples": [
+      "damson",
+      "loquat",
+      "tangerine",
+      "boysenberry",
+      "pomegranate",
+      "papaya",
+      "mango",
+      "papaya",
+      "tangerine",
+      "plum"
+    ]
+  },
+  "full_name": {
+    "desc": "first_name + \" \" + last_name",
+    "samples": [
+      "Tomyris Gô͘",
+      "Gabriel Giuliani",
+      "Patrícia Ivanova",
+      "Ari López",
+      "Zoé Guerra",
+      "Oliver González",
+      "Alma Hristova",
+      "Latifa Om",
+      "Sara Otero",
+      "Concepción Đào"
+    ]
+  },
+  "greek_god": {
+    "desc": "Greek god or goddess",
+    "samples": [
+      "Artemis",
+      "Nyx",
+      "Pontus",
+      "Eros",
+      "Thalassa",
+      "Hestia",
+      "Hades",
+      "Erebus",
+      "Demeter",
+      "Nemesis"
+    ]
+  },
+  "hex": {
+    "desc": "hexadecimal string",
+    "samples": [
+      "593a3a82be44fc92",
+      "4d7f1477d56719ce",
+      "388d88560f40fb93",
+      "30342fc14aa4e902",
+      "24420bf2da7f57a2",
+      "4de2b0a3cb2408f6",
+      "522842f5a40d47dd",
+      "257810a0a6da732a",
+      "32f65c57436264a",
+      "44f4f4702ae17bdb"
+    ]
+  },
+  "hex_color": {
+    "desc": "6 character hex color like a1b2c3",
+    "samples": [
+      "16f378",
+      "7c34ec",
+      "be711b",
+      "738b15",
+      "856248",
+      "979bec",
+      "fccfbd",
+      "28d990",
+      "1f6708",
+      "81a7f5"
+    ]
+  },
+  "http_method": {
+    "desc": "DELETE|GET|HEAD|OPTION|PATCH|POST|PUT",
+    "samples": [
+      "GET",
+      "PUT",
+      "OPTION",
+      "PATCH",
+      "PATCH",
+      "GET",
+      "PUT",
+      "OPTION",
+      "OPTION",
+      "OPTION"
+    ]
+  },
+  "industry": {
+    "desc": "industry",
+    "samples": [
+      "Law Practice",
+      "Textiles",
+      "Paper & Forest Products",
+      "Telecommunications",
+      "Telecommunications",
+      "Information Technology & Services",
+      "Banking",
+      "Luxury Goods & Jewelry",
+      "Machinery",
+      "Logistics & Supply Chain"
+    ]
+  },
+  "instrument": {
+    "desc": "musical instrument",
+    "samples": [
+      "kick drum",
+      "glockenspiel",
+      "trombone",
+      "viola",
+      "saxaphone",
+      "kick drum",
+      "theremin",
+      "melodica",
+      "glockenspiel",
+      "accordion"
+    ]
+  },
+  "int": {
+    "desc": "positive integer between 1 and 1000",
+    "samples": [
+      "79",
+      "424",
+      "280",
+      "393",
+      "629",
+      "299",
+      "567",
+      "79",
+      "5",
+      "274"
+    ]
+  },
+  "ipv4": {
+    "desc": "ipv4",
+    "samples": [
+      "126.109.235.100",
+      "52.52.83.6",
+      "53.168.41.249",
+      "20.54.24.57",
+      "167.115.96.170",
+      "250.58.61.236",
+      "121.124.143.84",
+      "42.101.146.214",
+      "1.228.210.11",
+      "197.170.86.239"
+    ]
+  },
+  "ipv6": {
+    "desc": "ipv6",
+    "samples": [
+      "2001:cafe:cf:33:d1:21:bb:97",
+      "2001:cafe:c0:17:8f:f6:12:2c",
+      "2001:cafe:96:81:59:aa:34:f3",
+      "2001:cafe:55:d6:5e:16:10:19",
+      "2001:cafe:c4:e9:78:91:e8:a4",
+      "2001:cafe:c3:4f:3f:1f:f3:fb",
+      "2001:cafe:5f:1b:f9:21:91:72",
+      "2001:cafe:af:c8:c5:38:ad:9d",
+      "2001:cafe:f9:75:25:27:fe:ad",
+      "2001:cafe:a1:6c:76:b0:1f:48"
+    ]
+  },
+  "job_title": {
+    "desc": "job title",
+    "samples": [
+      "recyclable material collector",
+      "statistical assistant",
+      "blending machine operator",
+      "truck loader",
+      "photogrammetrist",
+      "health specialties teacher",
+      "umpire",
+      "industrial truck operator",
+      "buyer",
+      "escort"
+    ]
+  },
+  "json": {
+    "desc": "JSON object",
+    "samples": [
+      "{\"key\": \"baz\", \"value\": 78}",
+      "{\"name\": \"product\", \"count\": 835, \"ratio\": 0.24}",
+      "{\"name\": \"product\", \"count\": 541, \"ratio\": 0.77}",
+      "{\"name\": \"item\", \"count\": 693, \"ratio\": 0.61}",
+      "{\"name\": \"entry\", \"count\": 286, \"ratio\": 0.15}",
+      "{\"id\": \"f3d7978a-f1e0-403e-b66d-b6ed01265bdc\", \"active\": false}",
+      "{\"id\": \"ca16d16c-5a17-488b-b3d9-807d75853cf1\", \"active\": false}",
+      "{\"id\": \"43ca759d-df5b-483b-bb39-b3081be520f2\", \"active\": true}",
+      "{\"key\": \"foo\", \"value\": 2}",
+      "{\"id\": \"9c4ad862-8bc9-40a9-8b00-33b71482c0ed\", \"active\": false}"
+    ]
+  },
+  "jsonb_array": {
+    "desc": "JSONB array",
+    "samples": [
+      "[{\"id\": 22, \"active\": true},{\"id\": 6, \"active\": true},{\"id\": 73, \"active\": true}]",
+      "[{\"id\": 77, \"active\": true}]",
+      "[{\"id\": 18, \"active\": true},{\"id\": 35, \"active\": true},{\"id\": 56, \"active\": false}]",
+      "[{\"id\": 92, \"active\": false},{\"id\": 10, \"active\": true},{\"id\": 87, \"active\": false}]",
+      "[]",
+      "[]",
+      "[{\"id\": 35, \"active\": true},{\"id\": 37, \"active\": true}]",
+      "[{\"id\": 6, \"active\": false}]",
+      "[{\"id\": 18, \"active\": true},{\"id\": 25, \"active\": false},{\"id\": 82, \"active\": true}]",
+      "[]"
+    ]
+  },
+  "last_name": {
+    "desc": "capitalized last name",
+    "samples": [
+      "François",
+      "Kovačić",
+      "Martin",
+      "dela Cruz",
+      "Ohana",
+      "Pavlovski",
+      "Maeda",
+      "Popović",
+      "Phak",
+      "Ozoliņš"
+    ]
+  },
+  "latitude": {
+    "desc": "Latitude",
+    "samples": [
+      "37.83416",
+      "41.28999",
+      "36.60024",
+      "36.31667",
+      "38.30746",
+      "70.61897",
+      "37.31664",
+      "41.60000",
+      "41.84364",
+      "18.90385"
+    ]
+  },
+  "longitude": {
+    "desc": "Longitude",
+    "samples": [
+      "-71.02734",
+      "120.78989",
+      "8.23235",
+      "37.65722",
+      "-1.94569",
+      "-8.61500",
+      "-56.82352",
+      "-0.21507",
+      "-71.01005",
+      "-46.52889"
+    ]
+  },
+  "mac": {
+    "desc": "mac address",
+    "samples": [
+      "FA:91:FD:67:84:7B",
+      "B5:23:D5:48:B1:2E",
+      "37:ED:31:B5:9A:EC",
+      "56:C6:2B:6F:F8:84",
+      "93:B0:18:8C:2B:6B",
+      "F8:C8:AF:63:54:76",
+      "23:44:C0:10:64:FD",
+      "23:7B:11:3D:37:B4",
+      "F4:B1:CE:B0:6A:A2",
+      "C3:A9:21:F0:13:11"
+    ]
+  },
+  "metal": {
+    "desc": "metal element",
+    "samples": [
+      "cadmium",
+      "uranium",
+      "cesium",
+      "bohrium",
+      "radium",
+      "calcium",
+      "rubidium",
+      "osmium",
+      "thulium",
+      "rhodium"
+    ]
+  },
+  "monster": {
+    "desc": "monster or mythic creature",
+    "samples": [
+      "lich",
+      "siren",
+      "homonculus",
+      "orc",
+      "centaur",
+      "mummy",
+      "centaur",
+      "selkie",
+      "chimera",
+      "succubus"
+    ]
+  },
+  "music_genre": {
+    "desc": "music genre",
+    "samples": [
+      "Psyprog",
+      "Rap rock",
+      "Post-metal",
+      "Crustgrind",
+      "Broken beat",
+      "Southern rock",
+      "Industrial folk",
+      "Electro backbeat",
+      "Doom metal",
+      "Anarcho punk"
+    ]
+  },
+  "nationality": {
+    "desc": "Nationality",
+    "samples": [
+      "I-Kiribati",
+      "U.S. Virgin Island",
+      "Canadian",
+      "Tanzanian",
+      "Iraqi",
+      "Yemeni",
+      "Ugandan",
+      "Estonian",
+      "Iranian, Persian",
+      "Montserratian"
+    ]
+  },
+  "noun": {
+    "desc": "noun",
+    "samples": [
+      "confidant",
+      "height",
+      "reins",
+      "metaphysics",
+      "ultimatum",
+      "bomber",
+      "commemoration",
+      "consist",
+      "stylus",
+      "repertoire"
+    ]
+  },
+  "packaging": {
+    "desc": "packaging material",
+    "samples": [
+      "tinplate",
+      "bopet",
+      "plastic film",
+      "liquid packaging board",
+      "polypropylene",
+      "paperboard",
+      "hot-melt adhesive",
+      "corrugated plastic",
+      "plastic wrap",
+      "linear low-density polyethylene"
+    ]
+  },
+  "phone": {
+    "desc": "Phone number according to E.164",
+    "samples": [
+      "+21238934661",
+      "+50062247264",
+      "+5588448354",
+      "+68220900390",
+      "+21260556392",
+      "+3425691175",
+      "+4856559860",
+      "+59123934975",
+      "+35133706661",
+      "+131463807"
+    ]
+  },
+  "phone_country_code": {
+    "desc": "Calling country code",
+    "samples": [
+      "1",
+      "36",
+      "1",
+      "1",
+      "686",
+      "853",
+      "502",
+      "211",
+      "966",
+      "1"
+    ]
+  },
+  "phone_number": {
+    "desc": "phone number without calling country code. It accepts an integer N number of digits. Min: 8, Max: 12",
+    "samples": [
+      "37912724",
+      "73505984",
+      "28089265",
+      "45080587",
+      "95704196",
+      "31193729",
+      "90757803",
+      "69432861",
+      "25674556",
+      "87813901"
+    ]
+  },
+  "planet": {
+    "desc": "planet name",
+    "samples": [
+      "Mercury",
+      "Eris",
+      "Makemake",
+      "Pluto",
+      "Earth",
+      "Earth",
+      "Mars",
+      "Neptune",
+      "Jupiter",
+      "Venus"
+    ]
+  },
+  "plant": {
+    "desc": "plant name",
+    "samples": [
+      "Maple",
+      "Silverleaf maple",
+      "Sweet rocket",
+      "Tree tobacco",
+      "Milk thistle",
+      "Bird's nest plant",
+      "Honey mesquite",
+      "Cucumber",
+      "Mesquite",
+      "Orange-root"
+    ]
+  },
+  "polygon": {
+    "desc": "PostgreSQL POLYGON type in normalized 0-1 coordinates",
+    "samples": [
+      "(0.015,0.462,0.859,0.606,0.268,0.111,0.795,0.525,0.096,0.530)",
+      "(0.886,0.427,0.781,0.897,0.924,0.589)",
+      "(0.764,0.221,0.392,0.932,0.333,0.388,0.642,0.966,0.960,0.522)",
+      "(0.537,0.027,0.055,0.074,0.545,0.140)",
+      "(0.084,0.308,0.915,0.445,0.683,0.730,0.284,0.759)",
+      "(0.511,0.617,0.207,0.358,0.379,0.361)",
+      "(0.556,0.854,0.811,0.884,0.718,0.472,0.931,0.886,0.347,0.687)",
+      "(0.489,0.201,0.636,0.795,0.568,0.591,0.511,0.883)",
+      "(0.188,0.419,0.297,0.223,0.165,0.035,0.075,0.204,0.818,0.728)",
+      "(0.132,0.099,0.677,0.224,0.140,0.733)"
+    ]
+  },
+  "programming_language": {
+    "desc": "programming language",
+    "samples": [
+      "Squeak",
+      "Revolution",
+      "Esterel",
+      "PowerShell",
+      "LIS",
+      "Logtalk",
+      "FOCAL",
+      "B",
+      "J",
+      "XC"
+    ]
+  },
+  "region": {
+    "desc": "Region (e.g., Asia, Europe)",
+    "samples": [
+      "Oceania",
+      "Africa",
+      "Americas",
+      "Asia",
+      "Europe",
+      "Africa",
+      "Asia",
+      "Africa",
+      "Asia",
+      "Asia"
+    ]
+  },
+  "roman_deity": {
+    "desc": "Roman god or goddess",
+    "samples": [
+      "Neptune",
+      "Ceres",
+      "Neptune",
+      "Proserpina",
+      "Venus",
+      "Pluto",
+      "Mercury",
+      "Bacchus",
+      "Juno",
+      "Mars"
+    ]
+  },
+  "scent": {
+    "desc": "scent or fragrance",
+    "samples": [
+      "rose",
+      "caramel",
+      "lychee",
+      "gin",
+      "grenadine",
+      "elm bark",
+      "summer",
+      "rue",
+      "elderflower",
+      "frankincense"
+    ]
+  },
+  "sentence": {
+    "desc": "sentence",
+    "samples": [
+      "Their eyelids droop for want of sleep.",
+      "The two met while playing on the sand.",
+      "They told wild tales to frighten him.",
+      "There is a fine hard tang in salty air.",
+      "Pure bred poodles have curls.",
+      "The glow deepened in the eyes of the sweet girl.",
+      "The last switch cannot be turned off.",
+      "The straw nest housed five robins.",
+      "The fur of cats goes by many names.",
+      "Pack the kits and don't forget the salt."
+    ]
+  },
+  "slug": {
+    "desc": "lowercase-alphanumeric-with-dashes",
+    "samples": [
+      "emma-jung-3531",
+      "alma-nava-9655",
+      "iker-martinez-3876",
+      "emma-montanari-7897",
+      "aya-smith-1335",
+      "fatemeh-martino-1725",
+      "gita-chazan-2574",
+      "ethan-daz-4422",
+      "oliver-meja-1156",
+      "liam-popa-7470"
+    ]
+  },
+  "spice": {
+    "desc": "spice or herb",
+    "samples": [
+      "Ajwain",
+      "Cilantro",
+      "Mugwort",
+      "Dill seed",
+      "Shiso",
+      "Celery powder",
+      "Grains of Paradise",
+      "Curry leaf",
+      "Long Pepper",
+      "Green Peppercorn"
+    ]
+  },
+  "sport": {
+    "desc": "sport name",
+    "samples": [
+      "Tug-o-war",
+      "Bokator",
+      "Judo",
+      "Shidōkan Karate",
+      "Endurance racing",
+      "Cirit",
+      "Nine-man football",
+      "Uneven bars",
+      "Freestyle skiing",
+      "Scootering"
+    ]
+  },
+  "sql_verb": {
+    "desc": "SQL verb like INSERT, UPDATE, DELETE",
+    "samples": [
+      "INSERT",
+      "INSERT",
+      "DROP",
+      "SELECT",
+      "UPDATE",
+      "SELECT",
+      "REVOKE",
+      "GRANT",
+      "INSERT",
+      "GRANT"
+    ]
+  },
+  "state": {
+    "desc": "State or province name",
+    "samples": [
+      "Tuapa",
+      "Jaffna",
+      "Agstafa",
+      "Pennsylvania",
+      "Sumatera Utara",
+      "Preiļi",
+      "Jashore",
+      "Puy-de-Dôme",
+      "Cavan",
+      "Trzin"
+    ]
+  },
+  "state_code": {
+    "desc": "State or province code",
+    "samples": [
+      "WA",
+      "AC",
+      "RR",
+      "03",
+      "VE",
+      "03",
+      "IN",
+      "NB",
+      "BRR",
+      "H"
+    ]
+  },
+  "subregion": {
+    "desc": "Subregion",
+    "samples": [
+      "Central Asia",
+      "Caribbean",
+      "Eastern Europe",
+      "Australia and New Zealand",
+      "Polynesia",
+      "Northern America",
+      "Caribbean",
+      "Caribbean",
+      "Melanesia",
+      "Western Africa"
+    ]
+  },
+  "tea": {
+    "desc": "tea variety",
+    "samples": [
+      "Jagertee",
+      "Pai Mu Tan Select",
+      "Huangjin Gui",
+      "Dragon Phoenix Pearl",
+      "Java Blend",
+      "Yunnan FOP Select",
+      "Osmanthus Oolong",
+      "Certified Organic Peppermint",
+      "Harmutty Estate GFBOP",
+      "China Congou Panyang (Panyong)"
+    ]
+  },
+  "time": {
+    "desc": "time in HH:MM:SS format",
+    "samples": [
+      "23:29:45",
+      "13:35:12",
+      "08:02:12",
+      "02:13:55",
+      "17:06:59",
+      "22:43:14",
+      "10:47:59",
+      "03:00:12",
+      "09:12:38",
+      "20:31:20"
+    ]
+  },
+  "timestamp": {
+    "desc": "timestamp in the format YYYY-MM-DDTHH:MM:SS.000Z (with timezone)",
+    "samples": [
+      "2025-08-30T07:46:54.989508596+02:00",
+      "2026-02-04T18:24:37.22833137+01:00",
+      "2025-06-20T02:55:51.469651667+02:00",
+      "2026-01-30T07:53:03.818585587+01:00",
+      "2026-01-03T11:08:27.059741939+01:00",
+      "2026-01-21T11:03:54.220418951+01:00",
+      "2026-06-03T11:26:09.26542872+02:00",
+      "2026-05-04T00:39:17.644832572+02:00",
+      "2026-01-02T09:24:50.021335949+01:00",
+      "2026-01-23T18:36:53.176758347+01:00"
+    ]
+  },
+  "timezone": {
+    "desc": "Timezone (Area/City)",
+    "samples": [
+      "America/Los_Angeles",
+      "America/Belize",
+      "Pacific/Guam",
+      "Africa/Ceuta",
+      "Africa/Djibouti",
+      "America/Argentina/Catamarca",
+      "Asia/Damascus",
+      "America/Los_Angeles",
+      "Asia/Ashgabat",
+      "America/Santiago"
+    ]
+  },
+  "tld": {
+    "desc": "valid TLD name",
+    "samples": [
+      "lb",
+      "tl",
+      "mq",
+      "ie",
+      "mt",
+      "cr",
+      "an",
+      "ki",
+      "lk",
+      "om"
+    ]
+  },
+  "url": {
+    "desc": "URL",
+    "samples": [
+      "http://example.com/data/user/api/api/page",
+      "http://example.com/api/api/page/data/user",
+      "https://sample.com/user/api/data/user/api",
+      "https://test.com/data/user/page",
+      "https://test.com/user",
+      "http://demo.com/data/page",
+      "https://sample.com/data/api/page/file",
+      "http://dev.com/user/api/api/page",
+      "http://sample.com/api/user",
+      "http://dev.com/file/user/user/page/user"
+    ]
+  },
+  "username": {
+    "desc": "username",
+    "samples": [
+      "lrathnayake4830",
+      "maria_pinas8834",
+      "edward.pea8358",
+      "lpetrenko7735",
+      "yousoufrodriguez2397",
+      "sophiesorrentino1336",
+      "mfranco9115",
+      "luca_dng3604",
+      "danylolpez3764",
+      "theodorecunha4675"
+    ]
+  },
+  "uuid": {
+    "desc": "UUID v4",
+    "samples": [
+      "4b408562-4152-402d-a584-00c6ecde911d",
+      "ed289f5e-2723-4cb9-ac36-f3c308277850",
+      "0a18125f-8831-4e8a-bf71-d0b0e732b4af",
+      "679cfb62-3fcc-41af-9d7b-2795b4dcd384",
+      "c75e6d8f-b039-4a1b-953f-4b7e77f1e97b",
+      "4d9acdc7-ca99-4e49-be6e-11ff551d6ef8",
+      "494ec4de-b1a6-4c11-9017-139f60515646",
+      "8f3be0e4-905e-4343-83cf-8f80b1321028",
+      "f59954ed-b27a-4364-868d-9a95c8bc7d79",
+      "8a114fcc-7e78-4e01-b46b-a3874c085ed0"
+    ]
+  },
+  "uuidv1": {
+    "desc": "uuidv1",
+    "samples": [
+      "7e780a72-68cc-11f1-802a-068957ea3cf6",
+      "7e780d56-68cc-11f1-802a-068957ea3cf6",
+      "7e780d60-68cc-11f1-802a-068957ea3cf6",
+      "7e780d60-68cc-11f1-802b-068957ea3cf6",
+      "7e780d60-68cc-11f1-802c-068957ea3cf6",
+      "7e780d6a-68cc-11f1-802c-068957ea3cf6",
+      "7e780d6a-68cc-11f1-802d-068957ea3cf6",
+      "7e780d6a-68cc-11f1-802e-068957ea3cf6",
+      "7e780d6a-68cc-11f1-802f-068957ea3cf6",
+      "7e780d74-68cc-11f1-802f-068957ea3cf6"
+    ]
+  },
+  "uuidv4": {
+    "desc": "uuidv4",
+    "samples": [
+      "21d4725c-75b8-47b3-af4d-c6d0a07d2866",
+      "79b93f9a-e63d-41d7-8f7a-4b1539efb289",
+      "5d9d4181-87ce-43e8-b967-35782693a635",
+      "5595686c-3617-4d64-96e6-90dc89c3fed2",
+      "b9dd6262-5d29-4124-9ad3-cf4a38ced3eb",
+      "e214be0d-3f7e-46ca-8e8e-e814f5a49186",
+      "9f74d8c2-730d-43c0-b5e6-642e5ae20673",
+      "46ec77c1-6c84-476d-9196-b7cfc4122b78",
+      "f21d9bee-7e6f-45b5-9dd0-7a06e3ff979f",
+      "bfb2e629-ae4d-4be5-8373-90748dfcd87f"
+    ]
+  },
+  "uuidv6": {
+    "desc": "uuidv6",
+    "samples": [
+      "01f168cc-7e80-6cea-aebd-068957ea3cf6",
+      "01f168cc-7e80-6ff6-aebd-068957ea3cf6",
+      "01f168cc-7e80-6000-aebd-068957ea3cf6",
+      "01f168cc-7e80-6000-aebe-068957ea3cf6",
+      "01f168cc-7e80-600a-aebe-068957ea3cf6",
+      "01f168cc-7e80-600a-aebf-068957ea3cf6",
+      "01f168cc-7e80-600a-aec0-068957ea3cf6",
+      "01f168cc-7e80-6014-aec0-068957ea3cf6",
+      "01f168cc-7e80-6014-aec1-068957ea3cf6",
+      "01f168cc-7e80-6014-aec2-068957ea3cf6"
+    ]
+  },
+  "uuidv7": {
+    "desc": "uuidv7",
+    "samples": [
+      "019ecbd6-80b0-7451-a9f5-b448e9f3ca80",
+      "019ecbd6-80b0-746c-8581-52733c0bd18a",
+      "019ecbd6-80b0-746d-8914-b99ecfafbbf8",
+      "019ecbd6-80b0-7470-a712-a2af44d5b71d",
+      "019ecbd6-80b0-7474-a065-c8825ebb5294",
+      "019ecbd6-80b0-7475-930f-e9b8fe2c8e56",
+      "019ecbd6-80b0-7478-9a74-f2218292fa67",
+      "019ecbd6-80b0-7479-8f0a-fc755d37b05f",
+      "019ecbd6-80b0-747c-8c29-df685c9b479b",
+      "019ecbd6-80b0-747d-8b73-ff65e4baa255"
+    ]
+  },
+  "vegetable": {
+    "desc": "vegetable",
+    "samples": [
+      "endive",
+      "horseradish",
+      "broad beans",
+      "lettuce",
+      "spaghetti squash",
+      "delicata",
+      "jalapeno",
+      "pumpkin",
+      "spinach",
+      "jalapeno"
+    ]
+  },
+  "weather": {
+    "desc": "weather condition",
+    "samples": [
+      "Heavy Thunderstorm Rain Hail Fog",
+      "Thunderstorm Light Rain Hail Fog/Mist",
+      "Heavy Thunderstorm Rain Haze",
+      "Partial Fog",
+      "Heavy Thunderstorm Rain Haze",
+      "Blowing Snow",
+      "Rain Snow",
+      "Partial Fog in Vicinity",
+      "Light Drizzle Fog",
+      "Light Snow Blowing Snow Fog/Mist"
+    ]
+  },
+  "word": {
+    "desc": "common English word",
+    "samples": [
+      "chair",
+      "tell",
+      "such",
+      "art",
+      "raise",
+      "budget",
+      "four",
+      "raise",
+      "set",
+      "support"
+    ]
+  }
+}

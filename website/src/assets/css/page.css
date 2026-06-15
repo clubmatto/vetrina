@@ -491,34 +491,87 @@ ul.posts li a .date {
   line-height: 1.35;
 }
 
-.vetrina-categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+.vetrina-browse {
+  margin: 1.5rem 0;
 }
 
-.vetrina-category {
-  padding: 1rem;
-  border-radius: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  text-align: center;
+.vetrina-browse .terminal-body {
+  padding: 0.75rem 1rem;
 }
 
-.vetrina-category h3 {
-  font-family: var(--font-mono), sans-serif;
+.vetrina-browse-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--terminal-text);
+  font-family: var(--font-mono), monospace;
   font-size: 1rem;
-  margin: 0 0 0.5rem 0;
-  color: var(--text);
+  padding: 0;
+  margin: 0 0 0 0.35rem;
+  caret-color: var(--terminal-prompt);
+  width: 280px;
 }
 
-.vetrina-category p {
-  font-family: var(--font-sans), sans-serif;
+.vetrina-browse-input::placeholder {
+  color: var(--terminal-comment);
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.vetrina-browse-results {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+
+.vetrina-browse-result {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.vetrina-browse-result:hover {
+  background: var(--vetrina-hover-bg);
+}
+
+.vetrina-browse-result.selected {
+  background: var(--vetrina-hover-bg);
+}
+
+.vetrina-browse-result-name {
+  font-family: var(--font-mono), monospace;
   font-size: 0.85rem;
-  margin: 0;
-  opacity: 0.7;
-  line-height: 1.4;
+  color: var(--terminal-text);
+}
+
+.vetrina-browse-result-desc {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vetrina-browse-output {
+  margin-top: 0.5rem;
+}
+
+.vetrina-browse-output-line {
+  color: var(--terminal-output);
+  font-size: 0.85rem;
+  padding: 0.08rem 0 0.08rem 1.2rem;
+  opacity: 0;
+  animation: vetrina-pop-in 0.18s ease forwards;
+}
+
+@keyframes vetrina-pop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .vetrina-tabs {

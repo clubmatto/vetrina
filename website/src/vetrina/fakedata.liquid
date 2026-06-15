@@ -32,7 +32,7 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
 </div>
 
-<h2 class="vetrina-section-title">Perfect For Use Cases</h2>
+<h2 class="vetrina-section-title">Use Cases</h2>
 
 <div class="vetrina-tabs">
   <input type="radio" name="tab" id="tab-testing" checked>
@@ -249,32 +249,75 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
 
 <h2 class="vetrina-section-title">What Can You Generate?</h2>
 
-<div class="vetrina-categories">
-  <div class="vetrina-category">
-    <h3>People</h3>
-    <p>email, name, username, slug, UUID</p>
+<div class="terminal-window vetrina-browse">
+  <div class="terminal-header">
+    <span class="terminal-dot red"></span>
+    <span class="terminal-dot yellow"></span>
+    <span class="terminal-dot green"></span>
+    <span class="terminal-title">fakedata</span>
   </div>
-  <div class="vetrina-category">
-    <h3>Geography</h3>
-    <p>country, city, address, phone, timezone</p>
-  </div>
-  <div class="vetrina-category">
-    <h3>Web</h3>
-    <p>URL, domain, company, IP, HTTP methods</p>
-  </div>
-  <div class="vetrina-category">
-    <h3>Time</h3>
-    <p>date, datetime, timestamp, epoch</p>
-  </div>
-  <div class="vetrina-category">
-    <h3>Types</h3>
-    <p>int, float, boolean, enum, JSON</p>
-  </div>
-  <div class="vetrina-category">
-    <h3>Fun</h3>
-    <p>programming_language, dinosaur, cat breed</p>
+  <div class="terminal-body">
+    <div class="terminal-line">
+      <span class="terminal-prompt">$</span> fakedata
+      <input type="text" id="browse-input" class="vetrina-browse-input" placeholder="type to find a generator…" autocomplete="off">
+    </div>
+    <div class="vetrina-browse-results" id="browse-results"></div>
+    <div class="vetrina-browse-output" id="browse-output"></div>
   </div>
 </div>
+
+<script>
+  const GENERATORS = {{ generators | json }};
+  const browseInput = document.getElementById('browse-input');
+  const resultsEl = document.getElementById('browse-results');
+  const outputEl = document.getElementById('browse-output');
+
+  let outputAnimId = 0;
+
+  browseInput.addEventListener('input', () => {
+    const q = browseInput.value.toLowerCase().trim();
+    if (!q) {
+      resultsEl.innerHTML = '';
+      return;
+    }
+
+    const matches = Object.entries(GENERATORS).filter(([name, gen]) =>
+      name.includes(q) || gen.desc.toLowerCase().includes(q)
+    );
+
+    resultsEl.innerHTML = matches.map(([name, gen]) =>
+      `<div class="vetrina-browse-result" data-name="${name}">
+        <span class="vetrina-browse-result-name">${name}</span>
+        <span class="vetrina-browse-result-desc">${gen.desc}</span>
+      </div>`
+    ).join('');
+  });
+
+  resultsEl.addEventListener('click', (e) => {
+    const card = e.target.closest('.vetrina-browse-result');
+    if (!card) return;
+
+    const name = card.dataset.name;
+    const gen = GENERATORS[name];
+
+    resultsEl.innerHTML = '';
+    browseInput.value = name;
+    browseInput.setSelectionRange(name.length, name.length);
+
+    const id = ++outputAnimId;
+    outputEl.innerHTML = '';
+
+    gen.samples.forEach((sample, i) => {
+      setTimeout(() => {
+        if (outputAnimId !== id) return;
+        const line = document.createElement('div');
+        line.className = 'vetrina-browse-output-line';
+        line.textContent = sample;
+        outputEl.appendChild(line);
+      }, 100 + i * 60);
+    });
+  });
+</script>
 
 <h2 class="vetrina-section-title">FakeData Pro</h2>
 

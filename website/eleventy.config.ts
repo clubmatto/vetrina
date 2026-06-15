@@ -43,6 +43,10 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addShortcode("svg", svgShortcode);
 
   eleventyConfig.addLiquidFilter("safe", (value: unknown) => value);
+  eleventyConfig.addLiquidFilter("json", (value: unknown) => JSON.stringify(value));
+  eleventyConfig.addLiquidFilter("objectSize", (value: unknown) =>
+    typeof value === "object" && value !== null ? Object.keys(value).length : 0,
+  );
 
   eleventyConfig.addGlobalData(
     "today",
