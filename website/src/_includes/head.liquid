@@ -10,7 +10,22 @@
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Club Matto">
-  <meta name="twitter:card" content="summary">
+  {% if image %}
+    {% if image contains '://' %}
+      {% assign og_image = image %}
+    {% else %}
+      {% assign og_image = site.url | append: image %}
+    {% endif %}
+    <meta property="og:image" content="{{ og_image }}">
+    {% if image_width %}<meta property="og:image:width" content="{{ image_width }}">{% endif %}
+    {% if image_height %}<meta property="og:image:height" content="{{ image_height }}">{% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ og_image }}">
+  {% else %}
+    {% assign og_image = site.url | append: '/assets/img/logo.png' %}
+    <meta property="og:image" content="{{ og_image }}">
+    <meta name="twitter:card" content="summary">
+  {% endif %}
   <meta name="twitter:site" content="@clubmatto">
   {% if go_import -%}
     <meta name="go-import" content="matto.club/vetrina git https://github.com/clubmatto/vetrina">
