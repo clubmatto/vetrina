@@ -201,19 +201,36 @@ ul.posts li a .date {
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--text);
-  opacity: 0.35;
-  transition: opacity 0.2s ease;
-  padding: 0.25rem;
+  width: 96px;
+  height: 96px;
+  z-index: 1;
 }
 
-.github-ribbon:hover {
-  opacity: 0.8;
+.github-ribbon::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, var(--gradient-4), var(--gradient-5));
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.github-ribbon:hover::before {
+  opacity: 0.6;
 }
 
 .github-ribbon svg {
-  width: 28px;
-  height: 28px;
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  width: 26px;
+  height: 26px;
+  color: var(--text-inverse);
+  stroke-width: 2.5;
 }
 
 .vetrina-header {
@@ -445,21 +462,33 @@ ul.posts li a .date {
   }
 }
 
-.vetrina-features-list {
-  list-style: none;
-  padding: 0;
+.vetrina-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
   margin: 1rem 0;
 }
 
-.vetrina-features-list li {
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed var(--border-color);
-  font-family: var(--font-sans), sans-serif;
-  line-height: 1.5;
+.vetrina-feature {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
 }
 
-.vetrina-features-list li:last-child {
-  border-bottom: none;
+.vetrina-feature h3 {
+  font-family: var(--font-mono), sans-serif;
+  font-size: 0.85rem;
+  margin: 0 0 0.15rem 0;
+  color: var(--text);
+}
+
+.vetrina-feature p {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.8rem;
+  margin: 0;
+  opacity: 0.65;
+  line-height: 1.35;
 }
 
 .vetrina-categories {
@@ -503,19 +532,17 @@ ul.posts li a .date {
 .vetrina-tab-nav {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--border-color);
   margin-bottom: 1.5rem;
 }
 
 .vetrina-tab-nav label {
+  position: relative;
   padding: 0.75rem 1.5rem;
   font-family: var(--font-mono), sans-serif;
   font-size: 0.95rem;
   cursor: pointer;
   opacity: 0.5;
   transition: opacity 0.2s;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
   user-select: none;
 }
 
@@ -592,12 +619,17 @@ ul.posts li a .date {
   display: block;
 }
 
-#tab-testing:checked ~ .vetrina-tab-nav label[for="tab-testing"],
-#tab-development:checked ~ .vetrina-tab-nav label[for="tab-development"],
-#tab-load-testing:checked ~ .vetrina-tab-nav label[for="tab-load-testing"],
-#tab-templates:checked ~ .vetrina-tab-nav label[for="tab-templates"] {
-  opacity: 1;
-  border-bottom-color: var(--gradient-1);
+#tab-testing:checked ~ .vetrina-tab-nav label[for="tab-testing"]::after,
+#tab-development:checked ~ .vetrina-tab-nav label[for="tab-development"]::after,
+#tab-load-testing:checked ~ .vetrina-tab-nav label[for="tab-load-testing"]::after,
+#tab-templates:checked ~ .vetrina-tab-nav label[for="tab-templates"]::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-text);
 }
 
 @media (max-width: 768px) {

@@ -5,7 +5,11 @@ permalink: /vetrina/fakedata/
 go_import: true
 description: Open source CLI tool for generating fake/test data. 80+ generators, multiple output formats, streaming, and templates.
 ---
-<a href="https://github.com/clubmatto/vetrina" class="github-ribbon" aria-label="View on GitHub">
+<a
+  href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md"
+  class="github-ribbon"
+  aria-label="View on GitHub"
+>
   {{ 'github' | lucide }}
 </a>
 
@@ -28,7 +32,7 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
 </div>
 
-<h2 class="vetrina-section-title">Perfect For</h2>
+<h2 class="vetrina-section-title">Perfect For Use Cases</h2>
 
 <div class="vetrina-tabs">
   <input type="radio" name="tab" id="tab-testing" checked>
@@ -46,7 +50,10 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   <div class="vetrina-tab-content" id="content-testing">
     <div class="vetrina-tab-panel">
       <div class="vetrina-tab-panel-text">
-        <p>Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test suites.</p>
+        <p>
+          Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
+          suites.
+        </p>
         <div class="terminal-command">
           <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
         </div>
@@ -57,11 +64,21 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">demo</span>
+            <span class="terminal-title">Testing</span>
           </div>
           <div class="terminal-body terminal-gif">
-            <img src="/assets/img/fakedata/use-case-testing-light.gif" alt="FakeData testing demo" loading="lazy" class="theme-light">
-            <img src="/assets/img/fakedata/use-case-testing-dark.gif" alt="FakeData testing demo" loading="lazy" class="theme-dark">
+            <img
+              src="/assets/img/fakedata/use-case-testing-light.gif"
+              alt="FakeData testing demo"
+              loading="lazy"
+              class="theme-light"
+            >
+            <img
+              src="/assets/img/fakedata/use-case-testing-dark.gif"
+              alt="FakeData testing demo"
+              loading="lazy"
+              class="theme-dark"
+            >
           </div>
         </div>
       </div>
@@ -71,7 +88,10 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   <div class="vetrina-tab-content" id="content-development">
     <div class="vetrina-tab-panel">
       <div class="vetrina-tab-panel-text">
-        <p>Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and even dinosaurs.</p>
+        <p>
+          Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
+          even dinosaurs.
+        </p>
         <div class="terminal-command">
           <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
         </div>
@@ -82,11 +102,21 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">demo</span>
+            <span class="terminal-title">Development</span>
           </div>
           <div class="terminal-body terminal-gif">
-            <img src="/assets/img/fakedata/use-case-development-light.gif" alt="FakeData development demo" loading="lazy" class="theme-light">
-            <img src="/assets/img/fakedata/use-case-development-dark.gif" alt="FakeData development demo" loading="lazy" class="theme-dark">
+            <img
+              src="/assets/img/fakedata/use-case-development-light.gif"
+              alt="FakeData development demo"
+              loading="lazy"
+              class="theme-light"
+            >
+            <img
+              src="/assets/img/fakedata/use-case-development-dark.gif"
+              alt="FakeData development demo"
+              loading="lazy"
+              class="theme-dark"
+            >
           </div>
         </div>
       </div>
@@ -96,7 +126,10 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   <div class="vetrina-tab-content" id="content-load-testing">
     <div class="vetrina-tab-panel">
       <div class="vetrina-tab-panel-text">
-        <p>Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop when ready.</p>
+        <p>
+          Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
+          when ready.
+        </p>
         <div class="terminal-command">
           <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
         </div>
@@ -107,11 +140,21 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">demo</span>
+            <span class="terminal-title">Load Testing</span>
           </div>
           <div class="terminal-body terminal-gif">
-            <img src="/assets/img/fakedata/use-case-load-testing-light.gif" alt="FakeData load testing demo" loading="lazy" class="theme-light">
-            <img src="/assets/img/fakedata/use-case-load-testing-dark.gif" alt="FakeData load testing demo" loading="lazy" class="theme-dark">
+            <img
+              src="/assets/img/fakedata/use-case-load-testing-light.gif"
+              alt="FakeData load testing demo"
+              loading="lazy"
+              class="theme-light"
+            >
+            <img
+              src="/assets/img/fakedata/use-case-load-testing-dark.gif"
+              alt="FakeData load testing demo"
+              loading="lazy"
+              class="theme-dark"
+            >
           </div>
         </div>
       </div>
@@ -122,9 +165,7 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
     <div class="vetrina-tab-panel">
       <div class="vetrina-tab-panel-text">
         <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
-        <div class="terminal-command">
-          <span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3
-        </div>
+        <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
       </div>
       <div class="vetrina-tab-panel-demo">
         <div class="terminal-window">
@@ -132,11 +173,21 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">demo</span>
+            <span class="terminal-title">Templates</span>
           </div>
           <div class="terminal-body terminal-gif">
-            <img src="/assets/img/fakedata/templates-light.gif" alt="FakeData templates demo" loading="lazy" class="theme-light">
-            <img src="/assets/img/fakedata/templates-dark.gif" alt="FakeData templates demo" loading="lazy" class="theme-dark">
+            <img
+              src="/assets/img/fakedata/templates-light.gif"
+              alt="FakeData templates demo"
+              loading="lazy"
+              class="theme-light"
+            >
+            <img
+              src="/assets/img/fakedata/templates-dark.gif"
+              alt="FakeData templates demo"
+              loading="lazy"
+              class="theme-dark"
+            >
           </div>
         </div>
       </div>
@@ -144,22 +195,38 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
 </div>
 
-<h2 class="vetrina-section-title">Features</h2>
+<h2 class="vetrina-section-title">Get Started</h2>
 
 <div class="vetrina-grid">
   <div class="vetrina-grid-content">
-    <p class="vetrina-intro-text">
-      FakeData is built for developers who need realistic test data fast.
-    </p>
+    <p class="vetrina-intro-text">FakeData is built for developers who need realistic test data fast.</p>
 
-    <ul class="vetrina-features-list">
-      <li><strong>80+ generators</strong> — People, geography, web, time, types, and fun categories</li>
-      <li><strong>Multiple formats</strong> — Tab-separated, CSV, or NDJSON output</li>
-      <li><strong>Streaming mode</strong> — Generate data indefinitely for load testing</li>
-      <li><strong>Templates</strong> — Custom output with Go templates (JSON, YAML, any format)</li>
-      <li><strong>Deterministic</strong> — Use seeds for reproducible results every time</li>
-      <li><strong>Shell completion</strong> — Bash, zsh, and fish support</li>
-    </ul>
+    <div class="vetrina-features-grid">
+      <div class="vetrina-feature">
+        <h3>80+ generators</h3>
+        <p>People, geography, web, time, types, and fun categories</p>
+      </div>
+      <div class="vetrina-feature">
+        <h3>Multiple formats</h3>
+        <p>Tab-separated, CSV, or NDJSON output</p>
+      </div>
+      <div class="vetrina-feature">
+        <h3>Streaming mode</h3>
+        <p>Generate data indefinitely for load testing</p>
+      </div>
+      <div class="vetrina-feature">
+        <h3>Templates</h3>
+        <p>Custom output with Go templates (JSON, YAML, any format)</p>
+      </div>
+      <div class="vetrina-feature">
+        <h3>Deterministic</h3>
+        <p>Use seeds for reproducible results every time</p>
+      </div>
+      <div class="vetrina-feature">
+        <h3>Shell completion</h3>
+        <p>Bash, zsh, and fish support</p>
+      </div>
+    </div>
   </div>
   <div class="vetrina-grid-terminal">
     <div class="terminal-window">
@@ -167,20 +234,14 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
-        <span class="terminal-title">bash</span>
+        <span class="terminal-title">install</span>
       </div>
       <div class="terminal-body">
-        <div class="terminal-comment"># Custom output with templates</div>
+        <div class="terminal-comment"># Install via Go or Homebrew</div>
         <div class="terminal-line">
-          <span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 2
+          <span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest
         </div>
-        <div class="terminal-line terminal-output">{"name": "John Doe", "email": "john@example.com"}</div>
-
-        <div class="terminal-comment"># JSON output</div>
-        <div class="terminal-line">
-          <span class="terminal-prompt">$</span> fakedata -f ndjson -n 2 name email
-        </div>
-        <div class="terminal-line terminal-output">{"name": "Jane Smith", "email": "jane@test.com"}</div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
       </div>
     </div>
   </div>
@@ -215,32 +276,6 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   </div>
 </div>
 
-<h2 class="vetrina-section-title">Install</h2>
-
-<div class="vetrina-grid">
-  <div class="vetrina-grid-terminal">
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">bash</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-comment"># With Go</div>
-        <div class="terminal-line">
-          <span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest
-        </div>
-        <div class="terminal-comment"># Or via Homebrew</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
-      </div>
-    </div>
-  </div>
-  <div class="vetrina-grid-content">
-    <p class="vetrina-intro-text">There are several ways to install FakeData — pick the one that fits your workflow.</p>
-  </div>
-</div>
-
 <h2 class="vetrina-section-title">FakeData Pro</h2>
 
 <div class="vetrina-more-section">
@@ -255,14 +290,18 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
 </div>
 
 <script>
-document.querySelectorAll('.terminal-command').forEach(el => {
-  el.addEventListener('click', async () => {
-    const text = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
-    try {
-      await navigator.clipboard.writeText(text);
-      el.classList.add('copied');
-      setTimeout(() => el.classList.remove('copied'), 1500);
-    } catch {}
+  document.querySelectorAll('.terminal-command').forEach((el) => {
+    el.addEventListener('click', async () => {
+      const text = [...el.childNodes]
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.textContent)
+        .join('')
+        .trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 1500);
+      } catch {}
+    });
   });
-});
 </script>
