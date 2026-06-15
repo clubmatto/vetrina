@@ -61,6 +61,9 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/assets/header-logo.svg");
   eleventyConfig.addPassthroughCopy("./src/assets/logo.svg");
   eleventyConfig.addPassthroughCopy({
+    "../assets/js/alpine.3.15.12.min.js": "assets/js",
+  });
+  eleventyConfig.addPassthroughCopy({
     "../assets/vhs/fakedata/*.gif": "assets/img/fakedata",
   });
 

@@ -21,6 +21,10 @@ declare module "@11ty/eleventy" {
   }
 }
 
+declare const Alpine: {
+  data: (name: string, setup: () => Record<string, unknown>) => void;
+};
+
 declare module "lucide-static/icon-nodes.json" {
   const icons: Record<string, unknown>;
   export default icons;

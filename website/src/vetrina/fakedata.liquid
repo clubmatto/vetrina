@@ -249,7 +249,7 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
 
 <h2 class="vetrina-section-title">What Can You Generate?</h2>
 
-<div class="terminal-window vetrina-browse">
+<div class="terminal-window vetrina-browse" x-data="browser">
   <div class="terminal-header">
     <span class="terminal-dot red"></span>
     <span class="terminal-dot yellow"></span>
@@ -259,65 +259,25 @@ description: Open source CLI tool for generating fake/test data. 80+ generators,
   <div class="terminal-body">
     <div class="terminal-line">
       <span class="terminal-prompt">$</span> fakedata
-      <input type="text" id="browse-input" class="vetrina-browse-input" placeholder="type to find a generator…" autocomplete="off">
+      <input type="text" x-model="query" class="vetrina-browse-input" placeholder="type to find a generator…" autocomplete="off">
     </div>
-    <div class="vetrina-browse-results" id="browse-results"></div>
-    <div class="vetrina-browse-output" id="browse-output"></div>
+    <div class="vetrina-browse-results" x-show="query.trim() && !lastSelected">
+      <template x-for="item in matches" :key="item[0]">
+        <div class="vetrina-browse-result" @click="select(item[0], item[1])">
+          <span class="vetrina-browse-result-name" x-text="item[0]"></span>
+          <span class="vetrina-browse-result-desc" x-text="item[1].desc"></span>
+        </div>
+      </template>
+    </div>
+    <div class="vetrina-browse-output" x-show="output.length">
+      <template x-for="(line, i) in output" :key="i">
+        <div class="vetrina-browse-output-line" x-text="line"></div>
+      </template>
+    </div>
   </div>
 </div>
 
-<script>
-  const GENERATORS = {{ generators | json }};
-  const browseInput = document.getElementById('browse-input');
-  const resultsEl = document.getElementById('browse-results');
-  const outputEl = document.getElementById('browse-output');
-
-  let outputAnimId = 0;
-
-  browseInput.addEventListener('input', () => {
-    const q = browseInput.value.toLowerCase().trim();
-    if (!q) {
-      resultsEl.innerHTML = '';
-      return;
-    }
-
-    const matches = Object.entries(GENERATORS).filter(([name, gen]) =>
-      name.includes(q) || gen.desc.toLowerCase().includes(q)
-    );
-
-    resultsEl.innerHTML = matches.map(([name, gen]) =>
-      `<div class="vetrina-browse-result" data-name="${name}">
-        <span class="vetrina-browse-result-name">${name}</span>
-        <span class="vetrina-browse-result-desc">${gen.desc}</span>
-      </div>`
-    ).join('');
-  });
-
-  resultsEl.addEventListener('click', (e) => {
-    const card = e.target.closest('.vetrina-browse-result');
-    if (!card) return;
-
-    const name = card.dataset.name;
-    const gen = GENERATORS[name];
-
-    resultsEl.innerHTML = '';
-    browseInput.value = name;
-    browseInput.setSelectionRange(name.length, name.length);
-
-    const id = ++outputAnimId;
-    outputEl.innerHTML = '';
-
-    gen.samples.forEach((sample, i) => {
-      setTimeout(() => {
-        if (outputAnimId !== id) return;
-        const line = document.createElement('div');
-        line.className = 'vetrina-browse-output-line';
-        line.textContent = sample;
-        outputEl.appendChild(line);
-      }, 100 + i * 60);
-    });
-  });
-</script>
+<script id="generators-data" type="application/json">{{ generators | json }}</script>
 
 <h2 class="vetrina-section-title">FakeData Pro</h2>
 

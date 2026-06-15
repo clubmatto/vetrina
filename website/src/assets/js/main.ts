@@ -1,3 +1,5 @@
+import "./browser";
+
 // Theme toggle functionality
 const themeToggle = document.getElementById("themeToggle");
 const lightIcon = themeToggle?.querySelector<HTMLElement>(".theme-icon-light");
