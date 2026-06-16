@@ -273,6 +273,16 @@
   align-items: flex-start;
 }
 
+.fakedata-tab-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fakedata-tab-right {
+  flex: 1;
+}
+
 .fakedata-tab-content {
   flex: 1;
 }

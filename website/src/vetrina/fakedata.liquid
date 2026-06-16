@@ -37,14 +37,14 @@ image_height: 650
 <h2 class="fakedata-section-title">Use Cases</h2>
 
 <div class="fakedata-tabs" x-data="{ tab: 'testing' }">
-  <div class="fakedata-tab-nav" role="tablist">
-    <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
-    <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
-    <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
-    <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Templates</button>
-  </div>
-
   <div class="fakedata-tab-panels">
+    <div class="fakedata-tab-left">
+      <div class="fakedata-tab-nav" role="tablist">
+        <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
+        <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
+        <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
+        <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Templates</button>
+      </div>
     <div class="fakedata-tab-content">
       <div class="fakedata-tab-body" x-show="tab === 'testing'">
         <div class="fakedata-tab-body-text">
@@ -89,7 +89,9 @@ image_height: 650
         </div>
       </div>
     </div>
+    </div>
 
+    <div class="fakedata-tab-right">
     <div class="fakedata-tab-demos">
       <div class="fakedata-tab-demo" :class="{ visible: tab === 'testing' }">
         <div class="terminal-window">
@@ -190,6 +192,7 @@ image_height: 650
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
