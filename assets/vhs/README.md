@@ -37,6 +37,10 @@ assets/vhs/
 ./generate.sh basic templates
 ```
 
+### Prerequisites for Pro Demos
+
+The `pro-*` demos require SQLite (for creating the test database) and the `fakedata-pro` binary on your PATH.
+
 ### Single Theme
 
 ```bash
@@ -62,6 +66,9 @@ assets/vhs/
 | `use-case-testing` | CSV export, seeds, reproducible data |
 | `use-case-load-testing` | High-volume streaming demo |
 | `use-case-development` | API mock data generation |
+| `pro-generate` | DB-native generation with FK resolution |
+| `pro-dry-run` | Preview generators and schema before insert |
+| `pro-override` | Column-level generator overrides with `-c` |
 
 ## Themes
 

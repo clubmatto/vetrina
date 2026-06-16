@@ -13,6 +13,9 @@ DEMOS=(
   use-case-testing
   use-case-load-testing
   use-case-development
+  pro-generate
+  pro-dry-run
+  pro-override
 )
 
 # Theme configs
@@ -106,6 +109,27 @@ if [[ "$THEME" != "all" && "$THEME" != "dark" && "$THEME" != "light" ]]; then
   exit 1
 fi
 
+# Check if any pro demos are selected and set up the database
+PRO_DEMOS=("pro-generate" "pro-dry-run" "pro-override")
+needs_db=false
+for demo in "${SELECTED_DEMOS[@]}"; do
+  for pd in "${PRO_DEMOS[@]}"; do
+    [[ "$demo" == "$pd" ]] && needs_db=true && break
+  done
+done
+
+if $needs_db; then
+  echo "Setting up SQLite database for pro demos..."
+  schema="$TAPE_DIR/schema-pro.sql"
+  if [[ ! -f "$schema" ]]; then
+    echo "Error: Schema file not found: $schema"
+    exit 1
+  fi
+  rm -f "$TAPE_DIR/pro.db"
+  sqlite3 "$TAPE_DIR/pro.db" < "$schema"
+  echo "  -> $TAPE_DIR/pro.db created"
+fi
+
 # Generate GIFs
 for demo in "${SELECTED_DEMOS[@]}"; do
   if [[ "$THEME" == "all" ]]; then
@@ -115,6 +139,9 @@ for demo in "${SELECTED_DEMOS[@]}"; do
     generate "$demo" "$THEME"
   fi
 done
+
+# Cleanup
+$needs_db && rm -f "$TAPE_DIR/pro.db" && echo "Cleaned up pro.db"
 
 echo ""
 echo "Done! GIFs generated in $TAPE_DIR/"
