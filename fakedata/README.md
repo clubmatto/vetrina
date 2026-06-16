@@ -1,16 +1,23 @@
 # FakeData
 
+[![Go](https://img.shields.io/badge/Go-1.25.0-00ADD8?logo=go)](https://go.dev) [![License](https://img.shields.io/github/license/clubmatto/vetrina)](LICENSE)
+
 CLI tool to generate fake data rows for testing and development.
 
-## Features
+![FakeData basic usage](../assets/vhs/fakedata/basic-light.gif)
 
-- **80+ generators**: email, names, addresses, UUIDs, dates, JSON, and more
-- **Multiple formats**: Tab-separated, CSV, NDJSON
-- **Streaming**: Generate data indefinitely for load testing
-- **Templates**: Custom output with Go templates
-- **Deterministic**: Seed for reproducible results
-- **Shell completion**: Bash, zsh, fish support
-- **Zero config**: No setup required, just name the columns you need
+## Table of Contents
+
+- [Install](#install)
+- [Quick Start](#quick-start)
+- [Generators](#generators)
+- [Advanced Usage](#advanced-usage)
+  - [Custom Generators](#custom-generators)
+  - [Templates](#templates)
+  - [Column Naming](#column-naming)
+- [Shell Completion](#shell-completion)
+- [Development](#development)
+- [License](#license)
 
 ## Install
 
@@ -27,61 +34,60 @@ brew install clubmatto/tap/fakedata
 ## Quick Start
 
 ```bash
-# Basic usage
 fakedata email country
+```
 
-# Generate 5 rows with header
+Generate 5 rows with header:
+
+```bash
 fakedata -n 5 -H email country
+```
 
-# CSV output
+CSV output:
+
+```bash
 fakedata -H -s "," email country
+```
 
-# NDJSON output
+NDJSON output:
+
+```bash
 fakedata --format ndjson -n 3 email country
+```
 
-# Streaming mode
+Streaming mode:
+
+```bash
 fakedata --stream email
+```
 
-# Deterministic output
+Deterministic output:
+
+```bash
 fakedata --seed 42 email country
 ```
 
-## Demos
-
-### Basic Usage
-
-![FakeData basic usage](../assets/vhs/fakedata/basic-light.gif)
-
-### Templates
-
-![FakeData templates](../assets/vhs/fakedata/templates-light.gif)
-
 ## Generators
 
+Browse all 80+ generators interactively at [matto.club/vetrina/fakedata/#generators](https://matto.club/vetrina/fakedata/#generators).
+
 ### People
-- `email`, `first_name`, `last_name`, `full_name`
-- `username`, `slug`, `hex`, `hex_color`
+- `email`, `first_name`, `last_name`, `full_name`, `username`
 
 ### Geography
-- `country`, `country_code`, `city`, `state`, `address`
-- `latitude`, `longitude`, `timezone`, `capital`
-- `phone`, `phone_number`, `nationality`
+- `country`, `city`, `state`, `address`, `phone`
 
 ### Web & Network
-- `url`, `domain_name`, `tld`, `company`
-- `ipv4`, `ipv6`, `mac`, `http_method`
+- `url`, `domain_name`, `ipv4`, `ipv6`, `mac`
 
 ### Time
 - `date`, `datetime`, `timestamp`, `time`, `epoch`
 
 ### Types & Data
-- `int`, `float`, `boolean`, `enum`, `file`
-- `json`, `jsonb_array`, `uuid`, `uuidv1`, `uuidv4`, `uuidv6`, `uuidv7`
+- `int`, `float`, `boolean`, `uuid`, `json`
 
 ### Culture & Fun
-- `programming_language`, `job_title`, `sport`, `music_genre`
-- `animal`, `cat`, `dog`, `dinosaur`, `fish`, `flower`
-- `fruit`, `vegetable`, `tea`, `spice`
+- `programming_language`, `animal`, `dinosaur`, `fruit`, `tea`
 
 ## Advanced Usage
 
@@ -102,6 +108,8 @@ fakedata float:8:2
 ```
 
 ### Templates
+
+![FakeData templates](../assets/vhs/fakedata/templates-light.gif)
 
 ```bash
 # Create a template file
@@ -144,16 +152,6 @@ make test
 
 # Run linter
 make lint
-```
-
-## Generating Demos
-
-GIF demos are generated with [VHS](https://github.com/charmbracelet/vhs). See [`assets/vhs/fakedata/`](../assets/vhs/fakedata/) for tape files.
-
-```bash
-# Generate all demos (dark and light themes)
-cd assets/vhs/fakedata
-for tape in *.tape; do vhs "$tape"; done
 ```
 
 ## License
