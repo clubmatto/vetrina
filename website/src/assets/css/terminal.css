@@ -1,0 +1,139 @@
+.terminal-window {
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: 10px;
+  overflow: hidden;
+
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--terminal-header-bg);
+  border-bottom: 1px solid var(--terminal-header-border);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red {
+  background: #ff5f57;
+}
+
+.terminal-dot.yellow {
+  background: #febc2e;
+}
+
+.terminal-dot.green {
+  background: #28c840;
+}
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  color: var(--terminal-title);
+}
+
+.terminal-title .lucide-icon {
+  display: inline;
+  vertical-align: middle;
+}
+
+.terminal-body {
+  padding: 0.7rem 0.9rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: var(--terminal-text);
+}
+
+.terminal-comment {
+  color: var(--terminal-comment);
+  font-style: italic;
+  margin-top: 0.75rem;
+}
+
+.terminal-comment:first-child {
+  margin-top: 0;
+}
+
+.terminal-line {
+  margin-bottom: 0;
+  word-break: break-all;
+}
+
+.terminal-prompt {
+  color: var(--terminal-prompt);
+  user-select: none;
+  margin-inline-end: 0.5em;
+}
+
+.terminal-output {
+  color: var(--terminal-output);
+  opacity: 0.9;
+}
+
+.terminal-gif {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.terminal-gif img {
+  width: 100%;
+  display: none;
+}
+
+:root[color-scheme="light"] .terminal-gif img.theme-light,
+:root[color-scheme="dark"] .terminal-gif img.theme-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([color-scheme]) .terminal-gif img.theme-light {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([color-scheme]) .terminal-gif img.theme-dark {
+    display: block;
+  }
+}
+
+.terminal-command {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: 6px;
+  line-height: 1.5;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+
+.terminal-command:hover {
+  border-color: var(--text);
+}
+
+.terminal-command.copied::after {
+  content: "Copied!";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.7rem;
+  color: var(--terminal-prompt);
+  font-weight: 600;
+}

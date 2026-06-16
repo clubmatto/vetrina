@@ -1,14 +1,17 @@
 @charset "UTF-8";
 
 @import "variables.css";
+@import "animations.css";
 @import "navigation.css";
 @import "footer.css";
 @import "home.css";
 @import "products.css";
 @import "page.css";
+@import "terminal.css";
+@import "vetrina.css";
 @import "theme-toggle.css";
 @import "product-pages.css";
-@import "post.css";
+@import "blog.css";
 @import "contact.css";
 
 .skip-link {
@@ -123,13 +126,3 @@ button:focus-visible {
   transition: all 0.2s ease;
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}

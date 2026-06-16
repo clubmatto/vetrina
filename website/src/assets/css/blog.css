@@ -1,3 +1,93 @@
+.year {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+ul.posts {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+ul.posts li {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--theme-toggle-bg);
+}
+
+ul.posts li:last-child {
+  border-bottom: none;
+}
+
+ul.posts li a {
+  text-decoration: none;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+ul.posts li a .post-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+ul.posts li a .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+ul.posts li a:hover {
+  text-decoration: none;
+}
+
+ul.posts li a .date {
+  color: var(--text);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: auto;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+.columns {
+  display: flex;
+}
+
+.columns .column {
+  display: block;
+  flex: 1;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+}
+
+.post-metadata {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.tags {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--text), transparent 70%);
+  border-radius: 3px;
+  opacity: 0.75;
+  text-transform: lowercase;
+}
+
 article.post {
   max-width: 68ch;
   margin-inline: auto;
@@ -99,5 +189,20 @@ article.post .post-content p code {
 
   article.post .post-header h1 {
     font-size: 1.75rem;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+
+  ul.posts li a {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  ul.posts li a .post-meta {
+    width: 100%;
+    justify-content: space-between;
   }
 }
