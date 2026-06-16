@@ -1,6 +1,6 @@
 # FakeData
 
-[![Go](https://img.shields.io/badge/Go-1.25.0-00ADD8?logo=go)](https://go.dev) [![License](https://img.shields.io/github/license/clubmatto/vetrina)](LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.25.0-00ADD8?logo=go)](https://go.dev) [![License](https://img.shields.io/github/license/clubmatto/vetrina)](../LICENSE)
 
 CLI tool to generate fake data rows for testing and development.
 
