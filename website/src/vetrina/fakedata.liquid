@@ -36,31 +36,62 @@ image_height: 650
 
 <h2 class="fakedata-section-title">Use Cases</h2>
 
-<div class="fakedata-tabs">
-  <input type="radio" name="tab" id="tab-testing" checked>
-  <input type="radio" name="tab" id="tab-development">
-  <input type="radio" name="tab" id="tab-load-testing">
-  <input type="radio" name="tab" id="tab-templates">
-
-  <div class="fakedata-tab-nav">
-    <label for="tab-testing">Testing</label>
-    <label for="tab-development">Development</label>
-    <label for="tab-load-testing">Load Testing</label>
-    <label for="tab-templates">Templates</label>
+<div class="fakedata-tabs" x-data="{ tab: 'testing' }">
+  <div class="fakedata-tab-nav" role="tablist">
+    <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
+    <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
+    <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
+    <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Templates</button>
   </div>
 
-  <div class="fakedata-tab-content" id="content-testing">
-    <div class="fakedata-tab-panel">
-      <div class="fakedata-tab-panel-text">
-        <p>
-          Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
-          suites.
-        </p>
-        <div class="terminal-command">
-          <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
+  <div class="fakedata-tab-panels">
+    <div class="fakedata-tab-content">
+      <div class="fakedata-tab-body" x-show="tab === 'testing'">
+        <div class="fakedata-tab-body-text">
+          <p>
+            Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
+            suites.
+          </p>
+          <div class="terminal-command">
+            <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
+          </div>
         </div>
       </div>
-      <div class="fakedata-tab-panel-demo">
+
+      <div class="fakedata-tab-body" x-show="tab === 'development'">
+        <div class="fakedata-tab-body-text">
+          <p>
+            Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
+            even dinosaurs.
+          </p>
+          <div class="terminal-command">
+            <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
+          </div>
+        </div>
+      </div>
+
+      <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
+        <div class="fakedata-tab-body-text">
+          <p>
+            Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
+            when ready.
+          </p>
+          <div class="terminal-command">
+            <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
+          </div>
+        </div>
+      </div>
+
+      <div class="fakedata-tab-body" x-show="tab === 'templates'">
+        <div class="fakedata-tab-body-text">
+          <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
+          <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fakedata-tab-demos">
+      <div class="fakedata-tab-demo" :class="{ visible: tab === 'testing' }">
         <div class="terminal-window">
           <div class="terminal-header">
             <span class="terminal-dot red"></span>
@@ -84,21 +115,8 @@ image_height: 650
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="fakedata-tab-content" id="content-development">
-    <div class="fakedata-tab-panel">
-      <div class="fakedata-tab-panel-text">
-        <p>
-          Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
-          even dinosaurs.
-        </p>
-        <div class="terminal-command">
-          <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
-        </div>
-      </div>
-      <div class="fakedata-tab-panel-demo">
+      <div class="fakedata-tab-demo" :class="{ visible: tab === 'development' }">
         <div class="terminal-window">
           <div class="terminal-header">
             <span class="terminal-dot red"></span>
@@ -122,21 +140,8 @@ image_height: 650
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="fakedata-tab-content" id="content-load-testing">
-    <div class="fakedata-tab-panel">
-      <div class="fakedata-tab-panel-text">
-        <p>
-          Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
-          when ready.
-        </p>
-        <div class="terminal-command">
-          <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
-        </div>
-      </div>
-      <div class="fakedata-tab-panel-demo">
+      <div class="fakedata-tab-demo" :class="{ visible: tab === 'load-testing' }">
         <div class="terminal-window">
           <div class="terminal-header">
             <span class="terminal-dot red"></span>
@@ -160,16 +165,8 @@ image_height: 650
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="fakedata-tab-content" id="content-templates">
-    <div class="fakedata-tab-panel">
-      <div class="fakedata-tab-panel-text">
-        <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
-        <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
-      </div>
-      <div class="fakedata-tab-panel-demo">
+      <div class="fakedata-tab-demo" :class="{ visible: tab === 'templates' }">
         <div class="terminal-window">
           <div class="terminal-header">
             <span class="terminal-dot red"></span>

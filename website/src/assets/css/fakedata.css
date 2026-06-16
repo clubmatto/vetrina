@@ -229,12 +229,12 @@
 
 /* --- Tabs --- */
 
-.fakedata-tabs {
-  margin: 2rem 0;
+[x-cloak] {
+  display: none !important;
 }
 
-.fakedata-tabs input[type="radio"] {
-  display: none;
+.fakedata-tabs {
+  margin: 2rem 0;
 }
 
 .fakedata-tab-nav {
@@ -243,39 +243,47 @@
   margin-bottom: 1.5rem;
 }
 
-.fakedata-tab-nav label {
-  position: relative;
-  padding: 0.75rem 1.5rem;
+.fakedata-tab-nav button {
+  padding: 0.5rem 1.25rem;
   font-family: var(--font-mono), sans-serif;
   font-size: 0.95rem;
   cursor: pointer;
   opacity: 0.5;
   transition: opacity 0.2s;
   user-select: none;
+  background: none;
+  border: none;
+  color: inherit;
 }
 
-.fakedata-tab-nav label:hover {
+.fakedata-tab-nav button:hover {
   opacity: 0.8;
 }
 
-.fakedata-tab-content {
-  display: none;
+.fakedata-tab-nav button.active {
+  opacity: 1;
+  background:
+    linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-4), var(--gradient-5)) bottom / 100% 2px no-repeat,
+    transparent;
 }
 
-.fakedata-tab-panel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.fakedata-tab-panels {
+  display: flex;
   gap: 2rem;
-  align-items: start;
+  align-items: flex-start;
 }
 
-.fakedata-tab-panel-text {
+.fakedata-tab-content {
+  flex: 1;
+}
+
+.fakedata-tab-body-text {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.fakedata-tab-panel-text p {
+.fakedata-tab-body-text p {
   font-family: var(--font-sans), sans-serif;
   font-size: 0.95rem;
   opacity: 0.75;
@@ -283,29 +291,20 @@
   margin: 0;
 }
 
-#tab-testing:checked ~ #content-testing,
-#tab-development:checked ~ #content-development,
-#tab-load-testing:checked ~ #content-load-testing,
-#tab-templates:checked ~ #content-templates {
+.fakedata-tab-demos {
+  flex: 1;
+}
+
+.fakedata-tab-demo {
+  display: none;
+}
+
+.fakedata-tab-demo.visible {
   display: block;
 }
 
-#tab-testing:checked ~ .fakedata-tab-nav label[for="tab-testing"]::after,
-#tab-development:checked ~ .fakedata-tab-nav label[for="tab-development"]::after,
-#tab-load-testing:checked ~ .fakedata-tab-nav label[for="tab-load-testing"]::after,
-#tab-templates:checked ~ .fakedata-tab-nav label[for="tab-templates"]::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gradient-text);
-}
-
 @media (max-width: 768px) {
-  .fakedata-tab-panel {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .fakedata-tab-panels {
+    flex-direction: column;
   }
 }
