@@ -25,7 +25,7 @@ document.addEventListener("alpine:init", () => {
       if (!this.query.trim()) return text;
       const escaped = this.query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(`(${escaped})`, "gi");
-      return text.replace(regex, '<mark class="vetrina-highlight">$1</mark>');
+      return text.replace(regex, '<mark class="fakedata-highlight">$1</mark>');
     },
     select(name: string, gen: { desc: string; samples: string[] }) {
       this.lastSelected = name;

@@ -1,0 +1,85 @@
+.showcase-header {
+  text-align: center;
+}
+
+.showcase-page-icon {
+  color: var(--gradient-5);
+  margin-bottom: 0.5rem;
+}
+
+.showcase-page-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke-width: 1.5;
+}
+
+.showcase-page-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-5) 0%,
+    var(--gradient-4) 50%,
+    var(--gradient-1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.15;
+}
+
+.showcase-page-tagline {
+  font-family: var(--font-sans), sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  line-height: 1.5;
+  opacity: 0.8;
+  margin: 0 0 2rem 0;
+}
+
+.showcase-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.showcase-grid-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.showcase-more-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.showcase-more-section .showcase-ctas {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .showcase-more-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}
