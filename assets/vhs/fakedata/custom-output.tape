@@ -11,12 +11,14 @@ Sleep 500ms
 Type "cat insert.tmpl"
 Enter
 
+Sleep 1.5s
+
 Type "fakedata -T insert.tmpl -n 5"
 Enter
 
-Sleep 2s
+Sleep 500ms
 
-Type "# Perfect for seeding databases!"
+Type "# ✨ Perfect for seeding databases ✨"
 Enter
 
 Sleep 3s

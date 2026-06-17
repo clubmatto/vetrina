@@ -89,6 +89,9 @@ Browse all 80+ generators interactively at [matto.club/vetrina/fakedata/#generat
 ### Culture & Fun
 - `programming_language`, `animal`, `dinosaur`, `fruit`, `tea`
 
+### Planned
+- `password`, `credit_card`, `iban`, `paragraph`
+
 ## Advanced Usage
 
 ### Custom Generators
@@ -109,7 +112,7 @@ fakedata float:8:2
 
 ### Templates
 
-![FakeData templates](../assets/vhs/fakedata/templates-light.gif)
+![FakeData templates](../assets/vhs/fakedata/custom-output-light.gif)
 
 ```bash
 # Create a template file

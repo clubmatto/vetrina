@@ -1,4 +1,4 @@
-Type "# FakeData can output different formats with ease"
+Type "# Multiple output formats, no boilerplate needed"
 Enter
 
 Sleep 1s
@@ -23,7 +23,7 @@ Enter
 
 Sleep 1.5s
 
-Type "# CSV with headers!"
+Type "# CSV with headers"
 Enter
 
 Sleep 500ms
@@ -33,12 +33,17 @@ Enter
 
 Sleep 1.5s
 
-Type "# NDJSON if you need JSON files"
+Type "# NDJSON — one JSON object per line"
 Enter
 
 Sleep 500ms
 
 Type "fakedata --format ndjson -n 3 email country"
+Enter
+
+Sleep 500ms
+
+Type "# ✨ Your data, your format ✨"
 Enter
 
 Sleep 3s

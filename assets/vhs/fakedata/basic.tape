@@ -8,12 +8,17 @@ Enter
 
 Sleep 2s
 
-Type "# You can named column for clarity"
+Type "# You can name columns for clarity"
 Enter
 
 Sleep 1s
 
 Type "fakedata login:email user:first_name status:enum:active,inactive"
+Enter
+
+Sleep 500ms
+
+Type "# ⚡ Test data in seconds ⚡"
 Enter
 
 Sleep 3s

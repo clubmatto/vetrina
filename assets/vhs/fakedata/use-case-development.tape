@@ -8,12 +8,17 @@ Enter
 
 Sleep 1.5s
 
-Type "# 80+ generators for any domain"
+Type "# Or network config mock data"
 Enter
 
 Sleep 500ms
 
-Type "fakedata programming_language sport fruit dinosaur"
+Type "fakedata url ipv4 domain_name mac"
+Enter
+
+Sleep 500ms
+
+Type "# ✨ Mock data for every layer of the stack ✨"
 Enter
 
 Sleep 3s

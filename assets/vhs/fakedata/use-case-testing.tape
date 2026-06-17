@@ -1,4 +1,4 @@
-Type "# Use case: Testing"
+Type "# Test with deterministic data"
 Enter
 
 Sleep 1s
@@ -29,6 +29,11 @@ Enter
 Sleep 500ms
 
 Type "fakedata --seed 42 -n 3 email country"
+Enter
+
+Sleep 500ms
+
+Type "# ✨ Deterministic by design ✨"
 Enter
 
 Sleep 3s

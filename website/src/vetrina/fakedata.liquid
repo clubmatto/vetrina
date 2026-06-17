@@ -43,7 +43,7 @@ image_height: 650
         <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
         <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
         <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
-        <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Templates</button>
+        <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Custom Output</button>
       </div>
     <div class="fakedata-tab-content">
       <div class="fakedata-tab-body" x-show="tab === 'testing'">
@@ -174,18 +174,18 @@ image_height: 650
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">Templates</span>
+            <span class="terminal-title">Custom Output</span>
           </div>
           <div class="terminal-body terminal-gif">
             <img
-              src="/assets/img/fakedata/templates-light.gif"
-              alt="FakeData templates demo"
+              src="/assets/img/fakedata/custom-output-light.gif"
+              alt="FakeData custom output demo"
               loading="lazy"
               class="theme-light"
             >
             <img
-              src="/assets/img/fakedata/templates-dark.gif"
-              alt="FakeData templates demo"
+              src="/assets/img/fakedata/custom-output-dark.gif"
+              alt="FakeData custom output demo"
               loading="lazy"
               class="theme-dark"
             >

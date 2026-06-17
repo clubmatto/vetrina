@@ -1,19 +1,14 @@
-Type "# Use case: Load Testing"
+Type "# Load test with real-time streams"
 Enter
 
 Sleep 1s
-
-Type "# Stream thousands of rows"
-Enter
-
-Sleep 500ms
 
 Type "fakedata --stream -f ndjson email country > data.jsonl &"
 Enter
 
 Sleep 1.5s
 
-Type "# Monitor the output"
+Type "head -3 data.jsonl"
 Enter
 
 Sleep 1s
@@ -21,14 +16,14 @@ Sleep 1s
 Type "wc -l data.jsonl"
 Enter
 
-Sleep 2s
+Sleep 500ms
 
-Type "# Stop when ready"
+Type "kill %1"
 Enter
 
 Sleep 500ms
 
-Type "kill %1"
+Type "# ✨ Endless data, zero effort ✨"
 Enter
 
 Sleep 3s
