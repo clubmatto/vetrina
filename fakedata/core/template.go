@@ -43,7 +43,9 @@ func (r *Registry) getFunctions() template.FuncMap {
 
 	for _, gen := range r.generators {
 		if !gen.IsCustom() {
-			name := strings.ReplaceAll(c.String(strings.ReplaceAll(gen.Name, ".", " ")), " ", "")
+			s := strings.ReplaceAll(gen.Name, ".", " ")
+			s = strings.ReplaceAll(s, "_", " ")
+			name := strings.ReplaceAll(c.String(s), " ", "")
 			funcMap[name] = gen.Func
 		}
 	}
