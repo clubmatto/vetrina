@@ -2,23 +2,23 @@ class Fakedata < Formula
   desc "CLI tool to generate fake data rows for testing and development"
   homepage "https://matto.club/vetrina/fakedata"
   license "MIT"
-  version "0.0.3"
+  version "0.0.5"
 
   if OS.mac?
     if Hardware::CPU.intel?
-      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.3/fakedata_0.0.3_darwin_amd64.tar.gz"
-      sha256 "2ebf4e86b15d26a616ba35a642f1cf68cf688f115a2b37c6d740410ec4b1bc72"
+      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.5/fakedata_0.0.5_darwin_amd64.tar.gz"
+      sha256 "73d6b4c888c201be87c9928a5e3b0ec87226727ed64c99f340402bf078d3dbd6"
     elsif Hardware::CPU.arm?
-      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.3/fakedata_0.0.3_darwin_arm64.tar.gz"
-      sha256 "82085fe194f3512557098695718a9ff0433e10440eec2c40645e560ee533b937"
+      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.5/fakedata_0.0.5_darwin_arm64.tar.gz"
+      sha256 "0db570ccd99330e6f1ffad3bf85ecd6a8184df28f0caa3030f1857c4650f3e39"
     end
   elsif OS.linux?
     if Hardware::CPU.intel?
-      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.3/fakedata_0.0.3_linux_amd64.tar.gz"
-      sha256 "af1029c0e78a127424ac6920f22f11189de5821cda90ade10cd09bb66b0381ee"
+      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.5/fakedata_0.0.5_linux_amd64.tar.gz"
+      sha256 "b6faa4c269357ea9965f14370a91c72fc89fa1f9d75dc114b3b71bcd7efdaf86"
     elsif Hardware::CPU.arm?
-      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.3/fakedata_0.0.3_linux_arm64.tar.gz"
-      sha256 "fb82cdd9ebd8b35db658575120607dba86a910e6815d9b2057a3e3639d8858f8"
+      url "https://github.com/clubmatto/vetrina/releases/download/fakedata/v0.0.5/fakedata_0.0.5_linux_arm64.tar.gz"
+      sha256 "4272daf90f3f81516dfe4c800f00c0574fc2cd95058a3130a7b4b160fcbc8c87"
     end
   end
 
