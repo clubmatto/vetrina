@@ -21,6 +21,7 @@ function applyTheme(theme: string) {
 
   const resolved = getResolvedTheme(theme);
   document.documentElement.style.setProperty("color-scheme", resolved);
+  document.documentElement.setAttribute("data-color-scheme", resolved);
   localStorage.setItem("theme", theme);
 
   if (!lightIcon || !systemIcon || !darkIcon) return;

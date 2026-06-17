@@ -8,7 +8,7 @@ Enter
 
 Sleep 1s
 
-Type "fakedata-pro --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10 --dry-run"
+Type "fakedata --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10 --dry-run"
 Enter
 
 Sleep 4s

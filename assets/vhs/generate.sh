@@ -2,51 +2,46 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TAPE_DIR="$SCRIPT_DIR/fakedata"
 
-# Demo names (without .tape extension)
-DEMOS=(
-  basic
-  templates
-  streaming
-  formats
-  use-case-testing
-  use-case-load-testing
-  use-case-development
-  pro-generate
-  pro-dry-run
-  pro-override
-)
-
-# Theme configs
-declare -A THEMES=(
-  [dark]="config.tape"
-  [light]="config-light.tape"
+THEMES=(
+  dark
+  light
 )
 
 usage() {
   cat <<EOF
-Usage: $(basename "$0") [OPTIONS] [DEMO...]
+Usage: $(basename "$0") [OPTIONS] <PROJECT> [DEMO...]
 
 Generate GIF demos using VHS.
 
+Arguments:
+  PROJECT     Project directory (e.g., fakedata)
+
 Options:
   -t, --theme THEME    Generate only for theme: dark, light, or all (default: all)
-  -l, --list           List available demos
+  -l, --list           List available projects
   -h, --help           Show this help
 
 Examples:
-  $(basename "$0")                    # Generate all demos, both themes
-  $(basename "$0") basic templates    # Generate only basic and templates
-  $(basename "$0") -t light           # Generate all demos, light theme only
+  $(basename "$0") fakedata               # Generate all fakedata demos, both themes
+  $(basename "$0") -t light fakedata      # Light theme only
+  $(basename "$0") fakedata basic         # Generate specific demos
 EOF
   exit 0
 }
 
-list_demos() {
-  echo "Available demos:"
-  for demo in "${DEMOS[@]}"; do
-    echo "  - $demo"
+list_projects() {
+  echo "Available projects:"
+  for dir in "$SCRIPT_DIR"/*/; do
+    project="$(basename "$dir")"
+    tapes=()
+    for tape in "$dir"/*.tape; do
+      name="$(basename "$tape" .tape)"
+      [[ "$name" != config* ]] && tapes+=("$name")
+    done
+    if [[ ${#tapes[@]} -gt 0 ]]; then
+      echo "  - $project"
+    fi
   done
   exit 0
 }
@@ -54,25 +49,29 @@ list_demos() {
 generate() {
   local demo="$1"
   local theme="$2"
-  local config_file="${THEMES[$theme]}"
   local output_file="${demo}-${theme}.gif"
-  local tape_file="$TAPE_DIR/${demo}.tape"
+  local config_file="$SCRIPT_DIR/config.tape"
+  local theme_file="$SCRIPT_DIR/config-${theme}.tape"
 
+  if [[ ! -f "$theme_file" ]]; then
+    echo "  Skipping $theme (no config found)"
+    return
+  fi
+
+  local tape_file="$PROJECT_DIR/${demo}.tape"
   if [[ ! -f "$tape_file" ]]; then
     echo "Error: Tape file not found: $tape_file"
     return 1
   fi
 
   echo "Generating $output_file..."
-
-  # Generate GIF using process substitution
-  (cd "$TAPE_DIR" && vhs <(echo "Output $output_file"; cat "$config_file"; echo ""; cat "$tape_file"))
-
-  echo "  -> $TAPE_DIR/$output_file"
+  (cd "$PROJECT_DIR" && vhs <(echo "Output $output_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
+  echo "  -> $PROJECT_DIR/$output_file"
 }
 
 # Parse arguments
 THEME="all"
+PROJECT=""
 SELECTED_DEMOS=()
 
 while [[ $# -gt 0 ]]; do
@@ -82,7 +81,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -l|--list)
-      list_demos
+      list_projects
       ;;
     -h|--help)
       usage
@@ -92,15 +91,37 @@ while [[ $# -gt 0 ]]; do
       usage
       ;;
     *)
-      SELECTED_DEMOS+=("$1")
+      if [[ -z "$PROJECT" ]]; then
+        PROJECT="$1"
+      else
+        SELECTED_DEMOS+=("$1")
+      fi
       shift
       ;;
   esac
 done
 
-# Default to all demos if none selected
+if [[ -z "$PROJECT" ]]; then
+  echo "Error: No project specified."
+  echo ""
+  list_projects
+fi
+
+PROJECT_DIR="$SCRIPT_DIR/$PROJECT"
+if [[ ! -d "$PROJECT_DIR" ]]; then
+  echo "Error: Project directory not found: $PROJECT_DIR"
+  exit 1
+fi
+
+# Discover demos from tape files (excluding config*.tape)
+ALL_DEMOS=()
+for tape in "$PROJECT_DIR"/*.tape; do
+  name="$(basename "$tape" .tape)"
+  [[ "$name" != config* ]] && ALL_DEMOS+=("$name")
+done
+
 if [[ ${#SELECTED_DEMOS[@]} -eq 0 ]]; then
-  SELECTED_DEMOS=("${DEMOS[@]}")
+  SELECTED_DEMOS=("${ALL_DEMOS[@]}")
 fi
 
 # Validate theme
@@ -109,39 +130,30 @@ if [[ "$THEME" != "all" && "$THEME" != "dark" && "$THEME" != "light" ]]; then
   exit 1
 fi
 
-# Check if any pro demos are selected and set up the database
-PRO_DEMOS=("pro-generate" "pro-dry-run" "pro-override")
-needs_db=false
-for demo in "${SELECTED_DEMOS[@]}"; do
-  for pd in "${PRO_DEMOS[@]}"; do
-    [[ "$demo" == "$pd" ]] && needs_db=true && break
-  done
-done
+# Source project requirements if present
+if [[ -f "$PROJECT_DIR/requirements.sh" ]]; then
+  source "$PROJECT_DIR/requirements.sh"
+  setup "$PROJECT_DIR" "${SELECTED_DEMOS[@]}"
+fi
 
-if $needs_db; then
-  echo "Setting up SQLite database for pro demos..."
-  schema="$TAPE_DIR/schema-pro.sql"
-  if [[ ! -f "$schema" ]]; then
-    echo "Error: Schema file not found: $schema"
-    exit 1
-  fi
-  rm -f "$TAPE_DIR/pro.db"
-  sqlite3 "$TAPE_DIR/pro.db" < "$schema"
-  echo "  -> $TAPE_DIR/pro.db created"
+# Determine themes to generate
+if [[ "$THEME" == "all" ]]; then
+  SELECTED_THEMES=("${THEMES[@]}")
+else
+  SELECTED_THEMES=("$THEME")
 fi
 
 # Generate GIFs
 for demo in "${SELECTED_DEMOS[@]}"; do
-  if [[ "$THEME" == "all" ]]; then
-    generate "$demo" "dark"
-    generate "$demo" "light"
-  else
-    generate "$demo" "$THEME"
-  fi
+  for theme in "${SELECTED_THEMES[@]}"; do
+    generate "$demo" "$theme"
+  done
 done
 
 # Cleanup
-$needs_db && rm -f "$TAPE_DIR/pro.db" && echo "Cleaned up pro.db"
+if [[ -f "$PROJECT_DIR/requirements.sh" ]]; then
+  cleanup "$PROJECT_DIR" "${SELECTED_DEMOS[@]}"
+fi
 
 echo ""
-echo "Done! GIFs generated in $TAPE_DIR/"
+echo "Done! GIFs generated in $PROJECT_DIR/"

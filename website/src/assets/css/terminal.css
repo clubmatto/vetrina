@@ -92,19 +92,19 @@
   display: none;
 }
 
-:root[color-scheme="light"] .terminal-gif img.theme-light,
-:root[color-scheme="dark"] .terminal-gif img.theme-dark {
+:root[data-color-scheme="light"] .terminal-gif img.theme-light,
+:root[data-color-scheme="dark"] .terminal-gif img.theme-dark {
   display: block;
 }
 
 @media (prefers-color-scheme: light) {
-  :root:not([color-scheme]) .terminal-gif img.theme-light {
+  :root:not([data-color-scheme]) .terminal-gif img.theme-light {
     display: block;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([color-scheme]) .terminal-gif img.theme-dark {
+  :root:not([data-color-scheme]) .terminal-gif img.theme-dark {
     display: block;
   }
 }

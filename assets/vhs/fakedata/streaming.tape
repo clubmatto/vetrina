@@ -1,4 +1,4 @@
-Type "# Stream mode for load testing"
+Type "# Load testing with streaming mode"
 Enter
 
 Sleep 30ms

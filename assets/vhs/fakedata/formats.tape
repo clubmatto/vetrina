@@ -1,4 +1,4 @@
-Type "# Multiple output formats for any workflow"
+Type "# FakeData can output different formats with ease"
 Enter
 
 Sleep 1s
@@ -13,7 +13,17 @@ Enter
 
 Sleep 1.5s
 
-Type "# CSV with headers"
+Type "# CSV"
+Enter
+
+Sleep 500ms
+
+Type 'fakedata -s "," email country'
+Enter
+
+Sleep 1.5s
+
+Type "# CSV with headers!"
 Enter
 
 Sleep 500ms
@@ -23,7 +33,7 @@ Enter
 
 Sleep 1.5s
 
-Type "# NDJSON for modern pipelines"
+Type "# NDJSON if you need JSON files"
 Enter
 
 Sleep 500ms

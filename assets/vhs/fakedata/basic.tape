@@ -1,4 +1,4 @@
-Type "# Generate realistic test data with just column names"
+Type "# FakeData CLI generates realistic test data with intuitive column names"
 Enter
 
 Sleep 1s
@@ -8,17 +8,7 @@ Enter
 
 Sleep 2s
 
-Type "# Add more columns for richer data"
-Enter
-
-Sleep 1s
-
-Type "fakedata first_name last_name email phone"
-Enter
-
-Sleep 2s
-
-Type "# Use named columns for clarity"
+Type "# You can named column for clarity"
 Enter
 
 Sleep 1s

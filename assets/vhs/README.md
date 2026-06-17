@@ -10,17 +10,21 @@ Install VHS:
 brew install vhs
 ```
 
+SQLite is required for demos that use a database (`pro-*`).
+
 ## Directory Structure
 
 ```
 assets/vhs/
-├── fakedata/              # FakeData CLI demos
-│   ├── *.tape             # Demo commands (theme-agnostic)
-│   ├── config.tape        # Dark theme settings (OneDark)
-│   ├── config-light.tape  # Light theme settings (Catppuccin Latte)
-│   └── *.tmpl             # Template files used in demos
-├── generate.sh            # Script to generate all GIFs
-└── README.md              # This file
+├── config.tape              # Dark theme settings (OneDark, shared across projects)
+├── config-light.tape        # Light theme settings (Catppuccin Latte, shared across projects)
+├── fakedata/                # FakeData CLI demos
+│   ├── *.tape               # Demo commands (theme-agnostic)
+│   ├── *.tmpl               # Template files used in demos
+│   ├── schema-pro.sql       # DB schema for pro demos
+│   └── requirements.sh      # Prerequisites (setup/cleanup functions)
+├── generate.sh              # Script to generate all GIFs
+└── README.md                # This file
 ```
 
 ## Generate GIFs
@@ -28,28 +32,24 @@ assets/vhs/
 ### All Demos (Both Themes)
 
 ```bash
-./generate.sh
+./generate.sh fakedata
 ```
 
 ### Specific Demos
 
 ```bash
-./generate.sh basic templates
+./generate.sh fakedata basic templates
 ```
-
-### Prerequisites for Pro Demos
-
-The `pro-*` demos require SQLite (for creating the test database) and the `fakedata-pro` binary on your PATH.
 
 ### Single Theme
 
 ```bash
-./generate.sh -t dark      # Dark theme only
-./generate.sh -t light     # Light theme only
-./generate.sh -t all basic # Both themes, specific demo
+./generate.sh -t dark fakedata      # Dark theme only
+./generate.sh -t light fakedata     # Light theme only
+./generate.sh -t all fakedata basic # Both themes, specific demo
 ```
 
-### List Available Demos
+### List Available Projects
 
 ```bash
 ./generate.sh --list
@@ -74,8 +74,8 @@ The `pro-*` demos require SQLite (for creating the test database) and the `faked
 
 | Config File | Theme | Used For |
 |-------------|-------|----------|
-| `config.tape` | OneDark | Dark mode GIFs |
-| `config-light.tape` | Catppuccin Latte | Light mode GIFs, README |
+| `config.tape` | Vetrina Dark | Dark mode GIFs |
+| `config-light.tape` | Vetrina Light | Light mode GIFs, README |
 
 ## Using GIFs
 
@@ -86,6 +86,18 @@ Generated GIFs are served directly by the website via 11ty passthrough copy. No 
 
 ## Adding New Demos
 
-1. Create a new `.tape` file in `fakedata/` with demo commands only
-2. Add the demo name to the `DEMOS` array in `generate.sh`
-3. Run `./generate.sh <demo-name>` to generate
+1. Create a new `.tape` file in the project directory with demo commands only
+2. Run `./generate.sh <project> <demo-name>` to generate
+
+The script automatically discovers all `.tape` files (except `config*.tape`) — no need to register them manually.
+
+## Adding New Projects
+
+1. Create a subdirectory with your `.tape` files
+2. If the project needs setup or teardown before/after generation, add `requirements.sh`:
+   ```bash
+   setup()   { ... }  # called before generation
+   cleanup() { ... }  # called after generation
+   ```
+   Both receive the project directory path and list of demo names as arguments.
+   `generate.sh` sources `requirements.sh` automatically if present.
