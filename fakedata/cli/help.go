@@ -9,16 +9,37 @@ import (
 	"matto.club/vetrina/fakedata/output"
 )
 
+var optionSignatures = map[string]string{
+	"int":          "min,max",
+	"float":        "precision:scale",
+	"enum":         "val1,val2,val3,...",
+	"file":         "path",
+	"phone_number": "digits",
+	"date":         "YYYY-MM-DD,YYYY-MM-DD",
+	"datetime":     "YYYY-MM-DD,YYYY-MM-DD",
+	"timestamp":    "YYYY-MM-DD,YYYY-MM-DD",
+}
+
+func formatGeneratorName(gen core.Generator) string {
+	if !gen.IsCustom() {
+		return gen.Name
+	}
+
+	sig, ok := optionSignatures[gen.Name]
+	if !ok {
+		return gen.Name + " [...]"
+	}
+
+	return gen.Name + " [" + sig + "]"
+}
+
 const generatorHelpPadding = 2
 
 func generatorsHelp(generators core.Generators) string {
 	maxInt := 0
 
 	for _, gen := range generators {
-		name := gen.Name
-		if gen.IsCustom() {
-			name = gen.Name + "*"
-		}
+		name := formatGeneratorName(gen)
 
 		if len(name) > maxInt {
 			maxInt = len(name)
@@ -29,12 +50,7 @@ func generatorsHelp(generators core.Generators) string {
 	pattern := fmt.Sprintf("%%-%ds%%s\n", maxInt+generatorHelpPadding)
 
 	for _, gen := range generators {
-		name := gen.Name
-		if gen.IsCustom() {
-			name = gen.Name + "*"
-		}
-
-		_, _ = fmt.Fprintf(buffer, pattern, name, gen.Desc)
+		_, _ = fmt.Fprintf(buffer, pattern, formatGeneratorName(gen), gen.Desc)
 	}
 
 	return buffer.String()
@@ -57,6 +73,11 @@ func showGeneratorHelp(g *core.Generator) {
 }
 
 func showCustomGeneratorHelp(g *core.Generator) {
+	sig, ok := optionSignatures[g.Name]
+	if ok {
+		output.Printf("Arguments: %s\n\n", sig)
+	}
+
 	exampleParams := map[string]string{
 		"int":          "0,100",
 		"date":         "2020-01-01,2024-12-31",

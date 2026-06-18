@@ -30,7 +30,6 @@ var (
 	sampleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))
 	metaStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 	footerStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
-	customMark    = lipgloss.NewStyle().Foreground(lipgloss.Color("11"))
 	separatorLine = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 )
 
@@ -118,12 +117,11 @@ func newBrowseModel(reg *core.Registry) browseModel {
 		Background(lipgloss.Color("11"))
 
 	l := list.New(items, d, 0, 0)
-	l.Title = ""
+	l.Title = " / to search"
 	l.SetShowHelp(false)
-	l.SetShowStatusBar(false)
+	l.SetShowStatusBar(true)
 	l.SetShowPagination(false)
 	l.SetFilteringEnabled(true)
-	l.Styles.Title = lipgloss.NewStyle()
 
 	return browseModel{
 		list:  l,
@@ -188,9 +186,23 @@ func (m browseModel) View() string {
 }
 
 func (m browseModel) renderDetail(width int) string {
+	filterVal := m.list.FilterInput.Value()
+
+	if filterVal != "" && m.list.SelectedItem() == nil {
+		return metaStyle.Render(fmt.Sprintf("filter: %s (no matches)", filterVal))
+	}
+
+	var b strings.Builder
+	if filterVal != "" {
+		b.WriteString(metaStyle.Render(fmt.Sprintf("filter: %s", filterVal)))
+		b.WriteString("\n\n")
+	}
+
 	item := m.list.SelectedItem()
 	if item == nil {
-		return metaStyle.Render("press / to search generators")
+		b.WriteString(metaStyle.Render("press / to search generators"))
+
+		return lipgloss.NewStyle().Width(width).Padding(0, detailPadRight, 0, detailPadLeft).Render(b.String())
 	}
 
 	gi, ok := item.(generatorItem)
@@ -200,8 +212,6 @@ func (m browseModel) renderDetail(width int) string {
 
 	gen := gi.gen
 
-	var b strings.Builder
-
 	b.WriteString(detailTitle.Render(gen.Name))
 	b.WriteString("\n")
 	b.WriteString(gen.Desc)
@@ -209,13 +219,6 @@ func (m browseModel) renderDetail(width int) string {
 
 	b.WriteString(sectionStyle.Render("template"))
 	b.WriteString(fmt.Sprintf("  {{%s}}\n", templateName(gen.Name)))
-
-	b.WriteString(sectionStyle.Render("custom"))
-	custom := "no"
-	if gen.IsCustom() {
-		custom = customMark.Render("yes")
-	}
-	b.WriteString(fmt.Sprintf("  %s\n", custom))
 
 	b.WriteString("\n")
 	b.WriteString(sectionStyle.Render("example"))
@@ -226,12 +229,21 @@ func (m browseModel) renderDetail(width int) string {
 	b.WriteString("\n\n")
 
 	b.WriteString(sectionStyle.Render("usage"))
-	usage := fmt.Sprintf("  fakedata %s", gen.Name)
+	b.WriteString(fmt.Sprintf("\n  fakedata %s", gen.Name))
 	if gen.IsCustom() {
-		usage = fmt.Sprintf("  fakedata %s:<options>", gen.Name)
+		exampleParams := map[string]string{
+			"int":          "0,100",
+			"date":         "2020-01-01,2024-12-31",
+			"datetime":     "2020-01-01,2024-12-31",
+			"timestamp":    "2020-01-01,2024-12-31",
+			"enum":         "apple,banana,cherry",
+			"phone_number": "10",
+			"float":        "6:2",
+		}
+		if params, ok := exampleParams[gen.Name]; ok {
+			b.WriteString(fmt.Sprintf("\n  fakedata %s:%s", gen.Name, params))
+		}
 	}
-	b.WriteString("\n")
-	b.WriteString(sampleStyle.Render(usage))
 
 	return lipgloss.NewStyle().Width(width).Padding(0, detailPadRight, 0, detailPadLeft).Render(b.String())
 }
