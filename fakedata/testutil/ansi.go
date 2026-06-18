@@ -1,6 +1,6 @@
 package testutil
 
-// TODO we have this in two places, better extract it?
+// StripANSICodes removes ANSI escape codes from a string.
 func StripANSICodes(s string) string {
 	result := make([]byte, 0, len(s))
 	for i := 0; i < len(s); i++ {

@@ -77,39 +77,23 @@ Rewrite from 162 → ~400 lines with this structure:
 
 ---
 
-## Phase 2: Contextual CLI Help System
+## Phase 2: Contextual Help System (DONE)
 
-**New file: `cli/helptopics.go`**
+`fakedata help <topic>` dispatches with `help` as a pseudo-subcommand (no
+pflag changes). Topics are editable markdown files under `docs/embed/`,
+compiled into the binary via `go:generate` + `tools/embedmd`.
 
-Topic-based help rendered with lipgloss + markdown:
-
-```go
-package cli
-
-var helpTopics = map[string]string{
-    "templates": `# Templates ...`,
-    "generators": `...`,
-    "formats":    `...`,
-    "columns":    `...`,
-}
-```
-
-**Modified file: `cli/options.go`**
-
-- Add `HelpTopic` field to `Config`
-- Register `--help <topic>` flag
-
-**Modified file: `cli/run.go`**
-
-- Add dispatch in `RunCLIMode`:
-  ```go
-  if cfg.HelpTopic != "" {
-      topic, ok := helpTopics[cfg.HelpTopic]
-      if !ok { ... }
-      output.Println(topic)
-      os.Exit(0)
-  }
-  ```
+- **Dispatch**: `RunCLIMode` checks `args[0] == "help"`, consumes `args[1]`
+  as topic name. `fakedata help` (no topic) lists available topics.
+- **Content**: `docs/embed/templates.md`, `columns.md`, `formats.md`,
+  `custom.md`, `seeding.md` — plain markdown, no new deps.
+- **Embedding**: `tools/embedmd/main.go` reads `docs/embed/*.md` and
+  outputs `cli/helptopics_gen.go` with escaped string content.
+- **Rendering**: Simple lipgloss-based renderer in `cli/helptopics.go`:
+  `#` → SectionHeader, `##` → Bold, `` ``` `` → Dim (code blocks).
+- **New files**: `cli/helptopics.go`, `cli/helptopics_gen.go` (generated),
+  `tools/embedmd/main.go`, `docs/embed/*.md` (×5).
+- **Modified files**: `cli/run.go` (help dispatch).
 
 ---
 
@@ -225,13 +209,16 @@ New GIFs for `assets/vhs/fakedata/` (referenced in README):
 |------|--------|
 | `README.md` | Rewrite (~400 lines) |
 | `cli/helptopics.go` | **New** — contextual help for topics |
+| `cli/helptopics_gen.go` | **New** (generated) — topic content from `docs/embed/*.md` |
+| `tools/embedmd/main.go` | **New** — generator tool that reads .md → .go |
+| `docs/embed/*.md` | **New** (×5) — templates, columns, formats, custom, seeding |
 | `cli/browse.go` | **New** — Bubble Tea generator browser |
 | `cli/browse_test.go` | **New** — browser tests |
-| `cli/options.go` | Add `HelpTopic`, `Browse` fields + flags |
-| `cli/run.go` | Add dispatch for `--help <topic>` and `--browse` |
+| `cli/options.go` | Add `Browse` field + flags |
+| `cli/run.go` | Add dispatch for `help <topic>` and `--browse` |
 | `cli/help.go` | Category-grouped output, richer per-generator detail |
 | `tools/gendocs/main.go` | **New** — auto-generate markdown from code |
-| `Makefile` | Add `docs` target |
+| `Makefile` | Add `docs` target, wire `go generate` |
 | `go.mod` / `go.sum` | Add `bubbletea`, `bubbles` |
 | `assets/vhs/fakedata/*.gif` | 6 new VHS GIFs |
 
@@ -239,10 +226,10 @@ New GIFs for `assets/vhs/fakedata/` (referenced in README):
 
 ## Suggested Priority Order
 
-1. **Phase 1: README rewrite** — highest impact, no new deps, pure docs
-2. **Phase 6: Enhanced `--generators`/`--generator`** — improves existing
+1. **Phase 1: README rewrite** — DONE
+2. **Phase 2: Contextual help system** — DONE
+3. **Phase 6: Enhanced `--generators`/`--generator`** — improves existing
    CLI, small code change
-3. **Phase 2: Contextual `--help <topic>`** — medium effort, big UX win
 4. **Phase 4: Doc generation tool** — enables "docs from code" workflow
 5. **Phase 3: Interactive browser** — highest effort, needs new deps,
    biggest wow factor

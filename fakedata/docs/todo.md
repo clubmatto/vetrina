@@ -1,14 +1,10 @@
 # TODO
 
-## Country-specific first/last name generators
+## ~~Country-specific first/last name generators~~ (ALREADY EXISTS)
 
-`first_name_<cc>` and `last_name_<cc>` don't exist yet, but the data already has per-country names:
-
-- `data/names/forenames.go` — `Forenames` has `Name` and `CountryCode` fields
-- `data/names/surnames.go` — `Surnames` has `Name` and `CountryCode` fields
-
-Add to `core/geo.go` `registerCountryVariants()` following the same pattern as
-`city_<cc>` / `state_<cc>`: filter by country code, register as hidden generator.
+`first_name_<cc>` and `last_name_<cc>` already exist in `core/people.go`:
+`registerCountryNames()` reads `namedata.ForenameIndex` / `SurnameIndex` and
+registers hidden per-country variants. My initial exploration missed this.
 
 ## Date pair detection — support more word variants
 

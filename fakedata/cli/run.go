@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"os"
+	"strings"
 
 	"matto.club/vetrina/fakedata/core"
 	"matto.club/vetrina/fakedata/output"
@@ -19,6 +20,18 @@ func Run(version string, ctx context.Context) {
 }
 
 func RunCLIMode(reg *core.Registry, version string, cfg Config, args []string, ctx context.Context) {
+	if handleHelpSubcommand(args) {
+		return
+	}
+
+	if handleUtilityFlags(reg, version, cfg, args) {
+		return
+	}
+
+	runColumnMode(reg, args, cfg, ctx)
+}
+
+func handleUtilityFlags(reg *core.Registry, version string, cfg Config, args []string) bool {
 	if cfg.Help {
 		flag.Usage()
 		os.Exit(0)
@@ -62,10 +75,30 @@ func RunCLIMode(reg *core.Registry, version string, cfg Config, args []string, c
 			os.Exit(1)
 		}
 
-		return
+		return true
 	}
 
-	runColumnMode(reg, args, cfg, ctx)
+	return false
+}
+
+func handleHelpSubcommand(args []string) bool {
+	if len(args) == 0 || args[0] != "help" {
+		return false
+	}
+
+	if len(args) > 1 {
+		if !PrintHelpTopic(args[1]) {
+			output.Printf("no help topic %q\n", args[1])
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
+	output.Println("Available topics: " + strings.Join(AvailableTopics(), ", "))
+	output.Println("Use `fakedata help <topic>` for details.")
+	os.Exit(0)
+
+	return true
 }
 
 func runColumnMode(reg *core.Registry, args []string, cfg Config, ctx context.Context) {
