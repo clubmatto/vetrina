@@ -13,9 +13,11 @@ Column spec syntax: [name:][generator[:args]]
   login:email              column "login" using email generator
   count:int:10,20          column "count" using int generator, range 10-20
 
+Use `fakedata --help <topic>` for detailed help on columns, formats, seeding, templates.
+
 
 Utility
-  -h, --help                   show this help
+  -h, --help                   show this help; use --help <topic> for detailed guides
   -v, --version                show version information
   -C, --completion string      print shell completion function ("bash", "zsh", "fish")
 

@@ -45,6 +45,8 @@ Column spec syntax: [name:][generator[:args]]
   login:email              column "login" using email generator
   count:int:10,20          column "count" using int generator, range 10-20
 
+Use ` + "`fakedata --help <topic>`" + ` for detailed help on columns, formats, seeding, templates.
+
 `)
 		printFlagGroup("Utility", "help", "version", "completion")
 		printFlagGroup("Column mode", "format", "header", "rows", "separator", "seed", "stream", "template")
@@ -56,7 +58,7 @@ Column spec syntax: [name:][generator[:args]]
 }
 
 func registerUtilityFlags(cfg *Config) {
-	flag.BoolVarP(&cfg.Help, "help", "h", false, "show this help")
+	flag.BoolVarP(&cfg.Help, "help", "h", false, "show this help; use --help <topic> for detailed guides")
 	flag.BoolVarP(&cfg.ShowVersion, "version", "v", false, "show version information")
 	flag.StringVarP(&cfg.Completion, "completion", "C", "",
 		"print shell completion function (\"bash\", \"zsh\", \"fish\")")

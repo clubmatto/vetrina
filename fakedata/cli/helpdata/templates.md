@@ -15,17 +15,16 @@ echo '{{FirstName}} {{LastName}}' | fakedata -n 5
 Generator names are converted to CamelCase for use in templates.
 Underscores are removed and the next letter is capitalized:
 
-| CLI name | Template function |
-|---|---|
-| `first_name` | `{{FirstName}}` |
-| `last_name` | `{{LastName}}` |
-| `country_code` | `{{CountryCode}}` |
+| CLI name               | Template function         |
+|------------------------|---------------------------|
+| `first_name`           | `{{FirstName}}`           |
+| `last_name`            | `{{LastName}}`            |
+| `country_code`         | `{{CountryCode}}`         |
 | `programming_language` | `{{ProgrammingLanguage}}` |
 
-Use the name **without** a leading dot — `{{FirstName}}`, not `{{.FirstName}}`.
-Generators are registered as template functions, not data fields.
-
 ## Built-in Functions
+
+To help you build dynamic templates, these functions are available alongside generators:
 
 ### Loop
 

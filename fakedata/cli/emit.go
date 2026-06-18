@@ -5,9 +5,9 @@ import (
 	"context"
 	"os"
 
+	flag "github.com/spf13/pflag"
 	"matto.club/vetrina/fakedata/core"
 	"matto.club/vetrina/fakedata/output"
-	flag "github.com/spf13/pflag"
 )
 
 func resolveFormatter(format, separator string) formatter {
