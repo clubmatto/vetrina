@@ -37,163 +37,106 @@ image_height: 650
 <h2 class="showcase-section-title">Use Cases</h2>
 
 <div class="fakedata-tabs" x-data="{ tab: 'testing' }">
-  <div class="fakedata-tab-panels">
-    <div class="fakedata-tab-left">
-      <div class="fakedata-tab-nav" role="tablist">
-        <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
-        <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
-        <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
-        <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Custom Output</button>
-      </div>
-    <div class="fakedata-tab-content">
-      <div class="fakedata-tab-body" x-show="tab === 'testing'">
-        <div class="fakedata-tab-body-text">
-          <p>
-            Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
-            suites.
-          </p>
-          <div class="terminal-command">
-            <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
-          </div>
-        </div>
-      </div>
+  <div class="fakedata-tab-nav" role="tablist">
+    <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
+    <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
+    <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
+    <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Custom Output</button>
+  </div>
 
-      <div class="fakedata-tab-body" x-show="tab === 'development'">
-        <div class="fakedata-tab-body-text">
-          <p>
-            Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
-            even dinosaurs.
-          </p>
-          <div class="terminal-command">
-            <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
-          </div>
-        </div>
+  <div class="fakedata-tab-body" x-show="tab === 'testing'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
+        suites.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Testing</span>
       </div>
-
-      <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
-        <div class="fakedata-tab-body-text">
-          <p>
-            Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
-            when ready.
-          </p>
-          <div class="terminal-command">
-            <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
-          </div>
-        </div>
-      </div>
-
-      <div class="fakedata-tab-body" x-show="tab === 'templates'">
-        <div class="fakedata-tab-body-text">
-          <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
-          <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
-        </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-testing-light.gif" alt="FakeData testing demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-testing-dark.gif" alt="FakeData testing demo" loading="lazy" class="theme-dark">
       </div>
     </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
     </div>
+  </div>
 
-    <div class="fakedata-tab-right">
-    <div class="fakedata-tab-demos">
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'testing' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Testing</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/use-case-testing-light.gif"
-              alt="FakeData testing demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/use-case-testing-dark.gif"
-              alt="FakeData testing demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
+  <div class="fakedata-tab-body" x-show="tab === 'development'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
+        even dinosaurs.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Development</span>
       </div>
-
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'development' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Development</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/use-case-development-light.gif"
-              alt="FakeData development demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/use-case-development-dark.gif"
-              alt="FakeData development demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'load-testing' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Load Testing</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/use-case-load-testing-light.gif"
-              alt="FakeData load testing demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/use-case-load-testing-dark.gif"
-              alt="FakeData load testing demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'templates' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Custom Output</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/custom-output-light.gif"
-              alt="FakeData custom output demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/custom-output-dark.gif"
-              alt="FakeData custom output demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-development-light.gif" alt="FakeData development demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-development-dark.gif" alt="FakeData development demo" loading="lazy" class="theme-dark">
       </div>
     </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
     </div>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
+        when ready.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Load Testing</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-load-testing-light.gif" alt="FakeData load testing demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-load-testing-dark.gif" alt="FakeData load testing demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
+    </div>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'templates'">
+    <div class="fakedata-tab-body-text">
+      <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Custom Output</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/custom-output-light.gif" alt="FakeData custom output demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/custom-output-dark.gif" alt="FakeData custom output demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
   </div>
 </div>
 
@@ -241,6 +184,7 @@ image_height: 650
       </div>
       <p class="fakedata-install-note">Requires Go 1.21+ or Homebrew.</p>
     </div>
+    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn">Read the docs</a>
   </div>
 </div>
 

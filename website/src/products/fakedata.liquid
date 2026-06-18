@@ -31,93 +31,60 @@ description: Generate realistic, database-ready test data with schema introspect
 <h2 class="showcase-section-title">Use Cases</h2>
 
 <div class="fakedata-tabs" x-data="{ tab: 'pro-dry-run' }">
-  <div class="fakedata-tab-panels">
-    <div class="fakedata-tab-left">
-      <div class="fakedata-tab-nav" role="tablist">
-        <button role="tab" :class="{ active: tab === 'pro-dry-run' }" @click="tab = 'pro-dry-run'" :aria-selected="tab === 'pro-dry-run'">Preview</button>
-        <button role="tab" :class="{ active: tab === 'pro-override' }" @click="tab = 'pro-override'" :aria-selected="tab === 'pro-override'">Control</button>
-      </div>
-    <div class="fakedata-tab-content">
-      <div class="fakedata-tab-body" x-show="tab === 'pro-dry-run'">
-        <div class="fakedata-tab-body-text">
-          <p>
-            See exactly what would be generated before inserting a single row. The dry-run mode introspects your schema,
-            resolves generators for every column, and prints the full plan — tables, row counts, column types, mapped
-            generators, and FK relationships.
-          </p>
-          <div class="terminal-command">
-            <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10 --dry-run
-          </div>
-        </div>
-      </div>
+  <div class="fakedata-tab-nav" role="tablist">
+    <button role="tab" :class="{ active: tab === 'pro-dry-run' }" @click="tab = 'pro-dry-run'" :aria-selected="tab === 'pro-dry-run'">Preview</button>
+    <button role="tab" :class="{ active: tab === 'pro-override' }" @click="tab = 'pro-override'" :aria-selected="tab === 'pro-override'">Control</button>
+  </div>
 
-      <div class="fakedata-tab-body" x-show="tab === 'pro-override'">
-        <div class="fakedata-tab-body-text">
-          <p>
-            Fine-tune column generators with the <code>-c</code> flag. Override auto-detected generators per column, set
-            ranges for int generators, supply enum values, or pin any column to a specific generator. Supports
-            <code>schema.table.column</code> syntax for full control.
-          </p>
-          <div class="terminal-command">
-            <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -c orders.quantity=int:1,5 --dry-run
-          </div>
-        </div>
+  <div class="fakedata-tab-body" x-show="tab === 'pro-dry-run'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        See exactly what would be generated before inserting a single row. The dry-run mode introspects your schema,
+        resolves generators for every column, and prints the full plan — tables, row counts, column types, mapped
+        generators, and FK relationships.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Preview</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/pro-dry-run-light.gif" alt="FakeData Pro dry-run demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/pro-dry-run-dark.gif" alt="FakeData Pro dry-run demo" loading="lazy" class="theme-dark">
       </div>
     </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10 --dry-run
     </div>
+  </div>
 
-    <div class="fakedata-tab-right">
-    <div class="fakedata-tab-demos">
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'pro-dry-run' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Preview</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/pro-dry-run-light.gif"
-              alt="FakeData Pro dry-run demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/pro-dry-run-dark.gif"
-              alt="FakeData Pro dry-run demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
+  <div class="fakedata-tab-body" x-show="tab === 'pro-override'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Fine-tune column generators with the <code>-c</code> flag. Override auto-detected generators per column, set
+        ranges for int generators, supply enum values, or pin any column to a specific generator. Supports
+        <code>schema.table.column</code> syntax for full control.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Control</span>
       </div>
-
-      <div class="fakedata-tab-demo" :class="{ visible: tab === 'pro-override' }">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Control</span>
-          </div>
-          <div class="terminal-body terminal-gif">
-            <img
-              src="/assets/img/fakedata/pro-override-light.gif"
-              alt="FakeData Pro column override demo"
-              loading="lazy"
-              class="theme-light"
-            >
-            <img
-              src="/assets/img/fakedata/pro-override-dark.gif"
-              alt="FakeData Pro column override demo"
-              loading="lazy"
-              class="theme-dark"
-            >
-          </div>
-        </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/pro-override-light.gif" alt="FakeData Pro column override demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/pro-override-dark.gif" alt="FakeData Pro column override demo" loading="lazy" class="theme-dark">
       </div>
     </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -c orders.quantity=int:1,5 --dry-run
     </div>
   </div>
 </div>
@@ -171,6 +138,7 @@ description: Generate realistic, database-ready test data with schema introspect
         <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata-pro --dsn "mysql://user:pass@tcp(localhost:3306)/mydb" -t orders:50</div>
       </div>
     </div>
+    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn">Read the docs</a>
   </div>
 </div>
 
