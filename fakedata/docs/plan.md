@@ -19,19 +19,18 @@ Rewrite from 162 → ~400 lines with this structure:
 
 ## Quick Start (keep existing)
 
-## Generators (complete, organized by category)
-  - People (13 gens)
-  - Animals (7 gens)
-  - Text (12 gens)
-  - Web & Network (8 gens)
-  - IDs (5 gens)
-  - Geography (21 gens)
-  - Time (5 gens)
-  - Types & Data (5 gens)
-  - JSON (4 gens, including pg types)
-  - Culture (10 gens)
-  - Food (4 gens)
-  - Planned (4 gens)
+## Generators (TODO)
+  - Don't list generators statically (they change, hard to categorise)
+  - Instead: explain how to explore generators via the CLI itself (`-g`, `--generators`, `--browse`)
+  - Add VHS GIF showing `fakedata --generators` and `fakedata -g <name>`
+
+## Custom Generators (TODO)
+  - Don't list statically — same reasoning as generators
+  - Options parsing quirks should be fixed at the source (code) rather than documented:
+    - **`float` uses `:` as separator** — inconsistent with every other custom gen (`,`)
+    - **`file` returns `nil, nil` on empty options** — should return a proper error
+    - **`float` silently ignores malformed options** (`return nil, nil` instead of error)
+  - Instead: link to CLI help + `--help custom` topic
 
 ## Column Spec Syntax
   - name:generator:options breakdown
@@ -45,10 +44,6 @@ Rewrite from 162 → ~400 lines with this structure:
     - {{ Loop }}, {{ Odd }}, {{ Even }}
     - {{ Int }}, {{ Enum }}, {{ File }}, {{ Date }}
   - Examples: simple, loop, JSON, CSV, markdown
-
-## Custom Generators (expand existing)
-  - int, float, enum, file, date, datetime, timestamp, phone_number
-  - Full option tables with defaults and constraints
 
 ## Advanced Features (NEW sections)
   - Country-specific generators (first_name_IT, city_DE, etc.)
