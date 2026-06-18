@@ -19,6 +19,11 @@ func Run(version string, ctx context.Context) {
 }
 
 func RunCLIMode(reg *core.Registry, version string, cfg Config, args []string, ctx context.Context) {
+	if cfg.Explore {
+		runBrowse(reg)
+		os.Exit(0)
+	}
+
 	if handleUtilityFlags(reg, version, cfg, args) {
 		return
 	}

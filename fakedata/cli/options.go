@@ -11,6 +11,7 @@ const defaultRowLimit = 10
 
 type Config struct {
 	Completion     string
+	Explore        bool
 	Format         string
 	Generator      string
 	ListGenerators bool
@@ -50,7 +51,7 @@ Use ` + "`fakedata --help <topic>`" + ` for detailed help on columns, formats, s
 `)
 		printFlagGroup("Utility", "help", "version", "completion")
 		printFlagGroup("Column mode", "format", "header", "rows", "separator", "seed", "stream", "template")
-		printFlagGroup("Discovery", "generator", "generators")
+		printFlagGroup("Discovery", "explore", "generator", "generators")
 	}
 	flag.Parse()
 
@@ -75,6 +76,7 @@ func registerColumnFlags(cfg *Config) {
 }
 
 func registerDiscoveryFlags(cfg *Config) {
+	flag.BoolVarP(&cfg.Explore, "explore", "e", false, "open the interactive generator browser")
 	flag.StringVarP(&cfg.Generator, "generator", "g", "", "show details and examples for a generator")
 	flag.BoolVarP(&cfg.ListGenerators, "generators", "G", false, "list available generators")
 }

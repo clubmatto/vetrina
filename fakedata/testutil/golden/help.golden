@@ -29,5 +29,6 @@ Column mode
   -T, --template string        template file to execute
 
 Discovery
+  -e, --explore                open the interactive generator browser
   -g, --generator string       show details and examples for a generator
   -G, --generators             list available generators
