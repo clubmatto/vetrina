@@ -48,14 +48,13 @@ Rewrite from 162 → ~400 lines with this structure:
 ## Advanced Features (NEW sections)
   - Country-specific generators (first_name_IT, city_DE, etc.)
   - Date pair validation (auto-chronological ordering)
-  - PostgreSQL-specific generators (jsonb_array, pg_array_int,
-    pg_array_text, polygon)
   - Deterministic seeding (expand existing)
   - Streaming with graceful shutdown (expand existing)
 
 ## Output Formats
-  - column (with separator)
-  - ndjson
+  - column (with separator), ndjson
+  - PostgreSQL: jsonb_array, pg_array_int, pg_array_text
+  - `--help postgres` topic in CLI
 
 ## Shell Completion (keep existing)
 
