@@ -11,7 +11,7 @@ import (
 
 var optionSignatures = map[string]string{
 	"int":          "min,max",
-	"float":        "precision:scale",
+	"float":        "precision,scale",
 	"enum":         "val1,val2,val3,...",
 	"file":         "path",
 	"phone_number": "digits",

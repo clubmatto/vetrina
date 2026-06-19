@@ -110,7 +110,7 @@ Custom generators and their option formats:
 | Generator | Options | Example | Default |
 |-----------|---------|---------|---------|
 | `int` | `min,max` | `int:10,20` | `0,1000` |
-| `float` | `precision:scale` | `float:6:2` | normal distribution, 4 decimals |
+| `float` | `precision,scale` | `float:6,2` | normal distribution, 4 decimals |
 | `enum` | `v1,v2,...` | `enum:red,green,blue` | `foo,bar,baz` |
 | `file` | path | `file:./names.txt` | required |
 | `date` | `min,max` (YYYY-MM-DD) | `date:2024-01-01,2024-12-31` | last 365 days |

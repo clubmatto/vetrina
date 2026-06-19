@@ -99,9 +99,9 @@ func floatWithOptions(r *Registry, options string) (func() string, error) {
 		sigmaDivisor     = 4
 	)
 
-	parts := strings.Split(options, ":")
+	parts := strings.Split(options, ",")
 	if len(parts) != floatOptionParts {
-		return nil, nil
+		return nil, fmt.Errorf("expected precision,scale format, got: %s", options)
 	}
 
 	precision, err := strconv.Atoi(parts[0])

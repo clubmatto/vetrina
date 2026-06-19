@@ -143,7 +143,7 @@ func TestColumnParams(t *testing.T) {
 		// float
 		{
 			"float: explicit naming with precision:scale",
-			"f:float:5:2",
+			"f:float:5,2",
 			matchDecimalDigits(2),
 			false,
 		},
@@ -155,7 +155,7 @@ func TestColumnParams(t *testing.T) {
 		},
 		{
 			"float: precision:scale 6:4",
-			"n:float:6:4",
+			"n:float:6,4",
 			matchDecimalDigits(4),
 			false,
 		},

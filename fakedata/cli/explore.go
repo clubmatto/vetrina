@@ -77,7 +77,7 @@ func generateCustomSamples(gen core.Generator, samples *[]string) {
 		"timestamp":    "2020-01-01,2024-12-31",
 		"enum":         "apple,banana,cherry",
 		"phone_number": "10",
-		"float":        "6:2",
+		"float":        "6,2",
 	}
 	params := ""
 	if p, ok := exampleParams[gen.Name]; ok {
@@ -238,7 +238,7 @@ func (m browseModel) renderDetail(width int) string {
 			"timestamp":    "2020-01-01,2024-12-31",
 			"enum":         "apple,banana,cherry",
 			"phone_number": "10",
-			"float":        "6:2",
+			"float":        "6,2",
 		}
 		if params, ok := exampleParams[gen.Name]; ok {
 			b.WriteString(fmt.Sprintf("\n  fakedata %s:%s", gen.Name, params))
