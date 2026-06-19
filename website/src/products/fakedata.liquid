@@ -191,54 +191,33 @@ description: Generate realistic, database-ready test data with schema introspect
 
 <h2 class="showcase-section-title">Get Started</h2>
 
-<div class="showcase-grid">
-  <div class="showcase-grid-content">
-    <p class="fakedata-intro-text">FakeData Pro connects directly to your Postgres, MySQL, or SQLite database and generates realistic test data — no export/import needed.</p>
-
-    <div class="fakedata-features-grid">
-      <div class="fakedata-feature">
-        <h3>Schema Introspection</h3>
-        <p>Auto-detect tables, columns, types, and constraints from Postgres, MySQL, or SQLite</p>
-      </div>
-      <div class="fakedata-feature">
-        <h3>FK Resolution</h3>
-        <p>Generate referentially consistent data across tables with composite FK support</p>
-      </div>
-      <div class="fakedata-feature">
-        <h3>Constraint Enforcement</h3>
-        <p>CHECK, unique, NOT NULL, and enum constraints are all respected automatically</p>
-      </div>
-      <div class="fakedata-feature">
-        <h3>40+ Generators</h3>
-        <p>Email, country, date, name, address, uuid, int, float, sentence, and more</p>
-      </div>
-      <div class="fakedata-feature">
-        <h3>Any Output Format</h3>
-        <p>Column-aligned, NDJSON, or full Go templates with helpers</p>
-      </div>
-      <div class="fakedata-feature">
-        <h3>Stream & Batch</h3>
-        <p>Continuous row generation for pipelines or deterministic batch mode</p>
-      </div>
-    </div>
+<div class="fakedata-pricing-grid">
+  <div class="fakedata-pricing-card">
+    <h3 class="fakedata-pricing-name">Free</h3>
+    <p class="fakedata-pricing-price">Open source CLI</p>
+    <p class="fakedata-pricing-desc">80+ generators, streaming, templates, and deterministic output — all from your terminal.</p>
+    <ul class="fakedata-pricing-features">
+      <li>80+ generators</li>
+      <li>CSV, TSV, NDJSON output</li>
+      <li>Streaming & batch modes</li>
+      <li>Go template support</li>
+      <li>Deterministic seeds</li>
+    </ul>
+    <a href="/vetrina/fakedata/" class="btn btn-secondary">Get Started</a>
   </div>
-  <div class="fakedata-grid-terminal">
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">pro install</span>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-line"><span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
-        <div class="terminal-comment"># Connect and generate</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata-pro --dsn postgres://localhost/mydb -t users:10</div>
-        <div class="terminal-line"><span class="terminal-prompt">$</span> fakedata-pro --dsn "mysql://user:pass@tcp(localhost:3306)/mydb" -t orders:50</div>
-      </div>
-    </div>
-    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn">Read the docs</a>
+  <div class="fakedata-pricing-card fakedata-pricing-featured">
+    <div class="fakedata-pricing-badge">Pro</div>
+    <h3 class="fakedata-pricing-name">Pro</h3>
+    <p class="fakedata-pricing-price">Everything in Free, plus:</p>
+    <p class="fakedata-pricing-desc">Connect directly to your database and generate realistic data automatically.</p>
+    <ul class="fakedata-pricing-features">
+      <li>Schema introspection (Postgres, MySQL, SQLite)</li>
+      <li>Foreign key resolution</li>
+      <li>Constraint enforcement</li>
+      <li>Direct database insertion</li>
+      <li>Column overrides & dry runs</li>
+    </ul>
+    <a href="/contact/" class="btn btn-primary">Contact Us</a>
   </div>
 </div>
 
