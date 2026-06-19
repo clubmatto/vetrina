@@ -30,10 +30,109 @@ description: Generate realistic, database-ready test data with schema introspect
 
 <h2 class="showcase-section-title">Use Cases</h2>
 
-<div class="fakedata-tabs" x-data="{ tab: 'pro-dry-run' }">
+<div class="fakedata-tabs" x-data="{ tab: 'testing' }">
   <div class="fakedata-tab-nav" role="tablist">
-    <button role="tab" :class="{ active: tab === 'pro-dry-run' }" @click="tab = 'pro-dry-run'" :aria-selected="tab === 'pro-dry-run'">Preview</button>
-    <button role="tab" :class="{ active: tab === 'pro-override' }" @click="tab = 'pro-override'" :aria-selected="tab === 'pro-override'">Control</button>
+    <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
+    <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
+    <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
+    <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Custom Output</button>
+    <button role="tab" :class="{ active: tab === 'pro-dry-run' }" @click="tab = 'pro-dry-run'" :aria-selected="tab === 'pro-dry-run'">Dry Run</button>
+    <button role="tab" :class="{ active: tab === 'pro-override' }" @click="tab = 'pro-override'" :aria-selected="tab === 'pro-override'">Override</button>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'testing'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
+        suites.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Testing</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-testing-light.gif" alt="FakeData testing demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-testing-dark.gif" alt="FakeData testing demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
+    </div>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'development'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
+        even dinosaurs.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Development</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-development-light.gif" alt="FakeData development demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-development-dark.gif" alt="FakeData development demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
+    </div>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
+    <div class="fakedata-tab-body-text">
+      <p>
+        Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
+        when ready.
+      </p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Load Testing</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/use-case-load-testing-light.gif" alt="FakeData load testing demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/use-case-load-testing-dark.gif" alt="FakeData load testing demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command">
+      <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
+    </div>
+  </div>
+
+  <div class="fakedata-tab-body" x-show="tab === 'templates'">
+    <div class="fakedata-tab-body-text">
+      <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
+    </div>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">Custom Output</span>
+      </div>
+      <div class="terminal-body terminal-gif">
+        <img src="/assets/img/fakedata/custom-output-light.gif" alt="FakeData custom output demo" loading="lazy" class="theme-light">
+        <img src="/assets/img/fakedata/custom-output-dark.gif" alt="FakeData custom output demo" loading="lazy" class="theme-dark">
+      </div>
+    </div>
+    <p class="fakedata-try-text">Try it yourself:</p>
+    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
   </div>
 
   <div class="fakedata-tab-body" x-show="tab === 'pro-dry-run'">
@@ -49,7 +148,7 @@ description: Generate realistic, database-ready test data with schema introspect
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
-        <span class="terminal-title">Preview</span>
+        <span class="terminal-title">Dry Run</span>
       </div>
       <div class="terminal-body terminal-gif">
         <img src="/assets/img/fakedata/pro-dry-run-light.gif" alt="FakeData Pro dry-run demo" loading="lazy" class="theme-light">
@@ -75,7 +174,7 @@ description: Generate realistic, database-ready test data with schema introspect
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
-        <span class="terminal-title">Control</span>
+        <span class="terminal-title">Override</span>
       </div>
       <div class="terminal-body terminal-gif">
         <img src="/assets/img/fakedata/pro-override-light.gif" alt="FakeData Pro column override demo" loading="lazy" class="theme-light">
@@ -87,6 +186,7 @@ description: Generate realistic, database-ready test data with schema introspect
       <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -c orders.quantity=int:1,5 --dry-run
     </div>
   </div>
+
 </div>
 
 <h2 class="showcase-section-title">Get Started</h2>
