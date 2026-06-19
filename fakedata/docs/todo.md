@@ -6,38 +6,29 @@
 `registerCountryNames()` reads `namedata.ForenameIndex` / `SurnameIndex` and
 registers hidden per-country variants. My initial exploration missed this.
 
-## Date pair detection — support more word variants
+## Date pair detection — support more word variants (DONE)
 
-The date pair validation in `core/date_pairs.go` only recognizes:
-
-- Prefixes: `start_`, `begin_`, `end_`, `finish_`
-- Suffixes: `_from`, `_to`, `_until`
-- Mid words: `start`, `begin`, `end`, `finish`, `_from`, `_to`, `_until`
-
-Common column names like `departure` / `arrival` are not detected. Could add:
+Renamed to "ordered column pairs" (the mechanism is purely lexicographic,
+not date-specific). Added:
 
 - `departure` / `arrival`
 - `opening` / `closing`
 - `opened` / `closed`
-- `created_at` / `updated_at` (suffix might already catch `_at`?)
+- `created` / `updated`
 
-Add to `prefixes`, `suffixes`, and `midWords` slices, plus `isStartVariant` /
-`isEndVariant` functions.
+Renamed file `core/date_pairs.go` → `core/column_pairs.go`.
+Renamed types: `DatePairConfig` → `ColumnPairConfig`.
+Renamed funcs: `ensureValidDatePairs` → `ensureOrderedPairs`, etc.
 
-## Custom generator quirks (code bugs)
+## Custom generator quirks (code bugs) (DONE)
 
-Three issues in `core/types.go` that should be fixed at source:
+Three issues in `core/types.go`:
 
-1. **`float` uses `:` as separator** — inconsistent with every other custom gen
-   (`,`). Should accept `,` like all others, or at minimum support both.
+1. **`float` separator** — changed `:` to `,` to match all other custom generators
+2. **`file` nil/nil** — was already fixed (returns proper error on empty path)
+3. **`float` malformed options** — now returns `fmt.Errorf` instead of `nil, nil`
 
-2. **`file` returns `nil, nil` on empty options** — should return a proper error.
+## VHS assets — broken template in assets (NOT AN ISSUE)
 
-3. **`float` silently ignores malformed options** — `return nil, nil` instead of
-   returning an error when the option isn't in `precision:scale` format.
-
-## VHS assets — broken template in assets
-
-`assets/vhs/fakedata/user.tmpl` uses `{{.FirstName}}` (dot prefix) but generators
-are registered as template functions, not data fields. Should be `{{FirstName}}`.
-Not used in any active demo tape, but could confuse anyone reading it.
+`assets/vhs/fakedata/user.tmpl` does not exist on disk. The README example
+already uses the correct `{{FirstName}}` syntax (no dot prefix).

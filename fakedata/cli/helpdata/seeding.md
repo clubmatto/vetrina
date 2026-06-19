@@ -1,4 +1,4 @@
-# Seeding & Streaming
+# Seeding
 
 ## Deterministic Output
 
@@ -18,19 +18,3 @@ fakedata -n 20 email country
 ```
 
 Default is 10 rows.
-
-## Streaming
-
-Generate rows indefinitely until interrupted:
-
-```
-fakedata --stream email
-```
-
-Press Ctrl+C to stop. Works with templates too:
-
-```
-echo '{{Email}}' | fakedata --stream
-```
-
-The tool handles SIGINT and SIGTERM for graceful shutdown.

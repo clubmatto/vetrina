@@ -38,3 +38,35 @@ Three parts are always `column:generator:options`.
 | `datetime`     | `min,max` (YYYY-MM-DD) | `datetime:2024-01-01,`       | last year                       |
 | `timestamp`    | `min,max` (YYYY-MM-DD) | `timestamp:2024-01-01,`      | last year, RFC3339Nano          |
 | `phone_number` | digit count (8-12)     | `phone_number:10`            | 8 digits                        |
+
+## Ordered Column Pairs
+
+When two columns use start/end naming conventions, their values are
+automatically ordered so the start always comes before the end:
+
+```
+fakedata -H start_date:date end_date:date
+fakedata -H begin_at:timestamp finish_at:timestamp
+fakedata -H date_from:date date_to:date
+fakedata -H departure:date arrival:date
+fakedata -H created_at:date updated_at:date
+```
+
+The mechanism is purely lexicographic — any generator type works, not just dates.
+
+### Recognized patterns
+
+| Start variants | End variants   |
+|----------------|----------------|
+| `start_`       | `end_`         |
+| `begin_`       | `finish_`      |
+| `departure`    | `arrival`      |
+| `opening`      | `closing`      |
+| `opened`       | `closed`       |
+| `created`      | `updated`      |
+| `_from` suffix | `_to` suffix   |
+|                | `_until` suffix|
+
+Pairs are matched by their shared base name. For example `start_date` and
+`end_date` both have base `date`. If the generated end value happens to be
+smaller than the start value, they are swapped.

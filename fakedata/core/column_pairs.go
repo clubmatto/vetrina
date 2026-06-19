@@ -6,7 +6,14 @@ import (
 
 var prefixes = []string{"start_", "begin_", "end_", "finish_"}
 var suffixes = []string{"_from", "_to", "_until"}
-var midWords = []string{"start", "begin", "end", "finish", "_from", "_to", "_until"}
+var midWords = []string{
+	"start", "begin", "end", "finish",
+	"_from", "_to", "_until",
+	"departure", "arrival",
+	"opening", "closing",
+	"opened", "closed",
+	"created", "updated",
+}
 
 func findBase(name string) string {
 	lower := strings.ToLower(name)
@@ -37,6 +44,10 @@ func isStartVariant(name string) bool {
 
 	return strings.Contains(lower, "start") ||
 		strings.Contains(lower, "begin") ||
+		strings.Contains(lower, "departure") ||
+		strings.Contains(lower, "opening") ||
+		strings.Contains(lower, "opened") ||
+		strings.Contains(lower, "created") ||
 		strings.HasSuffix(lower, "_from")
 }
 
@@ -45,11 +56,15 @@ func isEndVariant(name string) bool {
 
 	return strings.Contains(lower, "end") ||
 		strings.Contains(lower, "finish") ||
+		strings.Contains(lower, "arrival") ||
+		strings.Contains(lower, "closing") ||
+		strings.Contains(lower, "closed") ||
+		strings.Contains(lower, "updated") ||
 		strings.HasSuffix(lower, "_to") ||
 		strings.HasSuffix(lower, "_until")
 }
 
-func findDateColumnPairs(columnNames []string) map[string]string {
+func findColumnPairs(columnNames []string) map[string]string {
 	pairs := make(map[string]string)
 
 	type colInfo struct {
@@ -86,22 +101,22 @@ func findDateColumnPairs(columnNames []string) map[string]string {
 	return pairs
 }
 
-type DatePairConfig struct {
+type ColumnPairConfig struct {
 	Pairs    map[string]string
 	ColIndex map[string]int
 }
 
-func buildDatePairConfig(colNames []string) DatePairConfig {
-	pairs := findDateColumnPairs(colNames)
+func buildColumnPairConfig(colNames []string) ColumnPairConfig {
+	pairs := findColumnPairs(colNames)
 	colIndex := make(map[string]int)
 	for i, name := range colNames {
 		colIndex[name] = i
 	}
 
-	return DatePairConfig{Pairs: pairs, ColIndex: colIndex}
+	return ColumnPairConfig{Pairs: pairs, ColIndex: colIndex}
 }
 
-func ensureValidDatePairs(row []string, config DatePairConfig) []string {
+func ensureOrderedPairs(row []string, config ColumnPairConfig) []string {
 	if len(config.Pairs) == 0 {
 		return row
 	}

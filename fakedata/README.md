@@ -207,18 +207,20 @@ fakedata phone_us city_gb
 
 Available variants: `city_<cc>`, `state_<cc>`, `phone_<cc>` (where `<cc>` is any lowercase 2-letter country code from the dataset).
 
-### Date Pair Validation
+### Ordered Column Pairs
 
-When column names follow start/end naming conventions, the generated values are automatically ordered so the start comes before the end:
+When two columns follow start/end naming conventions, the generated values are automatically ordered so the start always comes before the end. The mechanism is purely lexicographic — any generator works, not just dates.
 
 ```bash
 fakedata -H start_date:date end_date:date
 fakedata -H begin_at:timestamp finish_at:timestamp
 fakedata -H date_from:date date_to:date
+fakedata -H departure:date arrival:date
+fakedata -H created_at:date updated_at:date
 ```
 
-Recognized prefixes: `start_`, `begin_`, `end_`, `finish_`.  
-Recognized suffixes: `_from`, `_to`, `_until`.  
+Recognized start variants: `start_`, `begin_`, `departure`, `opening`, `opened`, `created`, `_from` suffix.  
+Recognized end variants: `end_`, `finish_`, `arrival`, `closing`, `closed`, `updated`, `_to`, `_until` suffix.  
 The pair is matched by the shared base name (e.g. `start_date` and `end_date` both have base `date`). If the end value is lexicographically smaller than the start value, they are swapped.
 
 ### Deterministic Seeding

@@ -62,8 +62,8 @@ func (columns Columns) GenerateRow() ([]string, error) {
 		values[i] = column.Generate()
 	}
 
-	datePairs := columns.initDatePairs()
-	values = ensureValidDatePairs(values, datePairs)
+	pairConfig := columns.initColumnPairs()
+	values = ensureOrderedPairs(values, pairConfig)
 
 	return values, nil
 }
@@ -77,11 +77,11 @@ func (columns Columns) GenerateHeader() ([]string, error) {
 	return values, nil
 }
 
-func (columns Columns) initDatePairs() DatePairConfig {
+func (columns Columns) initColumnPairs() ColumnPairConfig {
 	colNames := make([]string, len(columns))
 	for i, col := range columns {
 		colNames[i] = col.Name
 	}
 
-	return buildDatePairConfig(colNames)
+	return buildColumnPairConfig(colNames)
 }

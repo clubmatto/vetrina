@@ -73,7 +73,7 @@ Rewrite from 162 → ~400 lines with this structure:
   descriptions, and option parsing
 - `core/template.go` — for template functions
 - `core/column.go` — for column spec parsing logic
-- `core/date_pairs.go` — for date pair validation
+- `core/column_pairs.go` — for ordered column pairs
 
 ---
 
@@ -149,7 +149,7 @@ github.com/charmbracelet/bubbles
 
 ---
 
-## Phase 4: Doc Generation from Code
+## Phase 4: Doc Generation from Code (DONE)
 
 **New file: `tools/gendocs/main.go`**
 
@@ -180,7 +180,7 @@ New GIFs for `assets/vhs/fakedata/` (referenced in README):
 | `templates-loop-light.gif` | Template with Loop | `fakedata -T loop.tmpl -n 3` |
 | `generator-details-light.gif` | Generator discovery | `fakedata -g int`, `fakedata -g email` |
 | `country-specific-light.gif` | Locale generators | `fakedata first_name_IT city_IT phone_IT` |
-| `date-pairs-light.gif` | Date pair validation | `fakedata -H start_date:date end_date:date` |
+| `date-pairs-light.gif` | Ordered column pairs | `fakedata -H start_date:date end_date:date` |
 | `streaming-light.gif` | Streaming with Ctrl-C | `fakedata --stream email` |
 | `browse-light.gif` | Interactive browser | `fakedata -B` |
 
@@ -230,7 +230,7 @@ New GIFs for `assets/vhs/fakedata/` (referenced in README):
 2. **Phase 2: Contextual help system** — DONE
 3. **Phase 6: Enhanced `--generators`/`--generator`** — improves existing
    CLI, small code change
-4. **Phase 4: Doc generation tool** — enables "docs from code" workflow
+4. **Phase 4: Doc generation tool** — DONE
 5. **Phase 3: Interactive browser** — highest effort, needs new deps,
    biggest wow factor
 6. **Phase 5: VHS GIFs** — polish, can be done anytime
