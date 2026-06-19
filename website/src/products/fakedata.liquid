@@ -191,33 +191,55 @@ description: Generate realistic, database-ready test data with schema introspect
 
 <h2 class="showcase-section-title">Get Started</h2>
 
-<div class="fakedata-pricing-grid">
-  <div class="fakedata-pricing-card">
-    <h3 class="fakedata-pricing-name">Free</h3>
-    <p class="fakedata-pricing-price">Open source CLI</p>
-    <p class="fakedata-pricing-desc">80+ generators, streaming, templates, and deterministic output — all from your terminal.</p>
-    <ul class="fakedata-pricing-features">
-      <li>80+ generators</li>
-      <li>CSV, TSV, NDJSON output</li>
-      <li>Streaming & batch modes</li>
-      <li>Go template support</li>
-      <li>Deterministic seeds</li>
-    </ul>
-    <a href="/vetrina/fakedata/" class="btn btn-secondary">Get Started</a>
+<div x-data="{ period: 'monthly', currency: 'eur' }">
+  <div class="fakedata-pricing-toggles">
+    <div class="fakedata-pricing-toggle-group">
+      <button :class="{ active: currency === 'eur' }" @click="currency = 'eur'">€</button>
+      <button :class="{ active: currency === 'usd' }" @click="currency = 'usd'">$</button>
+    </div>
+    <div class="fakedata-pricing-toggle-group">
+      <button :class="{ active: period === 'monthly' }" @click="period = 'monthly'">Monthly</button>
+      <button :class="{ active: period === 'annual' }" @click="period = 'annual'">Annual</button>
+    </div>
   </div>
-  <div class="fakedata-pricing-card fakedata-pricing-featured">
-    <div class="fakedata-pricing-badge">Pro</div>
-    <h3 class="fakedata-pricing-name">Pro</h3>
-    <p class="fakedata-pricing-price">Everything in Free, plus:</p>
-    <p class="fakedata-pricing-desc">Connect directly to your database and generate realistic data automatically.</p>
-    <ul class="fakedata-pricing-features">
-      <li>Schema introspection (Postgres, MySQL, SQLite)</li>
-      <li>Foreign key resolution</li>
-      <li>Constraint enforcement</li>
-      <li>Direct database insertion</li>
-      <li>Column overrides & dry runs</li>
-    </ul>
-    <a href="/contact/" class="btn btn-primary">Contact Us</a>
+
+  <div class="fakedata-pricing-grid">
+    <div class="fakedata-pricing-card">
+      <h3 class="fakedata-pricing-name">Free</h3>
+      <div class="fakedata-pricing-amount"><span x-text="currency === 'eur' ? '€' : '$'"></span>0 <span class="fakedata-pricing-period">for ever</span></div>
+      <p class="fakedata-pricing-desc">80+ generators, streaming, templates, and deterministic output — all from your terminal.</p>
+      <ul class="fakedata-pricing-features">
+        <li>80+ generators</li>
+        <li>CSV, TSV, NDJSON output</li>
+        <li>Streaming & batch modes</li>
+        <li>Go template support</li>
+        <li>Deterministic seeds</li>
+      </ul>
+      <a href="/vetrina/fakedata/" class="btn btn-secondary">Get Started</a>
+    </div>
+    <div class="fakedata-pricing-card fakedata-pricing-featured">
+      <div class="fakedata-pricing-badge">Pro</div>
+      <h3 class="fakedata-pricing-name">Pro</h3>
+      <div class="fakedata-pricing-amount">
+        <span x-text="currency === 'eur' ? '€' : '$'"></span><span x-text="period === 'monthly' ? (currency === 'eur' ? '50' : '60') : (currency === 'eur' ? '500' : '600')"></span>
+        <span class="fakedata-pricing-period" x-text="period === 'monthly' ? '/month' : '/year'"></span>
+        <span class="fakedata-pricing-discount" x-show="period === 'annual'">Save 17%</span>
+      </div>
+      <p class="fakedata-pricing-desc">Connect directly to your database and generate realistic data automatically.</p>
+      <ul class="fakedata-pricing-features">
+        <li>Schema introspection (Postgres, MySQL, SQLite)</li>
+        <li>Foreign key resolution</li>
+        <li>Constraint enforcement</li>
+        <li>Direct database insertion</li>
+        <li>Column overrides & dry runs</li>
+      </ul>
+      <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
+      <ul class="fakedata-pricing-features">
+        <li>Connect to Kafka with Avro/Protobuf support</li>
+        <li>More databases like ClickHouse and DuckDB</li>
+      </ul>
+      <a href="/contact/" class="btn btn-primary">Contact Us</a>
+    </div>
   </div>
 </div>
 
