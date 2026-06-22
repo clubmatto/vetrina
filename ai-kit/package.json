@@ -52,10 +52,5 @@
     "prompt-management",
     "cli"
   ],
-  "license": "MIT",
-  "knip": {
-    "ignore": [
-      "src/skills/**/scripts/*.js"
-    ]
-  }
+  "license": "MIT"
 }
