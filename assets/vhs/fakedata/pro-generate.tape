@@ -15,7 +15,7 @@ Sleep 1s
 
 Set TypingSpeed 5ms
 
-Type "sqlite3 pro.db 'SELECT u.name, u.email, p.name AS product, o.quantity FROM orders o JOIN users u ON u.id = o.user_id JOIN products p ON p.id = o.product_id LIMIT 8;'"
+Type "sqlite3 -header -column pro.db 'SELECT u.name, u.email, p.name AS product, o.quantity FROM orders o JOIN users u ON u.id = o.user_id JOIN products p ON p.id = o.product_id LIMIT 8;'"
 Enter
 
 Sleep 500ms
