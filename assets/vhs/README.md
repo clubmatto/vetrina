@@ -23,6 +23,8 @@ assets/vhs/
 │   ├── *.tmpl               # Template files used in demos
 │   ├── schema-pro.sql       # DB schema for pro demos
 │   └── requirements.sh      # Prerequisites (setup/cleanup functions)
+├── ai-kit/                  # AI Kit CLI demos
+│   └── *.tape               # Demo commands (theme-agnostic)
 ├── generate.sh              # Script to generate all GIFs
 └── README.md                # This file
 ```
@@ -69,6 +71,16 @@ assets/vhs/
 | `pro-generate` | DB-native generation with FK resolution |
 | `pro-dry-run` | Preview generators and schema before insert |
 | `pro-override` | Column-level generator overrides with `-c` |
+
+### AI Kit
+
+| Demo | Description |
+|------|-------------|
+| `basic` | One-command AI setup for any project |
+| `use-case-quickstart` | Quick start with language targeting |
+| `use-case-languages` | Language detection and all-rules mode |
+| `use-case-skills` | Skills and commands installation |
+| `use-case-options` | Advanced CLI options (monorepo, skip-opencode) |
 
 ## Themes
 

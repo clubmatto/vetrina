@@ -65,7 +65,13 @@ export default function (eleventyConfig: EleventyConfig) {
     "../assets/logo.png": "assets/img/logo.png",
   });
   eleventyConfig.addPassthroughCopy({
-    "../assets/vhs/fakedata": "assets/vhs/fakedata",
+    "../assets/vhs/fakedata/*.mp4": "assets/vhs/fakedata",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/fakedata/*.png": "assets/vhs/fakedata",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/ai-kit/*.mp4": "assets/vhs/ai-kit",
   });
 
   eleventyConfig.addCollection("posts", posts);

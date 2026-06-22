@@ -1,0 +1,19 @@
+Type "# Auto-detects your project's languages"
+Enter
+
+Sleep 1s
+
+Type "# TypeScript, Go, Kotlin, Java, Python, and more"
+Enter
+
+Sleep 500ms
+
+Type "ai-kit sync --all-rules"
+Enter
+
+Sleep 3s
+
+Type "# 🔍 All rules installed, nothing missed 🔍"
+Enter
+
+Sleep 3s
