@@ -119,4 +119,20 @@ The build process involves multiple steps:
 
 ---
 
-_Last updated: 2026-02-19_
+## 🎬 VHS Demo Videos
+
+Terminal demo videos are generated with [VHS](https://github.com/charmbracelet/vhs) and stored in `../assets/vhs/fakedata/` as MP4 files. They're passthrough-copied during build and rendered as `<video autoplay loop muted playsinline>` in Liquid pages.
+
+### OG Image / Link Previews
+
+`og:image` doesn't support MP4. For now, a static PNG thumbnail is extracted from the demo video for social previews:
+
+```bash
+ffmpeg -y -i basic-light.mp4 -vframes 1 -update 1 basic-light.png
+```
+
+This is a manual step — the PNG lives alongside the MP4 in `../assets/vhs/fakedata/`.
+
+**Potential improvement**: Generate the PNG automatically in `generate.sh`, or use a GIF (which `og:image` supports with animation on some platforms). The trade-off is encoding time vs. preview quality.
+
+_Last updated: 2026-06-22_

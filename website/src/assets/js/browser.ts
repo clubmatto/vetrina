@@ -16,9 +16,13 @@ document.addEventListener("alpine:init", () => {
     suggestions: SUGGESTIONS,
     get matches() {
       const q = this.query.toLowerCase();
-      return (Object.entries(this.generators) as [string, { desc: string; samples: string[] }][]).filter(
-        ([name, gen]) =>
-          name.includes(q) || gen.desc.toLowerCase().includes(q),
+      return (
+        Object.entries(this.generators) as [
+          string,
+          { desc: string; samples: string[] },
+        ][]
+      ).filter(
+        ([name, gen]) => name.includes(q) || gen.desc.toLowerCase().includes(q),
       );
     },
     highlight(text: string): string {

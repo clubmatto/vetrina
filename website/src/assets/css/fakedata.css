@@ -178,8 +178,12 @@
 }
 
 @keyframes fakedata-pop-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .fakedata-highlight {
@@ -247,7 +251,9 @@
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .fakedata-browse-suggestion:hover {
@@ -280,7 +286,9 @@
   border: none;
   color: var(--text);
   opacity: 0.5;
-  transition: opacity 0.2s, background 0.2s;
+  transition:
+    opacity 0.2s,
+    background 0.2s;
 }
 
 .fakedata-pricing-toggle-group button:hover {
@@ -469,7 +477,15 @@
 .fakedata-tab-nav button.active {
   opacity: 1;
   background:
-    linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-4), var(--gradient-5)) bottom / 100% 2px no-repeat,
+    linear-gradient(
+        90deg,
+        var(--gradient-1),
+        var(--gradient-2),
+        var(--gradient-3),
+        var(--gradient-4),
+        var(--gradient-5)
+      )
+      bottom / 100% 2px no-repeat,
     transparent;
 }
 

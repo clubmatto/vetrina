@@ -106,18 +106,7 @@
   },
   "char": {
     "desc": "single random letter",
-    "samples": [
-      "J",
-      "X",
-      "f",
-      "y",
-      "G",
-      "w",
-      "C",
-      "q",
-      "n",
-      "K"
-    ]
+    "samples": ["J", "X", "f", "y", "G", "w", "C", "q", "n", "K"]
   },
   "city": {
     "desc": "City name",
@@ -181,18 +170,7 @@
   },
   "country_code": {
     "desc": "2-digit country code",
-    "samples": [
-      "MH",
-      "OM",
-      "JO",
-      "CM",
-      "DJ",
-      "KE",
-      "BL",
-      "FR",
-      "NI",
-      "PM"
-    ]
+    "samples": ["MH", "OM", "JO", "CM", "DJ", "KE", "BL", "FR", "NI", "PM"]
   },
   "country_code3": {
     "desc": "3-digit country code",
@@ -211,18 +189,7 @@
   },
   "country_emoji": {
     "desc": "Country emoji flag",
-    "samples": [
-      "🇰🇵",
-      "🇳🇺",
-      "🇭🇳",
-      "🇸🇽",
-      "🇹🇫",
-      "🇵🇾",
-      "🇱🇺",
-      "🇹🇹",
-      "🇸🇻",
-      "🇰🇵"
-    ]
+    "samples": ["🇰🇵", "🇳🇺", "🇭🇳", "🇸🇽", "🇹🇫", "🇵🇾", "🇱🇺", "🇹🇹", "🇸🇻", "🇰🇵"]
   },
   "currency": {
     "desc": "Currency code",
@@ -346,18 +313,7 @@
   },
   "emoji": {
     "desc": "emoji",
-    "samples": [
-      "🔼",
-      "🐓",
-      "🎾",
-      "☑",
-      "🚓",
-      "🎋",
-      "⛲",
-      "🕔",
-      "🚯",
-      "🎦"
-    ]
+    "samples": ["🔼", "🐓", "🎾", "☑", "🚓", "🎋", "⛲", "🕔", "🚯", "🎦"]
   },
   "enum": {
     "desc": "value from an enum. By default, the enum is foo,bar,baz. It accepts a list of comma-separated values",
@@ -845,18 +801,7 @@
   },
   "phone_country_code": {
     "desc": "Calling country code",
-    "samples": [
-      "1",
-      "36",
-      "1",
-      "1",
-      "686",
-      "853",
-      "502",
-      "211",
-      "966",
-      "1"
-    ]
+    "samples": ["1", "36", "1", "1", "686", "853", "502", "211", "966", "1"]
   },
   "phone_number": {
     "desc": "phone number without calling country code. It accepts an integer N number of digits. Min: 8, Max: 12",
@@ -1070,18 +1015,7 @@
   },
   "state_code": {
     "desc": "State or province code",
-    "samples": [
-      "WA",
-      "AC",
-      "RR",
-      "03",
-      "VE",
-      "03",
-      "IN",
-      "NB",
-      "BRR",
-      "H"
-    ]
+    "samples": ["WA", "AC", "RR", "03", "VE", "03", "IN", "NB", "BRR", "H"]
   },
   "subregion": {
     "desc": "Subregion",
@@ -1160,18 +1094,7 @@
   },
   "tld": {
     "desc": "valid TLD name",
-    "samples": [
-      "lb",
-      "tl",
-      "mq",
-      "ie",
-      "mt",
-      "cr",
-      "an",
-      "ki",
-      "lk",
-      "om"
-    ]
+    "samples": ["lb", "tl", "mq", "ie", "mt", "cr", "an", "ki", "lk", "om"]
   },
   "url": {
     "desc": "URL",

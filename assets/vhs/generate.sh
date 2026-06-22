@@ -49,7 +49,7 @@ list_projects() {
 generate() {
   local demo="$1"
   local theme="$2"
-  local output_file="${demo}-${theme}.gif"
+  local output_file="${demo}-${theme}.mp4"
   local config_file="$SCRIPT_DIR/config.tape"
   local theme_file="$SCRIPT_DIR/config-${theme}.tape"
 

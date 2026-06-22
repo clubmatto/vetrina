@@ -41,9 +41,10 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addFilter("lucide", lucideShortcode);
   eleventyConfig.addShortcode("asset", assetShortcode);
   eleventyConfig.addShortcode("svg", svgShortcode);
-
   eleventyConfig.addLiquidFilter("safe", (value: unknown) => value);
-  eleventyConfig.addLiquidFilter("json", (value: unknown) => JSON.stringify(value));
+  eleventyConfig.addLiquidFilter("json", (value: unknown) =>
+    JSON.stringify(value),
+  );
   eleventyConfig.addLiquidFilter("objectSize", (value: unknown) =>
     typeof value === "object" && value !== null ? Object.keys(value).length : 0,
   );
@@ -57,15 +58,14 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addFilter("formatDate", formatDate);
   eleventyConfig.addFilter("asset", asset);
 
-  eleventyConfig.addPassthroughCopy("./src/assets/img");
-  eleventyConfig.addPassthroughCopy("./src/assets/header-logo.svg");
-  eleventyConfig.addPassthroughCopy("./src/assets/logo.svg");
   eleventyConfig.addPassthroughCopy({
     "../assets/js/alpine.3.15.12.min.js": "assets/js",
   });
-  eleventyConfig.addPassthroughCopy({ "../assets/logo.png": "assets/img/logo.png" });
   eleventyConfig.addPassthroughCopy({
-    "../assets/vhs/fakedata/*.gif": "assets/img/fakedata",
+    "../assets/logo.png": "assets/img/logo.png",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/fakedata": "assets/vhs/fakedata",
   });
 
   eleventyConfig.addCollection("posts", posts);

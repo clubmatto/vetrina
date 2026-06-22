@@ -4,7 +4,7 @@ title: FakeData
 permalink: /vetrina/fakedata/
 go_import: true
 description: Open source CLI tool for generating fake/test data. 80+ generators, multiple output formats, streaming, and templates.
-image: /assets/img/fakedata/basic-light.gif
+image: /assets/vhs/fakedata/basic-light.png
 image_width: 1300
 image_height: 650
 ---
@@ -29,8 +29,12 @@ image_height: 650
     <span class="terminal-title">demo</span>
   </div>
   <div class="terminal-body terminal-gif">
-    <img src="/assets/img/fakedata/basic-light.gif" alt="FakeData basic usage demo" loading="lazy" class="theme-light">
-    <img src="/assets/img/fakedata/basic-dark.gif" alt="FakeData basic usage demo" loading="lazy" class="theme-dark">
+    <video autoplay loop muted playsinline class="theme-light">
+      <source src="/assets/vhs/fakedata/basic-light.mp4" type="video/mp4">
+    </video>
+    <video autoplay loop muted playsinline class="theme-dark">
+      <source src="/assets/vhs/fakedata/basic-dark.mp4" type="video/mp4">
+    </video>
   </div>
 </div>
 
@@ -38,10 +42,38 @@ image_height: 650
 
 <div class="fakedata-tabs" x-data="{ tab: 'testing' }">
   <div class="fakedata-tab-nav" role="tablist">
-    <button role="tab" :class="{ active: tab === 'testing' }" @click="tab = 'testing'" :aria-selected="tab === 'testing'">Testing</button>
-    <button role="tab" :class="{ active: tab === 'development' }" @click="tab = 'development'" :aria-selected="tab === 'development'">Development</button>
-    <button role="tab" :class="{ active: tab === 'load-testing' }" @click="tab = 'load-testing'" :aria-selected="tab === 'load-testing'">Load Testing</button>
-    <button role="tab" :class="{ active: tab === 'templates' }" @click="tab = 'templates'" :aria-selected="tab === 'templates'">Custom Output</button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'testing' }"
+      @click="tab = 'testing'"
+      :aria-selected="tab === 'testing'"
+    >
+      Testing
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'development' }"
+      @click="tab = 'development'"
+      :aria-selected="tab === 'development'"
+    >
+      Development
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'load-testing' }"
+      @click="tab = 'load-testing'"
+      :aria-selected="tab === 'load-testing'"
+    >
+      Load Testing
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'templates' }"
+      @click="tab = 'templates'"
+      :aria-selected="tab === 'templates'"
+    >
+      Custom Output
+    </button>
   </div>
 
   <div class="fakedata-tab-body" x-show="tab === 'testing'">
@@ -59,14 +91,16 @@ image_height: 650
         <span class="terminal-title">Testing</span>
       </div>
       <div class="terminal-body terminal-gif">
-        <img src="/assets/img/fakedata/use-case-testing-light.gif" alt="FakeData testing demo" loading="lazy" class="theme-light">
-        <img src="/assets/img/fakedata/use-case-testing-dark.gif" alt="FakeData testing demo" loading="lazy" class="theme-dark">
+        <video autoplay loop muted playsinline class="theme-light">
+          <source src="/assets/vhs/fakedata/use-case-testing-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark">
+          <source src="/assets/vhs/fakedata/use-case-testing-dark.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
     <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country
-    </div>
+    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country</div>
   </div>
 
   <div class="fakedata-tab-body" x-show="tab === 'development'">
@@ -84,8 +118,12 @@ image_height: 650
         <span class="terminal-title">Development</span>
       </div>
       <div class="terminal-body terminal-gif">
-        <img src="/assets/img/fakedata/use-case-development-light.gif" alt="FakeData development demo" loading="lazy" class="theme-light">
-        <img src="/assets/img/fakedata/use-case-development-dark.gif" alt="FakeData development demo" loading="lazy" class="theme-dark">
+        <video autoplay loop muted playsinline class="theme-light">
+          <source src="/assets/vhs/fakedata/use-case-development-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark">
+          <source src="/assets/vhs/fakedata/use-case-development-dark.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
     <p class="fakedata-try-text">Try it yourself:</p>
@@ -97,8 +135,8 @@ image_height: 650
   <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
     <div class="fakedata-tab-body-text">
       <p>
-        Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop
-        when ready.
+        Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop when
+        ready.
       </p>
     </div>
     <div class="terminal-window">
@@ -109,14 +147,16 @@ image_height: 650
         <span class="terminal-title">Load Testing</span>
       </div>
       <div class="terminal-body terminal-gif">
-        <img src="/assets/img/fakedata/use-case-load-testing-light.gif" alt="FakeData load testing demo" loading="lazy" class="theme-light">
-        <img src="/assets/img/fakedata/use-case-load-testing-dark.gif" alt="FakeData load testing demo" loading="lazy" class="theme-dark">
+        <video autoplay loop muted playsinline class="theme-light">
+          <source src="/assets/vhs/fakedata/use-case-load-testing-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark">
+          <source src="/assets/vhs/fakedata/use-case-load-testing-dark.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
     <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata --stream email country | head -5
-    </div>
+    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --stream email country | head -5</div>
   </div>
 
   <div class="fakedata-tab-body" x-show="tab === 'templates'">
@@ -131,8 +171,12 @@ image_height: 650
         <span class="terminal-title">Custom Output</span>
       </div>
       <div class="terminal-body terminal-gif">
-        <img src="/assets/img/fakedata/custom-output-light.gif" alt="FakeData custom output demo" loading="lazy" class="theme-light">
-        <img src="/assets/img/fakedata/custom-output-dark.gif" alt="FakeData custom output demo" loading="lazy" class="theme-dark">
+        <video autoplay loop muted playsinline class="theme-light">
+          <source src="/assets/vhs/fakedata/custom-output-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark">
+          <source src="/assets/vhs/fakedata/custom-output-dark.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
     <p class="fakedata-try-text">Try it yourself:</p>
@@ -179,12 +223,12 @@ image_height: 650
       <div class="terminal-command">
         <span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest
       </div>
-      <div class="terminal-command">
-        <span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata
-      </div>
+      <div class="terminal-command"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
       <p class="fakedata-install-note">Requires Go 1.21+ or Homebrew.</p>
     </div>
-    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn">Read the docs</a>
+    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn"
+      >Read the docs</a
+    >
   </div>
 </div>
 
@@ -201,7 +245,14 @@ image_height: 650
     <div class="terminal-line fakedata-browse-line">
       <span class="terminal-prompt">$</span> fakedata
       <span class="fakedata-browse-cursor" x-show="!query && !focused">█</span>
-      <input type="text" x-model="query" @focus="lastSelected = null; focused = true" @blur="focused = false" class="fakedata-browse-input" autocomplete="off">
+      <input
+        type="text"
+        x-model="query"
+        @focus="lastSelected = null; focused = true"
+        @blur="focused = false"
+        class="fakedata-browse-input"
+        autocomplete="off"
+      >
       <button x-show="query" @click="clear" class="fakedata-browse-clear" aria-label="Clear search">&times;</button>
     </div>
     <div class="fakedata-browse-results" x-show="query.trim() && !lastSelected && matches.length">
@@ -228,7 +279,9 @@ image_height: 650
   </div>
 </div>
 
-<script id="generators-data" type="application/json">{{ generators | json }}</script>
+<script id="generators-data" type="application/json">
+  {{ generators | json }}
+</script>
 
 <h2 class="showcase-section-title">FakeData Pro</h2>
 
