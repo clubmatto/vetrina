@@ -299,31 +299,69 @@ description: Generate realistic, database-ready test data with schema introspect
       </ul>
       <a href="/vetrina/fakedata/" class="btn btn-secondary">Get Started</a>
     </div>
-    <div class="fakedata-pricing-card fakedata-pricing-featured">
+    <div
+      class="fakedata-pricing-card fakedata-pricing-featured fakedata-flip-card"
+      x-data="{ flipped: false, submitted: false }"
+    >
       <div class="fakedata-pricing-badge">Pro</div>
-      <h3 class="fakedata-pricing-name">Pro</h3>
-      <div class="fakedata-pricing-amount">
-        <span x-text="currency === 'eur' ? '€' : '$'"></span
-        ><span
-          x-text="period === 'monthly' ? (currency === 'eur' ? '50' : '60') : (currency === 'eur' ? '500' : '600')"
-        ></span>
-        <span class="fakedata-pricing-period" x-text="period === 'monthly' ? '/month' : '/year'"></span>
-        <span class="fakedata-pricing-discount" x-show="period === 'annual'">Save 17%</span>
+      <div class="fakedata-flip-scene">
+        <div class="fakedata-flip-inner" :class="{ 'is-flipped': flipped }">
+          <div class="fakedata-flip-front">
+            <h3 class="fakedata-pricing-name">Pro</h3>
+            <div class="fakedata-pricing-amount">
+              <span x-text="currency === 'eur' ? '€' : '$'"></span
+              ><span
+                x-text="period === 'monthly' ? (currency === 'eur' ? '50' : '60') : (currency === 'eur' ? '500' : '600')"
+              ></span>
+              <span class="fakedata-pricing-period" x-text="period === 'monthly' ? '/month' : '/year'"></span>
+              <span class="fakedata-pricing-discount" x-show="period === 'annual'">Save 17%</span>
+            </div>
+            <p class="fakedata-pricing-desc">
+              Connect directly to your database and generate realistic data automatically.
+            </p>
+            <ul class="fakedata-pricing-features">
+              <li>Schema introspection (Postgres, MySQL, SQLite)</li>
+              <li>Foreign key resolution</li>
+              <li>Constraint enforcement</li>
+              <li>Direct database insertion</li>
+              <li>Column overrides & dry runs</li>
+            </ul>
+            <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
+            <ul class="fakedata-pricing-features">
+              <li>Connect to Kafka with Avro/Protobuf support</li>
+              <li>More databases like ClickHouse and DuckDB</li>
+            </ul>
+            <button @click="flipped = true" class="btn btn-primary">Contact Us</button>
+          </div>
+          <div class="fakedata-flip-back">
+            <div x-show="!submitted">
+              <h4 class="fakedata-flip-back-title">Get in touch</h4>
+              <p class="fakedata-flip-back-desc">Drop your email and we'll reach out about FakeData Pro.</p>
+              <form
+                @submit.prevent="
+                  fetch($el.action, {
+                    method: 'POST',
+                    body: new FormData($el),
+                    headers: { 'Accept': 'application/json' }
+                  }).then(r => { if(r.ok) submitted = true })
+                "
+                action="https://formspree.io/f/YOUR_FORM_ID"
+                method="POST"
+              >
+                <div class="fakedata-flip-form-group">
+                  <input type="email" name="email" required placeholder="your@email.com">
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+              </form>
+            </div>
+            <div x-show="submitted">
+              <h4 class="fakedata-flip-back-title">Thanks!</h4>
+              <p class="fakedata-flip-back-desc">We'll be in touch soon.</p>
+            </div>
+            <button @click="flipped = false" class="fakedata-flip-back-link">← Back</button>
+          </div>
+        </div>
       </div>
-      <p class="fakedata-pricing-desc">Connect directly to your database and generate realistic data automatically.</p>
-      <ul class="fakedata-pricing-features">
-        <li>Schema introspection (Postgres, MySQL, SQLite)</li>
-        <li>Foreign key resolution</li>
-        <li>Constraint enforcement</li>
-        <li>Direct database insertion</li>
-        <li>Column overrides & dry runs</li>
-      </ul>
-      <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
-      <ul class="fakedata-pricing-features">
-        <li>Connect to Kafka with Avro/Protobuf support</li>
-        <li>More databases like ClickHouse and DuckDB</li>
-      </ul>
-      <a href="/contact/" class="btn btn-primary">Contact Us</a>
     </div>
   </div>
 </div>
