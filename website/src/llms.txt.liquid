@@ -1,0 +1,52 @@
+---
+permalink: /llms.txt
+layout: false
+eleventyExcludeFromCollections: true
+---
+# Club Matto
+
+> A software artisans company building quality tools with care, creativity, and a touch of madness.
+
+Club Matto is a software bottega — an Italian workshop where craftspeople make things by hand, with care and intention. We build tools that solve real problems we've felt ourselves: developer utilities, CLI applications, and open-source libraries.
+
+Contact: hello@matto.club
+GitHub: https://github.com/clubmatto
+X: https://x.com/clubmatto
+LinkedIn: https://linkedin.com/company/clubmatto
+
+## Pages
+
+- [Home]({{ site.url }}/): A software artisans company building quality tools with care, creativity, and a touch of madness
+- [Contact]({{ site.url }}/contact/): Get in touch with Club Matto - a software bottega with a matto heart
+- [Credits]({{ site.url }}/credits/): A thank you note and list of technologies used to build this website
+
+## Products
+
+- [Products overview]({{ site.url }}/products/): Explore our products at Club Matto — software crafted with artisan care
+{%- for item in collections.all %}
+{%- if item.url contains '/products/' and item.url != '/products/' %}
+- [{{ item.data.title }}]({{ site.url }}{{ item.url }}): {{ item.data.description }}
+{%- endif %}
+{%- endfor %}
+
+## Open Source
+
+- [Vetrina overview]({{ site.url }}/vetrina/): Explore our open source projects at Club Matto — tools crafted with care, built in the open
+{%- for item in collections.all %}
+{%- if item.url contains '/vetrina/' and item.url != '/vetrina/' %}
+- [{{ item.data.title }}]({{ site.url }}{{ item.url }}): {{ item.data.description }}
+{%- endif %}
+{%- endfor %}
+
+## Writing
+
+- [Writing overview]({{ site.url }}/writing/): Read writings from Club Matto — insights on software craftsmanship and creative development
+{%- for post in collections.posts %}
+- [{{ post.data.title }}]({{ site.url }}{{ post.data.page.url }}) ({{ post.date | formatDate }}): {{ post.data.description | default: 'Club Matto blog post' }}
+{%- endfor %}
+
+## Optional
+
+- [GitHub](https://github.com/clubmatto): Club Matto organization on GitHub — source code for all projects
+- [Eleventy](https://www.11ty.dev/): Static site generator used to build matto.club
+- [PostCSS](https://postcss.org/): CSS processing tool used in the build pipeline
