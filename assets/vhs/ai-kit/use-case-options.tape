@@ -1,3 +1,8 @@
+Type "cd /tmp/ai-kit/use-case-options"
+Enter
+
+Sleep 500ms
+
 Type "# Full control with CLI options"
 Enter
 

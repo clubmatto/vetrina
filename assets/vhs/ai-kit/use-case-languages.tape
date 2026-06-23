@@ -1,9 +1,14 @@
+Type "cd /tmp/ai-kit/use-case-languages"
+Enter
+
+Sleep 500ms
+
 Type "# Auto-detects your project's languages"
 Enter
 
 Sleep 1s
 
-Type "# TypeScript, Go, Kotlin, Java, Python, and more"
+Type "# TypeScript, Go, Kotlin, and more"
 Enter
 
 Sleep 500ms

@@ -12,7 +12,7 @@ usage() {
   cat <<EOF
 Usage: $(basename "$0") [OPTIONS] <PROJECT> [DEMO...]
 
-Generate GIF demos using VHS.
+Generate demo tapes using VHS.
 
 Arguments:
   PROJECT     Project directory (e.g., fakedata)
@@ -67,6 +67,14 @@ generate() {
   echo "Generating $output_file..."
   (cd "$PROJECT_DIR" && vhs <(echo "Output $output_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
   echo "  -> $PROJECT_DIR/$output_file"
+
+  # Generate GIF for light theme only (used in READMEs and OG previews)
+  if [[ "$theme" == "light" ]]; then
+    local gif_file="${demo}-${theme}.gif"
+    echo "Generating $gif_file..."
+    (cd "$PROJECT_DIR" && vhs <(echo "Output $gif_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
+    echo "  -> $PROJECT_DIR/$gif_file"
+  fi
 }
 
 # Parse arguments
@@ -143,7 +151,7 @@ else
   SELECTED_THEMES=("$THEME")
 fi
 
-# Generate GIFs
+# Generate tapes
 for demo in "${SELECTED_DEMOS[@]}"; do
   for theme in "${SELECTED_THEMES[@]}"; do
     generate "$demo" "$theme"
@@ -156,4 +164,4 @@ if [[ -f "$PROJECT_DIR/requirements.sh" ]]; then
 fi
 
 echo ""
-echo "Done! GIFs generated in $PROJECT_DIR/"
+echo "Done! Tapes generated in $PROJECT_DIR/"

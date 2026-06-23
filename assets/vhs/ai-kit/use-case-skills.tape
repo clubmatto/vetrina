@@ -1,3 +1,8 @@
+Type "cd /tmp/ai-kit/use-case-skills"
+Enter
+
+Sleep 500ms
+
 Type "# Drop-in skills and pre-built commands"
 Enter
 

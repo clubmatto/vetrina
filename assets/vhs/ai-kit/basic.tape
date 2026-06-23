@@ -1,3 +1,8 @@
+Type "cd /tmp/ai-kit/basic"
+Enter
+
+Sleep 500ms
+
 Type "# AI Kit configures your project for AI-assisted coding"
 Enter
 

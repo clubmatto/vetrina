@@ -1,6 +1,6 @@
 # VHS Demos
 
-This directory contains [VHS](https://github.com/charmbracelet/vhs) tape files for generating GIF demos. Each subdirectory contains tapes for a specific project.
+This directory contains [VHS](https://github.com/charmbracelet/vhs) tape files for generating demo recordings. Each subdirectory contains tapes for a specific project.
 
 ## Prerequisites
 
@@ -25,11 +25,13 @@ assets/vhs/
 │   └── requirements.sh      # Prerequisites (setup/cleanup functions)
 ├── ai-kit/                  # AI Kit CLI demos
 │   └── *.tape               # Demo commands (theme-agnostic)
-├── generate.sh              # Script to generate all GIFs
+├── generate.sh              # Script to generate all recordings
 └── README.md                # This file
 ```
 
-## Generate GIFs
+## Generate Recordings
+
+Generates MP4s (both themes) and GIFs (light theme only, for READMEs and OG social preview).
 
 ### All Demos (Both Themes)
 
@@ -47,7 +49,7 @@ assets/vhs/
 
 ```bash
 ./generate.sh -t dark fakedata      # Dark theme only
-./generate.sh -t light fakedata     # Light theme only
+./generate.sh -t light fakedata     # Light theme only (also outputs GIF)
 ./generate.sh -t all fakedata basic # Both themes, specific demo
 ```
 
@@ -86,15 +88,16 @@ assets/vhs/
 
 | Config File | Theme | Used For |
 |-------------|-------|----------|
-| `config.tape` | Vetrina Dark | Dark mode GIFs |
-| `config-light.tape` | Vetrina Light | Light mode GIFs, README |
+| `config.tape` | Vetrina Dark | Dark mode MP4s |
+| `config-light.tape` | Vetrina Light | Light mode MP4s, GIFs |
 
-## Using GIFs
+## Using Recordings
 
-Generated GIFs are served directly by the website via 11ty passthrough copy. No manual copying needed.
+Generated files are served directly by the website via 11ty passthrough copy. No manual copying needed.
 
-- **Landing pages** — Uses both light and dark versions (theme-aware)
-- **README** — Uses light version (GitHub has white background)
+- **Landing pages** — Uses MP4 (both light and dark, theme-aware)
+- **README** — Uses GIF (light version only, GitHub has white background)
+- **OG image** — Uses GIF (light version only, for social preview)
 
 ## Adding New Demos
 

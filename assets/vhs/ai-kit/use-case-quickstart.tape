@@ -1,3 +1,8 @@
+Type "cd /tmp/ai-kit/use-case-quickstart"
+Enter
+
+Sleep 500ms
+
 Type "# Quick start: initialize AI config in any project"
 Enter
 
