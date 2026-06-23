@@ -1,5 +1,3 @@
-/* --- Install Table --- */
-
 .ai-kit-installed-table {
   width: 100%;
   border-collapse: collapse;
@@ -31,8 +29,6 @@
 .ai-kit-installed-table td:first-child {
   white-space: nowrap;
 }
-
-/* --- Generator Table --- */
 
 .ai-kit-gen-table {
   width: 100%;

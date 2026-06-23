@@ -1,5 +1,3 @@
-/* ---- Buttons ---- */
-
 .ds-btn {
   font-family: var(--ds-font-sans);
   padding: var(--ds-space-4) var(--ds-space-8);
@@ -41,8 +39,6 @@
   background: var(--ds-gradient-4);
   color: var(--ds-text-inverse);
 }
-
-/* ---- Terminal ---- */
 
 .ds-terminal {
   background: var(--terminal-bg);
@@ -188,8 +184,6 @@
   font-weight: 600;
 }
 
-/* ---- Corner badge ---- */
-
 .ds-corner-badge {
   position: absolute;
   top: 0;
@@ -230,8 +224,6 @@
   stroke-width: 2.5;
 }
 
-/* ---- Feature card ---- */
-
 .ds-feature-card {
   padding: var(--ds-space-3) var(--ds-space-4);
   border-radius: var(--ds-radius-md);
@@ -260,8 +252,6 @@
   gap: var(--ds-space-3);
   margin: var(--ds-space-4) 0;
 }
-
-/* ---- Tabs ---- */
 
 .ds-tabs {
   margin: var(--ds-space-8) 0;
@@ -330,8 +320,6 @@
   margin: var(--ds-space-5) 0 var(--ds-space-1) 0;
 }
 
-/* ---- Install card ---- */
-
 .ds-install-card {
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
@@ -360,8 +348,6 @@
   opacity: 0.55;
 }
 
-/* ---- Docs-style outline button ---- */
-
 .ds-btn-outline {
   display: block;
   margin: var(--ds-space-4) 0 0 0;
@@ -388,16 +374,12 @@
   transform: translateY(-1px);
 }
 
-/* ---- Intro text ---- */
-
 .ds-intro-text {
   font-family: var(--ds-font-sans);
   line-height: 1.6;
   opacity: 0.8;
   margin: 0;
 }
-
-/* ---- Grid terminal wrapper ---- */
 
 .ds-grid-terminal {
   min-width: 0;

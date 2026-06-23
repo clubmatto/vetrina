@@ -1,5 +1,3 @@
-/* ---- Gradient text ---- */
-
 .ds-text-gradient {
   background: var(--ds-gradient-text);
   -webkit-background-clip: text;
@@ -7,15 +5,11 @@
   background-clip: text;
 }
 
-/* ---- Surface card ---- */
-
 .ds-card {
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: var(--ds-radius-md);
 }
-
-/* ---- Hover lift ---- */
 
 .ds-lift {
   transition:
@@ -27,8 +21,6 @@
   transform: translateY(-2px);
   box-shadow: var(--ds-shadow-md);
 }
-
-/* ---- Screen reader only ---- */
 
 .ds-sr-only {
   position: absolute;

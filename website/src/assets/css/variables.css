@@ -1,12 +1,10 @@
 :root {
-  /* ---- Layout ---- */
   --nav-height: 4.5rem;
   --main-padding-inline: 0;
   --page-padding-inline: var(--ds-space-8);
   --page-padding-block-start: var(--ds-space-8);
   --page-padding-block-end: var(--ds-space-8);
 
-  /* ---- Backward-compatible aliases ---- */
   --max-width: var(--ds-max-width);
   --bg: var(--ds-bg);
   --card-bg: var(--ds-surface);
@@ -31,11 +29,9 @@
   --bg-pattern: var(--ds-bg-pattern);
   --bg-pattern-opacity: var(--ds-bg-pattern-opacity);
 
-  /* ---- Theme Toggle ---- */
   --theme-toggle-bg: light-dark(#ffffff44, #ffffff22);
   --theme-toggle-hover: light-dark(#0000001a, #ffffff44);
 
-  /* ---- Dash Patterns ---- */
   --dash-color: color-mix(in srgb, var(--text), transparent 85%);
   --dash-vertical: repeating-linear-gradient(
     to bottom,
@@ -52,10 +48,8 @@
     transparent 28px
   );
 
-  /* ---- Post ---- */
   --post-bg: light-dark(#f5f0eb, #3b4252);
 
-  /* ---- Terminal ---- */
   --terminal-bg: light-dark(#f4f4f5, #1e1e2e);
   --terminal-text: light-dark(#1a1a1a, #cdd6f4);
   --terminal-header-bg: light-dark(#e4e4e7, rgba(255, 255, 255, 0.04));
@@ -66,6 +60,5 @@
   --terminal-output: light-dark(#6b7280, #94a3b8);
   --terminal-title: light-dark(#52525b, #cdd6f4);
 
-  /* ---- Layout overrides for ds-section-title ---- */
   --ds-edge-padding: var(--page-padding-inline);
 }

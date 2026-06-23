@@ -1,10 +1,3 @@
-/* ============================================
-   Product Landing Pages
-   Shared styles for individual product pages
-   ============================================ */
-
-/* --- Hero --- */
-
 .product-hero {
   display: flex;
   flex-direction: column;
@@ -65,8 +58,6 @@
   flex-wrap: wrap;
 }
 
-/* --- Sections --- */
-
 .product-section-title {
   font-family: var(--font-sans);
   font-size: clamp(1.5rem, 4vw, 2.2rem);
@@ -75,8 +66,6 @@
   margin: 0 0 3rem 0;
   opacity: 0.9;
 }
-
-/* --- Features --- */
 
 .product-features {
   padding: 5rem 0;
@@ -132,8 +121,6 @@
   opacity: 0.75;
   margin: 0;
 }
-
-/* --- How It Works --- */
 
 .product-how-it-works {
   padding: 5rem 0;
@@ -204,8 +191,6 @@
   margin-top: 5.5rem;
 }
 
-/* --- CTA --- */
-
 .product-cta {
   padding: 5rem 0;
   text-align: center;
@@ -230,8 +215,6 @@
   margin: 0 0 2rem 0;
   line-height: 1.5;
 }
-
-/* --- Responsive --- */
 
 @media (max-width: 768px) {
   .product-features-grid {

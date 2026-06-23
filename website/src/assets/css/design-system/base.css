@@ -77,8 +77,6 @@ p {
   display: none !important;
 }
 
-/* ---- Keyframes ---- */
-
 @keyframes blink {
   50% {
     opacity: 0;

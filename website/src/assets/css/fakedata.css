@@ -10,8 +10,6 @@
   margin: 0;
 }
 
-/* --- Browser --- */
-
 .fakedata-browse {
   margin: var(--ds-space-6) 0;
 }
@@ -168,8 +166,6 @@
   background: var(--fakedata-hover-bg);
   border-color: var(--terminal-prompt);
 }
-
-/* --- Pricing --- */
 
 .fakedata-pricing-toggles {
   display: flex;
@@ -347,8 +343,6 @@
     grid-template-columns: 1fr;
   }
 }
-
-/* --- Flip Card --- */
 
 .fakedata-pricing-card.fakedata-flip-card {
   padding: 0;
