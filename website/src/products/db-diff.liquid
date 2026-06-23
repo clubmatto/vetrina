@@ -4,86 +4,52 @@ title: DB Diff
 permalink: /products/db-diff/
 description: Know when your data drifts. Compare rows across databases using hash-based checksums — blazing fast when tables match, pinpointing every difference when they don't.
 ---
-<section class="product-hero">
-  <div class="product-hero-content">
-    <div class="product-hero-icon">{{ 'database' | lucide }}</div>
-    <h1 class="product-hero-title">DB Diff</h1>
-    <p class="product-hero-tagline">Know when your data drifts</p>
-    <div class="product-hero-actions">
-      <a href="#" class="btn btn-primary">Get Started</a>
-      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
-    </div>
-  </div>
-</section>
+<div class="coming-soon-ribbon-container">
+  <span class="coming-soon-badge">Coming Soon</span>
+</div>
+<div class="showcase-header">
+  <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
+  <h1 class="showcase-page-title">DB Diff</h1>
+  <p class="showcase-page-tagline">Know when your data drifts</p>
+</div>
 
-<section class="product-features">
-  <h2 class="product-section-title">What It Does</h2>
-  <div class="product-features-grid">
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'database' | lucide }}</div>
-      <h3 class="product-feature-title">Multi-Database</h3>
-      <p class="product-feature-desc">
-        PostgreSQL, MySQL, and ClickHouse — compare within the same engine or across different ones. DSN auto-detection
-        handles the routing for you.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'zap' | lucide }}</div>
-      <h3 class="product-feature-title">Blazing Fast</h3>
-      <p class="product-feature-desc">
-        MD5 checksums are computed inside the database engine, not in your app. Only aggregate hashes cross the wire,
-        making it fast even for tables with millions of rows.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'target' | lucide }}</div>
-      <h3 class="product-feature-title">Pinpoint Precision</h3>
-      <p class="product-feature-desc">
-        When chunk hashes mismatch, DB Diff drills down automatically — subdividing segments until it identifies exactly
-        which rows differ.
-      </p>
-    </article>
+<div class="coming-soon-features-grid">
+  <div class="coming-soon-feature">
+    <h3>Multi-Engine</h3>
+    <p>PostgreSQL, MySQL, and ClickHouse — mix freely</p>
   </div>
-</section>
+  <div class="coming-soon-feature">
+    <h3>Blazing Fast</h3>
+    <p>Server-side MD5 chunking, only hashes cross the wire</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Pinpoint Precision</h3>
+    <p>Automatic drill-down to the exact differing rows</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Column Control</h3>
+    <p>Include or exclude columns to skip noise</p>
+  </div>
+</div>
 
-<section class="product-how-it-works" id="how-it-works">
-  <h2 class="product-section-title">How It Works</h2>
-  <div class="product-steps">
-    <div class="product-step">
-      <div class="product-step-number">1</div>
-      <div class="product-step-icon">{{ 'plug' | lucide }}</div>
-      <h3 class="product-step-title">Connect</h3>
-      <p class="product-step-desc">
-        Point DB Diff at two databases with connection strings. Mix engines freely — MySQL to PostgreSQL, ClickHouse to
-        MySQL, anything goes.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">2</div>
-      <div class="product-step-icon">{{ 'git-compare' | lucide }}</div>
-      <h3 class="product-step-title">Compare</h3>
-      <p class="product-step-desc">
-        Tables are split into chunks by ID range. Each chunk is checksummed on both sides using SQL-native hashing —
-        divide and conquer.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">3</div>
-      <div class="product-step-icon">{{ 'flag' | lucide }}</div>
-      <h3 class="product-step-title">Report</h3>
-      <p class="product-step-desc">
-        Get the exact count and list of differing row IDs. Include or exclude columns to skip noise like timestamps.
-      </p>
-    </div>
+<div class="coming-soon-waitlist" x-data="{ submitted: false }">
+  <p>Leave your email and we'll let you know when DB Diff is ready.</p>
+  <form
+    x-show="!submitted"
+    @submit.prevent="
+      fetch($el.action, {
+        method: 'POST',
+        body: new FormData($el),
+        headers: { 'Accept': 'application/json' }
+      }).then(r => { if(r.ok) submitted = true })
+    "
+    action="https://formspree.io/f/YOUR_FORM_ID"
+    method="POST"
+  >
+    <input type="email" name="email" required placeholder="your@email.com">
+    <button type="submit" class="btn btn-primary">Join Waitlist</button>
+  </form>
+  <div class="waiting-list-submitted" x-show="submitted">
+    <p>Thanks! We'll be in touch.</p>
   </div>
-</section>
-
-<section class="product-cta">
-  <div class="product-cta-content">
-    <h2 class="product-cta-title">Catch data drift before it catches you</h2>
-    <p class="product-cta-desc">One command. Any database. Every difference.</p>
-    <a href="#" class="btn btn-primary">Get Started</a>
-  </div>
-</section>
+</div>

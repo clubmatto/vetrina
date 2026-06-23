@@ -4,85 +4,52 @@ title: Matto Bar
 permalink: /products/matto-bar/
 description: All your subscription quotas in your menu bar. Monitor every AI provider at a glance — tokens, credits, API call volume — so you never hit limits unexpectedly.
 ---
-<section class="product-hero">
-  <div class="product-hero-content">
-    <div class="product-hero-icon">{{ 'activity' | lucide }}</div>
-    <h1 class="product-hero-title">Matto Bar</h1>
-    <p class="product-hero-tagline">All your subscription quotas in your menu bar</p>
-    <div class="product-hero-actions">
-      <a href="#" class="btn btn-primary">Get Started</a>
-      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
-    </div>
-  </div>
-</section>
+<div class="coming-soon-ribbon-container">
+  <span class="coming-soon-badge">Coming Soon</span>
+</div>
+<div class="showcase-header">
+  <div class="showcase-page-icon">{{ 'activity' | lucide }}</div>
+  <h1 class="showcase-page-title">Matto Bar</h1>
+  <p class="showcase-page-tagline">All your subscription quotas in your menu bar</p>
+</div>
 
-<section class="product-features">
-  <h2 class="product-section-title">What It Does</h2>
-  <div class="product-features-grid">
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'layers' | lucide }}</div>
-      <h3 class="product-feature-title">All Providers</h3>
-      <p class="product-feature-desc">
-        Monitor every AI provider from one place — OpenAI, Anthropic, and more. No more switching between dashboards to
-        check your usage.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'eye' | lucide }}</div>
-      <h3 class="product-feature-title">At a Glance</h3>
-      <p class="product-feature-desc">
-        Tokens, credits, API call volume — all visible from your menu bar. One click to see the full breakdown across
-        every provider you use.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'shield-alert' | lucide }}</div>
-      <h3 class="product-feature-title">Never Hit Limits</h3>
-      <p class="product-feature-desc">
-        Get notified before you run out. Optimize usage across providers so you spend smarter and stay productive
-        without surprise cutoffs.
-      </p>
-    </article>
+<div class="coming-soon-features-grid">
+  <div class="coming-soon-feature">
+    <h3>Multi-Provider</h3>
+    <p>OpenAI, Anthropic, and more — all from one menu bar</p>
   </div>
-</section>
+  <div class="coming-soon-feature">
+    <h3>At a Glance</h3>
+    <p>Tokens, credits, API call volume always visible</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Smart Alerts</h3>
+    <p>Get notified before you hit your limits</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Lightweight</h3>
+    <p>Always on, never in the way</p>
+  </div>
+</div>
 
-<section class="product-how-it-works" id="how-it-works">
-  <h2 class="product-section-title">How It Works</h2>
-  <div class="product-steps">
-    <div class="product-step">
-      <div class="product-step-number">1</div>
-      <div class="product-step-icon">{{ 'download' | lucide }}</div>
-      <h3 class="product-step-title">Install</h3>
-      <p class="product-step-desc">
-        Download Matto Bar and it sits quietly in your menu bar. Lightweight, always on, never in the way.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">2</div>
-      <div class="product-step-icon">{{ 'plug' | lucide }}</div>
-      <h3 class="product-step-title">Connect</h3>
-      <p class="product-step-desc">
-        Add your API keys for each provider. Matto Bar handles the rest — polling quotas and keeping your data fresh.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">3</div>
-      <div class="product-step-icon">{{ 'activity' | lucide }}</div>
-      <h3 class="product-step-title">Monitor</h3>
-      <p class="product-step-desc">
-        See your quotas update in real time. Optimize across providers, set alerts, and never get caught off guard by a
-        limit again.
-      </p>
-    </div>
+<div class="coming-soon-waitlist" x-data="{ submitted: false }">
+  <p>Leave your email and we'll let you know when Matto Bar is ready.</p>
+  <form
+    x-show="!submitted"
+    @submit.prevent="
+      fetch($el.action, {
+        method: 'POST',
+        body: new FormData($el),
+        headers: { 'Accept': 'application/json' }
+      }).then(r => { if(r.ok) submitted = true })
+    "
+    action="https://formspree.io/f/YOUR_FORM_ID"
+    method="POST"
+  >
+    <input type="email" name="email" required placeholder="your@email.com">
+    <button type="submit" class="btn btn-primary">Join Waitlist</button>
+  </form>
+  <div class="waiting-list-submitted" x-show="submitted">
+    <p>Thanks! We'll be in touch.</p>
   </div>
-</section>
-
-<section class="product-cta">
-  <div class="product-cta-content">
-    <h2 class="product-cta-title">Your AI costs, under control</h2>
-    <p class="product-cta-desc">Every provider. One menu bar glance. Zero surprises.</p>
-    <a href="#" class="btn btn-primary">Get Started</a>
-  </div>
-</section>
+</div>

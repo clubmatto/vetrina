@@ -4,87 +4,52 @@ title: Bookmarks
 permalink: /products/bookmarks/
 description: Save anything, find everything. A dead-simple bookmark manager with nested tags and instant search — no link you ever saved will ever get forgotten again.
 ---
-<section class="product-hero">
-  <div class="product-hero-content">
-    <div class="product-hero-icon">{{ 'bookmark' | lucide }}</div>
-    <h1 class="product-hero-title">Bookmarks</h1>
-    <p class="product-hero-tagline">Save anything, find everything</p>
-    <div class="product-hero-actions">
-      <a href="#" class="btn btn-primary">Get Started</a>
-      <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
-    </div>
-  </div>
-</section>
+<div class="coming-soon-ribbon-container">
+  <span class="coming-soon-badge">Coming Soon</span>
+</div>
+<div class="showcase-header">
+  <div class="showcase-page-icon">{{ 'bookmark' | lucide }}</div>
+  <h1 class="showcase-page-title">Bookmarks</h1>
+  <p class="showcase-page-tagline">Save anything, find everything</p>
+</div>
 
-<section class="product-features">
-  <h2 class="product-section-title">What It Does</h2>
-  <div class="product-features-grid">
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'tags' | lucide }}</div>
-      <h3 class="product-feature-title">Nested Tags</h3>
-      <p class="product-feature-desc">
-        Organize with hierarchical tags using slash separators — like
-        <code>programming/go/concurrency</code>. The sidebar renders a recursive tree so you can browse your collection
-        naturally.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'search' | lucide }}</div>
-      <h3 class="product-feature-title">Instant Search</h3>
-      <p class="product-feature-desc">
-        Type-as-you-go search with 100ms debounce. Matches are highlighted across title, URL, and tags. No link you ever
-        saved will ever get forgotten again.
-      </p>
-    </article>
-    <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'folder-tree' | lucide }}</div>
-      <h3 class="product-feature-title">Import &amp; Export</h3>
-      <p class="product-feature-desc">
-        CSV import and export so you never lock in your data. Plus a JSON API and browser extension for saving bookmarks
-        from anywhere.
-      </p>
-    </article>
+<div class="coming-soon-features-grid">
+  <div class="coming-soon-feature">
+    <h3>Nested Tags</h3>
+    <p>Use <code>/</code> to nest your tags</p>
   </div>
-</section>
+  <div class="coming-soon-feature">
+    <h3>Instant Search</h3>
+    <p>Type-as-you-go across title, URL, and tags</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Import & Export</h3>
+    <p>CSV import/export and JSON API: never locked in</p>
+  </div>
+  <div class="coming-soon-feature">
+    <h3>Browser Extension</h3>
+    <p>Save bookmarks from anywhere</p>
+  </div>
+</div>
 
-<section class="product-how-it-works" id="how-it-works">
-  <h2 class="product-section-title">How It Works</h2>
-  <div class="product-steps">
-    <div class="product-step">
-      <div class="product-step-number">1</div>
-      <div class="product-step-icon">{{ 'bookmark' | lucide }}</div>
-      <h3 class="product-step-title">Save</h3>
-      <p class="product-step-desc">
-        Add bookmarks via the web UI, the JSON API, or the browser extension. Title and URL are all you need to start.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">2</div>
-      <div class="product-step-icon">{{ 'folder-tree' | lucide }}</div>
-      <h3 class="product-step-title">Organize</h3>
-      <p class="product-step-desc">
-        Tag with nested hierarchies. Filter by tag and get all child tags included. Mark as read or unread to track what
-        you've consumed.
-      </p>
-    </div>
-    <div class="product-step-connector"></div>
-    <div class="product-step">
-      <div class="product-step-number">3</div>
-      <div class="product-step-icon">{{ 'search' | lucide }}</div>
-      <h3 class="product-step-title">Find</h3>
-      <p class="product-step-desc">
-        Start typing and results appear instantly. Search across title, URL, and tags. Filter by unread, untagged, or
-        any tag in your tree.
-      </p>
-    </div>
+<div class="coming-soon-waitlist" x-data="{ submitted: false }">
+  <p>Leave your email and we'll let you know when Bookmarks is ready.</p>
+  <form
+    x-show="!submitted"
+    @submit.prevent="
+      fetch($el.action, {
+        method: 'POST',
+        body: new FormData($el),
+        headers: { 'Accept': 'application/json' }
+      }).then(r => { if(r.ok) submitted = true })
+    "
+    action="https://formspree.io/f/YOUR_FORM_ID"
+    method="POST"
+  >
+    <input type="email" name="email" required placeholder="your@email.com">
+    <button type="submit" class="btn btn-primary">Join Waitlist</button>
+  </form>
+  <div class="waiting-list-submitted" x-show="submitted">
+    <p>Thanks! We'll be in touch.</p>
   </div>
-</section>
-
-<section class="product-cta">
-  <div class="product-cta-content">
-    <h2 class="product-cta-title">Never lose a link again</h2>
-    <p class="product-cta-desc">Dead-simple bookmarking with nested tags and instant search.</p>
-    <a href="#" class="btn btn-primary">Get Started</a>
-  </div>
-</section>
+</div>
