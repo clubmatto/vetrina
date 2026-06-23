@@ -78,26 +78,26 @@ ai-kit sync --single-repo            # Force single-repo AGENTS.md template
 
 ### Detected Languages
 
-| Language | Detection File               |
-|----------|------------------------------|
-| TypeScript / JavaScript | `package.json`, `.ts` / `.js` files |
-| Go        | `go.mod`, `.go` files        |
-| Kotlin    | `build.gradle`, `build.gradle.kts`, `pom.xml`, `.kt` files |
-| Spring Boot | `application.properties` / `.yml` + Kotlin / Java files |
-| Generic   | Fallback when nothing matches |
+| Language                | Detection File                                             |
+| ----------------------- | ---------------------------------------------------------- |
+| TypeScript / JavaScript | `package.json`, `.ts` / `.js` files                        |
+| Go                      | `go.mod`, `.go` files                                      |
+| Kotlin                  | `build.gradle`, `build.gradle.kts`, `pom.xml`, `.kt` files |
+| Spring Boot             | `application.properties` / `.yml` + Kotlin / Java files    |
+| Generic                 | Fallback when nothing matches                              |
 
 Multiple languages trigger monorepo mode (all rules + monorepo AGENTS.md).
 Single language triggers single-repo mode (language-specific AGENTS.md).
 
 ## Options Reference
 
-| Option | Description |
-|--------|-------------|
-| `--skip-opencode` | Skip installing `opencode.json` to project root |
-| `--all-rules` | Install all language rules regardless of detection |
-| `--languages=<langs>` | Comma-separated language list (e.g. `go,kotlin`) |
-| `--monorepo` | Force monorepo AGENTS.md template |
-| `--single-repo` | Force single-repo AGENTS.md template |
+| Option                | Description                                        |
+| --------------------- | -------------------------------------------------- |
+| `--skip-opencode`     | Skip installing `opencode.json` to project root    |
+| `--all-rules`         | Install all language rules regardless of detection |
+| `--languages=<langs>` | Comma-separated language list (e.g. `go,kotlin`)   |
+| `--monorepo`          | Force monorepo AGENTS.md template                  |
+| `--single-repo`       | Force single-repo AGENTS.md template               |
 
 ## Language Detection
 
@@ -126,22 +126,22 @@ AGENTS.md template adapts to monorepo or single-repo mode automatically.
 
 ## What's Installed
 
-| Location          | Description                               |
-| ----------------- | ----------------------------------------- |
-| `.agents/rules/`  | Language / framework rules (auto-detected) |
-| `.agents/skills/` | Reusable AI capabilities                  |
-| `opencode.json`   | Opencode configuration (optional)         |
+| Location          | Description                                 |
+| ----------------- | ------------------------------------------- |
+| `.agents/rules/`  | Language / framework rules (auto-detected)  |
+| `.agents/skills/` | Reusable AI capabilities                    |
+| `opencode.json`   | Opencode configuration (optional)           |
 | `AGENTS.md`       | Agent instructions (monorepo / single-repo) |
 
 ### File Details
 
 **Language Rules** (`.agents/rules/`):
 
-| Rule File | Description |
-|-----------|-------------|
-| `typescript.md` | TypeScript conventions, project structure |
-| `go.md` | Go conventions, project structure |
-| `kotlin.md` | Kotlin conventions, project structure |
+| Rule File        | Description                                |
+| ---------------- | ------------------------------------------ |
+| `typescript.md`  | TypeScript conventions, project structure  |
+| `go.md`          | Go conventions, project structure          |
+| `kotlin.md`      | Kotlin conventions, project structure      |
 | `spring-boot.md` | Spring Boot conventions, project structure |
 
 New rules are added over time. Run `ai-kit sync --all-rules` to install
@@ -149,22 +149,22 @@ everything available.
 
 **Skills** (`.agents/skills/`):
 
-| Skill File | Description |
-|------------|-------------|
+| Skill File       | Description                                       |
+| ---------------- | ------------------------------------------------- |
 | `playwright-cli` | Playwright CLI integration for browser automation |
 
 **Commands** (configured in `opencode.json`):
 
-| Command | Description |
-|---------|-------------|
-| `commit` | Generate conventional commit messages |
-| `pr-review` | Review pull requests |
-| `synth` | Synthesize technical decisions |
+| Command     | Description                           |
+| ----------- | ------------------------------------- |
+| `commit`    | Generate conventional commit messages |
+| `pr-review` | Review pull requests                  |
+| `synth`     | Synthesize technical decisions        |
 
 ## Commands Reference
 
-| Command       | Description                        |
-| ------------- | ---------------------------------- |
+| Command       | Description                           |
+| ------------- | ------------------------------------- |
 | `ai-kit sync` | Initialize or update AI configuration |
 
 ## Local Development
