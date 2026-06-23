@@ -1,0 +1,404 @@
+/* ---- Buttons ---- */
+
+.ds-btn {
+  font-family: var(--ds-font-sans);
+  padding: var(--ds-space-4) var(--ds-space-8);
+  border-radius: var(--ds-space-2);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition:
+    transform var(--ds-transition),
+    box-shadow var(--ds-transition);
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.ds-btn--primary {
+  background: linear-gradient(
+    135deg,
+    var(--ds-gradient-1),
+    var(--ds-gradient-3)
+  );
+  color: var(--ds-text-inverse);
+  box-shadow: 0 4px 20px var(--ds-shadow-color-md);
+}
+
+.ds-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px var(--ds-shadow-color-lg);
+}
+
+.ds-btn--secondary {
+  background: transparent;
+  color: var(--ds-text);
+  border: 2px solid var(--ds-gradient-4);
+}
+
+.ds-btn--secondary:hover {
+  background: var(--ds-gradient-4);
+  color: var(--ds-text-inverse);
+}
+
+/* ---- Terminal ---- */
+
+.ds-terminal {
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: var(--ds-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-lg);
+}
+
+.ds-terminal__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--terminal-header-bg);
+  border-bottom: 1px solid var(--terminal-header-border);
+}
+
+.ds-terminal__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.ds-terminal__dot--red {
+  background: #ff5f57;
+}
+
+.ds-terminal__dot--yellow {
+  background: #febc2e;
+}
+
+.ds-terminal__dot--green {
+  background: #28c840;
+}
+
+.ds-terminal__title {
+  margin-left: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  opacity: 0.5;
+  color: var(--terminal-title);
+}
+
+.ds-terminal__title .lucide-icon {
+  display: inline;
+  vertical-align: middle;
+}
+
+.ds-terminal__body {
+  padding: 0.7rem 0.9rem;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-base);
+  line-height: 1.35;
+  color: var(--terminal-text);
+}
+
+.ds-terminal__comment {
+  color: var(--terminal-comment);
+  font-style: italic;
+  margin-top: var(--ds-space-3);
+}
+
+.ds-terminal__comment:first-child {
+  margin-top: 0;
+}
+
+.ds-terminal__prompt {
+  color: var(--terminal-prompt);
+  user-select: none;
+  margin-inline-end: 0.5em;
+}
+
+.ds-terminal__output {
+  color: var(--terminal-output);
+  opacity: 0.9;
+}
+
+.ds-terminal__line {
+  margin-bottom: 0;
+  word-break: break-all;
+}
+
+.ds-terminal__gif {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ds-terminal__gif img,
+.ds-terminal__gif video {
+  width: 100%;
+  display: none;
+}
+
+:root[data-color-scheme="light"] .ds-terminal__gif img.theme-light,
+:root[data-color-scheme="light"] .ds-terminal__gif video.theme-light,
+:root[data-color-scheme="dark"] .ds-terminal__gif img.theme-dark,
+:root[data-color-scheme="dark"] .ds-terminal__gif video.theme-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-color-scheme]) .ds-terminal__gif img.theme-light,
+  :root:not([data-color-scheme]) .ds-terminal__gif video.theme-light {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-color-scheme]) .ds-terminal__gif img.theme-dark,
+  :root:not([data-color-scheme]) .ds-terminal__gif video.theme-dark {
+    display: block;
+  }
+}
+
+.ds-terminal__command {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  padding: 0.6rem var(--ds-space-4);
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: 6px;
+  line-height: 1.5;
+  cursor: pointer;
+  position: relative;
+  transition: border-color var(--ds-transition-fast);
+}
+
+.ds-terminal__command:hover {
+  border-color: var(--ds-text);
+}
+
+.ds-terminal__command.copied::after {
+  content: "Copied!";
+  position: absolute;
+  right: var(--ds-space-2);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--ds-font-sans);
+  font-size: 0.7rem;
+  color: var(--terminal-prompt);
+  font-weight: 600;
+}
+
+/* ---- Corner badge ---- */
+
+.ds-corner-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 96px;
+  height: 96px;
+  z-index: 1;
+}
+
+.ds-corner-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    160deg,
+    var(--ds-gradient-4),
+    var(--ds-gradient-5)
+  );
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  opacity: 1;
+  transition: opacity var(--ds-transition);
+}
+
+.ds-corner-badge:hover::before {
+  opacity: 0.6;
+}
+
+.ds-corner-badge svg {
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  width: 26px;
+  height: 26px;
+  color: var(--ds-text-inverse);
+  stroke-width: 2.5;
+}
+
+/* ---- Feature card ---- */
+
+.ds-feature-card {
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+}
+
+.ds-feature-card h3 {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  margin: 0 0 var(--ds-space-1) 0;
+  color: var(--ds-text);
+}
+
+.ds-feature-card p {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-xs);
+  margin: 0;
+  opacity: 0.65;
+  line-height: 1.35;
+}
+
+.ds-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-3);
+  margin: var(--ds-space-4) 0;
+}
+
+/* ---- Tabs ---- */
+
+.ds-tabs {
+  margin: var(--ds-space-8) 0;
+}
+
+.ds-tab-nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--ds-space-6);
+}
+
+.ds-tab-nav button {
+  padding: var(--ds-space-2) var(--ds-space-5);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity var(--ds-transition);
+  user-select: none;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.ds-tab-nav button:hover {
+  opacity: 0.8;
+}
+
+.ds-tab-nav button.active {
+  opacity: 1;
+  background:
+    linear-gradient(
+        90deg,
+        var(--ds-gradient-1),
+        var(--ds-gradient-2),
+        var(--ds-gradient-3),
+        var(--ds-gradient-4),
+        var(--ds-gradient-5)
+      )
+      bottom / 100% 2px no-repeat,
+    transparent;
+}
+
+.ds-tab-body-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-5);
+}
+
+.ds-tab-body-text p {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  opacity: 0.75;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ds-tab-body > .ds-terminal {
+  margin-top: var(--ds-space-5);
+}
+
+.ds-try-text {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-xs);
+  opacity: 0.6;
+  margin: var(--ds-space-5) 0 var(--ds-space-1) 0;
+}
+
+/* ---- Install card ---- */
+
+.ds-install-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-3);
+}
+
+.ds-install-card h3 {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-base);
+  margin: 0 0 var(--ds-space-2) 0;
+}
+
+.ds-install-card .ds-terminal__command {
+  margin-bottom: 0.35rem;
+}
+
+.ds-install-card .ds-terminal__command:last-child {
+  margin-bottom: 0;
+}
+
+.ds-install-note {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-xs);
+  margin: var(--ds-space-2) 0 0 0;
+  opacity: 0.55;
+}
+
+/* ---- Docs-style outline button ---- */
+
+.ds-btn-outline {
+  display: block;
+  margin: var(--ds-space-4) 0 0 0;
+  width: 100%;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--ds-radius-md);
+  border: 2px solid var(--ds-gradient-4);
+  color: var(--ds-text);
+  background: transparent;
+  transition:
+    background var(--ds-transition),
+    color var(--ds-transition),
+    transform var(--ds-transition);
+}
+
+.ds-btn-outline:hover {
+  background: var(--ds-gradient-4);
+  color: var(--ds-text-inverse);
+  transform: translateY(-1px);
+}
+
+/* ---- Intro text ---- */
+
+.ds-intro-text {
+  font-family: var(--ds-font-sans);
+  line-height: 1.6;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* ---- Grid terminal wrapper ---- */
+
+.ds-grid-terminal {
+  min-width: 0;
+}

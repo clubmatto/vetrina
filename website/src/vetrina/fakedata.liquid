@@ -10,7 +10,7 @@ image_height: 650
 ---
 <a
   href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md"
-  class="github-ribbon"
+  class="ds-corner-badge"
   aria-label="View on GitHub"
 >
   {{ 'github' | lucide }}
@@ -22,13 +22,13 @@ image_height: 650
   <p class="showcase-page-tagline">Zero-config test data for your stack</p>
 </div>
 
-<div class="terminal-window">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">demo</span>
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">demo</span>
   </div>
-  <div class="terminal-body terminal-gif">
+  <div class="ds-terminal__body ds-terminal__gif">
     <video autoplay loop muted playsinline class="theme-light">
       <source src="/assets/vhs/fakedata/basic-light.mp4" type="video/mp4">
     </video>
@@ -38,10 +38,10 @@ image_height: 650
   </div>
 </div>
 
-<h2 class="showcase-section-title">Use Cases</h2>
+<h2 class="ds-section-title">Use Cases</h2>
 
-<div class="fakedata-tabs" x-data="{ tab: 'testing' }">
-  <div class="fakedata-tab-nav" role="tablist">
+<div class="ds-tabs" x-data="{ tab: 'testing' }">
+  <div class="ds-tab-nav" role="tablist">
     <button
       role="tab"
       :class="{ active: tab === 'testing' }"
@@ -76,21 +76,21 @@ image_height: 650
     </button>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'testing'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'testing'">
+    <div class="ds-tab-body-text">
       <p>
         Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
         suites.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Testing</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Testing</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-testing-light.mp4" type="video/mp4">
         </video>
@@ -99,25 +99,27 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --seed 42 -n 10 -H email country
+    </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'development'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'development'">
+    <div class="ds-tab-body-text">
       <p>
         Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
         even dinosaurs.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Development</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Development</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-development-light.mp4" type="video/mp4">
         </video>
@@ -126,27 +128,27 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --format ndjson -n 3 name email company
     </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'load-testing'">
+    <div class="ds-tab-body-text">
       <p>
         Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop when
         ready.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Load Testing</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Load Testing</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-load-testing-light.mp4" type="video/mp4">
         </video>
@@ -155,22 +157,24 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --stream email country | head -5</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --stream email country | head -5
+    </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'templates'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'templates'">
+    <div class="ds-tab-body-text">
       <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Custom Output</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Custom Output</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/custom-output-light.mp4" type="video/mp4">
         </video>
@@ -179,71 +183,71 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> fakedata -T user.tmpl -n 3</div>
   </div>
 </div>
 
-<h2 class="showcase-section-title">Get Started</h2>
+<h2 class="ds-section-title">Get Started</h2>
 
-<div class="showcase-grid">
-  <div class="showcase-grid-content">
-    <p class="fakedata-intro-text">FakeData is built for developers who need realistic test data fast.</p>
+<div class="ds-grid-2">
+  <div class="ds-grid-content">
+    <p class="ds-intro-text">FakeData is built for developers who need realistic test data fast.</p>
 
-    <div class="fakedata-features-grid">
-      <div class="fakedata-feature">
+    <div class="ds-features-grid">
+      <div class="ds-feature-card">
         <h3>80+ generators</h3>
         <p>People, geography, web, time, types, and fun categories</p>
       </div>
-      <div class="fakedata-feature">
+      <div class="ds-feature-card">
         <h3>Multiple formats</h3>
         <p>Tab-separated, CSV, or NDJSON output</p>
       </div>
-      <div class="fakedata-feature">
+      <div class="ds-feature-card">
         <h3>Streaming mode</h3>
         <p>Generate data indefinitely for load testing</p>
       </div>
-      <div class="fakedata-feature">
+      <div class="ds-feature-card">
         <h3>Templates</h3>
         <p>Custom output with Go templates (JSON, YAML, any format)</p>
       </div>
-      <div class="fakedata-feature">
+      <div class="ds-feature-card">
         <h3>Deterministic</h3>
         <p>Use seeds for reproducible results every time</p>
       </div>
-      <div class="fakedata-feature">
+      <div class="ds-feature-card">
         <h3>Shell completion</h3>
         <p>Bash, zsh, and fish support</p>
       </div>
     </div>
   </div>
-  <div class="fakedata-grid-terminal">
-    <div class="fakedata-install-card">
+  <div class="ds-grid-terminal">
+    <div class="ds-install-card">
       <h3>Install in one line</h3>
-      <div class="terminal-command">
-        <span class="terminal-prompt">$</span> go install matto.club/vetrina/fakedata@latest
+      <div class="ds-terminal__command">
+        <span class="ds-terminal__prompt">$</span> go install matto.club/vetrina/fakedata@latest
       </div>
-      <div class="terminal-command"><span class="terminal-prompt">$</span> brew install clubmatto/tap/fakedata</div>
-      <p class="fakedata-install-note">Requires Go 1.21+ or Homebrew.</p>
+      <div class="ds-terminal__command">
+        <span class="ds-terminal__prompt">$</span> brew install clubmatto/tap/fakedata
+      </div>
+      <p class="ds-install-note">Requires Go 1.21+ or Homebrew.</p>
     </div>
-    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="fakedata-docs-btn"
-      >Read the docs</a
-    >
+    <a href="https://github.com/clubmatto/vetrina/blob/main/fakedata/README.md" class="ds-btn-outline">Read the docs</a>
   </div>
 </div>
 
-<h2 class="showcase-section-title" id="generators">What Can You Generate?</h2>
+<h2 class="ds-section-title" id="generators">What Can You Generate?</h2>
 
-<div class="terminal-window fakedata-browse" x-data="browser">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot yellow"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">search for generators here {{ 'arrow-down' | lucide: size: 14 }}</span>
+<div class="ds-terminal fakedata-browse" x-data="browser">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">search for generators here {{ 'arrow-down' | lucide: size: 14 }}</span>
   </div>
-  <div class="terminal-body">
-    <div class="terminal-line fakedata-browse-line">
-      <span class="terminal-prompt">$</span> fakedata
+  <div class="ds-terminal__body">
+    <div class="ds-terminal__line fakedata-browse-line">
+      <span class="ds-terminal__prompt">$</span> fakedata
       <span class="fakedata-browse-cursor" x-show="!query && !focused">█</span>
       <input
         type="text"
@@ -283,21 +287,21 @@ image_height: 650
   {{ generators | json }}
 </script>
 
-<h2 class="showcase-section-title">FakeData Pro</h2>
+<h2 class="ds-section-title">FakeData Pro</h2>
 
-<div class="showcase-more-section">
+<div class="ds-callout">
   <p class="fakedata-more-text">
     Need to generate data directly in your database? <strong>FakeData Pro</strong>
     connects to your database and generates realistic data automatically — no export/import needed.
   </p>
 
-  <div class="showcase-ctas">
-    <a href="/products/fakedata/" class="btn btn-primary">Learn More</a>
+  <div class="ds-ctas">
+    <a href="/products/fakedata/" class="ds-btn ds-btn--primary">Learn More</a>
   </div>
 </div>
 
 <script>
-  document.querySelectorAll('.terminal-command').forEach((el) => {
+  document.querySelectorAll('.ds-terminal__command').forEach((el) => {
     el.addEventListener('click', async () => {
       const text = [...el.childNodes]
         .filter((n) => n.nodeType === 3)

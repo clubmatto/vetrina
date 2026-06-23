@@ -79,7 +79,7 @@ a.product-card {
 }
 
 .product-card-title {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text);
@@ -88,7 +88,7 @@ a.product-card {
 }
 
 .product-card-description {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.85rem;
   line-height: 1.5;
   color: var(--text);

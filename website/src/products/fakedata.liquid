@@ -28,13 +28,13 @@ description: Generate realistic, database-ready test data with schema introspect
   </div>
 </div>
 
-<div class="terminal-window">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">pro demo</span>
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">pro demo</span>
   </div>
-  <div class="terminal-body terminal-gif">
+  <div class="ds-terminal__body ds-terminal__gif">
     <video autoplay loop muted playsinline class="theme-light">
       <source src="/assets/vhs/fakedata/pro-generate-light.mp4" type="video/mp4">
     </video>
@@ -44,10 +44,10 @@ description: Generate realistic, database-ready test data with schema introspect
   </div>
 </div>
 
-<h2 class="showcase-section-title">Use Cases</h2>
+<h2 class="ds-section-title">Use Cases</h2>
 
-<div class="fakedata-tabs" x-data="{ tab: 'testing' }">
-  <div class="fakedata-tab-nav" role="tablist">
+<div class="ds-tabs" x-data="{ tab: 'testing' }">
+  <div class="ds-tab-nav" role="tablist">
     <button
       role="tab"
       :class="{ active: tab === 'testing' }"
@@ -98,21 +98,21 @@ description: Generate realistic, database-ready test data with schema introspect
     </button>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'testing'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'testing'">
+    <div class="ds-tab-body-text">
       <p>
         Deterministic test data with seeds and CSV output. Reproduce the same results every time for reliable test
         suites.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Testing</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Testing</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-testing-light.mp4" type="video/mp4">
         </video>
@@ -121,25 +121,27 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --seed 42 -n 10 -H email country</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --seed 42 -n 10 -H email country
+    </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'development'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'development'">
+    <div class="ds-tab-body-text">
       <p>
         Quick mock data for APIs with NDJSON. Choose from 80+ built-in generators including names, emails, URLs, and
         even dinosaurs.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Development</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Development</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-development-light.mp4" type="video/mp4">
         </video>
@@ -148,27 +150,27 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata --format ndjson -n 3 name email company
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --format ndjson -n 3 name email company
     </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'load-testing'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'load-testing'">
+    <div class="ds-tab-body-text">
       <p>
         Stream thousands of rows to test database performance and API limits. Pipe to a file, count lines, and stop when
         ready.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Load Testing</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Load Testing</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/use-case-load-testing-light.mp4" type="video/mp4">
         </video>
@@ -177,22 +179,24 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata --stream email country | head -5</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata --stream email country | head -5
+    </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'templates'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'templates'">
+    <div class="ds-tab-body-text">
       <p>Custom Go templates for any output format. Define your own schema and generate JSON, YAML, or any text.</p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Custom Output</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Custom Output</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/custom-output-light.mp4" type="video/mp4">
         </video>
@@ -201,26 +205,26 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> fakedata -T user.tmpl -n 3</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> fakedata -T user.tmpl -n 3</div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'pro-dry-run'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'pro-dry-run'">
+    <div class="ds-tab-body-text">
       <p>
         See exactly what would be generated before inserting a single row. The dry-run mode introspects your schema,
         resolves generators for every column, and prints the full plan — tables, row counts, column types, mapped
         generators, and FK relationships.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Dry Run</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Dry Run</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/pro-dry-run-light.mp4" type="video/mp4">
         </video>
@@ -229,29 +233,29 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata-pro --dsn sqlite:pro.db -t users:5 -t products:5 -t orders:10
       --dry-run
     </div>
   </div>
 
-  <div class="fakedata-tab-body" x-show="tab === 'pro-override'">
-    <div class="fakedata-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'pro-override'">
+    <div class="ds-tab-body-text">
       <p>
         Fine-tune column generators with the <code>-c</code> flag. Override auto-detected generators per column, set
         ranges for int generators, supply enum values, or pin any column to a specific generator. Supports
         <code>schema.table.column</code> syntax for full control.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Override</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Override</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/fakedata/pro-override-light.mp4" type="video/mp4">
         </video>
@@ -260,14 +264,14 @@ description: Generate realistic, database-ready test data with schema introspect
         </video>
       </div>
     </div>
-    <p class="fakedata-try-text">Try it yourself:</p>
-    <div class="terminal-command">
-      <span class="terminal-prompt">$</span> fakedata-pro --dsn sqlite:pro.db -c orders.quantity=int:1,5 --dry-run
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> fakedata-pro --dsn sqlite:pro.db -c orders.quantity=int:1,5 --dry-run
     </div>
   </div>
 </div>
 
-<h2 class="showcase-section-title">Get Started</h2>
+<h2 class="ds-section-title">Get Started</h2>
 
 <div x-data="{ period: 'monthly', currency: 'eur' }">
   <div class="fakedata-pricing-toggles">
@@ -297,7 +301,7 @@ description: Generate realistic, database-ready test data with schema introspect
         <li>Go template support</li>
         <li>Deterministic seeds</li>
       </ul>
-      <a href="/vetrina/fakedata/" class="btn btn-secondary">Get Started</a>
+      <a href="/vetrina/fakedata/" class="ds-btn ds-btn--secondary">Get Started</a>
     </div>
     <div
       class="fakedata-pricing-card fakedata-pricing-featured fakedata-flip-card"
@@ -331,7 +335,7 @@ description: Generate realistic, database-ready test data with schema introspect
               <li>Connect to Kafka with Avro/Protobuf support</li>
               <li>More databases like ClickHouse and DuckDB</li>
             </ul>
-            <button @click="flipped = true" class="btn btn-primary">Contact Us</button>
+            <button @click="flipped = true" class="ds-btn ds-btn--primary">Contact Us</button>
           </div>
           <div class="fakedata-flip-back">
             <div x-show="!submitted">
@@ -351,7 +355,7 @@ description: Generate realistic, database-ready test data with schema introspect
                 <div class="fakedata-flip-form-group">
                   <input type="email" name="email" required placeholder="your@email.com">
                 </div>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button type="submit" class="ds-btn ds-btn--primary">Send</button>
               </form>
             </div>
             <div x-show="submitted">
@@ -366,18 +370,18 @@ description: Generate realistic, database-ready test data with schema introspect
   </div>
 </div>
 
-<h2 class="showcase-section-title" id="generators">What Can You Generate?</h2>
+<h2 class="ds-section-title" id="generators">What Can You Generate?</h2>
 
-<div class="terminal-window fakedata-browse" x-data="browser">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot yellow"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">search for generators here {{ 'arrow-down' | lucide: size: 14 }}</span>
+<div class="ds-terminal fakedata-browse" x-data="browser">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">search for generators here {{ 'arrow-down' | lucide: size: 14 }}</span>
   </div>
-  <div class="terminal-body">
-    <div class="terminal-line fakedata-browse-line">
-      <span class="terminal-prompt">$</span> fakedata
+  <div class="ds-terminal__body">
+    <div class="ds-terminal__line fakedata-browse-line">
+      <span class="ds-terminal__prompt">$</span> fakedata
       <span class="fakedata-browse-cursor" x-show="!query && !focused">█</span>
       <input
         type="text"
@@ -417,21 +421,21 @@ description: Generate realistic, database-ready test data with schema introspect
   {{ generators | json }}
 </script>
 
-<h2 class="showcase-section-title">FakeData CLI</h2>
+<h2 class="ds-section-title">FakeData CLI</h2>
 
-<div class="showcase-more-section">
+<div class="ds-callout">
   <p class="fakedata-more-text">
     Prefer working from the command line? <strong>FakeData CLI</strong>
     gives you 80+ generators, streaming mode, templates, and deterministic output — all from your terminal.
   </p>
 
-  <div class="showcase-ctas">
-    <a href="/vetrina/fakedata/" class="btn btn-primary">Try the CLI</a>
+  <div class="ds-ctas">
+    <a href="/vetrina/fakedata/" class="ds-btn ds-btn--primary">Try the CLI</a>
   </div>
 </div>
 
 <script>
-  document.querySelectorAll('.terminal-command').forEach((el) => {
+  document.querySelectorAll('.ds-terminal__command').forEach((el) => {
     el.addEventListener('click', async () => {
       const text = [...el.childNodes]
         .filter((n) => n.nodeType === 3)

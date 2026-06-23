@@ -1,0 +1,94 @@
+.ds-prose {
+  padding: var(--page-padding-block-start) var(--page-padding-inline)
+    var(--page-padding-block-end) var(--page-padding-inline);
+  width: 100%;
+  position: relative;
+}
+
+.ds-prose > h1 {
+  font-size: 2em;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.ds-prose h1 {
+  margin-bottom: var(--ds-space-8);
+}
+
+.ds-prose h2 {
+  font-size: 1.75em;
+}
+
+.ds-prose h3 {
+  font-size: 1.5em;
+}
+
+.ds-prose h4 {
+  font-size: 1.25em;
+}
+
+.ds-prose h5 {
+  font-size: 1.125em;
+}
+
+.ds-prose h6 {
+  font-size: 1em;
+}
+
+.ds-prose h2,
+.ds-prose h3,
+.ds-prose h4,
+.ds-prose h5,
+.ds-prose h6 {
+  color: var(--ds-text);
+  margin-bottom: var(--ds-space-2);
+}
+
+.ds-prose p:not(:last-of-type),
+.ds-prose dl:not(:last-of-type),
+.ds-prose ol:not(:last-of-type),
+.ds-prose ul:not(:last-of-type),
+.ds-prose blockquote:not(:last-of-type),
+.ds-prose pre:not(:last-of-type),
+.ds-prose table:not(:last-of-type) {
+  margin-bottom: 1em;
+}
+
+.ds-prose blockquote {
+  background-color: var(--theme-toggle-hover);
+  border-left: 8px solid var(--theme-toggle-bg);
+  border-radius: var(--ds-radius-sm);
+  padding: var(--ds-space-4);
+  font-style: italic;
+}
+
+.ds-prose ul {
+  list-style: disc outside;
+  margin-inline-start: 2em;
+  margin-top: 1em;
+}
+
+.ds-prose ul li ul {
+  list-style: circle outside;
+  margin-inline-start: 1em;
+  margin-top: 0;
+}
+
+.ds-prose pre {
+  overflow-x: auto;
+  padding: 1.25em 1.5em;
+  white-space: pre;
+  word-wrap: normal;
+  background-color: var(--theme-toggle-hover);
+  border-radius: var(--ds-radius-sm);
+}
+
+.ds-prose p code {
+  background-color: var(--theme-toggle-bg);
+  color: var(--ds-text);
+  font-weight: 700;
+  padding: 0.25em;
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-mono);
+  font-size: 0.9em;
+}

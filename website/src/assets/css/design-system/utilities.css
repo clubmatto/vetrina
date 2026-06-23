@@ -1,0 +1,43 @@
+/* ---- Gradient text ---- */
+
+.ds-text-gradient {
+  background: var(--ds-gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- Surface card ---- */
+
+.ds-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+}
+
+/* ---- Hover lift ---- */
+
+.ds-lift {
+  transition:
+    transform var(--ds-transition),
+    box-shadow var(--ds-transition);
+}
+
+.ds-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ds-shadow-md);
+}
+
+/* ---- Screen reader only ---- */
+
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -16,7 +16,7 @@
   padding: 0.75rem 0;
   transform: rotate(45deg);
   background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-inverse);
@@ -26,33 +26,19 @@
   line-height: 1.2;
 }
 
-.coming-soon-features-grid {
-  display: grid;
+.coming-soon-features .ds-features-grid {
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin: 1rem 0 2.5rem 0;
+  gap: var(--ds-space-3);
+  margin: var(--ds-space-4) 0 var(--ds-space-10) 0;
 }
 
-.coming-soon-feature {
-  padding: 1rem;
-  border-radius: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-}
-
-.coming-soon-feature h3 {
-  font-family: var(--font-mono), monospace;
+.coming-soon-features .ds-feature-card h3 {
   font-size: 1.05rem;
   margin: 0 0 0.6rem 0;
-  color: var(--text);
 }
 
-.coming-soon-feature p {
-  font-family: var(--font-sans), sans-serif;
+.coming-soon-features .ds-feature-card p {
   font-size: 0.95rem;
-  margin: 0;
-  opacity: 0.65;
-  line-height: 1.35;
   text-wrap: balance;
 }
 
@@ -74,7 +60,7 @@
 }
 
 .coming-soon-waitlist > p {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -92,7 +78,7 @@
 
 .coming-soon-waitlist input[type="email"] {
   flex: 1;
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   font-size: 1rem;
   padding: 0.85rem 1rem;
   background: var(--bg);
@@ -107,7 +93,7 @@
   border-color: var(--gradient-5);
 }
 
-.coming-soon-waitlist .btn {
+.coming-soon-waitlist .ds-btn {
   flex-shrink: 0;
   text-align: center;
 }
@@ -123,13 +109,13 @@
 }
 
 @media (max-width: 1024px) {
-  .coming-soon-features-grid {
+  .coming-soon-features .ds-features-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .coming-soon-features-grid {
+  .coming-soon-features .ds-features-grid {
     grid-template-columns: 1fr;
   }
 
@@ -137,7 +123,7 @@
     flex-direction: column;
   }
 
-  .coming-soon-waitlist .btn {
+  .coming-soon-waitlist .ds-btn {
     width: 100%;
   }
 }

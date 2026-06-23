@@ -1,13 +1,16 @@
-@charset "UTF-8";
-
+@import "design-system/tokens.css";
+@import "design-system/reset.css";
+@import "design-system/base.css";
+@import "design-system/typography.css";
+@import "design-system/layout.css";
+@import "design-system/components.css";
+@import "design-system/utilities.css";
 @import "variables.css";
-@import "animations.css";
 @import "navigation.css";
 @import "footer.css";
 @import "home.css";
 @import "products.css";
 @import "page.css";
-@import "terminal.css";
 @import "showcase.css";
 @import "fakedata.css";
 @import "ai-kit.css";
@@ -23,31 +26,15 @@
   left: 0;
   background: var(--gradient-1);
   color: var(--text-inverse);
-  padding: 0.75rem 1.5rem;
+  padding: var(--ds-space-3) var(--ds-space-6);
   z-index: 9999;
   text-decoration: none;
   font-weight: 600;
-  border-radius: 0 0 0.5rem 0;
+  border-radius: 0 var(--ds-space-2) var(--ds-space-2) 0;
 }
 
 .skip-link:focus {
   top: 0;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: var(--font-mono), monospace;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 main::before {
@@ -65,12 +52,9 @@ main::before {
 main {
   max-width: var(--max-width);
   width: 100%;
-  box-sizing: border-box;
-
   text-align: left;
   flex: 1;
   position: relative;
-
   padding: var(--nav-height) var(--main-padding-inline) 0
     var(--main-padding-inline);
   min-height: 100vh;
@@ -91,40 +75,6 @@ main::after {
   background-repeat: repeat-y, repeat-y;
 }
 
-h1 {
-  font-size: clamp(3rem, 10vw, 6rem);
-  font-weight: 800;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0;
-}
-
-p {
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  opacity: 0.7;
-  font-weight: 400;
-  margin: 1rem 0 0 0;
-}
-
-a:not(.btn) {
+a:not(.ds-btn) {
   text-decoration: none;
-}
-
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--gradient-5);
-  outline-offset: 2px;
-}
-
-.lucide-icon {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1em;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  transition: all 0.2s ease;
 }

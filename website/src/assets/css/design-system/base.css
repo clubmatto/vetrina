@@ -1,0 +1,109 @@
+html {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: var(--ds-font-mono);
+  background: var(--ds-bg);
+  color: var(--ds-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ds-text);
+}
+
+h1 {
+  font-weight: 800;
+  background: var(--ds-gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+a:not([class]) {
+  text-decoration: none;
+}
+
+p {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  opacity: var(--ds-text-opacity);
+  margin: var(--ds-space-4) 0 0 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ds-focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.lucide-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: transform var(--ds-transition);
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+/* ---- Keyframes ---- */
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-arrow {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}

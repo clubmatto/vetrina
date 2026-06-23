@@ -9,7 +9,7 @@ image_height: 650
 ---
 <a
   href="https://github.com/clubmatto/vetrina/blob/main/ai-kit/README.md"
-  class="github-ribbon"
+  class="ds-corner-badge"
   aria-label="View on GitHub"
 >
   {{ 'github' | lucide }}
@@ -21,13 +21,13 @@ image_height: 650
   <p class="showcase-page-tagline">One-command AI setup for your project</p>
 </div>
 
-<div class="terminal-window">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">demo</span>
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">demo</span>
   </div>
-  <div class="terminal-body terminal-gif">
+  <div class="ds-terminal__body ds-terminal__gif">
     <video autoplay loop muted playsinline class="theme-light">
       <source src="/assets/vhs/ai-kit/basic-light.mp4" type="video/mp4">
     </video>
@@ -37,10 +37,10 @@ image_height: 650
   </div>
 </div>
 
-<h2 class="showcase-section-title">Use Cases</h2>
+<h2 class="ds-section-title">Use Cases</h2>
 
-<div class="ai-kit-tabs" x-data="{ tab: 'quickstart' }">
-  <div class="ai-kit-tab-nav" role="tablist">
+<div class="ds-tabs" x-data="{ tab: 'quickstart' }">
+  <div class="ds-tab-nav" role="tablist">
     <button
       role="tab"
       :class="{ active: tab === 'quickstart' }"
@@ -75,20 +75,21 @@ image_height: 650
     </button>
   </div>
 
-  <div class="ai-kit-tab-body" x-show="tab === 'quickstart'">
-    <div class="ai-kit-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'quickstart'">
+    <div class="ds-tab-body-text">
       <p>
-        Initialize AI configuration in any project with a single command. AI Kit detects your languages and installs the right rules — no config files needed.
+        Initialize AI configuration in any project with a single command. AI Kit detects your languages and installs the
+        right rules — no config files needed.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Quick Start</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Quick Start</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/ai-kit/use-case-quickstart-light.mp4" type="video/mp4">
         </video>
@@ -97,24 +98,25 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="ai-kit-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> ai-kit sync</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync</div>
   </div>
 
-  <div class="ai-kit-tab-body" x-show="tab === 'languages'">
-    <div class="ai-kit-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'languages'">
+    <div class="ds-tab-body-text">
       <p>
-        Auto-detects TypeScript, Go, Kotlin, and more from your project files. Install rules for all languages or filter by specific ones.
+        Auto-detects TypeScript, Go, Kotlin, and more from your project files. Install rules for all languages or filter
+        by specific ones.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Language Rules</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Language Rules</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/ai-kit/use-case-languages-light.mp4" type="video/mp4">
         </video>
@@ -123,24 +125,25 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="ai-kit-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> ai-kit sync --languages=go,kotlin</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync --languages=go,kotlin</div>
   </div>
 
-  <div class="ai-kit-tab-body" x-show="tab === 'skills'">
-    <div class="ai-kit-tab-body-text">
+  <div class="ds-tab-body" x-show="tab === 'skills'">
+    <div class="ds-tab-body-text">
       <p>
-        Drop-in skills like Playwright automation and pre-built commands for commit messages, PR reviews, and more. Consistent output every time.
+        Drop-in skills like Playwright automation and pre-built commands for commit messages, PR reviews, and more.
+        Consistent output every time.
       </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Skills & Commands</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Skills & Commands</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/ai-kit/use-case-skills-light.mp4" type="video/mp4">
         </video>
@@ -149,22 +152,25 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="ai-kit-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> ai-kit sync --all-rules</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync --all-rules</div>
   </div>
 
-  <div class="ai-kit-tab-body" x-show="tab === 'custom'">
-    <div class="ai-kit-tab-body-text">
-      <p>Full control over your setup. Force monorepo or single-repo templates, skip opencode.json, and target specific languages.</p>
+  <div class="ds-tab-body" x-show="tab === 'custom'">
+    <div class="ds-tab-body-text">
+      <p>
+        Full control over your setup. Force monorepo or single-repo templates, skip opencode.json, and target specific
+        languages.
+      </p>
     </div>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">Custom Setup</span>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Custom Setup</span>
       </div>
-      <div class="terminal-body terminal-gif">
+      <div class="ds-terminal__body ds-terminal__gif">
         <video autoplay loop muted playsinline class="theme-light">
           <source src="/assets/vhs/ai-kit/use-case-options-light.mp4" type="video/mp4">
         </video>
@@ -173,68 +179,71 @@ image_height: 650
         </video>
       </div>
     </div>
-    <p class="ai-kit-try-text">Try it yourself:</p>
-    <div class="terminal-command"><span class="terminal-prompt">$</span> ai-kit sync --monorepo --languages=ts,go</div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> ai-kit sync --monorepo --languages=ts,go
+    </div>
   </div>
 </div>
 
-<h2 class="showcase-section-title">Get Started</h2>
+<h2 class="ds-section-title">Get Started</h2>
 
-<div class="showcase-grid">
-  <div class="showcase-grid-content">
-    <p class="ai-kit-intro-text">AI Kit configures your project for AI-assisted coding — language rules, reusable skills, and smart commands in seconds.</p>
+<div class="ds-grid-2">
+  <div class="ds-grid-content">
+    <p class="ds-intro-text">
+      AI Kit configures your project for AI-assisted coding — language rules, reusable skills, and smart commands in
+      seconds.
+    </p>
 
-    <div class="ai-kit-features-grid">
-      <div class="ai-kit-feature">
+    <div class="ds-features-grid">
+      <div class="ds-feature-card">
         <h3>Language Rules</h3>
         <p>TypeScript, Go, Kotlin, and more — auto-detected from your project files</p>
       </div>
-      <div class="ai-kit-feature">
+      <div class="ds-feature-card">
         <h3>Skills</h3>
         <p>Reusable AI capabilities like Playwright automation</p>
       </div>
-      <div class="ai-kit-feature">
+      <div class="ds-feature-card">
         <h3>Commands</h3>
         <p>Pre-built prompts for commits, PRs, and common tasks</p>
       </div>
-      <div class="ai-kit-feature">
+      <div class="ds-feature-card">
         <h3>Auto-Detection</h3>
         <p>Detects languages from go.mod, package.json, build.gradle, and more</p>
       </div>
-      <div class="ai-kit-feature">
+      <div class="ds-feature-card">
         <h3>Smart Updates</h3>
         <p>Diff-based sync with backup and merge conflict handling</p>
       </div>
-      <div class="ai-kit-feature">
+      <div class="ds-feature-card">
         <h3>Monorepo Ready</h3>
         <p>Templates for monorepo and single-repo AGENTS.md</p>
       </div>
     </div>
   </div>
-  <div class="ai-kit-grid-terminal">
-    <div class="ai-kit-install-card">
+  <div class="ds-grid-terminal">
+    <div class="ds-install-card">
       <h3>Install in one line</h3>
-      <div class="terminal-command">
-        <span class="terminal-prompt">$</span> npm install -g @clubmatto/ai-kit
+      <div class="ds-terminal__command">
+        <span class="ds-terminal__prompt">$</span> npm install -g @clubmatto/ai-kit
       </div>
-      <p class="ai-kit-install-note">Requires Node.js 18+.</p>
+      <p class="ds-install-note">Requires Node.js 18+.</p>
     </div>
-    <a href="https://github.com/clubmatto/vetrina/blob/main/ai-kit/README.md" class="ai-kit-docs-btn"
-      >Read the docs</a
-    >
+    <a href="https://github.com/clubmatto/vetrina/blob/main/ai-kit/README.md" class="ds-btn-outline">Read the docs</a>
   </div>
 </div>
 
-<h2 class="showcase-section-title">What Gets Installed</h2>
+<h2 class="ds-section-title">What Gets Installed</h2>
 
-<div class="terminal-window">
-  <div class="terminal-header">
-    <span class="terminal-dot red"></span>
-    <span class="terminal-dot yellow"></span>
-    <span class="terminal-dot green"></span>
-    <span class="terminal-title">.agents/</span>
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">.agents/</span>
   </div>
-  <div class="terminal-body" style="padding: 0;">
+  <div class="ds-terminal__body" style="padding: 0;">
     <table class="ai-kit-installed-table">
       <thead>
         <tr>
@@ -265,7 +274,7 @@ image_height: 650
 </div>
 
 <script>
-  document.querySelectorAll('.terminal-command').forEach((el) => {
+  document.querySelectorAll('.ds-terminal__command').forEach((el) => {
     el.addEventListener('click', async () => {
       const text = [...el.childNodes]
         .filter((n) => n.nodeType === 3)

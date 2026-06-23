@@ -1,50 +1,41 @@
 :root {
-  /* Layout */
-  --max-width: 1242px; /* matching the content width in the Figma design */
+  /* ---- Layout ---- */
   --nav-height: 4.5rem;
-
-  /* Breakpoint reference (CSS custom properties can't be used in @media, these are documentation)
-     --bp-tablet: 768px;
-     --bp-phone: 640px; */
-
-  /* Page Padding */
   --main-padding-inline: 0;
-  --page-padding-inline: 2rem;
-  --page-padding-block-start: 2rem;
-  --page-padding-block-end: 2rem;
+  --page-padding-inline: var(--ds-space-8);
+  --page-padding-block-start: var(--ds-space-8);
+  --page-padding-block-end: var(--ds-space-8);
 
-  /* Background Colors */
-  --bg: light-dark(#f8f8f8, #2e3440);
-  --card-bg: light-dark(#f9f9f9, #3a404d);
+  /* ---- Backward-compatible aliases ---- */
+  --max-width: var(--ds-max-width);
+  --bg: var(--ds-bg);
+  --card-bg: var(--ds-surface);
+  --text: var(--ds-text);
+  --text-inverse: var(--ds-text-inverse);
+  --product-text: var(--ds-text-muted);
+  --border-color: var(--ds-border);
+  --shadow-color-sm: var(--ds-shadow-color-sm);
+  --shadow-color-md: var(--ds-shadow-color-md);
+  --shadow-color-lg: var(--ds-shadow-color-lg);
+  --focus-ring-color: var(--ds-focus-ring);
+  --focus-ring-color-strong: var(--ds-focus-ring-strong);
+  --font-mono: var(--ds-font-mono);
+  --font-sans: var(--ds-font-sans);
+  --fakedata-hover-bg: var(--ds-surface-hover);
+  --gradient-1: var(--ds-gradient-1);
+  --gradient-2: var(--ds-gradient-2);
+  --gradient-3: var(--ds-gradient-3);
+  --gradient-4: var(--ds-gradient-4);
+  --gradient-5: var(--ds-gradient-5);
+  --gradient-text: var(--ds-gradient-text);
+  --bg-pattern: var(--ds-bg-pattern);
+  --bg-pattern-opacity: var(--ds-bg-pattern-opacity);
 
-  /* Text Colors */
-  --text: light-dark(#1a1a1a, #eceff4);
-  --text-inverse: #ffffff;
-  --product-text: light-dark(#aaa, #6c757d);
-
-  /* Gradient Colors */
-  --gradient-1: light-dark(#ff006e, #bf616a);
-  --gradient-2: light-dark(#fb5607, #d08770);
-  --gradient-3: light-dark(#ffbe0b, #ebcb8b);
-  --gradient-4: light-dark(#8338ec, #b48ead);
-  --gradient-5: light-dark(#3a86ff, #5e81ac);
-  --gradient-text: linear-gradient(
-    135deg,
-    var(--gradient-1) 0%,
-    var(--gradient-2) 25%,
-    var(--gradient-3) 50%,
-    var(--gradient-4) 75%,
-    var(--gradient-5) 100%
-  );
-
-  /* Theme Toggle Colors */
+  /* ---- Theme Toggle ---- */
   --theme-toggle-bg: light-dark(#ffffff44, #ffffff22);
   --theme-toggle-hover: light-dark(#0000001a, #ffffff44);
 
-  /* Border Colors */
-  --border-color: light-dark(#d0d0d0, #ffffff22);
-
-  /* Dash Patterns */
+  /* ---- Dash Patterns ---- */
   --dash-color: color-mix(in srgb, var(--text), transparent 85%);
   --dash-vertical: repeating-linear-gradient(
     to bottom,
@@ -61,49 +52,10 @@
     transparent 28px
   );
 
-  /* Shadow Colors */
-  --shadow-color-sm: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-  --shadow-color-md: light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
-  --shadow-color-lg: light-dark(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
-  --focus-ring-color: light-dark(
-    rgba(255, 0, 110, 0.1),
-    rgba(191, 97, 106, 0.15)
-  );
-  --focus-ring-color-strong: light-dark(
-    rgba(255, 0, 110, 0.3),
-    rgba(191, 97, 106, 0.35)
-  );
-
-  /* Product Colors */
-  --product-bg: light-dark(#e0e0e0, #4a5263);
-
-  /* Fonts */
-  --font-mono:
-    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
-    "DejaVu Sans Mono", monospace;
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-  color-scheme: light dark;
-
-  --bg-pattern:
-    radial-gradient(ellipse at 30% 40%, var(--gradient-1) 0%, transparent 70%),
-    radial-gradient(ellipse at 70% 30%, var(--gradient-3) 0%, transparent 75%),
-    radial-gradient(ellipse at 50% 70%, var(--gradient-5) 0%, transparent 80%),
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 60px,
-      var(--gradient-4) 60px,
-      var(--gradient-4) 62px,
-      transparent 62px,
-      transparent 150px
-    );
-  --bg-pattern-opacity: 0.12;
-
+  /* ---- Post ---- */
   --post-bg: light-dark(#f5f0eb, #3b4252);
 
-  /* Terminal Window */
+  /* ---- Terminal ---- */
   --terminal-bg: light-dark(#f4f4f5, #1e1e2e);
   --terminal-text: light-dark(#1a1a1a, #cdd6f4);
   --terminal-header-bg: light-dark(#e4e4e7, rgba(255, 255, 255, 0.04));
@@ -113,8 +65,7 @@
   --terminal-prompt: light-dark(#16a34a, #a6e3a1);
   --terminal-output: light-dark(#6b7280, #94a3b8);
   --terminal-title: light-dark(#52525b, #cdd6f4);
-  --fakedata-hover-bg: light-dark(
-    rgba(0, 0, 0, 0.06),
-    rgba(255, 255, 255, 0.08)
-  );
+
+  /* ---- Layout overrides for ds-section-title ---- */
+  --ds-edge-padding: var(--page-padding-inline);
 }

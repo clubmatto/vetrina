@@ -19,7 +19,7 @@
   max-width: 700px;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeUp 0.8s ease-out 0.2s forwards;
+  animation: fade-up 0.8s ease-out 0.2s forwards;
 }
 
 .product-hero-icon {
@@ -50,7 +50,7 @@
 }
 
 .product-hero-tagline {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 400;
   opacity: 0.8;
@@ -68,7 +68,7 @@
 /* --- Sections --- */
 
 .product-section-title {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 700;
   text-align: center;
@@ -119,7 +119,7 @@
 }
 
 .product-feature-title {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
@@ -161,7 +161,7 @@
 }
 
 .product-step-number {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--gradient-4);
@@ -183,7 +183,7 @@
 }
 
 .product-step-title {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
@@ -217,7 +217,7 @@
 }
 
 .product-cta-title {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   margin: 0 0 0.75rem 0;

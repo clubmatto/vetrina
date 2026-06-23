@@ -47,7 +47,7 @@ ul.posts li a:hover {
 
 ul.posts li a .date {
   color: var(--text);
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
   font-weight: 500;
   margin-left: auto;

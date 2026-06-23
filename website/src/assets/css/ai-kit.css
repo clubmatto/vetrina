@@ -1,86 +1,23 @@
-.ai-kit-intro-text {
-  font-family: var(--font-sans), sans-serif;
-  line-height: 1.6;
-  opacity: 0.8;
-  margin: 0;
-}
-
-.ai-kit-grid-terminal {
-  min-width: 0;
-}
-
-.ai-kit-install-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.75rem;
-}
-
-.ai-kit-install-card h3 {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 1rem;
-  margin: 0 0 0.5rem 0;
-}
-
-.ai-kit-install-card .terminal-command {
-  margin-bottom: 0.35rem;
-}
-
-.ai-kit-install-card .terminal-command:last-child {
-  margin-bottom: 0;
-}
-
-.ai-kit-install-note {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.8rem;
-  margin: 0.5rem 0 0 0;
-  opacity: 0.55;
-}
-
-.ai-kit-docs-btn {
-  display: block;
-  margin: 1rem 0 0 0;
-  width: 100%;
-  padding: 0.65rem 1rem;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 8px;
-  border: 2px solid var(--gradient-4);
-  color: var(--text);
-  background: transparent;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.ai-kit-docs-btn:hover {
-  background: var(--gradient-4);
-  color: var(--text-inverse);
-  transform: translateY(-1px);
-}
-
-/* --- What Gets Installed Table --- */
+/* --- Install Table --- */
 
 .ai-kit-installed-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
+  margin: var(--ds-space-6) 0;
+  font-family: var(--font-mono);
+  font-size: var(--ds-text-sm);
 }
 
 .ai-kit-installed-table th,
 .ai-kit-installed-table td {
   text-align: left;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem var(--ds-space-4);
   border-bottom: 1px solid var(--border-color);
 }
 
 .ai-kit-installed-table th {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  font-size: var(--ds-text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.5;
@@ -92,108 +29,7 @@
 }
 
 .ai-kit-installed-table td:first-child {
-  font-family: var(--font-mono), monospace;
   white-space: nowrap;
-}
-
-/* --- Features Grid --- */
-
-.ai-kit-features-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin: 1rem 0;
-}
-
-.ai-kit-feature {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-}
-
-.ai-kit-feature h3 {
-  font-family: var(--font-mono), sans-serif;
-  font-size: 0.85rem;
-  margin: 0 0 0.15rem 0;
-  color: var(--text);
-}
-
-.ai-kit-feature p {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.8rem;
-  margin: 0;
-  opacity: 0.65;
-  line-height: 1.35;
-}
-
-/* --- Tabs --- */
-
-.ai-kit-tabs {
-  margin: 2rem 0;
-}
-
-.ai-kit-tab-nav {
-  display: flex;
-  gap: 0;
-  margin-bottom: 1.5rem;
-}
-
-.ai-kit-tab-nav button {
-  padding: 0.5rem 1.25rem;
-  font-family: var(--font-mono), sans-serif;
-  font-size: 0.95rem;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-  user-select: none;
-  background: none;
-  border: none;
-  color: inherit;
-}
-
-.ai-kit-tab-nav button:hover {
-  opacity: 0.8;
-}
-
-.ai-kit-tab-nav button.active {
-  opacity: 1;
-  background:
-    linear-gradient(
-        90deg,
-        var(--gradient-1),
-        var(--gradient-2),
-        var(--gradient-3),
-        var(--gradient-4),
-        var(--gradient-5)
-      )
-      bottom / 100% 2px no-repeat,
-    transparent;
-}
-
-.ai-kit-tab-body-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.ai-kit-tab-body-text p {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.95rem;
-  opacity: 0.75;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.ai-kit-tab-body .terminal-window {
-  margin-top: 1.25rem;
-}
-
-.ai-kit-try-text {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.85rem;
-  opacity: 0.6;
-  margin: 1.25rem 0 0.35rem 0;
 }
 
 /* --- Generator Table --- */
@@ -201,21 +37,21 @@
 .ai-kit-gen-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.85rem;
+  margin: var(--ds-space-4) 0;
+  font-family: var(--font-mono);
+  font-size: var(--ds-text-sm);
 }
 
 .ai-kit-gen-table th,
 .ai-kit-gen-table td {
   text-align: left;
-  padding: 0.5rem 1rem;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border-bottom: 1px solid var(--border-color);
 }
 
 .ai-kit-gen-table th {
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  font-size: var(--ds-text-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.5;
