@@ -6,19 +6,26 @@ tags:
   - meta
 ---
 
-We're Club Matto: the software bottega.
+Club Matto didn't start as a company. It started like an attempt at building a
+small collective of like-minded freelancers, mostly based out of Berlin. In
+fact, Club Matto is a wordplay on a drink you can find everywhere in the city.
+
+That obviously didn't work and Club Matto became a tiny company... a bottega!
 
 What's a bottega? It's an Italian workshop where craftspeople make things by
-hand, with care, and intention. We build tools the same way: small teams, sharp
-focus, and a stubborn refusal to ship things that don't spark joy.
+hand, with care, and intention. That's just like us: we build single-purpose,
+high-quality, thoughtful, and affordable digital products.
 
-[Our products](/products) solve real problems that we've felt ourselves.
-We don't build for a hypothetical market; we build for our own
-workflows, our own frustrations, our own "someone should fix this" moments, and
-then share the result with anyone who shares the pain.
+The reason why we're sharing the origin story, a failed attempt at building
+something beautiful, is that that's very representative of our approach. We're
+building Club Matto for a long marathon. It may sound cliche but it's true:
+we're looking to build a sustainable, self-founded, self-bootstrapped company.
+
+Our [portfolio](/products) reflects this goal: our products are very different
+from each other and, while on the surface that may look like lack of focus, it's
+a deliberate strategy to solve small, real-world problems well, no matter in
+which field these problems are.
 
 Beyond products, we're open to light consulting. If you have a project that
 needs careful thinking, a tricky system that needs untangling, or a team that
 could use a seasoned pair of hands for a stretch do [reach out](/contact/).
-
-We keep it small and sustainable.
