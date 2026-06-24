@@ -139,7 +139,7 @@
 .fakedata-browse-none-text {
   font-family: var(--font-sans);
   font-size: var(--ds-text-sm);
-  opacity: 0.6;
+  color: var(--text-secondary);
   margin: 0 0 var(--ds-space-2) 0;
 }
 
@@ -251,7 +251,7 @@
   font-size: var(--ds-text-sm);
   font-weight: 600;
   margin: 0 0 0.35rem 0;
-  opacity: 0.7;
+  color: var(--text-secondary);
 }
 
 .fakedata-pricing-amount {
@@ -284,7 +284,7 @@
 .fakedata-pricing-annual {
   font-family: var(--font-sans);
   font-size: var(--ds-text-sm);
-  opacity: 0.6;
+  color: var(--text-secondary);
   margin: 0.15rem 0 var(--ds-space-3) 0;
 }
 
@@ -292,7 +292,7 @@
   font-family: var(--font-sans);
   font-size: var(--ds-text-sm);
   line-height: 1.5;
-  opacity: 0.65;
+  color: var(--text-secondary);
   margin: 0 0 var(--ds-space-4) 0;
 }
 
@@ -308,7 +308,7 @@
 .fakedata-pricing-features li {
   font-family: var(--font-sans);
   font-size: var(--ds-text-sm);
-  opacity: 0.75;
+  color: var(--text-secondary);
   padding-left: 1.1rem;
   position: relative;
   list-style: none;
@@ -399,7 +399,7 @@
   font-family: var(--font-sans);
   font-size: var(--ds-text-sm);
   line-height: 1.5;
-  opacity: 0.65;
+  color: var(--text-secondary);
   margin: 0 0 var(--ds-space-5) 0;
 }
 

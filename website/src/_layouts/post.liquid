@@ -9,7 +9,7 @@ layout: base.liquid
       {% if tags %}
         <span class="tags">
           {% for tag in tags %}
-            <span class="tag">{{ tag }}</span>
+            <a href="/writing/tags/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
           {% endfor %}
         </span>
       {% endif %}

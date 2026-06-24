@@ -52,6 +52,7 @@
 
   --ds-text: light-dark(#1a1a1a, #eceff4);
   --ds-text-inverse: #ffffff;
+  --ds-text-secondary: color-mix(in srgb, var(--ds-text), transparent 30%);
   --ds-text-muted: light-dark(#aaa, #6c757d);
   --ds-text-opacity: 0.7;
 

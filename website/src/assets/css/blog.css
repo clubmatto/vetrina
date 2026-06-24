@@ -1,7 +1,7 @@
 .year {
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 ul.posts {
@@ -19,8 +19,7 @@ ul.posts li:last-child {
   border-bottom: none;
 }
 
-ul.posts li a {
-  text-decoration: none;
+.post-row {
   display: flex;
   gap: 0.5rem;
   padding: 0.4rem 0;
@@ -28,31 +27,32 @@ ul.posts li a {
   justify-content: space-between;
 }
 
-ul.posts li a .post-title {
+.post-row .post-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-secondary);
 }
 
-ul.posts li a .post-meta {
+.post-row .post-title:hover {
+  text-decoration: underline;
+}
+
+.post-row .post-meta {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
 }
 
-ul.posts li a:hover {
-  text-decoration: none;
-}
-
-ul.posts li a .date {
-  color: var(--text);
+.post-row .date {
+  color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.9rem;
   font-weight: 500;
   margin-left: auto;
   white-space: nowrap;
-  opacity: 0.7;
 }
 
 .columns {
@@ -82,10 +82,31 @@ ul.posts li a .date {
 .tag {
   font-size: 0.75rem;
   padding: 0.1rem 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--text), transparent 70%);
+  border: 1px solid color-mix(in srgb, var(--text-secondary), transparent 50%);
   border-radius: 3px;
-  opacity: 0.75;
+  color: var(--text-secondary);
   text-transform: lowercase;
+  text-decoration: none;
+}
+
+a.tag:hover {
+  color: var(--text);
+  border-color: var(--text);
+  background: color-mix(in srgb, var(--text), transparent 90%);
+}
+
+.back-link {
+  margin-top: 2rem;
+}
+
+.back-link a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--text-secondary);
+}
+
+.back-link a:hover {
+  text-decoration-color: var(--text);
 }
 
 article.post {
@@ -134,7 +155,7 @@ article.post .post-content p {
 article.post .post-content a {
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: color-mix(in srgb, var(--text), transparent 50%);
+  text-decoration-color: var(--text-secondary);
 }
 
 article.post .post-content a:hover {
@@ -195,13 +216,13 @@ article.post .post-content p code {
     flex-direction: column;
   }
 
-  ul.posts li a {
+  .post-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
   }
 
-  ul.posts li a .post-meta {
+  .post-row .post-meta {
     width: 100%;
     justify-content: space-between;
   }

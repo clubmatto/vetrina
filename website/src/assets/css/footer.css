@@ -26,8 +26,7 @@ footer {
 }
 
 .copyright {
-  opacity: 0.8;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .footer-left {
@@ -42,15 +41,14 @@ footer {
 }
 
 .credits-link {
-  opacity: 0.8;
-  color: var(--text);
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9rem;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .credits-link:hover {
-  opacity: 1;
+  color: var(--text);
 }
 
 .social-links {

@@ -33,7 +33,7 @@
   font-family: var(--font-sans);
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   line-height: 1.5;
-  opacity: 0.8;
+  color: var(--text-secondary);
   margin: 0 0 2rem 0;
 }
 

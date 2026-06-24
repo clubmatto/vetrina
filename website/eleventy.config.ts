@@ -3,6 +3,8 @@ import { eq } from "./src/_filters/comparison.js";
 import { formatDate } from "./src/_filters/date.js";
 import { asset } from "./src/_filters/asset.js";
 import { posts, postsByYear } from "./src/_collections/posts.js";
+import { tags } from "./src/_collections/tags.js";
+import { filterByTag } from "./src/_filters/tag.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
 import {
@@ -76,6 +78,9 @@ export default function (eleventyConfig: EleventyConfig) {
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);
+  eleventyConfig.addCollection("tagList", tags);
+
+  eleventyConfig.addLiquidFilter("filterByTag", filterByTag);
 
   return {
     dir: {

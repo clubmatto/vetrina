@@ -2,10 +2,13 @@
 layout: page.liquid
 title: Writing
 permalink: /writing/
-description: Read writings from Club Matto - insights on software craftsmanship and creative development.
+description: Welcome to "Il quaderno". A place where we share our articles on the products we build, the tech we use, and whatever else may interests us.
 display_title: Writing
 ---
 {% if collections.posts.length %}
+  <p class="page-intro">
+    Welcome to "Il quaderno". A place where we share our articles on the products we build, the tech we use, and whatever else may interests us.
+  </p>
   <div class="columns">
     <div class="column">
       {% for item in collections.postsByYear %}
@@ -13,19 +16,19 @@ display_title: Writing
         <ul class="posts">
           {% for post in item.posts %}
             <li class="post">
-              <a href="{{ post.postUrl }}">
-                <span class="post-title">{{ post.title }}</span>
+              <div class="post-row">
+                <a href="{{ post.postUrl }}" class="post-title">{{ post.title }}</a>
                 <span class="post-meta">
                   {% if post.tags %}
                     <span class="tags">
                       {% for tag in post.tags %}
-                        <span class="tag">{{ tag }}</span>
+                        <a href="/writing/tags/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
                       {% endfor %}
                     </span>
                   {% endif %}
                   <span class="date">{{ post.formattedDate }}</span>
                 </span>
-              </a>
+              </div>
             </li>
           {% endfor %}
         </ul>

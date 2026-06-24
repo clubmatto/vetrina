@@ -242,7 +242,7 @@
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-xs);
   margin: 0;
-  opacity: 0.65;
+  color: var(--ds-text-secondary);
   line-height: 1.35;
 }
 
@@ -304,7 +304,7 @@
 .ds-tab-body-text p {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-sm);
-  opacity: 0.75;
+  color: var(--ds-text-secondary);
   line-height: 1.6;
   margin: 0;
 }
@@ -316,7 +316,7 @@
 .ds-try-text {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-xs);
-  opacity: 0.6;
+  color: var(--ds-text-secondary);
   margin: var(--ds-space-5) 0 var(--ds-space-1) 0;
 }
 
@@ -345,7 +345,7 @@
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-xs);
   margin: var(--ds-space-2) 0 0 0;
-  opacity: 0.55;
+  color: var(--ds-text-secondary);
 }
 
 .ds-btn-outline {
@@ -377,7 +377,7 @@
 .ds-intro-text {
   font-family: var(--ds-font-sans);
   line-height: 1.6;
-  opacity: 0.8;
+  color: var(--ds-text-secondary);
   margin: 0;
 }
 
