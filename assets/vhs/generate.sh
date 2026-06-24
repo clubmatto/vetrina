@@ -68,8 +68,12 @@ generate() {
   (cd "$PROJECT_DIR" && vhs <(echo "Output $output_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
   echo "  -> $PROJECT_DIR/$output_file"
 
-  # Generate GIF for light theme only (used in READMEs and OG previews)
-  if [[ "$theme" == "light" ]]; then
+  # Generate GIF for demos listed in gifs.txt (both themes)
+  local is_gif=0
+  for gif_demo in "${GIF_DEMOS[@]}"; do
+    [[ "$gif_demo" == "$demo" ]] && is_gif=1 && break
+  done
+  if [[ "$is_gif" -eq 1 ]]; then
     local gif_file="${demo}-${theme}.gif"
     echo "Generating $gif_file..."
     (cd "$PROJECT_DIR" && vhs <(echo "Output $gif_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
@@ -119,6 +123,16 @@ PROJECT_DIR="$SCRIPT_DIR/$PROJECT"
 if [[ ! -d "$PROJECT_DIR" ]]; then
   echo "Error: Project directory not found: $PROJECT_DIR"
   exit 1
+fi
+
+# Load GIF demos manifest (one demo name per line, # comments ignored)
+GIF_DEMOS=()
+if [[ -f "$PROJECT_DIR/gifs.txt" ]]; then
+  while IFS= read -r line; do
+    line="${line%%#*}"  # strip comments
+    line="${line//[[:space:]]/}"  # strip whitespace
+    [[ -n "$line" ]] && GIF_DEMOS+=("$line")
+  done < "$PROJECT_DIR/gifs.txt"
 fi
 
 # Discover demos from tape files (excluding config*.tape)

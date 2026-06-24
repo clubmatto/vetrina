@@ -31,7 +31,7 @@ assets/vhs/
 
 ## Generate Recordings
 
-Generates MP4s (both themes) and GIFs (light theme only, for READMEs and OG social preview).
+Generates MP4s (both themes) and GIFs (both themes for demos listed in `gifs.txt`).
 
 ### All Demos (Both Themes)
 
@@ -49,7 +49,7 @@ Generates MP4s (both themes) and GIFs (light theme only, for READMEs and OG soci
 
 ```bash
 ./generate.sh -t dark fakedata      # Dark theme only
-./generate.sh -t light fakedata     # Light theme only (also outputs GIF)
+./generate.sh -t light fakedata     # Light theme only
 ./generate.sh -t all fakedata basic # Both themes, specific demo
 ```
 
@@ -88,23 +88,35 @@ Generates MP4s (both themes) and GIFs (light theme only, for READMEs and OG soci
 
 | Config File | Theme | Used For |
 |-------------|-------|----------|
-| `config.tape` | Vetrina Dark | Dark mode MP4s |
-| `config-light.tape` | Vetrina Light | Light mode MP4s, GIFs |
+| `config.tape` | Vetrina Dark | Dark mode MP4s + GIFs (if listed in `gifs.txt`) |
+| `config-light.tape` | Vetrina Light | Light mode MP4s + GIFs (if listed in `gifs.txt`) |
 
 ## Using Recordings
 
 Generated files are served directly by the website via 11ty passthrough copy. No manual copying needed.
 
 - **Landing pages** — Uses MP4 (both light and dark, theme-aware)
-- **README** — Uses GIF (light version only, GitHub has white background)
-- **OG image** — Uses GIF (light version only, for social preview)
+- **README** — Uses GIF (both light and dark, theme-aware via `<picture>` element)
+- **OG image** — Uses GIF (light version, for social preview)
 
 ## Adding New Demos
 
 1. Create a new `.tape` file in the project directory with demo commands only
-2. Run `./generate.sh <project> <demo-name>` to generate
+2. If the demo should also produce GIFs (for README use), add its name to `gifs.txt` (one per line, `#` comments supported)
+3. Run `./generate.sh <project> <demo-name>` to generate
 
 The script automatically discovers all `.tape` files (except `config*.tape`) — no need to register them manually.
+
+### GIF Manifest (`gifs.txt`)
+
+Each project can have a `gifs.txt` file listing demos that should generate GIF output (both themes). Demos not in this list only produce MP4s. This avoids the expensive GIF generation for tapes that are only used on the website (which serves MP4s).
+
+```text
+# examples/gifs.txt
+basic          # referenced in README
+custom-output  # referenced in README
+streaming      # (not currently used but GIF-ready)
+```
 
 ## Adding New Projects
 

@@ -7,7 +7,10 @@
 The AI configuration CLI from Club Matto. Sync rules, skills, and commands to
 power up your AI coding workflow.
 
-![AI Kit basic usage](../assets/vhs/ai-kit/basic-light.gif)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../assets/vhs/ai-kit/basic-dark.gif">
+  <img alt="AI Kit basic usage" src="../assets/vhs/ai-kit/basic-light.gif">
+</picture>
 
 ## Table of Contents
 

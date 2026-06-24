@@ -4,7 +4,10 @@
 
 CLI tool to generate fake data rows for testing and development.
 
-![FakeData basic usage](../assets/vhs/fakedata/basic-light.gif)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../assets/vhs/fakedata/basic-dark.gif">
+  <img alt="FakeData basic usage" src="../assets/vhs/fakedata/basic-light.gif">
+</picture>
 
 ## Table of Contents
 
@@ -120,7 +123,10 @@ Custom generators and their option formats:
 
 ## Templates
 
-![FakeData templates](../assets/vhs/fakedata/custom-output-light.gif)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../assets/vhs/fakedata/custom-output-dark.gif">
+  <img alt="FakeData templates" src="../assets/vhs/fakedata/custom-output-light.gif">
+</picture>
 
 Templates let you define custom output layouts. Pass a `.tmpl` file with `-T` or pipe a template via stdin.
 
