@@ -73,9 +73,10 @@ footer {
   opacity: 1;
 }
 
-.social-link .lucide-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+.social-link .lucide-icon,
+.social-link svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 @media (max-width: 640px) {
