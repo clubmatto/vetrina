@@ -57,7 +57,6 @@ main {
   position: relative;
   padding: var(--nav-height) var(--main-padding-inline) 0
     var(--main-padding-inline);
-  min-height: 100vh;
 }
 
 main::after {
