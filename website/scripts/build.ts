@@ -61,7 +61,7 @@ export async function buildJs(): Promise<void> {
   ensureDir(distJsDir);
 
   const apiBaseUrl =
-    process.env.EMAIL_COLLECTOR_URL || "https://api.matto.club";
+    process.env.API_URL || "https://api.matto.club";
   const jsOptions: esbuild.BuildOptions = {
     entryPoints: [path.join(jsDir, "main.ts")],
     bundle: true,

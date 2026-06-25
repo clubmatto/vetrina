@@ -58,7 +58,7 @@ export default function (eleventyConfig: EleventyConfig) {
 
   eleventyConfig.addGlobalData(
     "apiBaseUrl",
-    () => process.env.EMAIL_COLLECTOR_URL || "https://api.matto.club",
+    () => process.env.API_URL || "https://api.matto.club",
   );
 
   eleventyConfig.addFilter("eq", eq);
