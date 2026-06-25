@@ -337,7 +337,7 @@ description: Generate realistic, database-ready test data with schema introspect
                     headers: { 'Accept': 'application/json' }
                   }).then(r => { if(r.ok) submitted = true })
                 "
-                action="https://formspree.io/f/YOUR_FORM_ID"
+                action="{{ apiBaseUrl }}/waiting-list/signup"
                 method="POST"
               >
                 <div class="fakedata-flip-form-group">

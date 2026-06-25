@@ -45,7 +45,7 @@ description: Know when your data drifts. Compare rows across databases using has
         headers: { 'Accept': 'application/json' }
       }).then(r => { if(r.ok) submitted = true })
     "
-    action="https://formspree.io/f/YOUR_FORM_ID"
+    action="{{ apiBaseUrl }}/waiting-list/signup"
     method="POST"
   >
     <input type="email" name="email" required placeholder="your@email.com">

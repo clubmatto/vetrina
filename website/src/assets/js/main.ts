@@ -1,5 +1,7 @@
 import "./browser";
 
+declare const API_BASE_URL: string;
+
 // Theme toggle functionality
 const themeToggle = document.getElementById("themeToggle");
 const lightIcon = themeToggle?.querySelector<HTMLElement>(".theme-icon-light");
@@ -87,7 +89,6 @@ if (hamburger && mainNav) {
 }
 
 // Contact form submission
-const API_BASE_URL = "https://api.matto.club";
 const contactForm = document.querySelector<HTMLFormElement>(".contact-form");
 if (contactForm) {
   const successEl = document.createElement("div");

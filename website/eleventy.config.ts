@@ -56,6 +56,11 @@ export default function (eleventyConfig: EleventyConfig) {
     () => new Date().toISOString().split("T")[0],
   );
 
+  eleventyConfig.addGlobalData(
+    "apiBaseUrl",
+    () => process.env.EMAIL_COLLECTOR_URL || "https://api.matto.club",
+  );
+
   eleventyConfig.addFilter("eq", eq);
   eleventyConfig.addFilter("formatDate", formatDate);
   eleventyConfig.addFilter("asset", asset);

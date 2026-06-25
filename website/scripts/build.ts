@@ -60,20 +60,25 @@ export async function buildJs(): Promise<void> {
   const distJsDir = path.join(distDir, "js");
   ensureDir(distJsDir);
 
+  const apiBaseUrl =
+    process.env.EMAIL_COLLECTOR_URL || "https://api.matto.club";
+  const jsOptions: esbuild.BuildOptions = {
+    entryPoints: [path.join(jsDir, "main.ts")],
+    bundle: true,
+    outdir: distJsDir,
+    define: { API_BASE_URL: JSON.stringify(apiBaseUrl) },
+  };
+
   if (isDev) {
     await esbuild.build({
-      entryPoints: [path.join(jsDir, "main.ts")],
-      bundle: true,
-      outdir: distJsDir,
+      ...jsOptions,
       format: "esm",
       target: "es2020",
     });
   } else {
     await esbuild.build({
-      entryPoints: [path.join(jsDir, "main.ts")],
-      bundle: true,
+      ...jsOptions,
       minify: true,
-      outdir: distJsDir,
       entryNames: "main.min.[hash]",
     });
   }
