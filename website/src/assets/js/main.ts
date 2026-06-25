@@ -86,6 +86,66 @@ if (hamburger && mainNav) {
   });
 }
 
+// Contact form submission
+const API_BASE_URL = "https://api.matto.club";
+const contactForm = document.querySelector<HTMLFormElement>(".contact-form");
+if (contactForm) {
+  const successEl = document.createElement("div");
+  successEl.className = "form-success";
+  successEl.style.display = "none";
+  contactForm.appendChild(successEl);
+  const errorEl = document.createElement("div");
+  errorEl.className = "form-error";
+  errorEl.style.display = "none";
+  contactForm.appendChild(errorEl);
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(contactForm);
+    const data: Record<string, string> = {};
+    formData.forEach((value, key) => {
+      data[key] = value.toString();
+    });
+
+    const submitBtn = contactForm.querySelector<HTMLButtonElement>(".submit-btn");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+    }
+
+    errorEl.style.display = "none";
+
+    try {
+      const resp = await fetch(`${API_BASE_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (resp.ok) {
+        contactForm.reset();
+        successEl.textContent = "Thanks for reaching out! We'll get back to you soon.";
+        successEl.style.display = "block";
+      } else {
+        const body = await resp.json().catch(() => ({}));
+        errorEl.textContent =
+          (body as { error?: string }).error || "Something went wrong. Please try again.";
+        errorEl.style.display = "block";
+      }
+    } catch {
+      errorEl.textContent =
+        "Could not reach the server. Please try again later.";
+      errorEl.style.display = "block";
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send Message";
+      }
+    }
+  });
+}
+
 // Home page scrolling functionality
 const scrollDivider = document.querySelector<HTMLElement>(".scroll-divider");
 const whoWeAre = document.querySelector<HTMLElement>(".who-we-are");

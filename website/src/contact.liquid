@@ -7,7 +7,12 @@ display_title: Get in Touch
 ---
 <p class="contact-subtitle">Have a question or want to work together? We'd love to hear from you.</p>
 
-<form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+<form class="contact-form" method="POST">
+  <div class="form-group honeypot" aria-hidden="true">
+    <label for="company_website">Company Website</label>
+    <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+  </div>
+
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" id="name" name="name" required placeholder="Your name">
