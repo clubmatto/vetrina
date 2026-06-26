@@ -333,8 +333,11 @@ description: Generate realistic, database-ready test data with schema introspect
                 @submit.prevent="
                   fetch($el.action, {
                     method: 'POST',
-                    body: new FormData($el),
-                    headers: { 'Accept': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      email: $el.email.value,
+                      product_id: $el.product_id.value
+                    })
                   }).then(r => { if(r.ok) submitted = true })
                 "
                 action="{{ apiBaseUrl }}/waiting-list/signup"
@@ -343,6 +346,7 @@ description: Generate realistic, database-ready test data with schema introspect
                 <div class="fakedata-flip-form-group">
                   <input type="email" name="email" required placeholder="your@email.com">
                 </div>
+                <input type="hidden" name="product_id" value="e0a0e76d-743b-4de0-9e3a-a0da0bece039">
                 <button type="submit" class="ds-btn ds-btn--primary">Send</button>
               </form>
             </div>
