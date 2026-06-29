@@ -1,0 +1,52 @@
+{
+  "cards": [
+    {
+      "href": "https://www.11ty.dev/",
+      "icon": "zap",
+      "title": "Eleventy",
+      "description": "A simpler static site generator. Transforms templates into fast, static HTML with zero client-side JavaScript by default."
+    },
+    {
+      "href": "https://shopify.github.io/liquid/",
+      "icon": "droplets",
+      "title": "Liquid",
+      "description": "An open-source template language created by Shopify. Used for rendering dynamic content in Eleventy templates."
+    },
+    {
+      "href": "https://alpinejs.dev/",
+      "icon": "mountain",
+      "title": "Alpine.js",
+      "description": "A rugged, minimal framework for composing JavaScript behavior in your markup."
+    },
+    {
+      "href": "https://lucide.dev/",
+      "icon": "palette",
+      "title": "Lucide Icons",
+      "description": "A community-run fork of Feather Icons, providing crisp SVG icons throughout the interface."
+    },
+    {
+      "href": "https://esbuild.github.io/",
+      "icon": "package",
+      "title": "esbuild",
+      "description": "An extremely fast JavaScript bundler and minifier. Bundles the frontend JavaScript and minifies CSS for production."
+    },
+    {
+      "href": "https://postcss.org/",
+      "icon": "brush",
+      "title": "PostCSS",
+      "description": "A tool for transforming CSS with JavaScript plugins. Used with postcss-import to process a modular CSS architecture."
+    },
+    {
+      "href": "https://prettier.io/",
+      "icon": "sparkles",
+      "title": "Prettier",
+      "description": "An opinionated code formatter. Ensures consistent code style across all source files."
+    },
+    {
+      "href": "https://www.typescriptlang.org/",
+      "icon": "file-code",
+      "title": "TypeScript",
+      "description": "A typed superset of JavaScript that compiles to plain JavaScript. Used for build configuration and type checking."
+    }
+  ]
+}
