@@ -40,4 +40,4 @@ well, no matter the field.
 Beyond products, we're open to light consulting to keep ourselves self-funded.
 If you have a project that needs careful thinking, a tricky system that needs
 untangling, or a team that could use a seasoned pair of hands for a stretch we
-would like to hear about it, do [reach out](/contact/).
+would like to hear about it, do [reach out](/contact).
