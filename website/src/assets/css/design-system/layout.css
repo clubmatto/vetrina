@@ -1,3 +1,10 @@
+.ds-page {
+  padding: var(--page-padding-block-start) var(--page-padding-inline)
+    var(--page-padding-block-end) var(--page-padding-inline);
+  width: 100%;
+  position: relative;
+}
+
 .ds-container {
   max-width: var(--ds-max-width);
   width: 100%;
@@ -26,7 +33,7 @@
 .ds-section-title {
   position: relative;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-4xl);
+  font-size: var(--ds-text-2xl);
   font-weight: 800;
   background: var(--ds-gradient-text);
   -webkit-background-clip: text;

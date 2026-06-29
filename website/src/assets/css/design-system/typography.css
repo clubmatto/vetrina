@@ -1,38 +1,53 @@
 .ds-prose {
-  padding: var(--page-padding-block-start) var(--page-padding-inline)
-    var(--page-padding-block-end) var(--page-padding-inline);
-  width: 100%;
-  position: relative;
+  max-width: 72ch;
 }
 
-.ds-prose > h1 {
+.ds-prose > h1,
+.ds-page > h1 {
   font-size: 2em;
-  margin-bottom: 0;
-  margin-top: 0;
+  margin-bottom: var(--ds-space-8);
 }
 
-.ds-prose h1 {
+.ds-prose h1,
+.ds-page h1 {
   margin-bottom: var(--ds-space-8);
 }
 
 .ds-prose h2 {
-  font-size: 1.75em;
-}
-
-.ds-prose h3 {
   font-size: 1.5em;
 }
 
-.ds-prose h4 {
+.ds-prose h3 {
   font-size: 1.25em;
 }
 
-.ds-prose h5 {
+.ds-prose h4 {
   font-size: 1.125em;
 }
 
-.ds-prose h6 {
+.ds-prose h5 {
   font-size: 1em;
+}
+
+.ds-prose h6 {
+  font-size: 0.875em;
+}
+
+.ds-prose h2 {
+  margin-top: 2em;
+}
+
+.ds-prose h3 {
+  margin-top: 1.75em;
+}
+
+.ds-prose h4 {
+  margin-top: 1.5em;
+}
+
+.ds-prose h5,
+.ds-prose h6 {
+  margin-top: 1.25em;
 }
 
 .ds-prose h2,
@@ -42,6 +57,8 @@
 .ds-prose h6 {
   color: var(--ds-text);
   margin-bottom: var(--ds-space-2);
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 .ds-prose p {
@@ -66,16 +83,26 @@
   font-style: italic;
 }
 
-.ds-prose ul {
-  list-style: disc outside;
-  margin-inline-start: 2em;
-  margin-top: 1em;
+.ds-prose ul,
+.ds-prose ol {
+  list-style-position: outside;
+  margin-inline-start: 1.25em;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
-.ds-prose ul li ul {
-  list-style: circle outside;
+.ds-prose li {
+  margin-bottom: 0.25em;
+  line-height: 1.7;
+}
+
+.ds-prose ul li ul,
+.ds-prose ol li ol,
+.ds-prose ul li ol,
+.ds-prose ol li ul {
   margin-inline-start: 1em;
-  margin-top: 0;
+  margin-top: 0.25em;
+  margin-bottom: 0;
 }
 
 .ds-prose pre {

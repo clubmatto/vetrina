@@ -1,41 +1,40 @@
 ---
 layout: page.liquid
-title: Bookmarks
-permalink: /products/bookmarks/
-description: Save anything, find everything. A dead-simple bookmark manager with nested tags and instant search — no link you ever saved will ever get forgotten again.
+title: DB Diff
+description: Know when your data drifts. Compare rows across databases using hash-based checksums — blazing fast when tables match, pinpointing every difference when they don't.
 ---
 <div class="coming-soon-ribbon-container">
   <span class="coming-soon-badge">Coming Soon</span>
 </div>
 <div class="showcase-header">
-  <div class="showcase-page-icon">{{ 'bookmark' | lucide }}</div>
-  <h1 class="showcase-page-title">Bookmarks</h1>
-  <p class="showcase-page-tagline">Save anything, find everything</p>
+  <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
+  <h1 class="showcase-page-title">DB Diff</h1>
+  <p class="showcase-page-tagline">Know when your data drifts</p>
 </div>
 
 <div class="coming-soon-features">
   <div class="ds-features-grid">
     <div class="ds-feature-card">
-      <h3>Nested Tags</h3>
-      <p>Use <code>/</code> to nest your tags ala bear.app</p>
+      <h3>Multi-Engine</h3>
+      <p>PostgreSQL, MySQL, and ClickHouse</p>
     </div>
     <div class="ds-feature-card">
-      <h3>Instant Search</h3>
-      <p>Type-as-you-go across title, URL, and tags</p>
+      <h3>Blazing Fast</h3>
+      <p>Server-side MD5 chunking, only hashes cross the wire</p>
     </div>
     <div class="ds-feature-card">
-      <h3>Import & Export</h3>
-      <p>CSV import/export and JSON API: never locked in</p>
+      <h3>Pinpoint Precision</h3>
+      <p>Automatic drill-down to the exact differing rows</p>
     </div>
     <div class="ds-feature-card">
-      <h3>Browser Extension</h3>
-      <p>Save bookmarks from anywhere</p>
+      <h3>Column Control</h3>
+      <p>Include or exclude columns to skip noise</p>
     </div>
   </div>
 </div>
 
 <div class="coming-soon-waitlist" x-data="{ submitted: false }">
-  <p>Leave your email and we'll let you know when Bookmarks is ready.</p>
+  <p>Leave your email and we'll let you know when DB Diff is ready.</p>
   <form
     x-show="!submitted"
     @submit.prevent="
