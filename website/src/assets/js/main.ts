@@ -109,7 +109,8 @@ if (contactForm) {
       data[key] = value.toString();
     });
 
-    const submitBtn = contactForm.querySelector<HTMLButtonElement>(".submit-btn");
+    const submitBtn =
+      contactForm.querySelector<HTMLButtonElement>(".submit-btn");
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending...";
@@ -126,12 +127,14 @@ if (contactForm) {
 
       if (resp.ok) {
         contactForm.reset();
-        successEl.textContent = "Thanks for reaching out! We'll get back to you soon.";
+        successEl.textContent =
+          "Thanks for reaching out! We'll get back to you soon.";
         successEl.style.display = "block";
       } else {
         const body = await resp.json().catch(() => ({}));
         errorEl.textContent =
-          (body as { error?: string }).error || "Something went wrong. Please try again.";
+          (body as { error?: string }).error ||
+          "Something went wrong. Please try again.";
         errorEl.style.display = "block";
       }
     } catch {

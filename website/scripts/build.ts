@@ -60,8 +60,7 @@ export async function buildJs(): Promise<void> {
   const distJsDir = path.join(distDir, "js");
   ensureDir(distJsDir);
 
-  const apiBaseUrl =
-    process.env.API_URL || "https://api.matto.club";
+  const apiBaseUrl = process.env.API_URL || "https://api.matto.club";
   const jsOptions: esbuild.BuildOptions = {
     entryPoints: [path.join(jsDir, "main.ts")],
     bundle: true,
