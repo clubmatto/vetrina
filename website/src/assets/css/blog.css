@@ -110,17 +110,15 @@ a.tag:hover {
 }
 
 article.post {
-  max-width: 68ch;
+  max-width: 72ch;
   margin-inline: auto;
   min-height: calc(100vh - var(--nav-height));
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--post-bg) 1rem,
-    var(--post-bg) calc(100% - 1rem),
-    transparent
-  );
-  padding: 2rem 3rem;
+  background-color: var(--post-bg);
+  padding: 3rem 2.5rem 4rem;
+  position: relative;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 article.post .post-header {
