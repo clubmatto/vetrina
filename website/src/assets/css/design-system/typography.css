@@ -44,6 +44,10 @@
   margin-bottom: var(--ds-space-2);
 }
 
+.ds-prose p {
+  font-size: 1rem;
+}
+
 .ds-prose p:not(:last-of-type),
 .ds-prose dl:not(:last-of-type),
 .ds-prose ol:not(:last-of-type),

@@ -41,8 +41,8 @@
       >
       <a
         href="/contact/"
-        class="{% if page.url == "/contact/" %}active{% endif %}"
-        {% if page.url == '/contact/' %}
+        class="{% if page.url == '/contact/' or page.url == '/credits/' or page.url == '/privacy/' or page.url == '/terms/' %}active{% endif %}"
+        {% if page.url == '/contact/' or page.url == '/credits/' or page.url == '/privacy/' or page.url == '/terms/' %}
           aria-current="page"
         {% endif %}
         >Contact Us</a
