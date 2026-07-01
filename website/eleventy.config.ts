@@ -72,6 +72,9 @@ export default function (eleventyConfig: EleventyConfig) {
     "../assets/logo.png": "assets/img/logo.png",
   });
   eleventyConfig.addPassthroughCopy({
+    "../assets/logo.svg": "favicon.svg",
+  });
+  eleventyConfig.addPassthroughCopy({
     "../assets/vhs/fakedata/*.mp4": "assets/vhs/fakedata",
   });
   eleventyConfig.addPassthroughCopy({
