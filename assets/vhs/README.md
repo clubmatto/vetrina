@@ -25,6 +25,7 @@ assets/vhs/
 │   └── requirements.sh      # Prerequisites (setup/cleanup functions)
 ├── ai-kit/                  # AI Kit CLI demos
 │   └── *.tape               # Demo commands (theme-agnostic)
+├── linkedin.tape            # Reusable template for social media demos
 ├── generate.sh              # Script to generate all recordings
 └── README.md                # This file
 ```
@@ -63,6 +64,7 @@ Generates MP4s (both themes) and GIFs (both themes for demos listed in `gifs.txt
 
 | Demo | Description |
 |------|-------------|
+| `linkedin` | Short social media demo (uses [`linkedin.tape`](linkedin.tape) template) |
 | `basic` | Column names, named columns, enum values |
 | `templates` | Custom Go template output |
 | `streaming` | Infinite data stream for load testing |
