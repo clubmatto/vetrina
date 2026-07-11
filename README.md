@@ -19,10 +19,11 @@ The Club Matto monorepo — open source CLI tools and projects for developers.
 |------------------------|------------------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------|
 | [ai-kit](./ai-kit)     | Sync AI rules, skills, and commands into any project | TypeScript            | `npm install -g @clubmatto/ai-kit`                                                      |
 | [fakedata](./fakedata) | Generate fake data rows for testing and development  | Go                    | `go install matto.club/vetrina/fakedata@latest` / `brew install clubmatto/tap/fakedata` |
+| [mercato](./mercato)   | Public social media posts by the team                | Markdown              | —                                                                                       |
 | [website](./website)   | Club Matto website                                   | TypeScript / Eleventy | —                                                                                       |
 
-See individual project READMEs for detailed usage, development guides, and
-release processes.
+See individual project READMEs for detailed usage, development guides, release
+processes, or content conventions.
 
 ## Development
 
@@ -35,6 +36,9 @@ cd ai-kit && npm install && npm run ci
 
 # fakedata (Go)
 cd fakedata && make test
+
+# mercato (content)
+# No build step — posts are plain markdown
 
 # website (TypeScript / Eleventy)
 cd website && npm install && npm run build
