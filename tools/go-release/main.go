@@ -288,7 +288,7 @@ func changelog(project, repoRoot, currentTag string) string {
 	paths := []string{
 		project + "/",
 		".github/workflows/" + project + "-release.yml",
-		"brew/" + project + "/",
+		"Formula/",
 	}
 
 	args := []string{"log", "--oneline", "--no-decorate", prevTag + ".." + currentTag}

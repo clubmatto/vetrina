@@ -30,6 +30,6 @@ jobs:
             --tag-prefix fakedata/ \
             --tag ${{ github.ref_name }} \
             --repo ${{ github.repository }} \
-            --brew brew/FakeData/fakedata.rb
+            --brew Formula/fakedata.rb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

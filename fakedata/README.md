@@ -30,7 +30,8 @@ go install matto.club/vetrina/fakedata@latest
 Or via Homebrew:
 
 ```bash
-brew install clubmatto/tap/fakedata
+brew tap clubmatto/vetrina https://github.com/clubmatto/vetrina
+brew install clubmatto/vetrina/fakedata
 ```
 
 ## Quick Start
