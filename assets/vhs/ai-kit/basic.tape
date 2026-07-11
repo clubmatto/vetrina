@@ -1,5 +1,7 @@
-Type "cd /tmp/ai-kit/basic"
+Hide
+Type "export PATH=/tmp/ai-kit/bin:$PATH && cd /tmp/ai-kit/basic && clear"
 Enter
+Show
 
 Sleep 500ms
 

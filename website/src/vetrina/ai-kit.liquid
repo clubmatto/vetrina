@@ -37,18 +37,10 @@ image_height: 650
   </div>
 </div>
 
-<h2 class="ds-section-title">Use Cases</h2>
+<h2 class="ds-section-title">Features</h2>
 
-<div class="ds-tabs" x-data="{ tab: 'quickstart' }">
+<div class="ds-tabs" x-data="{ tab: 'languages' }">
   <div class="ds-tab-nav" role="tablist">
-    <button
-      role="tab"
-      :class="{ active: tab === 'quickstart' }"
-      @click="tab = 'quickstart'"
-      :aria-selected="tab === 'quickstart'"
-    >
-      Quick Start
-    </button>
     <button
       role="tab"
       :class="{ active: tab === 'languages' }"
@@ -67,39 +59,20 @@ image_height: 650
     </button>
     <button
       role="tab"
+      :class="{ active: tab === 'updates' }"
+      @click="tab = 'updates'"
+      :aria-selected="tab === 'updates'"
+    >
+      Smart Updates
+    </button>
+    <button
+      role="tab"
       :class="{ active: tab === 'custom' }"
       @click="tab = 'custom'"
       :aria-selected="tab === 'custom'"
     >
       Custom Setup
     </button>
-  </div>
-
-  <div class="ds-tab-body" x-show="tab === 'quickstart'">
-    <div class="ds-tab-body-text">
-      <p>
-        Initialize AI configuration in any project with a single command. AI Kit detects your languages and installs the
-        right rules — no config files needed.
-      </p>
-    </div>
-    <div class="ds-terminal">
-      <div class="ds-terminal__header">
-        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
-        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
-        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
-        <span class="ds-terminal__title">Quick Start</span>
-      </div>
-      <div class="ds-terminal__body ds-terminal__gif">
-        <video autoplay loop muted playsinline class="theme-light">
-          <source src="/assets/vhs/ai-kit/use-case-quickstart-light.mp4" type="video/mp4">
-        </video>
-        <video autoplay loop muted playsinline class="theme-dark">
-          <source src="/assets/vhs/ai-kit/use-case-quickstart-dark.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-    <p class="ds-try-text">Try it yourself:</p>
-    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync</div>
   </div>
 
   <div class="ds-tab-body" x-show="tab === 'languages'">
@@ -132,8 +105,8 @@ image_height: 650
   <div class="ds-tab-body" x-show="tab === 'skills'">
     <div class="ds-tab-body-text">
       <p>
-        Drop-in skills like Playwright automation and pre-built commands for commit messages, PR reviews, and more.
-        Consistent output every time.
+        Drop-in skills like Playwright automation and built-in commands for commits, session synthesis, and
+        feature interviews. Consistent output every time.
       </p>
     </div>
     <div class="ds-terminal">
@@ -156,11 +129,38 @@ image_height: 650
     <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync --all-rules</div>
   </div>
 
+  <div class="ds-tab-body" x-show="tab === 'updates'">
+    <div class="ds-tab-body-text">
+      <p>
+        Hash-based conflict detection. Edit any installed file and sync again — AI Kit won't overwrite local
+        changes. Your customizations stay intact.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Smart Updates</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light">
+          <source src="/assets/vhs/ai-kit/use-case-smart-updates-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark">
+          <source src="/assets/vhs/ai-kit/use-case-smart-updates-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync</div>
+  </div>
+
   <div class="ds-tab-body" x-show="tab === 'custom'">
     <div class="ds-tab-body-text">
       <p>
-        Full control over your setup. Force monorepo or single-repo templates, skip opencode.json, and target specific
-        languages.
+        Full control over your setup. Force monorepo or single-repo templates, install all language rules, skip opencode.json,
+        or target specific languages.
       </p>
     </div>
     <div class="ds-terminal">
@@ -206,7 +206,7 @@ image_height: 650
       </div>
       <div class="ds-feature-card">
         <h3>Commands</h3>
-        <p>Pre-built prompts for commits, PRs, and common tasks</p>
+        <p>Pre-built prompts for commits, session synthesis, and feature interviews</p>
       </div>
       <div class="ds-feature-card">
         <h3>Auto-Detection</h3>

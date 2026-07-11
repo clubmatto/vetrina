@@ -64,9 +64,17 @@ generate() {
     return 1
   fi
 
+  if [[ "$(type -t before_each)" == "function" ]]; then
+    before_each "$PROJECT_DIR" "$demo" "$theme"
+  fi
+
   echo "Generating $output_file..."
   (cd "$PROJECT_DIR" && vhs <(echo "Output $output_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
   echo "  -> $PROJECT_DIR/$output_file"
+
+  if [[ "$(type -t after_each)" == "function" ]]; then
+    after_each "$PROJECT_DIR" "$demo" "$theme"
+  fi
 
   # Generate GIF for demos listed in gifs.txt (both themes)
   local is_gif=0
@@ -74,10 +82,18 @@ generate() {
     [[ "$gif_demo" == "$demo" ]] && is_gif=1 && break
   done
   if [[ "$is_gif" -eq 1 ]]; then
+    if [[ "$(type -t before_each)" == "function" ]]; then
+      before_each "$PROJECT_DIR" "$demo" "$theme"
+    fi
+
     local gif_file="${demo}-${theme}.gif"
     echo "Generating $gif_file..."
     (cd "$PROJECT_DIR" && vhs <(echo "Output $gif_file"; cat "$config_file"; echo ""; cat "$theme_file"; echo ""; cat "$tape_file"))
     echo "  -> $PROJECT_DIR/$gif_file"
+
+    if [[ "$(type -t after_each)" == "function" ]]; then
+      after_each "$PROJECT_DIR" "$demo" "$theme"
+    fi
   fi
 }
 

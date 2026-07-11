@@ -341,7 +341,7 @@ describe("sync with language detection", () => {
     expect(agentsMd).not.toContain("{{LANGUAGE}}");
     expect(agentsMd).not.toContain("{{LANGUAGE_RULE_FILE}}");
     expect(agentsMd).toContain("typescript");
-    expect(agentsMd).toMatch(/uses typescript\. Follow/);
+    expect(agentsMd).toMatch(/uses typescript\. Begin/);
     expect(agentsMd).toContain("typescript.md");
     expect(agentsMd).not.toContain("monorepo");
   });

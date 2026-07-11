@@ -1,5 +1,7 @@
-Type "cd /tmp/ai-kit/use-case-languages"
+Hide
+Type "export PATH=/tmp/ai-kit/bin:$PATH && cd /tmp/ai-kit/use-case-languages && clear"
 Enter
+Show
 
 Sleep 500ms
 

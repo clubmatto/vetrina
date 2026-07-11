@@ -27,16 +27,3 @@ npm-debug.log*
 
 # Test coverage
 coverage/
-
-# VHS build artifacts
-assets/vhs/ai-kit/bin/
-
-# VHS test data
-assets/vhs/fakedata/data.jsonl
-assets/vhs/fakedata/mock.json
-assets/vhs/fakedata/users.csv
-assets/vhs/fakedata/user.tmpl
-assets/vhs/fakedata/pro.db
-assets/vhs/pro.db
-
-.ai

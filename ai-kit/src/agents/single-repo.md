@@ -1,11 +1,6 @@
 # Agents.md
 
-This project uses {{LANGUAGE}}. Follow these rules when working with {{LANGUAGE}} code. **ALWAYS** start from
-checking out the closest README.md.
-
-## Primary Rules
-
-Navigate to `.agents/rules/` and open `{{LANGUAGE_RULE_FILE}}`.
+This project uses {{LANGUAGE}}. Begin by reading the closest README.md, then open `.agents/rules/{{LANGUAGE_RULE_FILE}}`.
 
 ## Additional Guidelines
 

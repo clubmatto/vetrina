@@ -81,9 +81,9 @@ Generates MP4s (both themes) and GIFs (both themes for demos listed in `gifs.txt
 | Demo | Description |
 |------|-------------|
 | `basic` | One-command AI setup for any project |
-| `use-case-quickstart` | Quick start with language targeting |
 | `use-case-languages` | Language detection and all-rules mode |
 | `use-case-skills` | Skills and commands installation |
+| `use-case-smart-updates` | Hash-based conflict detection |
 | `use-case-options` | Advanced CLI options (monorepo, skip-opencode) |
 
 ## Themes

@@ -1,0 +1,10 @@
+# VHS recording artifacts
+.ai-kit/
+.agents/
+AGENTS.md
+opencode.json
+ai-kit/bin/
+
+# VHS test/fake data
+fakedata/
+pro.db
