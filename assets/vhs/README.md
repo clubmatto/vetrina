@@ -1,70 +1,125 @@
 # VHS Demos
 
-This directory contains [VHS](https://github.com/charmbracelet/vhs) tape files for generating demo recordings. Each subdirectory contains tapes for a specific project.
+This directory contains [VHS](https://github.com/charmbracelet/vhs) tape files and a
+Go generator tool for producing terminal demo recordings (MP4 + optional GIF) for
+the Club Matto website and READMEs.
+
+Each subdirectory is a **project** (e.g., `fakedata`, `ai-kit`). Each `.tape` file
+inside is a **demo** — a sequence of terminal commands and output to record.
+
+## Quick Start
+
+The generator is a Go tool at `tools/vhs-generate/`. You can invoke it directly,
+or use the `generate.sh` compat wrapper for convenience:
+
+```bash
+# Generate all demos for a project (both dark and light themes)
+go run -C tools/vhs-generate . fakedata
+./generate.sh fakedata              # equivalent
+
+# Generate specific demos only
+./generate.sh fakedata basic templates
+
+# Generate for a single theme
+./generate.sh -t light fakedata
+
+# List available projects
+./generate.sh --list
+```
+
+Output files (MP4s, GIFs) are written into the project directory alongside the tapes.
 
 ## Prerequisites
 
-Install VHS:
+- [VHS](https://github.com/charmbracelet/vhs) — install via `brew install vhs`
+- SQLite (only needed for `pro-*` demos that use a database)
 
-```bash
-brew install vhs
-```
+## How Tapes Work
 
-SQLite is required for demos that use a database (`pro-*`).
+Each recording is assembled from three files concatenated at generation time:
+
+1. **`config.tape`** — shared base settings (font, size, padding, typing speed)
+2. **`config-{theme}.tape`** — theme colors (dark or light)
+3. **`<demo>.tape`** — the demo commands
+
+This keeps the demo tapes theme-agnostic. The same `.tape` file produces both a
+dark and a light version.
 
 ## Directory Structure
 
 ```
 assets/vhs/
-├── config.tape              # Dark theme settings (OneDark, shared across projects)
-├── config-light.tape        # Light theme settings (Catppuccin Latte, shared across projects)
-├── fakedata/                # FakeData CLI demos
-│   ├── *.tape               # Demo commands (theme-agnostic)
-│   ├── *.tmpl               # Template files used in demos
-│   ├── schema-pro.sql       # DB schema for pro demos
-│   └── requirements.sh      # Prerequisites (setup/cleanup functions)
-├── ai-kit/                  # AI Kit CLI demos
-│   └── *.tape               # Demo commands (theme-agnostic)
-├── linkedin.tape            # Reusable template for social media demos
-├── generate.sh              # Script to generate all recordings
-└── README.md                # This file
+├── config.tape                  # Base settings (shared across projects)
+├── config-dark.tape             # Dark theme colors
+├── config-light.tape            # Light theme colors
+├── linkedin.tape                # Standalone social media template
+├── generate.sh                  # Compat wrapper (delegates to Go tool)
+├── fakedata/                    # FakeData CLI demos
+│   ├── basic.tape               # Demo commands (theme-agnostic)
+│   ├── formats.tape
+│   ├── streaming.tape
+│   ├── ...
+│   ├── gifs.txt                 # Demos that also produce GIFs
+│   ├── requirements.sh          # Setup/cleanup lifecycle hooks
+│   ├── schema-pro.sql           # DB schema for pro demos
+│   └── *.tmpl                   # Template files used in demos
+├── ai-kit/                      # AI Kit CLI demos
+│   ├── basic.tape
+│   ├── ...
+│   ├── gifs.txt
+│   └── requirements.sh
+└── README.md
 ```
 
-## Generate Recordings
+## Generator (`tools/vhs-generate/`)
 
-Generates MP4s (both themes) and GIFs (both themes for demos listed in `gifs.txt`).
+Written in Go (stdlib only). Run via `go run -C tools/vhs-generate .` or the
+`generate.sh` compat wrapper. Demos run in parallel across projects (up to 4
+concurrent VHS processes).
 
-### All Demos (Both Themes)
+```
+Usage: go run -C tools/vhs-generate . [OPTIONS] <PROJECT> [DEMO...]
 
-```bash
-./generate.sh fakedata
+Arguments:
+  PROJECT     Project directory (e.g., fakedata)
+
+Options:
+  -t, --theme THEME    Generate only for theme: dark, light, or all (default: all)
+  -l, --list           List available projects
+  -h, --help           Show this help
+
+Examples:
+  go run -C tools/vhs-generate . fakedata               # All demos, both themes
+  go run -C tools/vhs-generate . -t light fakedata      # Light theme only
+  go run -C tools/vhs-generate . fakedata basic         # Specific demo, both themes
 ```
 
-### Specific Demos
+### What Gets Generated
 
-```bash
-./generate.sh fakedata basic templates
-```
+- **MP4** — every demo, every theme
+- **GIF** — only demos listed in the project's `gifs.txt`, both themes
 
-### Single Theme
+### Lifecycle Hooks
 
-```bash
-./generate.sh -t dark fakedata      # Dark theme only
-./generate.sh -t light fakedata     # Light theme only
-./generate.sh -t all fakedata basic # Both themes, specific demo
-```
+If a project directory contains `requirements.sh`, the generator sources it and
+calls these optional functions via `bash -c`:
 
-### List Available Projects
+| Function | When Called | Purpose |
+|----------|-------------|---------|
+| `setup` | Before any tapes are generated | Build CLIs, create temp dirs, seed databases |
+| `before_each` | Before each individual demo | Per-demo setup (create project scaffold) |
+| `after_each` | After each individual demo | Per-demo teardown |
+| `cleanup` | After all tapes are generated | Remove temp files, databases |
 
-```bash
-./generate.sh --list
-```
+All hooks receive `(project_dir, demo_names...)`. `before_each` and `after_each`
+also receive the current `theme` as a third argument.
 
 ## Available Demos
 
+### FakeData
+
 | Demo | Description |
 |------|-------------|
-| `linkedin` | Short social media demo (uses [`linkedin.tape`](linkedin.tape) template) |
 | `basic` | Column names, named columns, enum values |
 | `templates` | Custom Go template output |
 | `streaming` | Infinite data stream for load testing |
@@ -86,47 +141,47 @@ Generates MP4s (both themes) and GIFs (both themes for demos listed in `gifs.txt
 | `use-case-smart-updates` | Hash-based conflict detection |
 | `use-case-options` | Advanced CLI options (monorepo, skip-opencode) |
 
-## Themes
+### LinkedIn Template
 
-| Config File | Theme | Used For |
-|-------------|-------|----------|
-| `config.tape` | Vetrina Dark | Dark mode MP4s + GIFs (if listed in `gifs.txt`) |
-| `config-light.tape` | Vetrina Light | Light mode MP4s + GIFs (if listed in `gifs.txt`) |
+`linkedin.tape` is a standalone template for social media clips. It embeds its
+own settings (light theme, 30fps, window bar). Customize the command and closing
+message inside the tape file, then run:
 
-## Using Recordings
-
-Generated files are served directly by the website via 11ty passthrough copy. No manual copying needed.
-
-- **Landing pages** — Uses MP4 (both light and dark, theme-aware)
-- **README** — Uses GIF (both light and dark, theme-aware via `<picture>` element)
-- **OG image** — Uses GIF (light version, for social preview)
-
-## Adding New Demos
-
-1. Create a new `.tape` file in the project directory with demo commands only
-2. If the demo should also produce GIFs (for README use), add its name to `gifs.txt` (one per line, `#` comments supported)
-3. Run `./generate.sh <project> <demo-name>` to generate
-
-The script automatically discovers all `.tape` files (except `config*.tape`) — no need to register them manually.
-
-### GIF Manifest (`gifs.txt`)
-
-Each project can have a `gifs.txt` file listing demos that should generate GIF output (both themes). Demos not in this list only produce MP4s. This avoids the expensive GIF generation for tapes that are only used on the website (which serves MP4s).
-
-```text
-# examples/gifs.txt
-basic          # referenced in README
-custom-output  # referenced in README
-streaming      # (not currently used but GIF-ready)
+```bash
+vhs assets/vhs/linkedin.tape -o output.gif
 ```
 
-## Adding New Projects
+## GIF Manifest (`gifs.txt`)
+
+Each project can have a `gifs.txt` listing demos that should also produce GIF
+output (both themes). Demos not in the list produce MP4 only — avoiding the
+slow GIF generation for website-only use.
+
+```
+# fakedata/gifs.txt
+basic          # referenced in README
+custom-output  # referenced in README
+```
+
+## How Recordings Are Used
+
+- **Landing pages** — MP4 (light/dark via `prefers-color-scheme`)
+- **READMEs** — GIF (light/dark via `<picture>` element)
+- **OG images** — GIF (light version for social preview)
+
+Generated files live alongside the tapes in the project directory. The website
+serves them via Eleventy passthrough copy — no manual copying needed.
+
+## Adding a New Demo
+
+1. Create `<demo>.tape` in the project directory with demo commands only
+2. If it should also produce GIFs, add its name to `gifs.txt`
+3. Run `./generate.sh <project> <demo>` (or `go run -C tools/vhs-generate . <project> <demo>`)
+
+The script discovers all `.tape` files automatically (excluding `config*`).
+
+## Adding a New Project
 
 1. Create a subdirectory with your `.tape` files
-2. If the project needs setup or teardown before/after generation, add `requirements.sh`:
-   ```bash
-   setup()   { ... }  # called before generation
-   cleanup() { ... }  # called after generation
-   ```
-   Both receive the project directory path and list of demo names as arguments.
-   `generate.sh` sources `requirements.sh` automatically if present.
+2. Optionally add `requirements.sh` with `setup` / `cleanup` / `before_each` / `after_each` functions (see Lifecycle Hooks above)
+3. Optionally add `gifs.txt` for GIF generation
