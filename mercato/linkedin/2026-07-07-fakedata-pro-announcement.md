@@ -5,7 +5,6 @@ topics:
   - fakedata
   - fakedata-pro
   - announcement
-  - product
 ---
 
 🚀 FakeData Pro is here 🚀
