@@ -8,6 +8,7 @@ LLMs have the context they need when helping edit or draft new content.
 ```
 mercato/
 ├── README.md
+├── drafts/         # In-progress / unpublished drafts
 ├── linkedin/       # LinkedIn posts
 ├── twitter/        # Twitter/X threads and posts
 ├── reddit/         # Reddit posts and comments
@@ -19,14 +20,30 @@ year/month — at our volume, a flat list is more scannable).
 
 ## File Naming
 
+### Published posts
+
 ```
 YYYY-MM-DD-descriptive-kebab-slug.md
 ```
 
-Examples: `2025-07-11-fakedata-pro-announcement.md`, `2025-07-04-club-matto-origin-story.md`
+Examples: `2026-07-07-fakedata-pro-announcement.md`, `2026-07-04-club-matto-origin-story.md`
 
 Date prefix ensures chronological sort. Slug makes each file unique and
 identifiable at a glance.
+
+### Drafts
+
+Drafts live in `drafts/` and use the same kebab-slug convention **without** the
+date prefix:
+
+```
+descriptive-kebab-slug.md
+```
+
+Example: `fakedata-v0-1-0.md`
+
+Drafts follow the same frontmatter schema as published posts, but the `platform`
+field indicates the intended platform.
 
 ## Frontmatter Schema
 
