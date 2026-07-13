@@ -21,10 +21,6 @@ ai-kit is a small CLI that sets up AI coding assistants for any project. One
 command, and your project gets language-specific rules, reusable skills, and 
 custom commands!
 
-```bash
-npx @clubmatto/ai-kit sync
-```
-
 It detects your project's languages and frameworks (currently we support: 
 TypeScript, Go, Kotlin, Spring Boot), installs the relevant rules, and wires 
 everything together. It works on monorepos as well and supports smart updates: 
