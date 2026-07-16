@@ -5,6 +5,7 @@ AGENTS.md
 opencode.json
 ai-kit/bin/
 
-# VHS test/fake data
-fakedata/
+# VHS test/fake data and transient outputs
 pro.db
+fakedata/data.jsonl
+fakedata/users.csv
