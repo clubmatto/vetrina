@@ -18,13 +18,16 @@ go run -C tools/vhs-generate . fakedata
 ./generate.sh fakedata              # equivalent
 
 # Generate specific demos only
-./generate.sh fakedata basic templates
+./generate.sh fakedata basic custom-output
 
 # Generate for a single theme
 ./generate.sh -t light fakedata
 
 # List available projects
 ./generate.sh --list
+
+# One-shot a self-contained tape (no config split)
+./generate.sh --tape my-clip.tape
 ```
 
 Output files (MP4s, GIFs) are written into the project directory alongside the tapes.
@@ -52,7 +55,6 @@ assets/vhs/
 ├── config.tape                  # Base settings (shared across projects)
 ├── config-dark.tape             # Dark theme colors
 ├── config-light.tape            # Light theme colors
-├── linkedin.tape                # Standalone social media template
 ├── generate.sh                  # Compat wrapper (delegates to Go tool)
 ├── fakedata/                    # FakeData CLI demos
 │   ├── basic.tape               # Demo commands (theme-agnostic)
@@ -86,12 +88,14 @@ Arguments:
 Options:
   -t, --theme THEME    Generate only for theme: dark, light, or all (default: all)
   -l, --list           List available projects
+      --tape FILE      One-shot: pipe a self-contained tape directly to VHS
   -h, --help           Show this help
 
 Examples:
   go run -C tools/vhs-generate . fakedata               # All demos, both themes
   go run -C tools/vhs-generate . -t light fakedata      # Light theme only
   go run -C tools/vhs-generate . fakedata basic         # Specific demo, both themes
+  go run -C tools/vhs-generate . --tape my-clip.tape    # One-shot recording
 ```
 
 ### What Gets Generated
@@ -121,7 +125,7 @@ also receive the current `theme` as a third argument.
 | Demo | Description |
 |------|-------------|
 | `basic` | Column names, named columns, enum values |
-| `templates` | Custom Go template output |
+| `custom-output` | Custom Go template output |
 | `streaming` | Infinite data stream for load testing |
 | `formats` | TSV, CSV, NDJSON output formats |
 | `use-case-testing` | CSV export, seeds, reproducible data |
@@ -141,15 +145,41 @@ also receive the current `theme` as a third argument.
 | `use-case-smart-updates` | Hash-based conflict detection |
 | `use-case-options` | Advanced CLI options (monorepo, skip-opencode) |
 
-### LinkedIn Template
+## One-Off Recordings (`--tape`)
 
-`linkedin.tape` is a standalone template for social media clips. It embeds its
-own settings (light theme, 30fps, window bar). Customize the command and closing
-message inside the tape file, then run:
+For social clips, ads, or any throwaway recording, create a self-contained
+`.tape` file with all settings embedded and pass it to the generator:
 
 ```bash
-vhs assets/vhs/linkedin.tape -o output.gif
+go run -C tools/vhs-generate . --tape my-clip.tape
 ```
+
+The generator pipes the file directly to VHS (no config split). The tape must
+include its own `Output`, `Set Theme`, etc. This convention works well:
+
+```
+Set FontFamily "JetBrainsMono Nerd Font"
+Set FontSize 22
+Set Width 1300
+Set Height 650
+Set Padding 10
+Set TypingSpeed 50ms
+Set Theme {"name":"Vetrina Light",...}
+Set Framerate 30
+Set WindowBar Colorful
+
+Sleep 1s
+Type "your-command --here"
+Enter
+Sleep 2s
+
+Type "# closing message"
+Enter
+Sleep 1s
+```
+
+These make good short GIFs for social media. Save the tape anywhere and run
+it through the generator — no project scaffolding needed.
 
 ## GIF Manifest (`gifs.txt`)
 

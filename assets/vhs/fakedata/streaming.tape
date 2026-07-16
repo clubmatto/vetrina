@@ -12,4 +12,3 @@ Type "# ✨ Data on tap ✨"
 Enter
 
 Sleep 3s
-

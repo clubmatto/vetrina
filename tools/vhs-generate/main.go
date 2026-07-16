@@ -12,6 +12,8 @@ import (
 	"sync"
 )
 
+// assetsDir is relative to the git repo root. If the repo structure changes,
+// this needs to stay in sync with the actual VHS assets location.
 const assetsDir = "assets/vhs"
 
 type genTask struct {
@@ -22,17 +24,19 @@ type genTask struct {
 
 func main() {
 	repoRoot := getRepoRoot()
-	vhsDir := filepath.Join(repoRoot, assetsDir)
 
 	var (
 		theme    string
 		list     bool
+		help     bool
+		tapeFile string
 	)
 	flag.StringVar(&theme, "t", "all", "theme: dark, light, or all")
-	flag.StringVar(&theme, "theme", "all", "")
+	flag.StringVar(&theme, "theme", "all", "theme: dark, light, or all")
 	flag.BoolVar(&list, "l", false, "list available projects")
-	flag.BoolVar(&list, "list", false, "")
-	h := flag.Bool("h", false, "show help")
+	flag.BoolVar(&list, "list", false, "list available projects")
+	flag.BoolVar(&help, "h", false, "show help")
+	flag.StringVar(&tapeFile, "tape", "", "path to self-contained tape file (one-shot, no config split)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, `Usage: go run -C tools/vhs-generate . [OPTIONS] <PROJECT> [DEMO...]
 
@@ -44,23 +48,35 @@ Arguments:
 Options:
   -t, --theme THEME    Generate only for theme: dark, light, or all (default: all)
   -l, --list           List available projects
+      --tape FILE      One-shot: pipe a self-contained tape directly to VHS
   -h, --help           Show this help
 
 Examples:
   go run -C tools/vhs-generate . fakedata               # All fakedata demos, both themes
   go run -C tools/vhs-generate . -t light fakedata      # Light theme only
   go run -C tools/vhs-generate . fakedata basic         # Specific demo, both themes
+  go run -C tools/vhs-generate . --tape my-clip.tape    # One-shot recording
 `)
 	}
 	flag.Parse()
 
-	if *h {
+	if help {
 		flag.Usage()
 		os.Exit(0)
 	}
 
 	if list {
-		listProjects(vhsDir)
+		listProjects(filepath.Join(repoRoot, assetsDir))
+		return
+	}
+
+	if _, err := exec.LookPath("vhs"); err != nil {
+		fmt.Fprintln(os.Stderr, "Error: vhs not found. Install with: brew install vhs")
+		os.Exit(1)
+	}
+
+	if tapeFile != "" {
+		runTape(tapeFile)
 		return
 	}
 
@@ -72,18 +88,14 @@ Examples:
 	args := flag.Args()
 	if len(args) == 0 {
 		fmt.Fprintln(os.Stderr, "Error: no project specified")
-		listProjects(vhsDir)
+		listProjects(filepath.Join(repoRoot, assetsDir))
 		os.Exit(1)
 	}
 
 	project := args[0]
-	selectedDemos := args[1:]
+	demos := args[1:]
 
-	if _, err := exec.LookPath("vhs"); err != nil {
-		fmt.Fprintln(os.Stderr, "Error: vhs not found. Install with: brew install vhs")
-		os.Exit(1)
-	}
-
+	vhsDir := filepath.Join(repoRoot, assetsDir)
 	projectDir := filepath.Join(vhsDir, project)
 	if fi, err := os.Stat(projectDir); err != nil || !fi.IsDir() {
 		fmt.Fprintf(os.Stderr, "Error: project directory not found: %s\n", projectDir)
@@ -96,15 +108,15 @@ Examples:
 		os.Exit(1)
 	}
 
-	if len(selectedDemos) == 0 {
-		selectedDemos = allDemos
+	if len(demos) == 0 {
+		demos = allDemos
 	}
 
 	demoSet := make(map[string]bool, len(allDemos))
 	for _, d := range allDemos {
 		demoSet[d] = true
 	}
-	for _, d := range selectedDemos {
+	for _, d := range demos {
 		if !demoSet[d] {
 			fmt.Fprintf(os.Stderr, "Error: demo %q not found in project %s\n", d, project)
 			fmt.Fprintf(os.Stderr, "Available demos: %v\n", allDemos)
@@ -121,32 +133,30 @@ Examples:
 		themes = []string{theme}
 	}
 
-	for _, theme := range themes {
-		themeFile := filepath.Join(vhsDir, fmt.Sprintf("config-%s.tape", theme))
+	for _, th := range themes {
+		themeFile := filepath.Join(vhsDir, fmt.Sprintf("config-%s.tape", th))
 		if _, err := os.Stat(themeFile); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: theme config not found: %s\n", themeFile)
 			os.Exit(1)
 		}
 	}
 
-	// Lifecycle hooks
 	reqFile := filepath.Join(projectDir, "requirements.sh")
 	hasHooks := false
 	if _, err := os.Stat(reqFile); err == nil {
 		hasHooks = true
-		if err := callHook(reqFile, "setup", projectDir, selectedDemos...); err != nil {
+		if err := callHook(reqFile, "setup", projectDir, demos...); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: setup hook failed: %v\n", err)
 			os.Exit(1)
 		}
 	}
 
-	// Group tasks by demo to serialize hooks per demo (avoiding race conditions)
 	tasksByDemo := make(map[string][]genTask)
-	for _, demo := range selectedDemos {
-		for _, theme := range themes {
-			tasksByDemo[demo] = append(tasksByDemo[demo], genTask{demo: demo, theme: theme})
+	for _, demo := range demos {
+		for _, th := range themes {
+			tasksByDemo[demo] = append(tasksByDemo[demo], genTask{demo: demo, theme: th})
 			if gifDemos[demo] {
-				tasksByDemo[demo] = append(tasksByDemo[demo], genTask{demo: demo, theme: theme, gif: true})
+				tasksByDemo[demo] = append(tasksByDemo[demo], genTask{demo: demo, theme: th, gif: true})
 			}
 		}
 	}
@@ -177,7 +187,7 @@ Examples:
 	wg.Wait()
 
 	if hasHooks {
-		if err := callHook(reqFile, "cleanup", projectDir, selectedDemos...); err != nil {
+		if err := callHook(reqFile, "cleanup", projectDir, demos...); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: cleanup hook failed: %v\n", err)
 		}
 	}
@@ -304,11 +314,17 @@ func generateTask(vhsDir, projectDir string, t genTask, hasHooks bool, reqFile s
 
 	var buf bytes.Buffer
 	fmt.Fprintf(&buf, "Output %s\n", outputFile)
-	appendFile(&buf, baseConfig)
+	if err := appendFile(&buf, baseConfig); err != nil {
+		return fmt.Errorf("%s: reading base config: %w", outputFile, err)
+	}
 	buf.WriteString("\n")
-	appendFile(&buf, themeConfig)
+	if err := appendFile(&buf, themeConfig); err != nil {
+		return fmt.Errorf("%s: reading theme config: %w", outputFile, err)
+	}
 	buf.WriteString("\n")
-	appendFile(&buf, tapeFile)
+	if err := appendFile(&buf, tapeFile); err != nil {
+		return fmt.Errorf("%s: reading tape file: %w", outputFile, err)
+	}
 
 	cmd := exec.Command("vhs")
 	cmd.Dir = projectDir
@@ -331,10 +347,47 @@ func generateTask(vhsDir, projectDir string, t genTask, hasHooks bool, reqFile s
 	return nil
 }
 
-func appendFile(buf *bytes.Buffer, path string) {
+func appendFile(buf *bytes.Buffer, path string) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return
+		return err
 	}
 	buf.Write(data)
+	return nil
+}
+
+func runTape(path string) {
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: cannot resolve tape path %q: %v\n", path, err)
+		os.Exit(1)
+	}
+
+	if _, err := os.Stat(absPath); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: tape file not found: %s\n", absPath)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Generating %s...\n", absPath)
+
+	data, err := os.ReadFile(absPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: reading tape file: %v\n", err)
+		os.Exit(1)
+	}
+
+	dir := filepath.Dir(absPath)
+
+	cmd := exec.Command("vhs")
+	cmd.Dir = dir
+	cmd.Stdin = bytes.NewReader(data)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: vhs failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("  -> done")
 }
