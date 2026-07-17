@@ -50,3 +50,17 @@ declare module "./_shortcodes/lucide.js" {
 declare module "./_shortcodes/svg.js" {
   export function svgShortcode(name: string): string;
 }
+
+declare module "@11ty/eleventy-plugin-syntaxhighlight" {
+  import type { EleventyConfig } from "@11ty/eleventy";
+  interface SyntaxHighlightOptions {
+    lineSeparator?: string;
+    templateFormats?: string[];
+    init?: (args: { Prism: unknown }) => void;
+    preAttributes?: Record<string, string | ((args: { language: string; content: string }) => string)>;
+    codeAttributes?: Record<string, string>;
+    errorOnInvalidLanguage?: boolean;
+  }
+  const plugin: (eleventyConfig: EleventyConfig, options?: SyntaxHighlightOptions) => void;
+  export default plugin;
+}

@@ -95,26 +95,12 @@ a.tag:hover {
   background: color-mix(in srgb, var(--text), transparent 90%);
 }
 
-.back-link {
-  margin-top: 2rem;
-}
-
-.back-link a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--text-secondary);
-}
-
-.back-link a:hover {
-  text-decoration-color: var(--text);
-}
-
 article.post {
   max-width: 72ch;
   margin-inline: auto;
   min-height: calc(100vh - var(--nav-height));
   background-color: var(--post-bg);
-  padding: 3rem 2.5rem 4rem;
+  padding: 3rem calc(2.5rem + 20px) 4rem;
   position: relative;
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.06),
@@ -122,7 +108,11 @@ article.post {
 }
 
 article.post .post-header {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+}
+
+article.post .post-metadata time {
+  color: var(--text-secondary);
 }
 
 article.post .post-header h1 {
@@ -165,6 +155,10 @@ article.post .post-content h2 {
   margin-top: 2em;
   margin-bottom: 0.75em;
   line-height: 1.3;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 article.post .post-content h3 {
@@ -183,6 +177,7 @@ article.post .post-content blockquote {
 article.post .post-content ul,
 article.post .post-content ol {
   margin-bottom: 1.5em;
+  margin-inline-start: 1.5em;
 }
 
 article.post .post-content li {
@@ -195,9 +190,42 @@ article.post .post-content pre {
   line-height: 1.6;
   margin: 1.5em 0;
   border-radius: 6px;
+  position: relative;
+}
+
+article.post .post-content pre .copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--ds-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ds-transition-fast, 0.15s);
+}
+
+article.post .post-content pre:hover .copy-button,
+article.post .post-content pre .copy-button:focus-visible {
+  opacity: 1;
+}
+
+article.post .post-content pre .copy-button.copied {
+  color: var(--terminal-prompt);
+  border-color: var(--terminal-prompt);
 }
 
 article.post .post-content p code {
+  background-color: var(--theme-toggle-bg);
+  font-weight: 700;
+  padding: 0.15em 0.3em;
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--font-mono);
   font-size: 0.85em;
 }
 

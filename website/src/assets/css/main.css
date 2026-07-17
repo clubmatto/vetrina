@@ -19,6 +19,7 @@
 @import "coming-soon.css";
 @import "blog.css";
 @import "contact.css";
+@import "prism.css";
 
 .skip-link {
   position: absolute;

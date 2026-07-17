@@ -1,4 +1,5 @@
 import type { EleventyConfig } from "@11ty/eleventy";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import { eq } from "./src/_filters/comparison.js";
 import { formatDate } from "./src/_filters/date.js";
 import { asset } from "./src/_filters/asset.js";
@@ -16,7 +17,14 @@ import {
 } from "./scripts/build.js";
 
 export default function (eleventyConfig: EleventyConfig) {
+  eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addWatchTarget("src/assets");
+
+  eleventyConfig.addPreprocessor("drafts", "*", (data) => {
+    if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
+      return false;
+    }
+  });
 
   let isFirstBuild = true;
 

@@ -150,6 +150,29 @@ if (contactForm) {
   });
 }
 
+// Copy button for blog code blocks
+document.querySelectorAll("article.post .post-content pre").forEach((pre) => {
+  const button = document.createElement("button");
+  button.className = "copy-button";
+  button.textContent = "Copy";
+  button.setAttribute("aria-label", "Copy code to clipboard");
+  button.addEventListener("click", async () => {
+    const code = pre.querySelector("code");
+    if (!code) return;
+    try {
+      await navigator.clipboard.writeText(code.textContent || "");
+      button.textContent = "Copied!";
+      button.classList.add("copied");
+      setTimeout(() => {
+        button.textContent = "Copy";
+        button.classList.remove("copied");
+      }, 1500);
+    } catch {}
+  });
+  pre.classList.add("has-copy-button");
+  pre.appendChild(button);
+});
+
 // Home page scrolling functionality
 const scrollDivider = document.querySelector<HTMLElement>(".scroll-divider");
 const whoWeAre = document.querySelector<HTMLElement>(".who-we-are");
