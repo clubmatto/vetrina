@@ -151,13 +151,16 @@ For social clips, ads, or any throwaway recording, create a self-contained
 `.tape` file with all settings embedded and pass it to the generator:
 
 ```bash
-go run -C tools/vhs-generate . --tape my-clip.tape
+# Use an absolute path to the tape file
+go run -C tools/vhs-generate . --tape /path/to/my-clip.tape
 ```
 
-The generator pipes the file directly to VHS (no config split). The tape must
-include its own `Output`, `Set Theme`, etc. This convention works well:
+The generator pipes the file directly to VHS (no config split, no theme
+duplication — produces exactly one file). The tape must include `Output`,
+`Set Theme`, and all other settings:
 
 ```
+Output my-clip.gif
 Set FontFamily "JetBrainsMono Nerd Font"
 Set FontSize 22
 Set Width 1300
@@ -178,6 +181,7 @@ Enter
 Sleep 1s
 ```
 
+The file extension in `Output` determines the format (`.gif`, `.mp4`, etc.).
 These make good short GIFs for social media. Save the tape anywhere and run
 it through the generator — no project scaffolding needed.
 
