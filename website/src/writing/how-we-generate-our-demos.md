@@ -8,19 +8,19 @@ tags:
   - golang
 ---
 
-A number of our [open source projects](/vetrina) and [products](/products) 
-showcases features and use-cases via terminal demo videos. A short recording 
+A number of our [open source projects](/vetrina) and [products](/products)
+showcases features and use-cases via terminal demo videos. A short recording
 showing
 the tool in action in both light and dark variants.
 
-People often ask us how we generate such beautiful demos (and they're 
-beautiful 💅) so we thought we'd take a bit of time to explain the process. 
-It's also a good excuse to go over how we do monorepo at Club Matto before 
+People often ask us how we generate such beautiful demos 💅 so we thought we'd
+take a bit of time to explain the process.
+It's also a good excuse to go over how we do monorepo at Club Matto before
 we have the time to properly write about that.
 
-Generating them used to 
-be a 
-chore. Now 
+Generating them used to
+be a
+chore. Now
 it's a single command.
 
 Here's how we do it.
@@ -45,7 +45,7 @@ Enter
 Sleep 3s
 ```
 
-VHS handles the timing, the cursor, the window style (which we use on 
+VHS handles the timing, the cursor, the window style (which we use on
 socials). You just write the
 script.
 

@@ -9,6 +9,17 @@ import (
 
 const defaultRowLimit = 10
 
+type flagGroup struct {
+	Title string
+	Flags []string
+}
+
+var extraFlagGroups []flagGroup
+
+func AddFlagGroup(title string, flags ...string) {
+	extraFlagGroups = append(extraFlagGroups, flagGroup{Title: title, Flags: flags})
+}
+
 type Config struct {
 	Completion     string
 	Explore        bool
@@ -52,6 +63,9 @@ Use ` + "`fakedata --help <topic>`" + ` for detailed help on columns, formats, s
 		printFlagGroup("Utility", "help", "version", "completion")
 		printFlagGroup("Column mode", "format", "header", "rows", "separator", "seed", "stream", "template")
 		printFlagGroup("Discovery", "explore", "generator", "generators")
+		for _, g := range extraFlagGroups {
+			printFlagGroup(g.Title, g.Flags...)
+		}
 	}
 	flag.Parse()
 
