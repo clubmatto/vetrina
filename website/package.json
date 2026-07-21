@@ -26,5 +26,8 @@
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "6.0.3"
+  },
+  "dependencies": {
+    "@11ty/eleventy-img": "6.0.4"
   }
 }

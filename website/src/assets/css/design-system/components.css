@@ -126,6 +126,7 @@
   padding: 0;
   display: flex;
   justify-content: center;
+    margin-bottom: 10px;
 }
 
 .ds-terminal__gif img,

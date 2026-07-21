@@ -1,5 +1,6 @@
 import type { EleventyConfig } from "@11ty/eleventy";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import { eq } from "./src/_filters/comparison.js";
 import { formatDate } from "./src/_filters/date.js";
 import { asset } from "./src/_filters/asset.js";
@@ -18,6 +19,19 @@ import {
 
 export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
+    formats: ["avif", "webp", "jpeg", "gif"],
+    widths: ["auto"],
+    sharpOptions: {
+      animated: true,
+    },
+    htmlOptions: {
+      imgAttributes: {
+        loading: "lazy",
+        decoding: "async",
+      },
+    },
+  });
   eleventyConfig.addWatchTarget("src/assets");
 
   eleventyConfig.addPreprocessor("drafts", "*", (data) => {
