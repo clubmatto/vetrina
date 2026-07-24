@@ -45,6 +45,13 @@ footer {
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.2s ease;
+  padding: 0.5rem 0;
+}
+
+@media (min-width: 641px) {
+  .credits-link {
+    padding: 0;
+  }
 }
 
 .credits-link:hover {
@@ -88,7 +95,7 @@ footer {
 
   .footer-left {
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
   }
 
   .separator {
