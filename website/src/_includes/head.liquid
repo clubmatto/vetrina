@@ -2,14 +2,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
-  <meta property="og:title" content="{% if title %}{{ title }} - Club Matto{% else %}Club Matto{% endif %}">
+  <meta property="og:title" content="{% if title and title != "Club Matto" %}{{ title }} - Club Matto{% else %}Club Matto{% endif %}">
   <meta
     property="og:description"
     content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}"
   >
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="{% if page.url contains '/writing/' %}{% unless page.url contains '/tags/' %}article{% else %}website{% endunless %}{% else %}website{% endif %}">
+  <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Club Matto">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   {% if image %}
     {% if image contains '://' %}
       {% assign og_image = image %}
@@ -31,9 +33,67 @@
     <meta name="go-import" content="matto.club/vetrina git https://github.com/clubmatto/vetrina">
   {%- endif %}
   <title>
-    {% if title %}{{ title }} - {% endif %}
+    {% if title and title != "Club Matto" %}{{ title }} - {% endif %}
     Club Matto
   </title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Club Matto",
+      "url": "{{ site.url }}",
+      "logo": "{{ site.url }}/assets/img/logo.png",
+      "sameAs": [
+        "https://github.com/clubmatto",
+        "https://x.com/clubmatto",
+        "https://www.linkedin.com/company/clubmatto"
+      ]
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Club Matto",
+      "url": "{{ site.url }}"
+    }
+  </script>
+  {% if page.url contains '/writing/' %}
+  {% unless page.url contains '/tags/' %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "{{ title }}",
+        "description": "{{ description }}",
+        "url": "{{ site.url }}{{ page.url }}",
+        "datePublished": "{{ date }}",
+        "author": [
+          {
+            "@type": "Organization",
+            "name": "Club Matto",
+            "url": "{{ site.url }}"
+          }
+        ]
+      }
+    </script>
+  {% endunless %}
+  {% endif %}
+  {% if page.url contains '/products/' %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "{{ title }}",
+        "description": "{{ description }}",
+        "url": "{{ site.url }}{{ page.url }}",
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/{% if page.url contains 'kube-shield' or page.url contains 'db-diff' or page.url contains 'bookmarks' or page.url contains 'matto-bar' %}PreOrder{% else %}InStock{% endif %}"
+        }
+      }
+    </script>
+  {% endif %}
   <script>
     (function () {
       var theme = localStorage.getItem('theme');

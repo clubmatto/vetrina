@@ -1,31 +1,30 @@
 ---
-layout: base.liquid
+layout: page.liquid
 pagination:
   data: collections.tagList
   size: 1
   alias: tag
 permalink: /writing/tags/{{ tag | slugify }}/
+eleventyComputed:
+  title: "{{ tag }}"
+  display_title: "{{ tag }}"
 ---
-<div class="ds-prose">
-  <h1>{{ tag }}</h1>
-  <div class="page-content-divider" aria-hidden="true"></div>
-  <p class="page-intro">Posts tagged with "{{ tag }}"</p>
-  {% assign tagged_posts = collections.posts | filterByTag: tag %}
-  {% if tagged_posts.size > 0 %}
-    <ul class="posts">
-      {% for post in tagged_posts %}
-        <li class="post">
-          <a href="{{ post.url }}">
-            <span class="post-title">{{ post.data.title }}</span>
-            <span class="post-meta">
-              <span class="date">{{ post.date | formatDate }}</span>
-            </span>
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No posts found with this tag.</p>
-  {% endif %}
-  <p class="back-link"><a href="/writing/">&larr; Back to Il quaderno</a></p>
-</div>
+<p class="page-intro">Posts tagged with "{{ tag }}"</p>
+{% assign tagged_posts = collections.posts | filterByTag: tag %}
+{% if tagged_posts.size > 0 %}
+  <ul class="posts">
+    {% for post in tagged_posts %}
+      <li class="post">
+        <div class="post-row">
+          <a href="{{ post.url }}" class="post-title">{{ post.data.title }}</a>
+          <span class="post-meta">
+            <span class="date">{{ post.date | formatDate }}</span>
+          </span>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No posts found with this tag.</p>
+{% endif %}
+<p class="back-link"><a href="/writing/">&larr; Back to Il quaderno</a></p>

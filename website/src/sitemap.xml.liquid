@@ -8,7 +8,9 @@ eleventyExcludeFromCollections: true
     {% for item in collections.all %}
         <url>
             <loc>{{ site.url }}{{ item.url }}</loc>
-            <lastmod>{{ today }}</lastmod>
+            <lastmod>{{ item.date | date: "%Y-%m-%d" }}</lastmod>
+            <changefreq>{% if item.url == '/' %}weekly{% elsif item.url contains '/writing/' %}monthly{% else %}monthly{% endif %}</changefreq>
+            <priority>{% if item.url == '/' %}1.0{% elsif item.url contains '/writing/' or item.url contains '/products/' %}0.8{% else %}0.5{% endif %}</priority>
         </url>
     {% endfor %}
 </urlset>
