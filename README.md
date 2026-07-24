@@ -21,6 +21,7 @@ The Club Matto monorepo — open source CLI tools and projects for developers.
 | [fakedata](./fakedata) | Generate fake data rows for testing and development  | Go                    | `go install matto.club/vetrina/fakedata@latest` / `brew tap clubmatto/vetrina https://github.com/clubmatto/vetrina && brew install clubmatto/vetrina/fakedata` |
 | [mercato](./mercato)   | Public social media posts by the team                | Markdown              | —                                                                                       |
 | [website](./website)   | Club Matto website                                   | TypeScript / Eleventy | —                                                                                       |
+| [whatsmylocalai](./whatsmylocalai) | Which local AI can your machine run?     | Eleventy / JS         | —                                                                                       |
 
 See individual project READMEs for detailed usage, development guides, release
 processes, or content conventions.

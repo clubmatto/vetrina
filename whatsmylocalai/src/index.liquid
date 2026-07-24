@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>whatsmylocalai — which local AI can your machine run?</title>
+    <meta
+      name="description"
+      content="Open the page, we detect your hardware right in your browser, and tell you which local models to run with ollama or LM Studio. Nothing leaves your machine."
+    >
+    <meta property="og:title" content="whatsmylocalai">
+    <meta
+      property="og:description"
+      content="Which local AI can your machine run? Hardware detection + model recommendations, 100% in your browser."
+    >
+    <meta property="og:type" content="website">
+    <link
+      rel="icon"
+      href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23ff006e"/><stop offset=".5" stop-color="%238338ec"/><stop offset="1" stop-color="%233a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(%23g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text></svg>'
+    >
+    <script>
+      (function () {
+        const theme = localStorage.getItem("theme");
+        if (theme) {
+          document.documentElement.style.setProperty("color-scheme", theme);
+          document.documentElement.setAttribute("data-color-scheme", theme);
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">skip to content</a>
+
+    <nav class="nav">
+      <h1 class="wordmark">whatsmylocalai</h1>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="toggle color scheme"
+        title="toggle color scheme"
+      >
+        <svg
+          class="icon-sun"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2" /><path d="M12 20v2" />
+          <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
+          <path d="M2 12h2" /><path d="M20 12h2" />
+          <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+        <svg
+          class="icon-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      </button>
+    </nav>
+
+    <main id="main">
+      <section class="probe" aria-label="hardware probe">
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">hardware probe</span>
+          </div>
+          <div class="terminal-body" id="terminal-body" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <script id="model-data" type="application/json">{{ models | json }}</script>
+
+      <section class="specs" id="specs" hidden>
+        <h2>Your machine</h2>
+        <p class="specs-intro">
+          numbers you can adjust are below — tweak them and the recommendations
+          update live. everything else was detected automatically.
+        </p>
+        <p class="legend">
+          <span class="badge badge-high">high</span>
+          <span class="badge badge-medium">medium</span>
+          <span class="badge badge-low">low</span>
+          <span>
+            — how confident we are in each detected number. low confidence?
+            trust yourself: adjust the dial and recommendations update.
+          </span>
+        </p>
+        <div class="machine-panel">
+          <div class="dials" id="dials"></div>
+          <dl class="readouts" id="readouts"></dl>
+        </div>
+      </section>
+
+      <section class="models" id="models" hidden>
+        <h2>Your best local models</h2>
+        <div
+          class="runner-toggle"
+          id="runner-toggle"
+          role="group"
+          aria-label="choose how to run models"
+        >
+          <button type="button" data-runner="lmstudio" aria-pressed="true">
+            lm studio
+          </button>
+          <button type="button" data-runner="ollama" aria-pressed="false">
+            ollama
+          </button>
+        </div>
+        <div id="best-pick"></div>
+
+        <h3 class="models-subheading">Also runs</h3>
+        <div class="models-toolbar" id="models-toolbar" hidden>
+          <input
+            type="search"
+            id="model-search"
+            class="model-search"
+            placeholder="search name, capability…"
+            aria-label="search models"
+          >
+          <div
+            class="filter-chips"
+            id="filter-chips"
+            role="group"
+            aria-label="filter by capability"
+          ></div>
+          <select id="model-sort" class="model-sort" aria-label="sort models">
+            <option value="size-desc">largest first</option>
+            <option value="size-asc">smallest first</option>
+            <option value="name">name a–z</option>
+          </select>
+        </div>
+        <div id="also-runs"></div>
+
+        <details class="too-big" id="too-big">
+          <summary>Beyond this machine</summary>
+          <div class="model-grid" id="too-big-grid"></div>
+        </details>
+
+        <p class="hint" id="runner-hint">
+          sizes assume Q4 quantization — the default in ollama and lm studio.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        we peek at your hardware and tell you which models to run with
+        <a href="https://ollama.com" rel="noopener">ollama</a> or
+        <a href="https://lmstudio.ai" rel="noopener">lm studio</a>.
+        nothing leaves your browser.
+        a <a href="https://matto.club" rel="noopener">club matto</a> thing.
+      </p>
+    </footer>
+
+    <script src="assets/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+{
+  "Qwen3-4B": {
+    "ollama_tag": "qwen3:4b",
+    "blurb": "hybrid thinking modes in a tiny package."
+  },
+  "gemma-3-4b-it": {
+    "ollama_tag": "gemma3:4b",
+    "blurb": "the smallest gemma that can see images."
+  },
+  "Qwen3-8B": {
+    "ollama_tag": "qwen3:8b",
+    "blurb": "switchable thinking mode, strong multilingual."
+  },
+  "DeepSeek-R1-Distill-Llama-8B": {
+    "ollama_tag": "deepseek-r1:8b",
+    "blurb": "r1's reasoning distilled into llama 8b."
+  },
+  "gemma-3-12b-it": {
+    "ollama_tag": "gemma3:12b",
+    "blurb": "vision + long context, easy on memory."
+  },
+  "Qwen3-14B": {
+    "ollama_tag": "qwen3:14b",
+    "blurb": "a very strong mid-size hybrid reasoner."
+  },
+  "gpt-oss-20b": {
+    "ollama_tag": "gpt-oss:20b",
+    "blurb": "openai's open-weight agentic model."
+  },
+  "gemma-3-27b-it": {
+    "ollama_tag": "gemma3:27b",
+    "blurb": "google's flagship open model."
+  },
+  "Qwen3-32B": {
+    "ollama_tag": "qwen3:32b",
+    "blurb": "near-frontier reasoning, fully local."
+  },
+  "Llama-3.3-70B": {
+    "ollama_tag": "llama3.3:70b",
+    "blurb": "meta's heavyweight — frontier-class chat."
+  },
+  "DeepSeek-R1-Distill-Llama-70B": {
+    "ollama_tag": "deepseek-r1:70b",
+    "blurb": "the full-fat r1 distill experience."
+  },
+  "gpt-oss-120b": {
+    "ollama_tag": "gpt-oss:120b",
+    "blurb": "open-weight frontier, needs serious memory."
+  },
+  "Qwen3.5-27B": {
+    "ollama_tag": "qwen3.5:27b",
+    "blurb": "alibaba's latest open-weight all-rounder."
+  },
+  "Qwen3-30B-A3B": {
+    "ollama_tag": "qwen3:30b-a3b",
+    "blurb": "efficient MoE, big capability on modest vram."
+  },
+  "Qwen3-Coder-30B-A3B": {
+    "ollama_tag": "qwen3-coder:30b-a3b",
+    "blurb": "dedicated coding MoE — strong at code tasks."
+  },
+  "Qwen3.5-35B-A3B": {
+    "ollama_tag": "qwen3.5:35b-a3b",
+    "blurb": "efficient reasoning MoE with vision support."
+  },
+  "Ministral-3-8B-Instruct-2512": {
+    "ollama_tag": "mistral:8b",
+    "blurb": "mistral's latest 8b — fast and capable."
+  },
+  "Ministral-3-3B-Instruct-2512": {
+    "ollama_tag": "mistral:3b",
+    "blurb": "tiny ministral, surprisingly capable."
+  },
+  "gemma-3-1b-it": {
+    "ollama_tag": "gemma3:1b",
+    "blurb": "smallest gemma — instant responses."
+  },
+  "Qwen3-0.6B": {
+    "ollama_tag": "qwen3:0.6b",
+    "blurb": "pocket-sized — great for quick drafts."
+  }
+}
