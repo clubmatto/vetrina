@@ -1,5 +1,27 @@
 # TODO
 
+## Move `--skip-opencode` from global to sync subcommand
+
+`--skip-opencode` is defined as a global option on `program` in `src/index.ts:17` but
+only has meaning for the `sync` command. It works via `{ ...program.opts(), ...cmdOptions }`
+spread in `index.ts:30`, but the UX is confusing — it shows in `--help` as a global flag.
+
+Move it to the sync command's `.option()` call and remove it from the program level.
+
+## Respect `.gitignore` patterns in scanner
+
+The file scanner at `src/detection/scanner.ts:3-10` uses a hardcoded ignore list:
+
+```
+const IGNORE_DIRS = ["node_modules", ".git", "dist", "build", "target", ".next", ".nuxt"];
+```
+
+This misses common directories like `vendor/`, `.venv`, `__pycache__`, `venv/`, etc.
+It also doesn't respect per-project `.gitignore` files.
+
+Use the `gitignore` npm package (or parse `.gitignore` manually) to filter scanned files,
+with the hardcoded list as a fallback when no `.gitignore` exists.
+
 ## Re-enable Spring Boot Detection
 
 Spring Boot detection was temporarily removed to simplify the codebase. The detection
