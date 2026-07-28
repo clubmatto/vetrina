@@ -1,5 +1,5 @@
 ---
-title: "ai-kit v0.0.10 — smart updates, cleaner setup, no more MiniMax"
+title: "ai-kit v0.0.10 — better Go rules, cleaner setup, fresh demos"
 platform: linkedin
 topics:
   - ai-kit
@@ -9,12 +9,14 @@ topics:
 
 ai-kit v0.0.10 is out!
 
-This release is about polish and cleanup:
+This is a polish and maintenance release:
 
-- Smart updates: ai-kit now tracks what's changed — only updated files get overwritten, so your customizations survive future syncs
-- Cleaner single-repo template with less redundant instructions
-- Removed MiniMax AI integration (image-gen skill and MCP config) — we're focusing on what matters
-- Updated all dependencies
+- Go rules overhaul: semaphore patterns, Makefile conventions, templ/sqlc
+  commands, modern deps (charmbracelet/log, go 1.24), and better error handling
+  guidance.
+- Cleaner single-repo template with fewer redundant instructions
+- Removed MiniMax AI integration (image-gen skill and MCP config) as we 
+  don't use MiniMax any more.
 
 Install: npm install -g @clubmatto/ai-kit
 

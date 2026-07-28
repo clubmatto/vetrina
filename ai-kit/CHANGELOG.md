@@ -2,20 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-## [0.0.10] - 2026-07-13
+## [0.0.10] - 2026-07-28
 
 ### Added
 
-- Smart updates: only changed files get overwritten, preserving customizations
 - Comprehensive README with badges, TOC, guides, and project tree
 - Theme-aware demo GIFs for dark/light mode
+- Smart Updates feature tab and demo on the website
+- Go rules: semaphore pattern, Makefile conventions, templ/sqlc commands
 
 ### Changed
 
 - Simplified single-repo AGENTS.md template
 - Updated dependencies to latest compatible versions
+- Regenerated all demo recordings
+- Go rules: modernized all code examples (charmbracelet/log, go 1.24)
+- Go rules: improved error handling section (%w best practices, CLI pattern)
+- Go rules: flexible project structure guidance (flat vs layered)
 
 ### Removed
 
