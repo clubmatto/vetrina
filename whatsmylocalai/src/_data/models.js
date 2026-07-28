@@ -21,6 +21,18 @@ function parseParams(s) {
   return v;
 }
 
+function capitalize(raw) {
+  return raw
+    .split("-")
+    .map((w) => (w.length <= 3 ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join("-");
+}
+
+function familyLabel(name) {
+  const raw = name.match(/^[a-zA-Z0-9]+(?:-[a-zA-Z]+(?![0-9.]))?/)?.[0] || name;
+  return raw === raw.toLowerCase() ? capitalize(raw) : raw;
+}
+
 function matchRegistryToModeldev(regEntry, mdMap) {
   const regName = normalize(regEntry.model_name);
   for (const [id, meta] of Object.entries(mdMap)) {
@@ -57,6 +69,7 @@ export default function () {
     }
 
     return {
+      family_label: familyLabel(m.model_name),
       id: m.id,
       model_name: m.model_name,
       huggingface_id: m.huggingface_id,

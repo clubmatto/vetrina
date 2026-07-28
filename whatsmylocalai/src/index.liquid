@@ -74,7 +74,7 @@
       </button>
     </nav>
 
-    <main id="main">
+    <main id="main" x-data="app()">
       <section class="probe" aria-label="hardware probe">
         <div class="terminal">
           <div class="terminal-header">
@@ -88,8 +88,9 @@
       </section>
 
       <script id="model-data" type="application/json">{{ models | json }}</script>
+      <script id="gpu-database" type="application/json">{{ gpu_database | json }}</script>
 
-      <section class="specs" id="specs" hidden>
+      <section class="specs" id="specs" x-show="phase === 'results'" x-cloak :class="{ revealed: phase === 'results' }">
         <h2>Your machine</h2>
         <p class="specs-intro">
           numbers you can adjust are below — tweak them and the recommendations
@@ -105,59 +106,211 @@
           </span>
         </p>
         <div class="machine-panel">
-          <div class="dials" id="dials"></div>
-          <dl class="readouts" id="readouts"></dl>
+          <div class="dials">
+            <div class="dial">
+              <div class="dial-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
+                <span class="dial-label">vram</span>
+                <span class="badge" :class="'badge-' + vramConfidence" x-text="vramConfidence"></span>
+              </div>
+              <div class="stepper">
+                <button type="button" @click="adjust('vram', -1)" aria-label="decrease vram">−</button>
+                <span class="stepper-value" x-text="vram + ' GB'"></span>
+                <button type="button" @click="adjust('vram', 1)" aria-label="increase vram">+</button>
+              </div>
+              <div class="dial-note" x-text="vramSource"></div>
+            </div>
+            <div class="dial">
+              <div class="dial-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
+                <span class="dial-label">ram</span>
+                <span class="badge" :class="'badge-' + ramConfidence" x-text="ramConfidence"></span>
+              </div>
+              <div class="stepper">
+                <button type="button" @click="adjust('ram', -2)" aria-label="decrease ram">−</button>
+                <span class="stepper-value" x-text="ram + ' GB'"></span>
+                <button type="button" @click="adjust('ram', 2)" aria-label="increase ram">+</button>
+              </div>
+              <div class="dial-note" x-text="ramNote"></div>
+            </div>
+          </div>
+          <dl class="readouts">
+            <div class="readout">
+              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg><span>gpu</span></dt>
+              <dd class="readout-value" x-text="gpuValue()"></dd>
+              <dd class="readout-src" x-text="gpuName ? 'via webgl' : 'not available'"></dd>
+            </div>
+            <div class="readout">
+              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/></svg><span>cpu</span></dt>
+              <dd class="readout-value" x-text="cores ? cores + ' cores' : 'unknown'"></dd>
+              <dd class="readout-src" x-text="cores ? 'via hardwareConcurrency' : ''"></dd>
+            </div>
+            <div class="readout">
+              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/></svg><span>os</span></dt>
+              <dd class="readout-value" x-text="os"></dd>
+              <dd class="readout-src">via user agent</dd>
+            </div>
+            <div class="readout">
+              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/></svg><span>webgpu</span></dt>
+              <dd class="readout-value">
+                <span x-show="webgpu" class="spec-status-ok">✓ supported</span>
+                <span x-show="!webgpu" class="spec-status-ko">✗ not available</span>
+              </dd>
+              <dd class="readout-src">via navigator.gpu</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
-      <section class="models" id="models" hidden>
+      <section class="models" id="models" x-show="phase === 'results'" x-cloak :class="{ revealed: phase === 'results' }">
         <h2>Your best local models</h2>
-        <div
-          class="runner-toggle"
-          id="runner-toggle"
-          role="group"
-          aria-label="choose how to run models"
-        >
-          <button type="button" data-runner="lmstudio" aria-pressed="true">
+        <div class="runner-toggle" role="group" aria-label="choose how to run models">
+          <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">
             lm studio
           </button>
-          <button type="button" data-runner="ollama" aria-pressed="false">
+          <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">
             ollama
           </button>
         </div>
-        <div id="best-pick"></div>
+
+        <template x-if="bestModel">
+          <div class="best-pick-card">
+            <div class="best-pick-inner">
+              <div class="best-pick-kicker">your best pick</div>
+              <div class="best-pick-name" x-text="bestModel.model_name"></div>
+              <div class="best-pick-why" x-text="'the largest model that fits in your ~' + vram + ' GB — needs about ' + bestModel.vram_requirements_gb + ' GB at Q4.'"></div>
+              <div class="model-meta" style="margin-top: 0.75rem">
+                <span class="chip" x-text="bestModel.parameters"></span>
+                <span class="chip" x-text="'~' + bestModel.vram_requirements_gb + ' GB Q4'"></span>
+                <template x-for="cap in bestModel.capabilities" :key="cap">
+                  <span class="chip" x-text="cap"></span>
+                </template>
+                <span class="chip chip-tight" x-show="isTight(bestModel)">tight fit</span>
+              </div>
+              <button type="button" class="run-cmd" @click="copyCmd(bestModel)" :class="{ copied: copiedId === bestModel.id }" :aria-label="'copy command: ' + runCmd(bestModel)">
+                <code x-text="runCmd(bestModel)"></code>
+                <span class="run-cmd-hint" x-text="copiedId === bestModel.id ? 'copied!' : 'copy'"></span>
+              </button>
+            </div>
+          </div>
+        </template>
+        <template x-if="!bestModel">
+          <div class="best-pick-card">
+            <div class="best-pick-inner">
+              <div class="best-pick-kicker">ouch</div>
+              <div class="best-pick-name" x-text="'nothing fits in ' + vram + ' GB'"></div>
+              <div class="best-pick-why">
+                even the tiniest model here wants ~2 GB. double-check your numbers above?
+              </div>
+            </div>
+          </div>
+        </template>
 
         <h3 class="models-subheading">Also runs</h3>
-        <div class="models-toolbar" id="models-toolbar" hidden>
+        <div class="models-toolbar" x-show="alsoRuns.length >= 6" x-cloak>
           <input
             type="search"
-            id="model-search"
             class="model-search"
             placeholder="search name, capability…"
             aria-label="search models"
+            x-model="filterQ"
           >
-          <div
-            class="filter-chips"
-            id="filter-chips"
-            role="group"
-            aria-label="filter by capability"
-          ></div>
-          <select id="model-sort" class="model-sort" aria-label="sort models">
+          <div class="filter-chips" role="group" aria-label="filter by capability">
+            <template x-for="cap in availableCaps" :key="cap">
+              <button type="button" class="filter-chip" @click="toggleCap(cap)"
+                :class="{ active: filterCaps.includes(cap) }"
+                :aria-pressed="filterCaps.includes(cap)" x-text="cap"></button>
+            </template>
+          </div>
+          <select class="model-sort" aria-label="sort models" x-model="filterSort">
             <option value="size-desc">largest first</option>
             <option value="size-asc">smallest first</option>
             <option value="name">name a–z</option>
           </select>
         </div>
-        <div id="also-runs"></div>
 
-        <details class="too-big" id="too-big">
+        <template x-if="alsoRuns.length === 0">
+          <p class="hint">nothing smaller on the list — your pick above is the sweet spot.</p>
+        </template>
+
+        <template x-if="alsoRuns.length > 0 && visibleAlsoRuns.length === 0">
+          <p class="hint">nothing matches — try clearing the search or filters.</p>
+        </template>
+
+        <template x-if="alsoRuns.length > 0 && visibleAlsoRuns.length > 0 && alsoRuns.length < 6">
+          <div class="model-grid">
+            <template x-for="model in visibleAlsoRuns" :key="model.id">
+              <article class="model-card" :class="{ tight: isTight(model) }">
+                <div class="model-name" x-text="model.model_name"></div>
+                <div class="model-meta">
+                  <span class="chip" x-text="model.parameters"></span>
+                  <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                  <template x-for="cap in model.capabilities" :key="cap">
+                    <span class="chip" x-text="cap"></span>
+                  </template>
+                  <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
+                </div>
+                <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
+                <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
+                  <code x-text="runCmd(model)"></code>
+                  <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+                </button>
+              </article>
+            </template>
+          </div>
+        </template>
+
+        <template x-if="alsoRuns.length >= 6 && visibleAlsoRuns.length > 0">
+          <template x-for="group in modelGroups" :key="group.family">
+            <section class="family-group">
+              <h4 class="family-heading">
+                <span x-text="group.family"></span>
+                <span class="family-count" x-text="group.models.length"></span>
+              </h4>
+              <div class="model-grid">
+                <template x-for="model in group.models" :key="model.id">
+                  <article class="model-card" :class="{ tight: isTight(model) }">
+                    <div class="model-name" x-text="model.model_name"></div>
+                    <div class="model-meta">
+                      <span class="chip" x-text="model.parameters"></span>
+                      <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                      <template x-for="cap in model.capabilities" :key="cap">
+                        <span class="chip" x-text="cap"></span>
+                      </template>
+                      <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
+                    </div>
+                    <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
+                    <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
+                      <code x-text="runCmd(model)"></code>
+                      <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+                    </button>
+                  </article>
+                </template>
+              </div>
+            </section>
+          </template>
+        </template>
+
+        <details class="too-big" x-show="tooBigModels.length > 0">
           <summary>Beyond this machine</summary>
-          <div class="model-grid" id="too-big-grid"></div>
+          <div class="model-grid">
+            <template x-for="model in tooBigModels" :key="model.id">
+              <article class="model-card">
+                <div class="model-name" x-text="model.model_name"></div>
+                <div class="model-meta">
+                  <span class="chip" x-text="model.parameters"></span>
+                  <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                  <template x-for="cap in model.capabilities" :key="cap">
+                    <span class="chip" x-text="cap"></span>
+                  </template>
+                </div>
+                <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
+              </article>
+            </template>
+          </div>
         </details>
 
-        <p class="hint" id="runner-hint">
-          sizes assume Q4 quantization — the default in ollama and lm studio.
-        </p>
+        <p class="hint" x-text="runnerHint"></p>
       </section>
     </main>
 
@@ -171,6 +324,7 @@
       </p>
     </footer>
 
-    <script src="assets/app.js" type="module"></script>
+    <script type="module" src="assets/app.js"></script>
+    <script defer src="assets/js/alpine.3.15.12.min.js"></script>
   </body>
 </html>

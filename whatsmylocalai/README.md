@@ -26,9 +26,9 @@ npm run build   # production build → _site/
 | Ollama tags + blurbs | `src/_data/enrichment.json` (curated by us, ~20 entries) | `ollama run` tags, human-readable blurbs |
 
 Run commands come in two flavors, switchable in the UI (default: LM Studio,
-persisted in localStorage): `lms get <huggingface_id>@<quant>` is derived
-from registry data — no enrichment needed; `ollama run <tag>` uses the
-enrichment table (falling back to a name slug).
+persisted in localStorage): `lms get https://huggingface.co/<huggingface_id>@<quant>`
+is derived from registry data — no enrichment needed; `ollama run <tag>` uses
+the enrichment table (falling back to a name slug).
 
 At build time, Eleventy merges the three sources into a single JSON blob and
 inlines it in the page. No network calls at runtime.
@@ -55,7 +55,7 @@ whatsmylocalai/
 │   ├── index.liquid           # page template
 │   └── assets/
 │       ├── styles.css         # matto.club design tokens
-│       └── app.js             # detection + suggestion engine
+│       └── app.js             # detection + suggestion engine (ESM)
 ├── src/_data/
 │   ├── enrichment.json        # ollama tags + blurbs
 │   └── models.js              # merge: snapshot + registry + enrichment
@@ -64,6 +64,11 @@ whatsmylocalai/
 ├── package.json
 └── README.md
 ```
+
+`app.js` imports `suggestModelsForVRAM` from
+`@auxot/model-registry` via a relative import. Eleventy copies
+`query.js` from node_modules at build time so the browser can
+resolve it (`<script type="module">`).
 
 ## Getting new models
 
