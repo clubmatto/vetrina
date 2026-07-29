@@ -35,6 +35,8 @@ Follow this exact structure for all Go projects:
 ├── Makefile # Common build commands
 └── README.md # Project documentation
 
+**Note:** The structure above is a recommendation, not a strict requirement. Many services in practice use flat packages (e.g., `server/`, `db/`, `storage/`, `core/`, `cli/`, `views/`) organized by domain concern rather than role. Choose the layout that best fits the project's complexity.
+
 ## 🛠️ Development Commands
 
 ### Essential Workflow Commands
@@ -62,6 +64,45 @@ go vet ./...             # Built-in checks
 ```bash
 # Protocol buffers
 protoc --go_out=. --go-grpc_out=. api/proto/*.proto
+
+# Type-safe HTML templates (a-h/templ)
+templ generate
+templ fmt -fail .
+
+# SQL-to-Go generation (sqlc)
+sqlc generate
+sqlc diff
+```
+
+### Makefile Conventions
+
+All Go projects should use a Makefile with consistent targets:
+
+```bash
+make test         # Run all tests
+make lint         # Run golangci-lint and go vet
+make build        # Build the binary
+```
+
+Common patterns used across projects:
+
+```makefile
+# Test targets
+unit:       # Unit tests (no external dependencies)
+integration: # Integration tests (testcontainers, etc.)
+test: unit integration   # Run all tests
+
+# Coverage
+coverage: # Combined unit + integration coverage via go tool covdata
+
+# Linting
+lint:
+    golangci-lint run
+    go vet ./...
+
+# Build with version injection
+build:
+    go build -ldflags="-s -w -X main.version=$(VERSION)" -o bin/app
 ```
 
 ## 📝 Go Code Standards
@@ -70,18 +111,15 @@ protoc --go_out=. --go-grpc_out=. api/proto/*.proto
 
 ```go
 package myproject
-// ✅ GOOD: Grouped with stdlib, external, internal
+
+// ✅ GOOD: Two groups — external (stdlib + deps) first, then internal
 import (
-    // Standard library
     "context"
     "fmt"
     "time"
 
-    // External dependencies
-    "github.com/pkg/errors"
-    "go.uber.org/zap"
+    "github.com/charmbracelet/log"
 
-    // Internal modules
     "myproject/internal/models"
 )
 
@@ -89,7 +127,7 @@ import (
 import "fmt"
 import "myproject/internal/models"
 import "context"
-import "github.com/pkg/errors"
+import "github.com/some/external-lib"
 ```
 
 ## Error Handling (CRITICAL)
@@ -122,10 +160,23 @@ func (e ValidationError) Error() string {
     return fmt.Sprintf("validation error on %s: %s", e.Field, e.Message)
 }
 
+// ✅ GOOD (CLI tools): Error strings + os.Exit for standalone binaries
+func run() {
+    if err := doSomething(); err != nil {
+        fmt.Fprintf(os.Stderr, "error: %v\n", err)
+        os.Exit(1)
+    }
+}
+
 // ❌ BAD: Ignoring errors or generic messages
 _, err = doSomething()
 if err != nil {
     return err  // No context!
+}
+
+// ❌ BAD: Using %v instead of %w for error wrapping (breaks errors.Is/errors.As)
+if err != nil {
+    return fmt.Errorf("failed: %v", err)  // Use %w instead
 }
 ```
 
@@ -138,7 +189,7 @@ package myproject
 type Config struct {
     Addr     string
     Timeout  time.Duration
-    Logger   *zap.Logger
+    Logger   *log.Logger
 }
 
 func NewConfig(addr string) (*Config, error) {
@@ -146,12 +197,10 @@ func NewConfig(addr string) (*Config, error) {
         return nil, errors.New("addr cannot be empty")
     }
 
-    logger, _ := zap.NewProduction()
-
     return &Config{
         Addr:    addr,
         Timeout: 30 * time.Second,
-        Logger:  logger,
+        Logger:  log.New(os.Stderr),
     }, nil
 }
 
@@ -216,6 +265,36 @@ func ProcessConcurrently(ctx context.Context, items []Item) ([]Result, error) {
 
     return results, nil
 }
+
+// ✅ GOOD: Semaphore pattern for rate-limited concurrency
+func ProcessWithLimit(ctx context.Context, items []Item) error {
+    var wg sync.WaitGroup
+    sem := make(chan struct{}, 4) // max 4 concurrent
+    var mu sync.Mutex
+    var errs []string
+
+    for _, item := range items {
+        wg.Add(1)
+        sem <- struct{}{}
+        go func(it Item) {
+            defer wg.Done()
+            defer func() { <-sem }()
+
+            if err := processItem(ctx, it); err != nil {
+                mu.Lock()
+                errs = append(errs, err.Error())
+                mu.Unlock()
+            }
+        }(item)
+    }
+
+    wg.Wait()
+
+    if len(errs) > 0 {
+        return fmt.Errorf("%d error(s): %v", len(errs), errs)
+    }
+    return nil
+}
 ```
 
 ## 🧪 Testing Standards
@@ -258,6 +337,32 @@ func TestCalculate(t *testing.T) {
 }
 ```
 
+## 📦 Dependency Management
+
+### Module Rules
+
+- Always use Go modules (go.mod must be present)
+- Pin specific versions – no floating dependencies
+- Minimize external dependencies - stdlib first
+- Upgrade systematically – test thoroughly after upgrades
+
+### Version Guidelines
+
+```go
+# go.mod example
+module github.com/company/service-name
+
+go 1.24  # Minimum version
+
+require (
+    github.com/charmbracelet/log v0.4.2
+    github.com/stretchr/testify v1.11.1
+)
+
+# ❌ AVOID: Indirect dependencies for direct functionality
+# github.com/some-transitive-dependency v1.2.3
+```
+
 ## 🚫 Go-Specific Restrictions
 
 ### Never Do These:
@@ -266,6 +371,8 @@ func TestCalculate(t *testing.T) {
 - ❌ Never ignore errors (\_ = functionThatReturnsError())
 - ❌ Never use global variables for application state
 - ❌ Never write if err != nil { return nil } (always return the error)
+
+**Exception:** Test files using `TestMain` may use package-level variables for shared test state (e.g., a registry or DB connection reused across tests in the same package).
 
 ## 🔍 Context Usage (IMPORTANT)
 
@@ -276,4 +383,4 @@ Always pass context.Context as the first parameter to functions that:
 - Could be long-running
 - Should respect cancellation/timeout
 
-Last updated: 2026-04-05. This file extends the global rules in @AGENTS.md. Always check both files.
+Last updated: 2026-07-29. This file extends the global rules in @AGENTS.md. Always check both files.

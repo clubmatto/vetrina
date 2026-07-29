@@ -9,37 +9,11 @@
       },
       "enabled": false
     },
-    "circleci": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@circleci/mcp-server-circleci@latest"
-      ],
-      "environment": {
-        "CIRCLECI_TOKEN": "{env:CIRCLECI_TOKEN}",
-        "CIRCLECI_BASE_URL": "https://circleci.com"
-      },
-      "enabled": false
-    },
-    "MiniMax": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "minimax-coding-plan-mcp",
-        "-y"
-      ],
-      "environment": {
-        "MINIMAX_API_KEY": "{env:MINIMAX_API_KEY}",
-        "MINIMAX_API_HOST": "https://api.minimax.io"
-      },
-      "enabled": false
-    }
   },
   "command": {
     "commit": {
       "description": "Commit the work done in this session with a structured commit message.",
-      "template": "Create a commit with the following format:\n\n## Commit Message Format\n\n**First line (one-liner):**\n\n- Use conventional commits format: `<type>: <description>`\n- Examples: `feat: add init command`, `fix: resolve path issue`, `docs: update README`\n\n**Body (bullet list):**\n\n- List the main changes made in this session\n- Each item should be a brief description of a specific change\n\n**Sign-off:**\n\n- End with: `created with the help of <MODEL>`\n- Use the current model name (e.g. \"MiniMax\", \"GPT-4\", \"Claude\")\n\n## Example\n\n```\nfeat: add init and update commands\n\n- Created init command for first-time setup\n- Added manifest tracking in .agents/.ai-kit\n- Implemented update command for version sync\n- Added --skip-opencode option\n\ncreated with the help of MiniMax\n```\n\n## Process\n\n1. First, review all changes with `git status` and `git diff`\n2. Write a concise one-liner following conventional commits\n3. List the key changes as bullet points\n4. Add the sign-off line with the current model\n5. Commit with `git commit -m \"your message\"`"
+      "template": "Create a commit with the following format:\n\n## Commit Message Format\n\n**First line (one-liner):**\n\n- Use conventional commits format: `<type>(<scope>): <description>`\n- The **scope** is the project subdirectory — determine it from the changed files.\n\n  | Changed files             | Scope        |\n  | ------------------------- | ------------ |\n  | `fakedata/**`             | `fakedata`   |\n  | `ai-kit/**`               | `ai-kit`     |\n  | Mixed (multiple projects) | Pick primary |\n\n- If changes span **multiple projects**, pick the one with the most changes, or use\n  `type: description` (without scope) when there is no clear primary project.\n- Root-level files (e.g. `opencode.json`, `.github/`, `AGENTS.md`) and changes\n  spanning **all** projects get no scope.\n- Examples: `feat(fakedata): add csv output`, `fix(ai-kit): resolve sync crash`,\n  `docs: update contributing guide`\n\n**Body (bullet list):**\n\n- List the main changes made in this session\n- Each item should be a brief description of a specific change\n\n**Sign-off:**\n\n- End with: `created with the help of <MODEL>`\n- Format the model name as lowercase, hyphenated: `<name>-<variant>`\n- Examples: `DeepSeek V4 Flash` → `deepseek-v4-flash`, `Claude Opus 4` → `claude-opus-4`\n\n## Examples\n\n**Single project — use scope:**\n\n```\nfeat(fakedata): add csv output format\n\n- Added --format csv flag to generate command\n- Implemented CSV writer with header detection\n- Added tests for CSV output\n\ncreated with the help of deepseek-v4-flash\n```\n\n**Cross-project or root — no scope:**\n\n```\nci: add shared release workflow for Go projects\n\n- Created tools/go-release with build, archive, and formula generation\n- Updated fakedata release workflow to use shared tool\n- Added release documentation\n\ncreated with the help of deepseek-v4-flash\n```\n\n## Process\n\n1. First, review all changes with `git status` and `git diff`\n2. If there changes you did not make, ask if you should include them\n3. Determine the scope from the changed file paths\n4. Write a concise one-liner following `<type>(<scope>): <description>`\n5. List the key changes as bullet points\n6. Add the sign-off line with the current model\n7. Commit with `git commit -m \"your message\"`"
     },
     "interview": {
       "description": "Interview the user to define a feature, then generate a task‑oriented implementation plan as a markdown document.",

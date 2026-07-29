@@ -231,6 +231,34 @@ it("fetches user", async () => {
 - Prefer `toBe` for primitives, `toEqual` for objects
 - Clean up after each test (`afterEach`, `afterAll`)
 
+## 📦 Dependency Management
+
+### package.json Rules
+
+```json
+{
+  "dependencies": {
+    // Pin exact versions for production dependencies
+    "express": "4.18.0"
+  },
+  "devDependencies": {
+    // Development tools can use caret ranges
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "scripts": {
+    "audit": "npm audit --audit-level=high"
+  }
+}
+```
+
+### Security & Updates
+
+- Run `npm audit` regularly
+- Use `npm outdated` to check for updates
+- Update dependencies systematically, test thoroughly after each update
+- Prefer smaller, focused libraries over monolithic frameworks
+
 ## 🚫 TypeScript-Specific Restrictions
 
 ### Never Do These:
@@ -271,4 +299,4 @@ module.exports = {
 };
 ```
 
-Last updated: 2026-04-05. This file extends the global rules in @AGENTS.md. Always check both files.
+Last updated: 2026-07-29. This file extends the global rules in @AGENTS.md. Always check both files.

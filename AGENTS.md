@@ -1,6 +1,6 @@
 # Agents.md
 
-This is a monorepo containing apps in many languages.
+This is a monorepo containing projects in many languages.
 
 You MUST follow the specific rules for each language. **ALWAYS** start from
 checking out the closest README.md.
@@ -21,38 +21,4 @@ CRITICAL: When you encounter a file reference (e.g., `@.agents/rules/go.md`), us
 - [Plan Mode](.agents/rules/plan-mode.md)
 - [When You're Unsure](.agents/rules/unsure.md)
 
-## Language-Agnostic Rules
-
-### Code Preservation (CRITICAL)
-
-When refactoring code, **always preserve existing comments, TODOs, and FIXME markers** - even if the surrounding code is being rewritten. Technical debt reminders represent valuable context that must not be lost.
-
-**Never remove:**
-- `// TODO ...` comments
-- `// FIXME ...` comments  
-- Inline comments explaining non-obvious logic
-- Doc comments on public APIs
-
-**Rationale**: LLMs tend to treat comments as noise during refactoring.
-
-### Pre-Commit Checklist
-
-Before committing, always verify:
-1. ✅ All lint checks pass (language-specific linter)
-2. ✅ All type checks pass (where applicable)
-3. ✅ All tests pass
-4. ✅ No comments/TODOs were accidentally removed
-
-### Read First
-
-**Always start by reading the project's README.md** to understand:
-- Language and framework versions
-- Available scripts and commands
-- Project-specific conventions
-
-### Dependency Management (General)
-
-- Pin exact versions for production dependencies (avoid floating versions like `1.+`)
-- Audit dependencies regularly for security vulnerabilities
-- Minimize external dependencies - prefer stdlib/built-in solutions when available
-- Upgrade systematically, test thoroughly after each update
+_This file was last updated: 2026-07-29. Always check the `.agents/rules/` directory for the most current language-specific guidelines._

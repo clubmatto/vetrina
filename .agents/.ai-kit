@@ -1,7 +1,47 @@
 {
-  "version": "0.0.2",
-  "installedAt": "2026-04-05T10:22:33.799Z",
-  "rootFiles": [
-    "opencode.json"
-  ]
+  "version": "0.0.10",
+  "files": {
+    "opencode.json": {
+      "sourceHash": "4ca6cd3cf457526c2ee321c0b542b5ea4166f9b53c4ed52ca3f09be444462eba"
+    },
+    "AGENTS.md": {
+      "sourceHash": "cf36c441f752947c9ee774a6751e9fc9615128d3e6f3ad32f2ebd76d247307b7"
+    },
+    ".agents/rules/go.md": {
+      "sourceHash": "4180c62509a1cfc8e0ee95f3092a2c3a75223a364e981d5a84bc13c1151787dc"
+    },
+    ".agents/rules/plan-mode.md": {
+      "sourceHash": "58438322db8854682cd840f1c6f8a8aaa8a6bb5c23a45c2bf15a8b5fe13a4f57"
+    },
+    ".agents/rules/typescript.md": {
+      "sourceHash": "9e9ded21d5a43d4850079ad326be6a1348277098cd32623099b8d96f3840344d"
+    },
+    ".agents/rules/unsure.md": {
+      "sourceHash": "0b156517b0776cb20d5b14a04efcace6d075c5593722e7ce21bc4c1b5b7627da"
+    },
+    ".agents/skills/playwright-cli/SKILL.md": {
+      "sourceHash": "dfb5c48560bc58439168aa74ca6eab223023ffe369836a75a5c3eef483714fd9"
+    },
+    ".agents/skills/playwright-cli/references/request-mocking.md": {
+      "sourceHash": "54e801c9663fc2b6d68ceb058cb1c360724c2499f42acc7852a68e83e5b5f37c"
+    },
+    ".agents/skills/playwright-cli/references/running-code.md": {
+      "sourceHash": "9707ad5e406db7e06895203fae97e6fb1d72f82fd8e8ece4a0a3754dc64d57ae"
+    },
+    ".agents/skills/playwright-cli/references/session-management.md": {
+      "sourceHash": "dbad53f1ea6c4f6a360a409574b59ccc0495c9de2a653c3f943833f549347c4a"
+    },
+    ".agents/skills/playwright-cli/references/storage-state.md": {
+      "sourceHash": "1122778c9b13b44bddebb4476a7f99d918afd31757be8b4fade3cb09c3d48c99"
+    },
+    ".agents/skills/playwright-cli/references/test-generation.md": {
+      "sourceHash": "77676b306dcf7bf6da0329302f754913fab50a823d013892403ed3312c7d3933"
+    },
+    ".agents/skills/playwright-cli/references/tracing.md": {
+      "sourceHash": "cf68a0be27c47f8bbba5c619c58f09d883d2f0975598949141682336a4e195f0"
+    },
+    ".agents/skills/playwright-cli/references/video-recording.md": {
+      "sourceHash": "bad6dde4305c6e6549a7e63a59349f328085e022bf10f466f620298f0b41f411"
+    }
+  }
 }
