@@ -1,13 +1,27 @@
 # whatsmylocalai
 
+[![License: MIT](https://img.shields.io/github/license/clubmatto/vetrina)](/LICENSE)
+
 Which local AI can your machine run? Detects your hardware in the browser and
-recommends models to run with [ollama](https://ollama.com) or
-[LM Studio](https://lmstudio.ai).
+recommends models to run with [Ollama](https://ollama.com) or
+[LM Studio](https://lmstudio.ai). All client-side, nothing leaves the browser.
 
-Built with [Eleventy](https://www.11ty.dev/) — static output, no runtime
-dependencies.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/demo.gif">
+  <img alt="whatsmylocalai demo" src="docs/demo.gif" width="100%">
+</picture>
 
-## Quick start
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [How It Works](#how-it-works)
+- [File Structure](#file-structure)
+- [Development](#development)
+- [Getting New Models](#getting-new-models)
+- [Deploy](#deploy)
+- [License](#license)
+
+## Quick Start
 
 ```bash
 npm install
@@ -15,7 +29,7 @@ npm run dev     # dev server at http://localhost:8080
 npm run build   # production build → _site/
 ```
 
-## How it works
+## How It Works
 
 | Layer                | Source                                                                         | What it provides                                              |
 |----------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
@@ -32,7 +46,7 @@ the enrichment table (falling back to a name slug).
 At build time, Eleventy merges the three sources into a single JSON blob and
 inlines it in the page. No network calls at runtime.
 
-### Runtime flow
+### Runtime Flow
 
 1. **Passive detection** — GPU name via WebGL (`WEBGL_debug_renderer_info`), RAM
    via `navigator.deviceMemory`, CPU cores via `navigator.hardwareConcurrency`,
@@ -46,18 +60,24 @@ inlines it in the page. No network calls at runtime.
 
 Everything runs client-side; nothing leaves the browser.
 
-## File structure
+## File Structure
 
 ```
 whatsmylocalai/
 ├── src/
 │   ├── index.liquid           # page template
+│   ├── credits.liquid         # credits page
 │   └── assets/
-│       ├── styles.css         # matto.club design tokens
+│       ├── styles.css         # design tokens
 │       └── app.js             # detection + suggestion engine (ESM)
 ├── src/_data/
 │   ├── enrichment.json        # ollama tags + blurbs
+│   ├── gpu_database.json      # GPU VRAM lookup table
 │   └── models.js              # merge: snapshot + registry + enrichment
+├── scripts/
+│   └── demo.mjs               # Playwright demo GIF capture
+├── docs/
+│   └── demo.gif               # README demo
 ├── _site/                     # built output (generated)
 ├── eleventy.config.ts
 ├── package.json
@@ -69,7 +89,36 @@ whatsmylocalai/
 `query.js` from node_modules at build time so the browser can resolve it
 (`<script type="module">`).
 
-## Getting new models
+## Development
+
+| Command             | Description                                |
+| ------------------- | ------------------------------------------ |
+| `npm install`       | Install dependencies                       |
+| `npm run dev`       | Start dev server with live reload          |
+| `npm run build`     | Build production site (clean + full build) |
+| `npm run clean`     | Remove `_site` directory                   |
+
+### Regenerating the Demo GIF
+
+```bash
+npm run build
+node scripts/demo.mjs
+```
+
+Requires [Playwright](https://playwright.dev) (installed as a dev dependency) to
+capture the page, and [ffmpeg](https://ffmpeg.org) to convert the recording to a
+GIF. The output is written to `docs/demo.gif`.
+
+### Eleventy Config
+
+The build is configured in `eleventy.config.ts`:
+
+- Passthrough copies `styles.css`, `app.js`, and Alpine.js from assets
+- Copies `query.js` from `@auxot/model-registry` into the output so the browser
+  can resolve the ESM import
+- Registers a `json` Liquid filter for inlining model data
+
+## Getting New Models
 
 When a new open-weights model is released:
 
@@ -84,3 +133,7 @@ Steps 1—2 are automatic — the data comes from community-maintained packages.
 
 Build output goes to `_site/`. Deploy as a static site to Cloudflare Pages,
 Netlify, or any static host.
+
+## License
+
+MIT — see [LICENSE](/LICENSE) for details.
