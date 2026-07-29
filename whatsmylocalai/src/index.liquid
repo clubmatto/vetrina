@@ -35,98 +35,95 @@
     <main id="main" x-data="app()">
       <div class="detect-header">
         <h1>What's my local AI?</h1>
-        <p class="specs-intro">
-          We try our best to detect your specs. Tweak our findings and the recommendations
-          update live.
-        </p>
       </div>
 
-      <div class="machine-panel" id="detect-panel">
-        <div class="machine-panel-header">
-          <span class="machine-panel-title">Your machine</span>
-        </div>
-        <div class="dials">
-          <div class="dial" style="position: relative">
-            <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.vram }">
-              <div class="dial-head">
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
-                <span class="dial-label">VRAM</span>
-                <span class="badge" :class="'badge-' + vramConfidence" x-text="vramConfidence" :style="!probeDone.vram ? 'visibility: hidden' : ''"></span>
-              </div>
-              <div class="stepper">
-                <button type="button" @click="adjust('vram', -1)" aria-label="decrease VRAM">−</button>
-                <span class="stepper-value" x-text="probeDone.vram ? vram + ' GB' : '-- GB'"></span>
-                <button type="button" @click="adjust('vram', 1)" aria-label="increase VRAM">+</button>
-              </div>
-              <div class="dial-note" x-text="vramSource" :style="!probeDone.vram ? 'visibility: hidden' : ''"></div>
+      <section id="detect-panel" class="machine">
+        <h2 class="machine-title">Your machine</h2>
+        <p class="specs-intro">We try our best to detect your specs. Tweak our findings and the recommendations update live.</p>
+
+        <div class="machine-row" style="position: relative">
+          <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
+          <div :class="{ 'is-probing': !probeDone.vram }" class="machine-row-inner">
+            <span class="machine-label">
+              <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg>
+              VRAM
+            </span>
+            <div class="stepper">
+              <button type="button" @click="adjust('vram', -1)" aria-label="decrease VRAM">−</button>
+              <span class="stepper-value" x-text="probeDone.vram ? vram + ' GB' : '-- GB'"></span>
+              <button type="button" @click="adjust('vram', 1)" aria-label="increase VRAM">+</button>
             </div>
           </div>
-          <div class="dial" style="position: relative">
-            <div x-show="!probeDone.ram" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.ram }">
-              <div class="dial-head">
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
-                <span class="dial-label">RAM</span>
-                <span class="badge" :class="'badge-' + ramConfidence" x-text="ramConfidence" :style="!probeDone.ram ? 'visibility: hidden' : ''"></span>
-              </div>
-              <div class="stepper">
-                <button type="button" @click="adjust('ram', -2)" aria-label="decrease RAM">−</button>
-                <span class="stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
-                <button type="button" @click="adjust('ram', 2)" aria-label="increase RAM">+</button>
-              </div>
-              <div class="dial-note" x-text="ramNote" :style="!probeDone.ram ? 'visibility: hidden' : ''"></div>
+          <div class="machine-note" x-text="vramSource" :style="!probeDone.vram ? 'visibility: hidden' : ''"></div>
+        </div>
+
+        <div class="machine-row" style="position: relative">
+          <div x-show="!probeDone.ram" class="probe-overlay"><span class="probe-spinner"></span></div>
+          <div :class="{ 'is-probing': !probeDone.ram }" class="machine-row-inner">
+            <span class="machine-label">
+              <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4"/><path d="M8 16v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/><path d="M8 12h8"/></svg>
+              RAM
+            </span>
+            <div class="stepper">
+              <button type="button" @click="adjust('ram', -2)" aria-label="decrease RAM">−</button>
+              <span class="stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
+              <button type="button" @click="adjust('ram', 2)" aria-label="increase RAM">+</button>
             </div>
           </div>
+          <div class="machine-note" x-text="ramNote" :style="!probeDone.ram ? 'visibility: hidden' : ''"></div>
         </div>
-        <dl class="readouts">
-          <div class="readout" style="position: relative">
+
+        <div class="machine-specs">
+          <div class="machine-spec" style="position: relative">
             <div x-show="!probeDone.gpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.gpu }">
-              <dt>
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg><span>GPU</span>
-              </dt>
-              <dd class="readout-value" x-text="probeDone.gpu ? gpuValue() : '--'"></dd>
-              <dd class="readout-src" x-text="!gpuName ? 'not available' : ''" :style="!probeDone.gpu ? 'visibility: hidden' : ''"></dd>
+            <div :class="{ 'is-probing': !probeDone.gpu }" class="machine-spec-inner">
+              <div class="machine-spec-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg>
+                <span class="machine-spec-label">GPU</span>
+              </div>
+              <span class="machine-spec-value" x-text="probeDone.gpu ? gpuValue() : '--'"></span>
             </div>
           </div>
-          <div class="readout" style="position: relative">
+          <div class="machine-spec" style="position: relative">
             <div x-show="!probeDone.cpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.cpu }">
-              <dt>
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/></svg><span>CPU</span>
-              </dt>
-              <dd class="readout-value" x-text="probeDone.cpu ? (cores ? cores + ' cores' : 'unknown') : '--'"></dd>
-              <dd class="readout-src" :style="!probeDone.cpu ? 'visibility: hidden' : ''"></dd>
+            <div :class="{ 'is-probing': !probeDone.cpu }" class="machine-spec-inner">
+              <div class="machine-spec-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/></svg>
+                <span class="machine-spec-label">CPU</span>
+              </div>
+              <span class="machine-spec-value" x-text="probeDone.cpu ? (cores ? cores + ' cores' : 'unknown') : '--'"></span>
             </div>
           </div>
-          <div class="readout" style="position: relative">
+          <div class="machine-spec" style="position: relative">
             <div x-show="!probeDone.os" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.os }">
-              <dt>
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/></svg><span>OS</span>
-              </dt>
-              <dd class="readout-value" x-text="probeDone.os ? os : '--'"></dd>
-              <dd class="readout-src" :style="!probeDone.os ? 'visibility: hidden' : ''"></dd>
+            <div :class="{ 'is-probing': !probeDone.os }" class="machine-spec-inner">
+              <div class="machine-spec-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/></svg>
+                <span class="machine-spec-label">OS</span>
+              </div>
+              <span class="machine-spec-value" x-text="probeDone.os ? os : '--'"></span>
             </div>
           </div>
-          <div class="readout" style="position: relative">
+          <div class="machine-spec" style="position: relative">
             <div x-show="!probeDone.webgpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.webgpu }">
-              <dt>
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/></svg><span>WebGPU</span>
-              </dt>
-              <dd class="readout-value" :class="probeDone.webgpu ? (webgpu ? 'spec-status-ok' : 'spec-status-ko') : ''" x-text="probeDone.webgpu ? (webgpu ? 'supported' : 'not available') : '--'"></dd>
-              <dd class="readout-src" :style="!probeDone.webgpu ? 'visibility: hidden' : ''"></dd>
+            <div :class="{ 'is-probing': !probeDone.webgpu }" class="machine-spec-inner">
+              <div class="machine-spec-head">
+                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/></svg>
+                <span class="machine-spec-label">WebGPU</span>
+              </div>
+              <span class="machine-spec-value" :class="probeDone.webgpu ? (webgpu ? 'spec-status-ok' : 'spec-status-ko') : ''" x-text="probeDone.webgpu ? (webgpu ? 'supported' : 'not available') : '--'"></span>
             </div>
           </div>
-        </dl>
-      </div>
+        </div>
+      </section>
 
       <script id="model-data" type="application/json">{{ models | json }}</script>
       <script id="gpu-database" type="application/json">{{ gpu_database | json }}</script>
 
       <section class="best-pick-row" id="best-pick-row">
+        <h2 class="section-title">Your local model</h2>
+        <p class="specs-intro">Make sure the CLI is enabled in your tool. More models below.</p>
+
         <div class="runner-toggle" role="group" aria-label="choose how to run models">
           <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">
             LM Studio
@@ -136,44 +133,47 @@
           </button>
         </div>
 
-        <div class="best-pick-card" style="position: relative">
+        <article class="model-card best-pick-card" :class="{ tight: bestModel ? isTight(bestModel) : false }">
           <div x-show="!displayReady" class="probe-overlay"><span class="probe-spinner"></span></div>
-          <div class="best-pick-inner">
-              <div class="best-pick-kicker" x-text="displayReady ? (bestModel ? 'Your best pick' : 'Ouch') : 'Analyzing your machine'"></div>
-
-              <template x-if="displayReady && bestModel">
-                <div>
-                  <div class="best-pick-name" x-text="bestModel.model_name"></div>
-                  <div class="best-pick-why" x-text="'the largest model that fits in your ~' + vram + ' GB — needs about ' + bestModel.vram_requirements_gb + ' GB at Q4.'"></div>
-                  <div class="model-meta" style="margin-top: 0.75rem">
-                    <span class="chip" x-text="bestModel.parameters"></span>
-                    <span class="chip" x-text="'~' + bestModel.vram_requirements_gb + ' GB Q4'"></span>
-                    <template x-for="cap in bestModel.capabilities" :key="cap">
-                      <span class="chip" x-text="cap"></span>
-                    </template>
-                    <span class="chip chip-tight" x-show="isTight(bestModel)">tight fit</span>
-                  </div>
-                  <button type="button" class="run-cmd" @click="copyCmd(bestModel)" :class="{ copied: copiedId === bestModel.id }" :aria-label="'copy command: ' + runCmd(bestModel)">
-                    <code x-text="runCmd(bestModel)"></code>
-                    <span class="run-cmd-hint" x-text="copiedId === bestModel.id ? 'copied!' : 'copy'"></span>
-                  </button>
-                </div>
-              </template>
-
-              <template x-if="displayReady && !bestModel">
-                <div>
-                  <div class="best-pick-name" x-text="'nothing fits in ' + vram + ' GB'"></div>
-                  <div class="best-pick-why">
-                    even the tiniest model here wants ~2 GB. double-check your numbers above?
-                  </div>
-                </div>
-              </template>
+          <div x-show="!displayReady" class="skeleton" aria-hidden="true">
+            <div class="skeleton-name"></div>
+            <div class="skeleton-cmd"></div>
+            <div class="skeleton-tags">
+              <span class="skeleton-chip"></span>
+              <span class="skeleton-chip"></span>
+              <span class="skeleton-chip"></span>
             </div>
-        </div>
+          </div>
+
+          <template x-if="displayReady && bestModel">
+            <div class="best-pick-body">
+              <div class="model-name" x-text="bestModel.model_name"></div>
+              <button type="button" class="run-cmd" @click="copyCmd(bestModel)" :class="{ copied: copiedId === bestModel.id }" :aria-label="'copy command: ' + runCmd(bestModel)">
+                <code x-text="runCmd(bestModel)"></code>
+                <span class="run-cmd-hint" x-text="copiedId === bestModel.id ? 'copied!' : 'copy'"></span>
+              </button>
+              <div class="model-meta">
+                <span class="chip" x-text="bestModel.parameters"></span>
+                <span class="chip" x-text="'~' + bestModel.vram_requirements_gb + ' GB Q4'"></span>
+                <template x-for="cap in bestModel.capabilities" :key="cap">
+                  <span class="chip" x-text="cap"></span>
+                </template>
+                <span class="chip chip-tight" x-show="isTight(bestModel)">tight fit</span>
+              </div>
+            </div>
+          </template>
+
+          <template x-if="displayReady && !bestModel">
+            <div class="best-pick-body">
+              <div class="model-name" x-text="'nothing fits in ' + vram + ' GB'"></div>
+              <p class="best-pick-why">even the tiniest model here wants ~2 GB. double-check your numbers above?</p>
+            </div>
+          </template>
+        </article>
       </section>
 
       <section class="models" id="models" :class="{ preview: !displayReady }">
-        <h2>Also runs</h2>
+        <h2>Other options</h2>
         <div class="models-toolbar" x-show="alsoRuns.length >= 6" x-cloak>
           <input
             type="search"
@@ -209,6 +209,10 @@
             <template x-for="model in visibleAlsoRuns" :key="model.id">
               <article class="model-card" :class="{ tight: isTight(model) }">
                 <div class="model-name" x-text="model.model_name"></div>
+                <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
+                  <code x-text="runCmd(model)"></code>
+                  <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+                </button>
                 <div class="model-meta">
                   <span class="chip" x-text="model.parameters"></span>
                   <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
@@ -217,11 +221,6 @@
                   </template>
                   <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
                 </div>
-                <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
-                <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
-                  <code x-text="runCmd(model)"></code>
-                  <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
-                </button>
               </article>
             </template>
           </div>
@@ -238,6 +237,10 @@
                 <template x-for="model in group.models" :key="model.id">
                   <article class="model-card" :class="{ tight: isTight(model) }">
                     <div class="model-name" x-text="model.model_name"></div>
+                    <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
+                      <code x-text="runCmd(model)"></code>
+                      <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+                    </button>
                     <div class="model-meta">
                       <span class="chip" x-text="model.parameters"></span>
                       <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
@@ -246,11 +249,6 @@
                       </template>
                       <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
                     </div>
-                    <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
-                    <button type="button" class="run-cmd" @click="copyCmd(model)" :class="{ copied: copiedId === model.id }" :aria-label="'copy command: ' + runCmd(model)">
-                      <code x-text="runCmd(model)"></code>
-                      <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
-                    </button>
                   </article>
                 </template>
               </div>

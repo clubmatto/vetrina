@@ -54,7 +54,6 @@ document.addEventListener("alpine:init", () => {
     gpuName: null,
     vendor: "unknown",
     vram: 4,
-    vramConfidence: "low",
     vramSource: "wild guess",
     ram: 16,
     ramKnown: false,
@@ -129,7 +128,6 @@ document.addEventListener("alpine:init", () => {
     estimateVRAM() {
       if (this.vendor === "apple") {
         this.vram = Math.round(this.ram * 0.7);
-        this.vramConfidence = this.ramKnown && !this.ramCapped ? "medium" : "low";
         this.vramSource = "unified memory (~70% of RAM)";
         return;
       }
@@ -137,24 +135,17 @@ document.addEventListener("alpine:init", () => {
         const hit = lookupGPU(this.gpuName, this.gpuDatabase);
         if (hit) {
           this.vram = hit.vram;
-          this.vramConfidence = "high";
           this.vramSource = "known GPU";
           return;
         }
       }
       if (this.ramKnown) {
         this.vram = nearestTier(Math.max(2, this.ram * 0.5));
-        this.vramConfidence = "low";
         this.vramSource = this.vendor === "intel" ? "shared memory guess" : "guess from RAM";
         return;
       }
       this.vram = 4;
-      this.vramConfidence = "low";
       this.vramSource = "wild guess \u2014 adjust below";
-    },
-
-    get ramConfidence() {
-      return this.ramKnown ? (this.ramCapped ? "low" : "high") : "low";
     },
 
     get ramNote() {

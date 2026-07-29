@@ -276,24 +276,63 @@ section {
   z-index: 1;
 }
 
-.machine-panel-header {
+.probe-overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
+  justify-content: center;
+  z-index: 1;
 }
 
-.machine-panel-title {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  background: var(--gradient-text);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-shift 8s ease-in-out infinite alternate;
+.best-pick-card .probe-overlay {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+
+.skeleton {
+  width: 100%;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeleton-name {
+  height: 2rem;
+  width: 60%;
+  border-radius: 4px;
+  background: var(--border);
+}
+
+.skeleton-cmd {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--border);
+}
+
+.skeleton-tags {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.skeleton-chip {
+  height: 1.5rem;
+  width: 4rem;
+  border-radius: var(--radius-full);
+  background: var(--border);
+}
+
+.skeleton-name,
+.skeleton-cmd,
+.skeleton-chip {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
 }
 
 .probe-spinner {
@@ -304,15 +343,6 @@ section {
   border-top-color: transparent;
   border-radius: 50%;
   animation: probe-spin 0.6s linear infinite;
-}
-
-.probe-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
 }
 
 .is-probing {
@@ -345,10 +375,26 @@ section {
   scroll-margin-top: var(--space-6);
 }
 
-
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  background: var(--gradient-text);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 8s ease-in-out infinite alternate;
+  margin-bottom: var(--space-3);
+}
 
 .best-pick-row .runner-toggle {
   margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+.best-pick-row .model-card {
+  position: relative;
+  max-width: 480px;
 }
 
 .models {
@@ -357,7 +403,7 @@ section {
 }
 
 .specs-intro {
-  margin-top: var(--space-2);
+  margin: 0 0 var(--space-6);
   font-family: var(--font-sans);
   font-size: 0.9rem;
   color: var(--text-secondary);
@@ -373,104 +419,104 @@ section {
   color: var(--text-secondary);
 }
 
-.machine-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
-.dials {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.dial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-3);
-}
-
-.dial + .dial {
-  border-left: 1px solid var(--border);
-}
-
-.dial-head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
 .spec-icon {
-  width: 1.1rem;
-  height: 1.1rem;
-  opacity: 0.55;
+  width: 0.95rem;
+  height: 0.95rem;
+  opacity: 0.5;
   flex-shrink: 0;
 }
 
-.dial-label {
+.machine-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  background: var(--gradient-text);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 8s ease-in-out infinite alternate;
+  margin: 0 0 var(--space-1);
+}
+
+.machine-row {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: var(--space-3);
+}
+
+.machine-row + .machine-row {
+  margin-top: var(--space-3);
+}
+
+.machine-row-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.machine-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.machine-note {
+  margin-top: var(--space-1);
   font-size: 0.75rem;
-  letter-spacing: 0.08em;
   color: var(--text-secondary);
+  line-height: 1.3;
 }
 
-.dial-note {
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  text-align: center;
-  min-height: 1.2em;
-}
-
-.readouts {
-  margin: 0;
+.machine-specs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
   background: var(--border);
-  border-top: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-top: var(--space-3);
 }
 
-.readout {
+.machine-spec {
   background: var(--surface);
-  padding: var(--space-3);
+  padding: var(--space-2);
 }
 
-.readout dt {
+.machine-spec-inner {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--text-secondary);
 }
 
-.readout dt .spec-icon {
-  width: 0.95rem;
-  height: 0.95rem;
+.machine-spec-head {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
-.readout dd {
-  margin: 0;
-}
-
-.readout-value {
-  margin-top: var(--space-1);
+.machine-spec-value {
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem;
   font-weight: 700;
-  font-size: 0.95rem;
-  overflow-wrap: anywhere;
-  min-height: 1.5em;
+  color: var(--text);
 }
 
-.readout-src {
-  margin-top: var(--space-1);
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
+.machine-spec-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
   color: var(--text-secondary);
-  min-height: 1em;
+  line-height: 1;
 }
 
 .spec-status-ok {
@@ -481,45 +527,29 @@ section {
   color: var(--bad);
 }
 
-.badge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.15em 0.6em;
-  border-radius: var(--radius-full);
-  border: 1px solid currentColor;
-  text-transform: lowercase;
-}
-
-.badge-high {
-  color: var(--ok);
-}
-
-.badge-medium {
-  color: var(--info);
-}
-
-.badge-low {
-  color: var(--warn);
-}
-
 .stepper {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .stepper button {
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: var(--radius-md);
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
   font-family: inherit;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
 }
 
 .stepper button:hover {
@@ -527,9 +557,9 @@ section {
 }
 
 .stepper .stepper-value {
-  font-size: 1.5rem;
-  font-weight: 800;
-  min-width: 4.5ch;
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 7ch;
   text-align: center;
 }
 
@@ -667,40 +697,17 @@ section {
   color: var(--text-secondary);
 }
 
-.best-pick-card {
-  margin-top: var(--space-6);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow-md);
-  min-height: 260px;
-}
-
-.best-pick-inner {
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-}
-
-.best-pick-kicker {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.best-pick-name {
-  margin-top: var(--space-2);
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 800;
-}
-
 .best-pick-why {
   margin-top: var(--space-2);
   font-family: var(--font-sans);
   font-size: 0.9rem;
   color: var(--text-secondary);
+}
+
+.best-pick-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .model-grid {
@@ -1022,16 +1029,7 @@ section {
     display: none;
   }
 
-  .dials {
-    grid-template-columns: 1fr;
-  }
-
-  .dial + .dial {
-    border-left: none;
-    border-top: 1px solid var(--border);
-  }
-
-  .readouts {
+  .machine-specs {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -1044,14 +1042,10 @@ section {
     min-width: 0;
   }
 
-  .best-pick-row .best-pick-card {
-    margin-top: var(--space-4);
-  }
-
   .stepper button {
-    width: 2.75rem;
-    height: 2.75rem;
-    font-size: 1.3rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.1rem;
   }
 
 }
