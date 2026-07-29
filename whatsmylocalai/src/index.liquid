@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>whatsmylocalai — which local AI can your machine run?</title>
+    <title>What's my local AI?</title>
     <meta
       name="description"
-      content="Open the page, we detect your hardware right in your browser, and tell you which local models to run with ollama or LM Studio. Nothing leaves your machine."
+      content="This page detects your hardware right in your browser, and tell you which local models to run with Ollama or LM Studio. Nothing leaves your machine."
     >
     <meta property="og:title" content="whatsmylocalai">
     <meta
@@ -32,148 +32,122 @@
   <body>
     <a class="skip-link" href="#main">skip to content</a>
 
-    <nav class="nav">
-      <h1 class="wordmark">whatsmylocalai</h1>
-      <button
-        class="theme-toggle"
-        id="theme-toggle"
-        type="button"
-        aria-label="toggle color scheme"
-        title="toggle color scheme"
-      >
-        <svg
-          class="icon-sun"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" /><path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" /><path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-        <svg
-          class="icon-moon"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      </button>
-    </nav>
-
     <main id="main" x-data="app()">
-      <section class="probe" aria-label="hardware probe">
-        <div class="terminal">
-          <div class="terminal-header">
-            <span class="terminal-dot"></span>
-            <span class="terminal-dot"></span>
-            <span class="terminal-dot"></span>
-            <span class="terminal-title">hardware probe</span>
+      <div class="detect-header">
+        <h1>What's my local AI?</h1>
+        <p class="specs-intro">
+          We try our best to detect your specs. Tweak our findings and the recommendations
+          update live.
+        </p>
+      </div>
+
+      <div class="detect-row-grid">
+        <section class="probe" aria-label="hardware probe">
+          <div class="machine-panel">
+            <div class="machine-panel-header">
+              <span class="machine-panel-title">Hardware probe</span>
+            </div>
+            <div class="probe-body" id="terminal-body" aria-live="polite"></div>
           </div>
-          <div class="terminal-body" id="terminal-body" aria-live="polite"></div>
+        </section>
+
+        <div class="detect-specs">
+          <div class="machine-panel">
+            <div class="machine-panel-header">
+              <span class="machine-panel-title">Your machine</span>
+            </div>
+            <div style="position: relative">
+              <div class="preview-spinner" x-show="!displayReady"></div>
+              <div :class="{ preview: !displayReady }">
+                <div class="dials">
+                <div class="dial">
+                  <div class="dial-head">
+                    <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
+                    <span class="dial-label">VRAM</span>
+                    <span class="badge" :class="'badge-' + vramConfidence" x-text="displayReady ? vramConfidence : ''"></span>
+                  </div>
+                  <div class="stepper">
+                    <button type="button" @click="adjust('vram', -1)" aria-label="decrease VRAM">−</button>
+                    <span class="stepper-value" x-text="displayReady ? vram + ' GB' : '-- GB'"></span>
+                    <button type="button" @click="adjust('vram', 1)" aria-label="increase VRAM">+</button>
+                  </div>
+                  <div class="dial-note" x-text="displayReady ? vramSource : ''"></div>
+                </div>
+                <div class="dial">
+                  <div class="dial-head">
+                    <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
+                    <span class="dial-label">RAM</span>
+                    <span class="badge" :class="'badge-' + ramConfidence" x-text="displayReady ? ramConfidence : ''"></span>
+                  </div>
+                  <div class="stepper">
+                    <button type="button" @click="adjust('ram', -2)" aria-label="decrease RAM">−</button>
+                    <span class="stepper-value" x-text="displayReady ? ram + ' GB' : '-- GB'"></span>
+                    <button type="button" @click="adjust('ram', 2)" aria-label="increase RAM">+</button>
+                  </div>
+                  <div class="dial-note" x-text="displayReady ? ramNote : ''"></div>
+                </div>
+              </div>
+              <dl class="readouts">
+                <div class="readout">
+                  <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg><span>GPU</span></dt>
+                  <dd class="readout-value" x-text="displayReady ? gpuValue() : '\u2026'"></dd>
+                  <dd class="readout-src" x-text="displayReady && !gpuName ? 'not available' : ''"></dd>
+                </div>
+                <div class="readout">
+                  <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/></svg><span>CPU</span></dt>
+                  <dd class="readout-value" x-text="displayReady ? (cores ? cores + ' cores' : 'unknown') : '\u2026'"></dd>
+                  <dd class="readout-src"></dd>
+                </div>
+                <div class="readout">
+                  <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/></svg><span>OS</span></dt>
+                  <dd class="readout-value" x-text="displayReady ? os : '\u2026'"></dd>
+                  <dd class="readout-src"></dd>
+                </div>
+                <div class="readout">
+                  <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/></svg><span>WebGPU</span></dt>
+                  <dd class="readout-value">
+                    <template x-if="displayReady && webgpu">
+                      <span class="spec-status-ok">✓ supported</span>
+                    </template>
+                    <template x-if="displayReady && !webgpu">
+                      <span class="spec-status-ko">✗ not available</span>
+                    </template>
+                    <template x-if="!displayReady">
+                      <span>\u2026</span>
+                    </template>
+                  </dd>
+                  <dd class="readout-src"></dd>
+                </div>
+              </dl>
+            </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
       <script id="model-data" type="application/json">{{ models | json }}</script>
       <script id="gpu-database" type="application/json">{{ gpu_database | json }}</script>
 
-      <section class="specs" id="specs" x-show="phase === 'results'" x-cloak :class="{ revealed: phase === 'results' }">
-        <h2>Your machine</h2>
-        <p class="specs-intro">
-          numbers you can adjust are below — tweak them and the recommendations
-          update live. everything else was detected automatically.
-        </p>
-        <p class="legend">
-          <span class="badge badge-high">high</span>
-          <span class="badge badge-medium">medium</span>
-          <span class="badge badge-low">low</span>
-          <span>
-            — how confident we are in each detected number. low confidence?
-            trust yourself: adjust the dial and recommendations update.
-          </span>
-        </p>
-        <div class="machine-panel">
-          <div class="dials">
-            <div class="dial">
-              <div class="dial-head">
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
-                <span class="dial-label">vram</span>
-                <span class="badge" :class="'badge-' + vramConfidence" x-text="vramConfidence"></span>
-              </div>
-              <div class="stepper">
-                <button type="button" @click="adjust('vram', -1)" aria-label="decrease vram">−</button>
-                <span class="stepper-value" x-text="vram + ' GB'"></span>
-                <button type="button" @click="adjust('vram', 1)" aria-label="increase vram">+</button>
-              </div>
-              <div class="dial-note" x-text="vramSource"></div>
-            </div>
-            <div class="dial">
-              <div class="dial-head">
-                <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="10" rx="1.5"/><rect x="7" y="10" width="3" height="3" rx="0.5"/><rect x="14" y="10" width="3" height="3" rx="0.5"/><path d="M10 10V16"/><path d="M14 10V16"/><path d="M4 14H20"/></svg>
-                <span class="dial-label">ram</span>
-                <span class="badge" :class="'badge-' + ramConfidence" x-text="ramConfidence"></span>
-              </div>
-              <div class="stepper">
-                <button type="button" @click="adjust('ram', -2)" aria-label="decrease ram">−</button>
-                <span class="stepper-value" x-text="ram + ' GB'"></span>
-                <button type="button" @click="adjust('ram', 2)" aria-label="increase ram">+</button>
-              </div>
-              <div class="dial-note" x-text="ramNote"></div>
-            </div>
-          </div>
-          <dl class="readouts">
-            <div class="readout">
-              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/></svg><span>gpu</span></dt>
-              <dd class="readout-value" x-text="gpuValue()"></dd>
-              <dd class="readout-src" x-text="gpuName ? 'via webgl' : 'not available'"></dd>
-            </div>
-            <div class="readout">
-              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/></svg><span>cpu</span></dt>
-              <dd class="readout-value" x-text="cores ? cores + ' cores' : 'unknown'"></dd>
-              <dd class="readout-src" x-text="cores ? 'via hardwareConcurrency' : ''"></dd>
-            </div>
-            <div class="readout">
-              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/></svg><span>os</span></dt>
-              <dd class="readout-value" x-text="os"></dd>
-              <dd class="readout-src">via user agent</dd>
-            </div>
-            <div class="readout">
-              <dt><svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/></svg><span>webgpu</span></dt>
-              <dd class="readout-value">
-                <span x-show="webgpu" class="spec-status-ok">✓ supported</span>
-                <span x-show="!webgpu" class="spec-status-ko">✗ not available</span>
-              </dd>
-              <dd class="readout-src">via navigator.gpu</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
-      <section class="models" id="models" x-show="phase === 'results'" x-cloak :class="{ revealed: phase === 'results' }">
-        <h2>Your best local models</h2>
+      <section class="best-pick-row" id="best-pick-row">
         <div class="runner-toggle" role="group" aria-label="choose how to run models">
           <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">
-            lm studio
+            LM Studio
           </button>
           <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">
-            ollama
+            Ollama
           </button>
         </div>
 
-        <template x-if="bestModel">
+        <template x-if="!displayReady">
+          <div class="best-pick-card">
+            <div class="best-pick-inner">
+              <div class="best-pick-kicker">analyzing your machine</div>
+              <div class="preview-spinner"></div>
+            </div>
+          </div>
+        </template>
+
+        <template x-if="displayReady && bestModel">
           <div class="best-pick-card">
             <div class="best-pick-inner">
               <div class="best-pick-kicker">your best pick</div>
@@ -194,7 +168,7 @@
             </div>
           </div>
         </template>
-        <template x-if="!bestModel">
+        <template x-if="displayReady && !bestModel">
           <div class="best-pick-card">
             <div class="best-pick-inner">
               <div class="best-pick-kicker">ouch</div>
@@ -205,8 +179,10 @@
             </div>
           </div>
         </template>
+      </section>
 
-        <h3 class="models-subheading">Also runs</h3>
+      <section class="models" id="models" :class="{ preview: !displayReady }">
+        <h2>Also runs</h2>
         <div class="models-toolbar" x-show="alsoRuns.length >= 6" x-cloak>
           <input
             type="search"
@@ -290,38 +266,54 @@
             </section>
           </template>
         </template>
-
-        <details class="too-big" x-show="tooBigModels.length > 0">
-          <summary>Beyond this machine</summary>
-          <div class="model-grid">
-            <template x-for="model in tooBigModels" :key="model.id">
-              <article class="model-card">
-                <div class="model-name" x-text="model.model_name"></div>
-                <div class="model-meta">
-                  <span class="chip" x-text="model.parameters"></span>
-                  <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
-                  <template x-for="cap in model.capabilities" :key="cap">
-                    <span class="chip" x-text="cap"></span>
-                  </template>
-                </div>
-                <p class="model-blurb" x-text="model.blurb || model.description || ''"></p>
-              </article>
-            </template>
-          </div>
-        </details>
-
-        <p class="hint" x-text="runnerHint"></p>
       </section>
     </main>
 
+    <section class="detection-credit">
+      <div class="detection-credit-container">
+        <h2 class="detection-credit-heading">How detection works</h2>
+        <dl class="detection-credit-list">
+          <div class="detection-credit-item">
+            <dt>GPU</dt>
+            <dd>WebGL renderer string</dd>
+          </div>
+          <div class="detection-credit-item">
+            <dt>VRAM</dt>
+            <dd>GPU database lookup, unified memory on Apple, or estimate from RAM</dd>
+          </div>
+          <div class="detection-credit-item">
+            <dt>RAM</dt>
+            <dd><code>navigator.deviceMemory</code> API</dd>
+          </div>
+          <div class="detection-credit-item">
+            <dt>CPU</dt>
+            <dd><code>navigator.hardwareConcurrency</code></dd>
+          </div>
+          <div class="detection-credit-item">
+            <dt>OS</dt>
+            <dd>user agent parsing</dd>
+          </div>
+          <div class="detection-credit-item">
+            <dt>WebGPU</dt>
+            <dd><code>navigator.gpu</code> presence</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
     <footer class="footer">
-      <p>
-        we peek at your hardware and tell you which models to run with
-        <a href="https://ollama.com" rel="noopener">ollama</a> or
-        <a href="https://lmstudio.ai" rel="noopener">lm studio</a>.
-        nothing leaves your browser.
-        a <a href="https://matto.club" rel="noopener">club matto</a> thing.
-      </p>
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-left">
+            <span class="copyright">&copy; 2026 Club Matto</span>
+            <span class="separator">|</span>
+            <a href="/credits/" class="credits-link">Credits</a>
+          </div>
+          <a href="https://github.com/clubmatto/vetrina" class="social-link" aria-label="GitHub">
+            <svg fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+        </div>
+      </div>
     </footer>
 
     <script type="module" src="assets/app.js"></script>

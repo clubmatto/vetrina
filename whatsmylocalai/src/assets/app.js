@@ -73,7 +73,7 @@ document.addEventListener("alpine:init", () => {
     filterSort: "size-desc",
     modelRegistry: null,
     gpuDatabase: [],
-    phase: "terminal",
+    phase: "probing",
     reducedMotion: false,
 
     init() {
@@ -133,7 +133,7 @@ document.addEventListener("alpine:init", () => {
       if (this.vendor === "apple") {
         this.vram = Math.round(this.ram * 0.7);
         this.vramConfidence = this.ramKnown && !this.ramCapped ? "medium" : "low";
-        this.vramSource = "unified memory (~70% of ram)";
+        this.vramSource = "unified memory (~70% of RAM)";
         return;
       }
       if (this.gpuName) {
@@ -141,14 +141,14 @@ document.addEventListener("alpine:init", () => {
         if (hit) {
           this.vram = hit.vram;
           this.vramConfidence = "high";
-          this.vramSource = "known gpu";
+          this.vramSource = "known GPU";
           return;
         }
       }
       if (this.ramKnown) {
         this.vram = nearestTier(Math.max(2, this.ram * 0.5));
         this.vramConfidence = "low";
-        this.vramSource = this.vendor === "intel" ? "shared memory guess" : "guess from ram";
+        this.vramSource = this.vendor === "intel" ? "shared memory guess" : "guess from RAM";
         return;
       }
       this.vram = 4;
@@ -255,11 +255,15 @@ document.addEventListener("alpine:init", () => {
       try { localStorage.setItem("runner", value); } catch {}
     },
 
+    get displayReady() {
+      return this.phase === "results";
+    },
+
     get runnerHint() {
       if (this.runner === "ollama") {
-        return "sizes assume Q4 quantization. commands need ollama \u2014 get it at ollama.com.";
+        return "sizes assume Q4 quantization. commands need Ollama \u2014 get it at ollama.com.";
       }
-      return "sizes assume Q4 quantization. commands use lm studio's lms cli \u2014 enable it in lm studio under settings \u2192 developer.";
+      return "sizes assume Q4 quantization. commands use LM Studio's lms cli \u2014 enable it in LM Studio under settings \u2192 developer.";
     },
 
     runCmd(model) {
@@ -294,66 +298,72 @@ document.addEventListener("alpine:init", () => {
       return this.ramCapped ? `\u2265${this.ram} GB` : `${this.ram} GB`;
     },
 
-    terminalLines() {
-      const lines = [
-        { prompt: true, text: "probing hardware\u2026" },
-        { label: "gpu", value: this.gpuValue(), comment: this.gpuName ? null : "blocked by this browser" },
-        { label: "ram", value: this.ramValue(), comment: this.ramKnown ? "browser estimate" : "this browser won't say \u2014 set it below" },
-        { label: "cpu", value: this.cores ? `${this.cores} cores` : "unknown", comment: null },
-        { label: "os", value: this.os, comment: null },
-        { label: "webgpu", value: this.webgpu ? "yes" : "no", comment: null },
-        { prompt: true, text: "estimating graphics memory\u2026" },
-        { label: "vram", value: `~${this.vram} GB`, comment: `${this.vramSource} \u00b7 confidence: ${this.vramConfidence}` },
-        { prompt: true, text: `checking ${this.modelRegistry?.models.length || 0} models\u2026` },
-        { prompt: true, text: "done \u2014 your models are ready \u2193" },
+    probeItems() {
+      const items = [
+        { label: "GPU", value: this.gpuValue(), comment: this.gpuName ? null : "blocked by this browser" },
+        { label: "RAM", value: this.ramValue(), comment: this.ramKnown ? null : "Your browser won't tell us" },
+        { label: "CPU", value: this.cores ? `${this.cores} cores` : "unknown", comment: null },
+        { label: "OS", value: this.os, comment: null },
+        { label: "WebGPU", value: this.webgpu ? "yes" : "no", comment: null },
+        { label: "VRAM", value: `~${this.vram} GB`, comment: null },
       ];
       if (isMobileUA(navigator.userAgent)) {
-        lines.splice(-1, 0, { label: null, value: null, comment: "note: this is a phone \u2014 recommendations shine on desktops" });
+        items.push({ label: null, value: "this is a phone \u2014 recommendations shine on desktops" });
       }
-      return lines;
+      return items;
     },
 
     renderTerminal() {
       const body = document.getElementById("terminal-body");
       if (!body) { this.phase = "results"; return; }
-      const lines = this.terminalLines();
       body.innerHTML = "";
-      const cursor = document.createElement("span");
-      cursor.className = "terminal-cursor";
-      const delay = this.reducedMotion ? 0 : 120;
 
-      const showLine = (index) => {
-        if (index >= lines.length) { this.phase = "results"; return; }
-        const line = lines[index];
-        const el = document.createElement("span");
-        el.className = "terminal-line";
+      const items = this.probeItems();
+      const delay = this.reducedMotion ? 0 : 250;
 
-        if (line.prompt) {
-          const p = document.createElement("span");
-          p.className = "prompt";
-          p.textContent = "\u276f ";
-          el.appendChild(p);
-          el.appendChild(document.createTextNode(line.text));
+      items.forEach((item, index) => {
+        const el = document.createElement("div");
+        el.className = "probe-line";
+
+        const spinner = document.createElement("span");
+        spinner.className = "probe-spinner";
+        el.appendChild(spinner);
+
+        if (item.label) {
+          const label = document.createElement("span");
+          label.className = "probe-label";
+          label.textContent = `${item.label}: `;
+          el.appendChild(label);
+
+          const value = document.createElement("span");
+          value.className = "probe-value";
+          value.textContent = item.value;
+          el.appendChild(value);
+
+          if (item.comment) {
+            const note = document.createElement("span");
+            note.className = "probe-note";
+            note.textContent = item.comment;
+            el.appendChild(note);
+          }
         } else {
-          if (line.label) {
-            el.appendChild(document.createTextNode(`  ${line.label}: `));
-            const v = document.createElement("span");
-            v.className = "value";
-            v.textContent = line.value;
-            el.appendChild(v);
-          }
-          if (line.comment) {
-            const c = document.createElement("span");
-            c.className = "comment";
-            c.textContent = `  # ${line.comment}`;
-            el.appendChild(c);
-          }
+          const value = document.createElement("span");
+          value.className = "probe-value";
+          value.textContent = item.value;
+          el.appendChild(value);
         }
+
         body.appendChild(el);
-        el.appendChild(cursor);
-        setTimeout(() => showLine(index + 1), delay);
-      };
-      showLine(0);
+
+        setTimeout(() => {
+          spinner.className = "probe-check";
+          spinner.textContent = "\u2713";
+
+          if (index === items.length - 1) {
+            setTimeout(() => { this.phase = "results"; }, delay);
+          }
+        }, (index + 1) * delay);
+      });
     },
   }));
 });
