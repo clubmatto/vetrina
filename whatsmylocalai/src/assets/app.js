@@ -49,10 +49,6 @@ function detectOS(userAgent) {
   return "unknown";
 }
 
-function isMobileUA(userAgent) {
-  return /android|iphone|ipad|ipod|mobile/i.test(userAgent);
-}
-
 document.addEventListener("alpine:init", () => {
   Alpine.data("app", () => ({
     gpuName: null,
@@ -74,6 +70,7 @@ document.addEventListener("alpine:init", () => {
     modelRegistry: null,
     gpuDatabase: [],
     phase: "probing",
+    probeDone: { gpu: false, ram: false, cpu: false, os: false, webgpu: false, vram: false },
     reducedMotion: false,
 
     init() {
@@ -298,68 +295,22 @@ document.addEventListener("alpine:init", () => {
       return this.ramCapped ? `\u2265${this.ram} GB` : `${this.ram} GB`;
     },
 
-    probeItems() {
-      const items = [
-        { label: "GPU", value: this.gpuValue(), comment: this.gpuName ? null : "blocked by this browser" },
-        { label: "RAM", value: this.ramValue(), comment: this.ramKnown ? null : "Your browser won't tell us" },
-        { label: "CPU", value: this.cores ? `${this.cores} cores` : "unknown", comment: null },
-        { label: "OS", value: this.os, comment: null },
-        { label: "WebGPU", value: this.webgpu ? "yes" : "no", comment: null },
-        { label: "VRAM", value: `~${this.vram} GB`, comment: null },
-      ];
-      if (isMobileUA(navigator.userAgent)) {
-        items.push({ label: null, value: "this is a phone \u2014 recommendations shine on desktops" });
-      }
-      return items;
-    },
-
     renderTerminal() {
-      const body = document.getElementById("terminal-body");
-      if (!body) { this.phase = "results"; return; }
-      body.innerHTML = "";
-
-      const items = this.probeItems();
-      const delay = this.reducedMotion ? 0 : 250;
-
-      items.forEach((item, index) => {
-        const el = document.createElement("div");
-        el.className = "probe-line";
-
-        const spinner = document.createElement("span");
-        spinner.className = "probe-spinner";
-        el.appendChild(spinner);
-
-        if (item.label) {
-          const label = document.createElement("span");
-          label.className = "probe-label";
-          label.textContent = `${item.label}: `;
-          el.appendChild(label);
-
-          const value = document.createElement("span");
-          value.className = "probe-value";
-          value.textContent = item.value;
-          el.appendChild(value);
-
-          if (item.comment) {
-            const note = document.createElement("span");
-            note.className = "probe-note";
-            note.textContent = item.comment;
-            el.appendChild(note);
-          }
-        } else {
-          const value = document.createElement("span");
-          value.className = "probe-value";
-          value.textContent = item.value;
-          el.appendChild(value);
+      if (this.reducedMotion) {
+        for (const key in this.probeDone) {
+          this.probeDone[key] = true;
         }
+        this.phase = "results";
+        return;
+      }
 
-        body.appendChild(el);
+      const keys = ['gpu', 'ram', 'cpu', 'os', 'webgpu', 'vram'];
+      const delay = 250;
 
+      keys.forEach((key, index) => {
         setTimeout(() => {
-          spinner.className = "probe-check";
-          spinner.textContent = "\u2713";
-
-          if (index === items.length - 1) {
+          this.probeDone[key] = true;
+          if (index === keys.length - 1) {
             setTimeout(() => { this.phase = "results"; }, delay);
           }
         }, (index + 1) * delay);
