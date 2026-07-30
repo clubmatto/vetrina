@@ -1,0 +1,58 @@
+<header class="nav">
+  <aside class="banner" x-show="!bannerDismissed" x-cloak>
+    <p>
+      <svg class="banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Detection accuracy varies by browser. Results are most reliable on Chromium-based browsers.
+      <button class="banner-dismiss" type="button" @click="bannerDismissed = true" aria-label="Dismiss banner">&times;</button>
+    </p>
+  </aside>
+  <div class="nav-inner">
+    <a href="/" class="wordmark">
+      <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23ff006e"/><stop offset=".5" stop-color="%238338ec"/><stop offset="1" stop-color="%233a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(%23g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text></svg>
+    </a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" @click="toggleTheme" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="email-trigger" type="button" @click="showEmailForm = true" aria-label="Get updates">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Get updates</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="email-overlay" x-show="showEmailForm" x-cloak x-transition.opacity @keydown.escape.window="showEmailForm = false">
+  <div class="email-modal" @click.outside="showEmailForm = false" role="dialog" aria-modal="true" aria-labelledby="email-modal-title">
+    <div class="email-modal-header">
+      <h2 id="email-modal-title">Get updates</h2>
+      <button class="email-modal-close" type="button" @click="showEmailForm = false" aria-label="Close">&times;</button>
+    </div>
+    <p class="email-modal-intro">We'll let you know when new models or features land. No spam, unsubscribe anytime.</p>
+
+    <template x-if="!emailSubmitted">
+      <form
+        @submit.prevent="
+          fetch($el.action, {
+            method: 'POST',
+            body: new FormData($el),
+            headers: { 'Accept': 'application/json' }
+          }).then(r => { if(r.ok) emailSubmitted = true })
+        "
+        action="{{ apiBaseUrl }}/waiting-list/signup"
+        method="POST"
+        class="email-form"
+      >
+        <input type="email" name="email" required placeholder="your@email.com" class="email-input">
+        <button type="submit" class="email-submit">Subscribe</button>
+      </form>
+    </template>
+
+    <template x-if="emailSubmitted">
+      <div class="email-thanks">
+        <p>Thanks! We'll be in touch.</p>
+      </div>
+    </template>
+  </div>
+</div>

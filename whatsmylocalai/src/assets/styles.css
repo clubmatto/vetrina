@@ -200,13 +200,28 @@ code {
 
 .nav {
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(
+    180deg,
+    light-dark(rgba(248, 248, 248, 0.4), rgba(46, 52, 64, 0.5)) 0%,
+    light-dark(rgba(248, 248, 248, 0.15), rgba(46, 52, 64, 0.25)) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid
+    light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.06));
+}
+
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
   height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-inline: var(--space-8);
-  position: relative;
-  z-index: 1;
 }
 
 .wordmark {
@@ -214,6 +229,18 @@ code {
   font-size: 1.05rem;
   margin: 0;
   color: var(--text);
+  border: none;
+  white-space: nowrap;
+}
+
+.wordmark:hover {
+  border: none;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .theme-toggle {
@@ -229,6 +256,7 @@ code {
   justify-content: center;
   opacity: 0.7;
   transition: opacity 0.2s ease;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -246,7 +274,6 @@ html[data-color-scheme="dark"] .icon-sun {
   display: block;
 }
 
-/* No explicit choice yet: follow the system scheme. */
 html:not([data-color-scheme]) .icon-moon {
   display: block;
 }
@@ -259,6 +286,213 @@ html:not([data-color-scheme]) .icon-moon {
   html:not([data-color-scheme]) .icon-sun {
     display: block;
   }
+}
+
+/* --- email trigger ------------------------------------------------------- */
+
+.email-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.email-trigger:hover {
+  opacity: 1;
+}
+
+.email-trigger svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .email-trigger span {
+    display: none;
+  }
+
+  .email-trigger {
+    padding: var(--space-1);
+  }
+}
+
+/* --- banner -------------------------------------------------------------- */
+
+.banner {
+  border-bottom: 1px solid
+    light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.06));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--gradient-3), transparent 92%) 0%,
+    transparent 60%
+  );
+}
+
+.banner p {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-8);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  line-height: 1.4;
+}
+
+.banner-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  color: var(--gradient-3);
+  opacity: 0.8;
+}
+
+.banner-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 var(--space-1);
+  line-height: 1;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.banner-dismiss:hover {
+  opacity: 1;
+}
+
+/* --- email modal --------------------------------------------------------- */
+
+.email-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+}
+
+.email-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-8);
+}
+
+.email-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.email-modal-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  background: none;
+  -webkit-text-fill-color: var(--text);
+  color: var(--text);
+  animation: none;
+}
+
+.email-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.email-modal-close:hover {
+  opacity: 1;
+}
+
+.email-modal-intro {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6);
+  line-height: 1.5;
+}
+
+.email-form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.email-input {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.email-input:focus-visible {
+  outline: none;
+  border-color: var(--gradient-4);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.email-submit {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--gradient-text);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.email-submit:hover {
+  opacity: 0.9;
+}
+
+.email-submit:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.email-thanks {
+  text-align: center;
+  padding: var(--space-6) 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text);
 }
 
 /* --- layout -------------------------------------------------------------- */
@@ -1028,9 +1262,13 @@ section {
 }
 
 @media (max-width: 640px) {
-  .nav,
+  .nav-inner,
   main,
   .footer {
+    padding-inline: var(--space-4);
+  }
+
+  .banner p {
     padding-inline: var(--space-4);
   }
 

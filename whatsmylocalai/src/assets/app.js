@@ -71,11 +71,30 @@ document.addEventListener("alpine:init", () => {
     phase: "probing",
     probeDone: { gpu: false, ram: false, cpu: false, os: false, webgpu: false, vram: false },
     reducedMotion: false,
+    showEmailForm: false,
+    emailSubmitted: false,
+    bannerDismissed: false,
+
+    toggleTheme() {
+      var html = document.documentElement;
+      var current = html.getAttribute("data-color-scheme") || "light";
+      var next = current === "light" ? "dark" : "light";
+      html.setAttribute("data-color-scheme", next);
+      html.style.setProperty("color-scheme", next);
+      try { localStorage.setItem("theme", next); } catch {}
+    },
 
     init() {
       this.reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
+
+      try {
+        var dismissedAt = localStorage.getItem("banner-dismissed-at");
+        if (dismissedAt) {
+          this.bannerDismissed = Date.now() - parseInt(dismissedAt, 10) < 5 * 60 * 1000;
+        }
+      } catch {}
 
       const loadJSON = (id) => {
         const el = document.getElementById(id);
@@ -99,12 +118,8 @@ document.addEventListener("alpine:init", () => {
 
       this.runDetection();
 
-      document.getElementById("theme-toggle")?.addEventListener("click", () => {
-        const current = getComputedStyle(document.documentElement).colorScheme;
-        const next = current === "dark" ? "light" : "dark";
-        document.documentElement.style.setProperty("color-scheme", next);
-        document.documentElement.setAttribute("data-color-scheme", next);
-        try { localStorage.setItem("theme", next); } catch {}
+      this.$watch("bannerDismissed", (val) => {
+        try { localStorage.setItem("banner-dismissed-at", val ? String(Date.now()) : ""); } catch {}
       });
 
       this.renderTerminal();
@@ -149,7 +164,7 @@ document.addEventListener("alpine:init", () => {
     },
 
     get ramNote() {
-      if (!this.ramKnown) return "not reported \u2014 set it yourself";
+      if (!this.ramKnown) return "RAM not reported by your browser. Set it yourself or use a Chromium-based browser";
       if (this.ramCapped) return "browsers cap reported ram at 8 GB \u2014 adjust if yours is higher";
       return "";
     },
@@ -249,9 +264,9 @@ document.addEventListener("alpine:init", () => {
 
     get runnerHint() {
       if (this.runner === "ollama") {
-        return "sizes assume Q4 quantization. commands need Ollama \u2014 get it at ollama.com.";
+        return "Sizes assume Q4 quantization. Commands need Ollama. Get it at ollama.com.";
       }
-      return "sizes assume Q4 quantization. commands use LM Studio's lms cli \u2014 enable it in LM Studio under settings \u2192 developer.";
+      return "Sizes assume Q4 quantization. Commands use LM Studio\u2019s lms CLI. Enable it in LM Studio under Settings \u2192 Developer.";
     },
 
     runCmd(model) {

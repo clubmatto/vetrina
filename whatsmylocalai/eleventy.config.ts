@@ -13,6 +13,11 @@ export default function (eleventyConfig: EleventyConfig) {
     );
   });
 
+  eleventyConfig.addGlobalData(
+    "apiBaseUrl",
+    () => process.env.API_URL || "https://api.matto.club",
+  );
+
   eleventyConfig.addPassthroughCopy({
     "src/assets/styles.css": "assets/styles.css",
     "src/assets/app.js": "assets/app.js",

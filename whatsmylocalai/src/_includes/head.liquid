@@ -1,0 +1,24 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+  {% if noindex %}<meta name="robots" content="noindex">{% endif %}
+  <meta property="og:title" content="{{ og_title | default: "What's my local AI?" }}">
+  <meta property="og:description" content="{{ og_description | default: "This page detects your hardware right in your browser, and tell you which local models to run with Ollama or LM Studio. Nothing leaves your machine." }}">
+  <meta property="og:type" content="{{ og_type | default: "website" }}">
+  <link
+    rel="icon"
+    href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23ff006e"/><stop offset=".5" stop-color="%238338ec"/><stop offset="1" stop-color="%233a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(%23g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text></svg>'
+  >
+  <script>
+    (function () {
+      var theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.style.setProperty("color-scheme", theme);
+        document.documentElement.setAttribute("data-color-scheme", theme);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
