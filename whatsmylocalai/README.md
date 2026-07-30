@@ -129,11 +129,6 @@ When a new open-weights model is released:
 
 Steps 1—2 are automatic — the data comes from community-maintained packages.
 
-## Deploy
-
-Build output goes to `_site/`. Deploy as a static site to Cloudflare Pages,
-Netlify, or any static host.
-
 ## License
 
 MIT — see [LICENSE](/LICENSE) for details.
