@@ -486,6 +486,7 @@ section {
 }
 
 .machine-spec {
+  min-width: 0;
   background: var(--surface);
   padding: var(--space-2);
 }
@@ -503,6 +504,7 @@ section {
 }
 
 .machine-spec-value {
+  min-width: 0;
   margin-left: auto;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -733,6 +735,9 @@ section {
 }
 
 .model-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: 700;
   font-size: 1rem;
 }
@@ -788,6 +793,10 @@ section {
 }
 
 .run-cmd code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background: none;
   padding: 0;
   overflow-wrap: anywhere;

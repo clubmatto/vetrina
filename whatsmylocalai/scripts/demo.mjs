@@ -58,19 +58,17 @@ server.listen(PORT, async () => {
 
   await page.goto(`http://localhost:${PORT}`, { waitUntil: "domcontentloaded" });
 
-  await page.waitForSelector("#terminal-body", { timeout: 10000 });
+  // wait for probes to start
+  await page.waitForSelector(".probe-spinner", { timeout: 10000 });
 
-  // capture probing animation (6 items × 250ms delay)
-  const probeBody = page.locator("#terminal-body");
-  const probeLines = probeBody.locator(".probe-line");
-
-  for (let i = 0; i < 15; i++) {
+  // capture probing phase
+  for (let i = 0; i < 25; i++) {
     await page.waitForTimeout(200);
     await capture();
   }
 
-  // wait for the best pick card to appear
-  await page.waitForSelector(".best-pick-card", { timeout: 15000 }).catch(() => {});
+  // wait for the best-pick card to appear with content
+  await page.waitForSelector(".best-pick-card .model-name", { timeout: 20000 }).catch(() => {});
   await page.waitForTimeout(500);
   await capture();
 
