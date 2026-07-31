@@ -8,6 +8,21 @@
     {% include 'header' %}
 
     <main id="main">
+      <nav class="scrollspy" aria-label="on this page" x-cloak>
+        <template x-for="item in spyItems" :key="item.id">
+          <button
+            type="button"
+            class="scrollspy-dot"
+            :class="{ active: activeSection === item.id }"
+            :aria-label="item.label"
+            :aria-current="activeSection === item.id ? 'true' : null"
+            @click="scrollToSection(item.id)"
+          >
+            <span class="scrollspy-label" x-text="item.label"></span>
+          </button>
+        </template>
+      </nav>
+
       <div class="hero">
         <h1 class="hero-title">What's my local AI?</h1>
         <p class="hero-sub">
@@ -79,7 +94,26 @@
               <button type="button" @click="adjust('ram', 1)" aria-label="increase RAM">+</button>
             </div>
           </div>
-          <div class="machine-note" x-text="ramNote" :style="!probeDone.ram ? 'visibility: hidden' : ''"></div>
+          <div
+            class="machine-note"
+            :class="{ 'machine-note--warn': !ramKnown }"
+            :style="!probeDone.ram ? 'visibility: hidden' : ''"
+          >
+            <svg
+              class="warn-icon"
+              x-show="!ramKnown"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span x-text="ramNote"></span>
+          </div>
         </div>
 
         <div class="machine-specs">
@@ -323,7 +357,7 @@
         </template>
       </section>
 
-      <section class="use-cases">
+      <section class="use-cases" id="use-cases">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">What can you do with it?</h2>
         <p class="specs-intro">
           Local models are private by design — everything stays on your machine. A few things people actually do:
@@ -372,7 +406,7 @@
         </div>
       </section>
 
-      <section class="detection-credit">
+      <section class="detection-credit" id="detection-credit">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">How detection works</h2>
         <dl class="detection-credit-list">
           <div class="detection-credit-item">

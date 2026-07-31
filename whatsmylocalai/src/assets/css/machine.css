@@ -75,6 +75,21 @@
   font-size: 0.75rem;
   color: var(--ds-text-secondary);
   line-height: 1.3;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-1);
+}
+
+.machine-note .warn-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  color: var(--ds-gradient-3);
+  margin-top: 0.1em;
+}
+
+.machine-note--warn {
+  color: var(--ds-text);
 }
 
 .reset-specs {

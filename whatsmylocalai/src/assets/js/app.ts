@@ -109,20 +109,19 @@ document.addEventListener("alpine:init", () => {
       showEmailForm: false,
       emailSubmitted: false,
       emailError: false,
-      bannerDismissed: false,
+      spyItems: [
+        { id: "detect-panel", label: "Your machine" },
+        { id: "best-pick-row", label: "Your local model" },
+        { id: "models", label: "Other options" },
+        { id: "use-cases", label: "What can you do with it?" },
+        { id: "detection-credit", label: "How detection works" },
+      ] as { id: string; label: string }[],
+      activeSection: "",
 
       init() {
         this.reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
-
-        try {
-          const dismissedAt = localStorage.getItem("banner-dismissed-at");
-          if (dismissedAt) {
-            this.bannerDismissed =
-              Date.now() - parseInt(dismissedAt, 10) < 5 * 60 * 1000;
-          }
-        } catch {}
 
         // Build-time JSON blobs inlined in the page; shapes guaranteed by
         // src/_data, so the casts at this boundary are safe.
@@ -166,6 +165,39 @@ document.addEventListener("alpine:init", () => {
 
         this.runDetection();
         this.revealProbes();
+        this.initScrollSpy();
+      },
+
+      initScrollSpy() {
+        const onScroll = () => this.updateActiveSection();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      },
+
+      updateActiveSection() {
+        const probeLine = window.scrollY + window.innerHeight * 0.3;
+        let current = this.spyItems[0]?.id || "";
+        for (const item of this.spyItems) {
+          const el = document.getElementById(item.id);
+          if (!el) continue;
+          if (el.offsetTop <= probeLine) current = item.id;
+        }
+        if (
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 4
+        ) {
+          current = this.spyItems[this.spyItems.length - 1]?.id || current;
+        }
+        this.activeSection = current;
+      },
+
+      scrollToSection(id: string) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollIntoView({
+          behavior: this.reducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
       },
 
       runDetection() {
@@ -363,13 +395,6 @@ document.addEventListener("alpine:init", () => {
 
       setPerfBias(value: number) {
         this.perfBias = value;
-      },
-
-      dismissBanner() {
-        this.bannerDismissed = true;
-        try {
-          localStorage.setItem("banner-dismissed-at", String(Date.now()));
-        } catch {}
       },
 
       get displayReady() {

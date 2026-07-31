@@ -120,64 +120,8 @@
   }
 }
 
-/* --- banner -------------------------------------------------------------- */
-
-.banner {
-  border-bottom: 1px solid
-    light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.06));
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--ds-gradient-3), transparent 92%) 0%,
-    transparent 60%
-  );
-}
-
-.banner p {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--ds-space-2) var(--ds-space-8);
-  font-family: var(--ds-font-sans);
-  font-size: 0.78rem;
-  color: var(--ds-text-secondary);
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  line-height: 1.4;
-  opacity: 1;
-}
-
-.banner-icon {
-  width: 0.9rem;
-  height: 0.9rem;
-  flex-shrink: 0;
-  color: var(--ds-gradient-3);
-  opacity: 0.8;
-}
-
-.banner-dismiss {
-  flex-shrink: 0;
-  margin-left: auto;
-  background: none;
-  border: none;
-  color: var(--ds-text-secondary);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0 var(--ds-space-1);
-  line-height: 1;
-  opacity: 0.5;
-  transition: opacity var(--ds-transition-fast);
-}
-
-.banner-dismiss:hover {
-  opacity: 1;
-}
-
 @media (max-width: 640px) {
   .nav-inner {
-    padding-inline: var(--ds-space-4);
-  }
-
-  .banner p {
     padding-inline: var(--ds-space-4);
   }
 }
