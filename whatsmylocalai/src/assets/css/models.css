@@ -3,7 +3,6 @@
 .runner-toggle {
   display: inline-flex;
   gap: var(--ds-space-1);
-  margin-top: var(--ds-space-4);
   padding: var(--ds-space-1);
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
@@ -35,6 +34,39 @@
 .runner-toggle button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+/* --- performance vs. resource trade-off ------------------------------------ */
+
+.best-pick-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+  margin-bottom: var(--ds-space-4);
+}
+
+.tradeoff {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.tradeoff-end {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ds-text-secondary);
+  white-space: nowrap;
+}
+
+.tradeoff-range {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--ds-gradient-4);
+  cursor: pointer;
 }
 
 .models-toolbar {
@@ -96,26 +128,31 @@
   color: var(--ds-text);
 }
 
-.family-group {
-  margin-top: var(--ds-space-6);
-}
-
-.family-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 0;
-  padding-bottom: var(--ds-space-2);
-  border-bottom: 1px solid var(--ds-border);
-  font-size: 0.75rem;
+.show-all-toggle {
+  display: block;
+  margin: var(--ds-space-6) auto 0;
+  padding: var(--ds-space-2) var(--ds-space-5);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--ds-text-secondary);
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-full);
+  cursor: pointer;
+  transition:
+    border-color var(--ds-transition-fast),
+    color var(--ds-transition-fast);
 }
 
-.family-count {
-  font-weight: 400;
-  color: var(--ds-text-secondary);
+.show-all-toggle:hover {
+  border-color: var(--ds-text-secondary);
+  color: var(--ds-text);
+}
+
+.show-all-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
 }
 
 .best-pick-why {
@@ -252,5 +289,9 @@
 
   .model-search {
     min-width: 0;
+  }
+
+  .tradeoff {
+    flex: 1 1 100%;
   }
 }

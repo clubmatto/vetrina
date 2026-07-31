@@ -2,7 +2,7 @@
 
 :root {
   --max-width: 880px;
-  --nav-height: 4.5rem;
+  --nav-height: 2.75rem;
 }
 
 body::before {
@@ -106,11 +106,6 @@ code {
   scroll-margin-top: var(--ds-space-6);
 }
 
-.best-pick-row .runner-toggle {
-  margin-top: 0;
-  margin-bottom: var(--ds-space-4);
-}
-
 .best-pick-card {
   position: relative;
   max-width: 480px;
@@ -127,19 +122,46 @@ code {
   transition: opacity 0.5s ease;
 }
 
+/* --- use cases -------------------------------------------------------------- */
+
+.use-cases {
+  margin-top: var(--ds-space-12);
+}
+
+.use-case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-4);
+}
+
+.use-case {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-5);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.use-case-title {
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.use-case-body {
+  font-family: var(--ds-font-sans);
+  font-size: 0.85rem;
+  color: var(--ds-text-secondary);
+  line-height: 1.5;
+  margin: var(--ds-space-2) 0 0;
+  opacity: 1;
+}
+
 /* --- detection credit ---------------------------------------------------------- */
 
 .detection-credit {
   margin-top: var(--ds-space-12);
-}
-
-.detection-credit-heading {
-  font-family: var(--ds-font-sans);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--ds-text-secondary);
-  margin-bottom: var(--ds-space-6);
 }
 
 .detection-credit-list {
@@ -287,6 +309,10 @@ code {
   main,
   .footer-container {
     padding-inline: var(--ds-space-4);
+  }
+
+  .use-case-grid {
+    grid-template-columns: 1fr;
   }
 
   .detection-credit-list {

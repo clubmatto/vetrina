@@ -27,9 +27,9 @@ import {
 } from "./detect";
 import {
   availableCaps,
-  groupByFamily,
   isTight,
   matchesFilter,
+  rankByTradeoff,
   runCmd,
   sortModels,
   suggestMerged,
@@ -51,8 +51,8 @@ const PROBE_KEYS: readonly ProbeKey[] = [
   "vram",
 ];
 
-/** Show family groups + toolbar once the also-rans list gets long. */
-const GROUP_THRESHOLD = 6;
+/** How many "other options" to show by default before the "show all" toggle. */
+const TOP_RUNS = 3;
 
 const PROBE_SEEN_KEY = "wmla-probe-seen";
 const SPECS_KEY = "wmla-specs";
@@ -90,6 +90,8 @@ document.addEventListener("alpine:init", () => {
       filterQ: "",
       filterCaps: [] as string[],
       filterSort: "size-desc" as SortKey,
+      showAll: false,
+      perfBias: 1,
       modelRegistry: {
         version: "0.0.0",
         generated_at: "",
@@ -258,7 +260,10 @@ document.addEventListener("alpine:init", () => {
       },
 
       get fittingModels(): MergedModel[] {
-        return suggestMerged(this.modelRegistry, this.vram);
+        return rankByTradeoff(
+          suggestMerged(this.modelRegistry, this.vram),
+          this.perfBias,
+        );
       },
 
       get bestModel(): MergedModel | null {
@@ -278,16 +283,17 @@ document.addEventListener("alpine:init", () => {
         );
       },
 
-      get grouped(): boolean {
-        return this.alsoRuns.length >= GROUP_THRESHOLD;
+      get isFiltering(): boolean {
+        return this.filterQ.trim() !== "" || this.filterCaps.length > 0;
+      },
+
+      get shownAlsoRuns(): MergedModel[] {
+        if (this.showAll || this.isFiltering) return this.visibleAlsoRuns;
+        return this.visibleAlsoRuns.slice(0, TOP_RUNS);
       },
 
       get availableCaps(): string[] {
         return availableCaps(this.alsoRuns);
-      },
-
-      get modelGroups() {
-        return groupByFamily(this.visibleAlsoRuns);
       },
 
       adjust(field: "vram" | "ram", step: number) {
@@ -344,11 +350,19 @@ document.addEventListener("alpine:init", () => {
         }
       },
 
+      toggleShowAll() {
+        this.showAll = !this.showAll;
+      },
+
       setRunner(value: Runner) {
         this.runner = value;
         try {
           localStorage.setItem("runner", value);
         } catch {}
+      },
+
+      setPerfBias(value: number) {
+        this.perfBias = value;
       },
 
       dismissBanner() {

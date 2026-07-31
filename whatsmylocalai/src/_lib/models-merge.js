@@ -42,6 +42,13 @@ export function matchRegistryToModeldev(regEntry, mdMap) {
 }
 
 export function buildModels() {
+  // Performance proxy note: the trade-off slider in the UI ranks models by
+  // `params_b` (parameter count) as its "performance" axis — same signal the
+  // site already sorts by. We deliberately do NOT merge benchmark scores from
+  // models.dev here: coverage is sparse (a handful of models per benchmark),
+  // which would mislead. Follow-up option: merge `benchmarks` from the
+  // @opencode-ai/models snapshot and normalize across models — do that in this
+  // function, then feed the score into `rankByTradeoff` in src/assets/js/models.ts.
   const q4models = registry.models
     .filter((m) => m.quantization.startsWith("Q4"))
     .sort((a, b) => {

@@ -49,8 +49,8 @@
   color: var(--ds-text);
   border: none;
   background: transparent;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: var(--ds-radius-md);
   cursor: pointer;
   display: flex;
@@ -83,9 +83,11 @@
 .email-trigger {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--ds-space-1);
   font-family: var(--ds-font-sans);
   font-size: 0.8rem;
+  line-height: 1;
   font-weight: 600;
   color: var(--ds-text);
   border: 1px solid var(--ds-border);

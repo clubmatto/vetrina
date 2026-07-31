@@ -22,11 +22,6 @@ export interface MergedRegistry extends ModelRegistry {
 export type Runner = "lmstudio" | "ollama";
 export type SortKey = "size-desc" | "size-asc" | "name";
 
-export interface FamilyGroup {
-  family: string;
-  models: MergedModel[];
-}
-
 export function suggestMerged(
   registry: MergedRegistry,
   vram: number,
@@ -34,6 +29,38 @@ export function suggestMerged(
   // The registry only ever holds MergedModels, so the entries the package
   // query returns are MergedModels too (it just can't know that).
   return suggestModelsForVRAM(registry, vram) as MergedModel[];
+}
+
+/**
+ * Re-rank a set of fitting models along a performance-vs-resources axis.
+ *
+ * `perfBias` runs 0..1: 1 is "maximum performance" and returns the list
+ * untouched (largest first — what the registry already sorts by, and the
+ * current best-pick behavior). As it drops toward 0 ("resource-lean"),
+ * small/fast models float to the top: the score normalizes params
+ * (performance proxy) against VRAM (resource cost) within the candidate
+ * set, so a lightweight 8B edges out a 70B that barely fits.
+ */
+export function rankByTradeoff(
+  models: readonly MergedModel[],
+  perfBias: number,
+): MergedModel[] {
+  const clamped = Math.min(1, Math.max(0, perfBias));
+  if (clamped >= 1 || models.length < 2) return [...models];
+
+  const pMax = Math.max(...models.map((m) => m.params_b));
+  const pMin = Math.min(...models.map((m) => m.params_b));
+  const rMax = Math.max(...models.map((m) => m.vram_requirements_gb));
+  const rMin = Math.min(...models.map((m) => m.vram_requirements_gb));
+  const pRange = pMax - pMin || 1;
+  const rRange = rMax - rMin || 1;
+
+  const lean = 1 - clamped;
+  const score = (m: MergedModel): number =>
+    clamped * ((m.params_b - pMin) / pRange) -
+    lean * ((m.vram_requirements_gb - rMin) / rRange);
+
+  return [...models].sort((a, b) => score(b) - score(a));
 }
 
 export function matchesFilter(
@@ -79,26 +106,6 @@ export function sortModels(
 
 export function availableCaps(models: readonly MergedModel[]): string[] {
   return [...new Set(models.flatMap((m) => m.capabilities))].sort();
-}
-
-/** Group by family, families ordered by their largest model's VRAM first. */
-export function groupByFamily(models: readonly MergedModel[]): FamilyGroup[] {
-  const groups = new Map<string, MergedModel[]>();
-  for (const m of models) {
-    const list = groups.get(m.family_label);
-    if (list) {
-      list.push(m);
-    } else {
-      groups.set(m.family_label, [m]);
-    }
-  }
-  return [...groups.entries()]
-    .map(([family, groupModels]) => ({ family, models: groupModels }))
-    .sort(
-      (a, b) =>
-        Math.max(...b.models.map((m) => m.vram_requirements_gb)) -
-        Math.max(...a.models.map((m) => m.vram_requirements_gb)),
-    );
 }
 
 /** Fits, but barely (uses more than 85% of the budget). */

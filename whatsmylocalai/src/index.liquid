@@ -187,9 +187,27 @@
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
         <p class="specs-intro" x-text="runnerHint"></p>
 
-        <div class="runner-toggle" role="group" aria-label="choose how to run models">
-          <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">LM Studio</button>
-          <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">Ollama</button>
+        <div class="best-pick-controls">
+          <div class="tradeoff" role="group" aria-label="choose a performance vs. resource trade-off">
+            <span class="tradeoff-end">lean</span>
+            <input
+              id="perf-slider"
+              class="tradeoff-range"
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              :value="Math.round(perfBias * 100)"
+              @input="setPerfBias($event.target.value / 100)"
+            >
+            <span class="tradeoff-end">max performance</span>
+          </div>
+          <div class="runner-toggle" role="group" aria-label="choose how to run models">
+            <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">
+              LM Studio
+            </button>
+            <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">Ollama</button>
+          </div>
         </div>
 
         <article class="model-card best-pick-card" :class="{ tight: bestModel ? isTight(bestModel) : false }">
@@ -231,7 +249,7 @@
 
       <section class="models" id="models" :class="{ preview: !displayReady }">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Other options</h2>
-        <div class="models-toolbar" x-show="grouped" x-cloak>
+        <div class="models-toolbar" x-show="alsoRuns.length > 0" x-cloak>
           <input
             type="search"
             class="model-search"
@@ -268,46 +286,94 @@
 
         <template x-if="visibleAlsoRuns.length > 0">
           <div>
-            <template x-for="group in modelGroups" :key="group.family">
-              <section class="family-group">
-                <h3 class="family-heading" x-show="grouped" x-cloak>
-                  <span x-text="group.family"></span>
-                  <span class="family-count" x-text="group.models.length"></span>
-                </h3>
-                <div class="model-grid">
-                  <template x-for="model in group.models" :key="model.id">
-                    <article class="model-card" :class="{ tight: isTight(model) }">
-                      <div class="model-name" x-text="model.model_name"></div>
-                      <button
-                        type="button"
-                        class="run-cmd"
-                        @click="copyCmd(model)"
-                        :class="{ copied: copiedId === model.id }"
-                        :aria-label="'copy command: ' + runCmd(model)"
-                      >
-                        <code x-text="runCmd(model)"></code>
-                        <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
-                      </button>
-                      <p class="model-blurb" x-show="model.blurb" x-text="model.blurb"></p>
-                      <div class="model-meta">
-                        <span class="chip" x-text="model.parameters"></span>
-                        <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
-                        <template x-for="cap in model.capabilities" :key="cap">
-                          <span class="chip" x-text="cap"></span>
-                        </template>
-                        <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
-                      </div>
-                    </article>
-                  </template>
-                </div>
-              </section>
-            </template>
+            <div class="model-grid">
+              <template x-for="model in shownAlsoRuns" :key="model.id">
+                <article class="model-card" :class="{ tight: isTight(model) }">
+                  <div class="model-name" x-text="model.model_name"></div>
+                  <button
+                    type="button"
+                    class="run-cmd"
+                    @click="copyCmd(model)"
+                    :class="{ copied: copiedId === model.id }"
+                    :aria-label="'copy command: ' + runCmd(model)"
+                  >
+                    <code x-text="runCmd(model)"></code>
+                    <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+                  </button>
+                  <p class="model-blurb" x-show="model.blurb" x-text="model.blurb"></p>
+                  <div class="model-meta">
+                    <span class="chip" x-text="model.parameters"></span>
+                    <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                    <template x-for="cap in model.capabilities" :key="cap">
+                      <span class="chip" x-text="cap"></span>
+                    </template>
+                    <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
+                  </div>
+                </article>
+              </template>
+            </div>
+            <button
+              type="button"
+              class="show-all-toggle"
+              x-show="alsoRuns.length > 3"
+              @click="toggleShowAll"
+              x-text="showAll ? 'show top 3' : 'show all ' + alsoRuns.length + ' models'"
+            ></button>
           </div>
         </template>
       </section>
 
+      <section class="use-cases">
+        <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">What can you do with it?</h2>
+        <p class="specs-intro">
+          Local models are private by design — everything stays on your machine. A few things people actually do:
+        </p>
+        <div class="use-case-grid">
+          <article class="use-case">
+            <h3 class="use-case-title">Private drafting</h3>
+            <p class="use-case-body">
+              Brainstorm, rewrite, or translate text with no data ever leaving your laptop. Perfect for work that isn't
+              yours to share.
+            </p>
+          </article>
+          <article class="use-case">
+            <h3 class="use-case-title">Offline code help</h3>
+            <p class="use-case-body">
+              Autocomplete, explain a gnarly snippet, or write a quick script — even on a plane or in a dead zone.
+            </p>
+          </article>
+          <article class="use-case">
+            <h3 class="use-case-title">Read your own files</h3>
+            <p class="use-case-body">
+              Summarize that 50-page report, pull the action items from a meeting transcript, or chat with your notes —
+              without uploading them anywhere.
+            </p>
+          </article>
+          <article class="use-case">
+            <h3 class="use-case-title">Zero-cost experiments</h3>
+            <p class="use-case-body">
+              Try open-weight models (reasoning, vision, tool calls) on your own hardware before paying for an API — the
+              model list on this page is your playground.
+            </p>
+          </article>
+          <article class="use-case">
+            <h3 class="use-case-title">No throttle, no quota</h3>
+            <p class="use-case-body">
+              Run as much as you want. No rate limits, no token metering, no monthly bill — just your electricity.
+            </p>
+          </article>
+          <article class="use-case">
+            <h3 class="use-case-title">Learning &amp; tinkering</h3>
+            <p class="use-case-body">
+              The fastest way to build a mental model of what different model sizes are good at — swap models and feel
+              the difference.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <section class="detection-credit">
-        <h2 class="detection-credit-heading">How detection works</h2>
+        <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">How detection works</h2>
         <dl class="detection-credit-list">
           <div class="detection-credit-item">
             <dt>GPU</dt>
