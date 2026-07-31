@@ -9,3 +9,4 @@ ai-kit/bin/
 pro.db
 fakedata/data.jsonl
 fakedata/users.csv
+fakedata/.clickhouse/

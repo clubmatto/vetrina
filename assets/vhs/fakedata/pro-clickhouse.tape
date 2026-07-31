@@ -1,57 +1,34 @@
+Set TypingSpeed 20ms
+
 Type "# Fakedata now supports ClickHouse!"
 Enter
 
 Sleep 1s
 
-Type "# Point it at your ClickHouse instance and it introspects your schema"
-Enter
-
-Sleep 1s
-
-Type "# Let's see what it would generate"
-Enter
-
-Sleep 1s
-
 Set TypingSpeed 5ms
 
-Type "fakedata --dsn clickhouse://localhost:19000/default -t events:10 --dry-run"
+Type "fakedata --dsn clickhouse://localhost:9000/default -t users:400000 -t orders:300000 -t events:300000"
 Enter
 
-Sleep 3s
+Sleep 7s
 
-Type "# Now let's generate the data for real"
-Enter
+Set TypingSpeed 20ms
 
-Sleep 500ms
-
-Type "fakedata --dsn clickhouse://localhost:19000/default -t events:10"
-Enter
-
-Sleep 3s
-
-Set TypingSpeed 50ms
-
-Type "# Check the data in ClickHouse"
+Type "# 1M rows done — let's check"
 Enter
 
 Sleep 500ms
 
 Set TypingSpeed 5ms
 
-Type "docker exec fakedata-clickhouse clickhouse-client --query 'SELECT count() FROM events'"
-Enter
-
-Sleep 1s
-
-Type "docker exec fakedata-clickhouse clickhouse-client --query 'SELECT * FROM events ORDER BY timestamp LIMIT 5 FORMAT PrettyCompactNoEscapes'"
+Type "clickhouse client --query 'SELECT count() FROM users UNION ALL SELECT count() FROM orders UNION ALL SELECT count() FROM events FORMAT PrettyCompactNoEscapes'"
 Enter
 
 Sleep 2s
 
-Set TypingSpeed 50ms
+Set TypingSpeed 20ms
 
-Type "# 🎉 ClickHouse support is live! 🎉"
+Type "# 🎉 1M rows across 3 tables — concurrently! 🎉"
 Enter
 
 Sleep 3s

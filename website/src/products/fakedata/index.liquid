@@ -1,7 +1,7 @@
 ---
 layout: page.liquid
 title: FakeData
-description: Generate realistic, database-ready test data with schema introspection, foreign key resolution, and direct Postgres, MySQL, and SQLite generation.
+description: Generate realistic, database-ready test data with schema introspection, foreign key resolution, and direct Postgres, MySQL, SQLite, and ClickHouse generation.
 ---
 <div class="showcase-header">
   <div class="showcase-page-icon">{{ 'layers' | lucide }}</div>
@@ -12,6 +12,7 @@ description: Generate realistic, database-ready test data with schema introspect
     <span class="showcase-db-icon" title="Postgres">{% svg 'icons/postgresql.svg' %}</span>
     <span class="showcase-db-icon" title="MySQL">{% svg 'icons/mysql.svg' %}</span>
     <span class="showcase-db-icon" title="SQLite">{% svg 'icons/sqlite.svg' %}</span>
+    <span class="showcase-db-icon" title="ClickHouse">{% svg 'icons/clickhouse.svg' %}</span>
   </div>
 </div>
 
@@ -311,7 +312,7 @@ description: Generate realistic, database-ready test data with schema introspect
               Connect directly to your database and generate realistic data automatically.
             </p>
             <ul class="fakedata-pricing-features">
-              <li>Schema introspection (Postgres, MySQL, SQLite)</li>
+              <li>Schema introspection (Postgres, MySQL, SQLite, ClickHouse)</li>
               <li>Foreign key resolution</li>
               <li>Constraint enforcement</li>
               <li>Direct database insertion</li>
@@ -320,7 +321,7 @@ description: Generate realistic, database-ready test data with schema introspect
             <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
             <ul class="fakedata-pricing-features">
               <li>Connect to Kafka with Avro/Protobuf support</li>
-              <li>More databases like ClickHouse and DuckDB</li>
+              <li>More databases like DuckDB</li>
             </ul>
             <button @click="flipped = true" class="ds-btn ds-btn--primary">Contact Us</button>
           </div>
