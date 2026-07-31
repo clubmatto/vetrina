@@ -301,14 +301,17 @@ document.addEventListener("alpine:init", () => {
             const idx = candidates ? candidates.indexOf(this.ram) : -1;
             if (candidates && idx >= 0) {
               const next = candidates[idx + step];
-              if (typeof next !== "number") return;
-              this.ram = next;
+              if (typeof next === "number") {
+                this.ram = next;
+              } else {
+                this.ram = Math.min(256, Math.max(2, this.ram + step * 2));
+              }
             } else {
-              this.ram = Math.min(256, Math.max(2, this.ram + step));
+              this.ram = Math.min(256, Math.max(2, this.ram + step * 2));
             }
             this.vram = Math.round(this.ram * 0.7);
           } else {
-            this.ram = Math.min(256, Math.max(2, this.ram + step));
+            this.ram = Math.min(256, Math.max(2, this.ram + step * 2));
           }
         }
         this.manual = true;

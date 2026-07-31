@@ -30,6 +30,13 @@
   pointer-events: none;
 }
 
+.machine-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+
 .machine .section-heading {
   margin-bottom: var(--ds-space-1);
 }
@@ -71,13 +78,13 @@
 }
 
 .reset-specs {
-  display: block;
-  margin: calc(-1 * var(--ds-space-3)) 0 var(--ds-space-5);
+  margin: 0;
+  padding: var(--ds-space-1);
   font-family: var(--ds-font-sans);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: var(--ds-space-1) 0;
+  white-space: nowrap;
   border: none;
   background: none;
   color: var(--ds-text-secondary);

@@ -22,11 +22,13 @@
       </div>
 
       <section id="detect-panel" class="machine">
-        <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your machine</h2>
+        <div class="machine-head">
+          <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your machine</h2>
+          <button type="button" class="reset-specs" x-show="manual" x-cloak @click="resetSpecs">reset my specs</button>
+        </div>
         <p class="specs-intro">
           We try our best to detect your specs. Tweak our findings and the recommendations update live.
         </p>
-        <button type="button" class="reset-specs" x-show="manual" x-cloak @click="resetSpecs">reset my specs</button>
 
         <div class="machine-row">
           <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
@@ -72,9 +74,9 @@
               RAM
             </span>
             <div class="stepper">
-              <button type="button" @click="adjust('ram', -2)" aria-label="decrease RAM">−</button>
+              <button type="button" @click="adjust('ram', -1)" aria-label="decrease RAM">−</button>
               <span class="stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
-              <button type="button" @click="adjust('ram', 2)" aria-label="increase RAM">+</button>
+              <button type="button" @click="adjust('ram', 1)" aria-label="increase RAM">+</button>
             </div>
           </div>
           <div class="machine-note" x-text="ramNote" :style="!probeDone.ram ? 'visibility: hidden' : ''"></div>
