@@ -1,0 +1,6 @@
+node_modules
+_site
+dist
+package-lock.json
+src/sitemap.xml.liquid
+src/robots.txt.liquid

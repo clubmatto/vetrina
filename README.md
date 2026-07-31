@@ -43,16 +43,19 @@ cd fakedata && make test
 
 # website (TypeScript / Eleventy)
 cd website && npm install && npm run build
+
+# whatsmylocalai (TypeScript / Eleventy)
+cd whatsmylocalai && npm install && npm run lint && npm run build
 ```
 
 ### CI/CD
 
 Every push and pull request runs automated checks:
 
-| Workflow                                         | Status                                                                                           | Projects                                      |
-|--------------------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| [ai-kit CI](.github/workflows/ai-kit-ci.yml)     | ![ai-kit CI](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml/badge.svg)     | TypeScript lint, typecheck, test, integration |
-| [fakedata CI](.github/workflows/fakedata-ci.yml) | ![fakedata CI](https://github.com/clubmatto/vetrina/actions/workflows/fakedata-ci.yml/badge.svg) | Go lint + test                                |
+| Workflow                                               | Status                                                                                                 | Projects                                      |
+|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| [ai-kit CI](.github/workflows/ai-kit-ci.yml)           | ![ai-kit CI](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml/badge.svg)           | TypeScript lint, typecheck, test, integration |
+| [fakedata CI](.github/workflows/fakedata-ci.yml)       | ![fakedata CI](https://github.com/clubmatto/vetrina/actions/workflows/fakedata-ci.yml/badge.svg)       | Go lint + test                                |
 
 Releases are triggered by version tags (`ai-kit/v*.*.*`, `fakedata/v*.*.*`) and
 publish to npm, GitHub Releases, and Homebrew automatically.

@@ -55,4 +55,3 @@ yarn-error.log*
 # Editor files
 .vs/
 .playwright-cli
-_site/

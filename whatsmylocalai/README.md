@@ -32,7 +32,7 @@ npm run build   # production build → _site/
 ## How It Works
 
 | Layer                | Source                                                                         | What it provides                                              |
-|----------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------- |
 | What models exist?   | [`models.dev`](https://models.dev) via `@opencode-ai/models/snapshot`          | Canonical open-weights model list, capabilities, descriptions |
 | Will it run?         | [`@auxot/model-registry`](https://www.npmjs.com/package/@auxot/model-registry) | Q4 VRAM estimates per model, parameter counts                 |
 | Ollama tags + blurbs | `src/_data/enrichment.json` (curated by us, ~20 entries)                       | `ollama run` tags, human-readable blurbs                      |
@@ -67,15 +67,27 @@ whatsmylocalai/
 ├── src/
 │   ├── index.liquid           # page template
 │   ├── credits.liquid         # credits page
+│   ├── robots.txt.liquid      # robots.txt
+│   ├── sitemap.xml.liquid     # sitemap
+│   ├── _includes/             # head, header, footer
+│   ├── _lib/
+│   │   └── models-merge.js    # merge: snapshot + registry + enrichment
 │   └── assets/
-│       ├── styles.css         # design tokens
-│       └── app.js             # detection + suggestion engine (ESM)
+│       ├── css/               # main.css + page modules (imports the shared DS)
+│       ├── js/
+│       │   ├── app.ts         # Alpine component
+│       │   ├── detect.ts      # hardware detection (pure)
+│       │   └── models.ts      # filter/sort/group/run-cmd (pure)
+│       └── og.png             # social card (scripts/og-image.mjs)
 ├── src/_data/
 │   ├── enrichment.json        # ollama tags + blurbs
 │   ├── gpu_database.json      # GPU VRAM lookup table
-│   └── models.js              # merge: snapshot + registry + enrichment
+│   ├── models.js              # default-exports _lib/models-merge (only export!)
+│   └── site.js                # url, name, description
 ├── scripts/
-│   └── demo.mjs               # Playwright demo GIF capture
+│   ├── build.ts               # postcss + esbuild pipeline (dev/prod)
+│   ├── demo.mjs               # Playwright demo GIF capture
+│   └── og-image.mjs           # Playwright og.png capture
 ├── docs/
 │   └── demo.gif               # README demo
 ├── _site/                     # built output (generated)
@@ -84,19 +96,30 @@ whatsmylocalai/
 └── README.md
 ```
 
-`app.js` imports `suggestModelsForVRAM` from
-`@auxot/model-registry` via a relative import. Eleventy copies
-`query.js` from node_modules at build time so the browser can resolve it
-(`<script type="module">`).
+CSS and JS are built by `scripts/build.ts` (same pattern as `website/`):
+PostCSS resolves the `@import` graph — including the shared design system in
+`../assets/css/design-system/` — and esbuild bundles/minifies. Production
+assets are content-hashed and mapped through `_site/assets/manifest.json`
+(the `asset` Liquid filter resolves logical names like `css/main.css`).
+
+`app.ts` imports `suggestModelsForVRAM` from `@auxot/model-registry`; esbuild
+aliases the package to its browser-safe query module at bundle time, so no
+runtime files are copied from `node_modules`.
+
+The shared 3-state theme toggle (light/dark/system) lives in
+`../assets/js/theme.ts` and is bundled into `app.ts`.
 
 ## Development
 
-| Command             | Description                                |
-| ------------------- | ------------------------------------------ |
-| `npm install`       | Install dependencies                       |
-| `npm run dev`       | Start dev server with live reload          |
-| `npm run build`     | Build production site (clean + full build) |
-| `npm run clean`     | Remove `_site` directory                   |
+| Command                  | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `npm install`            | Install dependencies                       |
+| `npm run dev`            | Start dev server with live reload          |
+| `npm run build`          | Build production site (clean + full build) |
+| `npm run clean`          | Remove `_site` directory                   |
+| `npm run lint`           | Typecheck + prettier check                 |
+| `npm run typecheck`      | `tsc --noEmit`                             |
+| `npm run prettier:write` | Format all files                           |
 
 ### Regenerating the Demo GIF
 
@@ -109,14 +132,25 @@ Requires [Playwright](https://playwright.dev) (installed as a dev dependency) to
 capture the page, and [ffmpeg](https://ffmpeg.org) to convert the recording to a
 GIF. The output is written to `docs/demo.gif`.
 
+### Regenerating the Social Card
+
+```bash
+npm run build
+node scripts/og-image.mjs
+```
+
+Screenshots the built homepage at 1200×630 and writes `src/assets/og.png`
+(referenced by the `og:image`/`twitter:image` meta tags).
+
 ### Eleventy Config
 
 The build is configured in `eleventy.config.ts`:
 
-- Passthrough copies `styles.css`, `app.js`, and Alpine.js from assets
-- Copies `query.js` from `@auxot/model-registry` into the output so the browser
-  can resolve the ESM import
-- Registers a `json` Liquid filter for inlining model data
+- Runs `scripts/build.ts` (CSS + JS) on `eleventy.before` and rebuilds the
+  changed asset type on `eleventy.beforeWatch`
+- Passthrough copies `og.png` and the shared Alpine.js build
+- Registers `json` (HTML-safe JSON) and `asset` (manifest lookup) filters
+- Exposes `apiBaseUrl` (`API_URL` env, defaults to `https://api.matto.club`)
 
 ## Getting New Models
 

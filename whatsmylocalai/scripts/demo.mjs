@@ -32,7 +32,9 @@ const server = createServer((req, res) => {
     return;
   }
   const ext = extname(filePath);
-  res.writeHead(200, { "Content-Type": MIME[ext] || "application/octet-stream" });
+  res.writeHead(200, {
+    "Content-Type": MIME[ext] || "application/octet-stream",
+  });
   res.end(readFileSync(filePath));
 });
 
@@ -51,12 +53,17 @@ server.listen(PORT, async () => {
   const frames = [];
   const capture = async () => {
     const buf = await page.screenshot({ type: "png" });
-    const path = join(FRAMES_DIR, `f${String(frameIdx++).padStart(4, "0")}.png`);
+    const path = join(
+      FRAMES_DIR,
+      `f${String(frameIdx++).padStart(4, "0")}.png`,
+    );
     writeFileSync(path, buf);
     frames.push(path);
   };
 
-  await page.goto(`http://localhost:${PORT}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`http://localhost:${PORT}`, {
+    waitUntil: "domcontentloaded",
+  });
 
   // wait for probes to start
   await page.waitForSelector(".probe-spinner", { timeout: 10000 });
@@ -68,7 +75,9 @@ server.listen(PORT, async () => {
   }
 
   // wait for the best-pick card to appear with content
-  await page.waitForSelector(".best-pick-card .model-name", { timeout: 20000 }).catch(() => {});
+  await page
+    .waitForSelector(".best-pick-card .model-name", { timeout: 20000 })
+    .catch(() => {});
   await page.waitForTimeout(500);
   await capture();
 

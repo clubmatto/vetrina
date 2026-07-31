@@ -3,17 +3,17 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "outDir": "./dist",
-    "rootDir": ".",
     "types": ["node"],
     "allowJs": true,
     "checkJs": false
   },
-  "include": ["src/**/*", "eleventy.config.ts", "scripts/**/*", "_data/**/*"],
+  "include": ["src/**/*", "eleventy.config.ts", "scripts/**/*"],
   "exclude": ["node_modules", "_site", "dist"]
 }

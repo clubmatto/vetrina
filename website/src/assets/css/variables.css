@@ -51,15 +51,5 @@
 
   --post-bg: light-dark(#f5f0eb, #3b4252);
 
-  --terminal-bg: light-dark(#f4f4f5, #1e1e2e);
-  --terminal-text: light-dark(#1a1a1a, #cdd6f4);
-  --terminal-header-bg: light-dark(#e4e4e7, rgba(255, 255, 255, 0.04));
-  --terminal-header-border: light-dark(#d4d4d8, rgba(255, 255, 255, 0.08));
-  --terminal-border: light-dark(#d4d4d8, rgba(255, 255, 255, 0.1));
-  --terminal-comment: light-dark(#a1a1aa, #585b70);
-  --terminal-prompt: light-dark(#16a34a, #a6e3a1);
-  --terminal-output: light-dark(#6b7280, #94a3b8);
-  --terminal-title: light-dark(#52525b, #cdd6f4);
-
   --ds-edge-padding: var(--page-padding-inline);
 }

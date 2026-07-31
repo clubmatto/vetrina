@@ -1,10 +1,10 @@
-@import "design-system/tokens.css";
-@import "design-system/reset.css";
-@import "design-system/base.css";
-@import "design-system/typography.css";
-@import "design-system/layout.css";
-@import "design-system/components.css";
-@import "design-system/utilities.css";
+@import "../../../../assets/css/design-system/tokens.css";
+@import "../../../../assets/css/design-system/reset.css";
+@import "../../../../assets/css/design-system/base.css";
+@import "../../../../assets/css/design-system/typography.css";
+@import "../../../../assets/css/design-system/layout.css";
+@import "../../../../assets/css/design-system/components.css";
+@import "../../../../assets/css/design-system/utilities.css";
 @import "variables.css";
 @import "navigation.css";
 @import "footer.css";
@@ -20,23 +20,6 @@
 @import "blog.css";
 @import "contact.css";
 @import "prism.css";
-
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  background: var(--gradient-1);
-  color: var(--text-inverse);
-  padding: var(--ds-space-3) var(--ds-space-6);
-  z-index: 9999;
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: 0 var(--ds-space-2) var(--ds-space-2) 0;
-}
-
-.skip-link:focus {
-  top: 0;
-}
 
 main::before {
   content: "";

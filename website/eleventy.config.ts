@@ -33,6 +33,7 @@ export default function (eleventyConfig: EleventyConfig) {
     },
   });
   eleventyConfig.addWatchTarget("src/assets");
+  eleventyConfig.addWatchTarget("../assets/css");
 
   eleventyConfig.addPreprocessor("drafts", "*", (data) => {
     if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {

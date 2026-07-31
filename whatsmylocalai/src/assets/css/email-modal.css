@@ -1,0 +1,123 @@
+/* --- email modal --------------------------------------------------------- */
+
+.email-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ds-space-8);
+}
+
+.email-modal {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-md);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--ds-space-8);
+}
+
+.email-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ds-space-3);
+}
+
+.email-modal-header h2 {
+  font-size: 1.25rem;
+}
+
+.email-modal-close {
+  background: none;
+  border: none;
+  color: var(--ds-text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity var(--ds-transition-fast);
+}
+
+.email-modal-close:hover {
+  opacity: 1;
+}
+
+.email-modal-intro {
+  font-family: var(--ds-font-sans);
+  font-size: 0.85rem;
+  color: var(--ds-text-secondary);
+  margin: 0 0 var(--ds-space-6);
+  line-height: 1.5;
+  opacity: 1;
+}
+
+.email-form {
+  display: flex;
+  gap: var(--ds-space-2);
+}
+
+.email-input {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--ds-text);
+  background: var(--ds-bg);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-2) var(--ds-space-3);
+}
+
+.email-input:focus-visible {
+  outline: none;
+  border-color: var(--ds-gradient-4);
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+.email-submit {
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ds-text-inverse);
+  background: var(--ds-gradient-text);
+  border: none;
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--ds-transition-fast);
+}
+
+.email-submit:hover {
+  opacity: 0.9;
+}
+
+.email-submit:focus-visible {
+  outline: 2px solid var(--ds-focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.email-error {
+  margin-top: var(--ds-space-3);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  color: var(--ds-bad);
+}
+
+.email-thanks {
+  text-align: center;
+  padding: var(--ds-space-6) 0;
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  color: var(--ds-text);
+}
+
+.email-thanks p {
+  font-size: 0.95rem;
+  opacity: 1;
+}

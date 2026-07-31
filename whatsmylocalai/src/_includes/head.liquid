@@ -2,23 +2,41 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title }}</title>
-  {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+  <meta name="description" content="{{ description | default: site.description }}">
   {% if noindex %}<meta name="robots" content="noindex">{% endif %}
-  <meta property="og:title" content="{{ og_title | default: "What's my local AI?" }}">
-  <meta property="og:description" content="{{ og_description | default: "This page detects your hardware right in your browser, and tell you which local models to run with Ollama or LM Studio. Nothing leaves your machine." }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <meta property="og:title" content="{{ og_title | default: title }}">
+  <meta property="og:description" content="{{ og_description | default: site.description }}">
   <meta property="og:type" content="{{ og_type | default: "website" }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:image" content="{{ site.url }}/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ site.url }}/assets/og.png">
   <link
     rel="icon"
     href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23ff006e"/><stop offset=".5" stop-color="%238338ec"/><stop offset="1" stop-color="%233a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(%23g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text></svg>'
   >
   <script>
     (function () {
-      var theme = localStorage.getItem("theme");
-      if (theme) {
-        document.documentElement.style.setProperty("color-scheme", theme);
-        document.documentElement.setAttribute("data-color-scheme", theme);
+      var theme = localStorage.getItem('theme');
+      if (theme === 'light' || theme === 'dark') {
+        document.documentElement.style.setProperty('color-scheme', theme);
+        document.documentElement.setAttribute('data-color-scheme', theme);
       }
     })();
   </script>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": {{ site.name | json }},
+      "url": {{ site.url | json }},
+      "description": {{ site.description | json }},
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0" }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ "css/main.css" | asset }}">
 </head>

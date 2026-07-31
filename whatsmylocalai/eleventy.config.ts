@@ -1,16 +1,37 @@
-import { copyFileSync, mkdirSync, existsSync } from "fs";
 import type { EleventyConfig } from "@11ty/eleventy";
+import { asset } from "./src/_filters/asset.js";
+import {
+  buildAll,
+  buildCss,
+  buildJs,
+  hasChanged,
+  generateManifest,
+} from "./scripts/build.js";
 
 export default function (eleventyConfig: EleventyConfig) {
+  eleventyConfig.addWatchTarget("src/assets");
+  eleventyConfig.addWatchTarget("../assets/css");
+  eleventyConfig.addWatchTarget("../assets/js");
+
+  let isFirstBuild = true;
+
   eleventyConfig.on("eleventy.before", async () => {
-    const outDir = "_site/assets";
-    if (!existsSync(outDir)) {
-      mkdirSync(outDir, { recursive: true });
+    if (isFirstBuild) {
+      await buildAll();
+      isFirstBuild = false;
     }
-    copyFileSync(
-      "node_modules/@auxot/model-registry/dist/src/query.js",
-      `${outDir}/query.js`,
-    );
+  });
+
+  eleventyConfig.on("eleventy.beforeWatch", async (changedFiles: string[]) => {
+    if (changedFiles && changedFiles.length > 0) {
+      if (hasChanged(changedFiles, "css")) {
+        await buildCss();
+      }
+      if (hasChanged(changedFiles, "js")) {
+        await buildJs();
+      }
+      await generateManifest();
+    }
   });
 
   eleventyConfig.addGlobalData(
@@ -19,14 +40,15 @@ export default function (eleventyConfig: EleventyConfig) {
   );
 
   eleventyConfig.addPassthroughCopy({
-    "src/assets/styles.css": "assets/styles.css",
-    "src/assets/app.js": "assets/app.js",
     "../assets/js/alpine.3.15.12.min.js": "assets/js/alpine.3.15.12.min.js",
+    "src/assets/og.png": "assets/og.png",
   });
 
   eleventyConfig.addLiquidFilter("json", (value: unknown) =>
-    JSON.stringify(value),
+    JSON.stringify(value).replace(/</g, "\\u003c"),
   );
+
+  eleventyConfig.addFilter("asset", asset);
 
   return {
     dir: {

@@ -9,38 +9,38 @@
     {% include 'header' %}
 
     <main id="main">
-      <div class="detect-header">
-        <h1>Credits</h1>
+      <div class="hero">
+        <h1 class="hero-title">Credits</h1>
       </div>
 
-      <section style="margin-top: var(--space-8)">
-        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: var(--space-4)">Trademarks</h2>
-        <p style="margin-bottom: var(--space-4); line-height: 1.6">
-          Ollama is a trademark of Ollama Inc. LM Studio is a trademark of
-          Element Labs, Inc. All other trademarks and trade names are the property
-          of their respective owners. Use of these names does not imply
-          endorsement or affiliation.
+      <section class="credits-section">
+        <h2>Trademarks</h2>
+        <p>
+          Ollama is a trademark of Ollama Inc. LM Studio is a trademark of Element Labs, Inc. All other trademarks and
+          trade names are the property of their respective owners. Use of these names does not imply endorsement or
+          affiliation.
         </p>
 
-        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: var(--space-4); margin-top: var(--space-8)">Open Source</h2>
-        <p style="margin-bottom: var(--space-4); line-height: 1.6">
-          This project uses the following open-source software:
-        </p>
-        <ul style="line-height: 2; padding-left: var(--space-6)">
+        <h2>Open Source</h2>
+        <p>This project uses the following open-source software:</p>
+        <ul class="credits-list">
           <li><a href="https://www.11ty.dev" rel="noopener">Eleventy</a> — static site generation</li>
           <li><a href="https://alpinejs.dev" rel="noopener">Alpine.js</a> — reactive UI</li>
-          <li><a href="https://github.com/auxot/model-registry" rel="noopener">model-registry</a> — model data and suggestions</li>
+          <li>
+            <a href="https://github.com/auxot/model-registry" rel="noopener">model-registry</a> — model data and
+            suggestions
+          </li>
         </ul>
       </section>
 
-      <p style="margin-top: var(--space-12)">
-        <a href="/" style="color: var(--text-secondary); text-decoration: none; border-bottom: 1px dashed var(--text-secondary)">&larr; back to the detector</a>
+      <p>
+        <a class="back-link" href="/">&larr; back to the detector</a>
       </p>
     </main>
 
     {% include 'footer' %}
 
-    <script type="module" src="/assets/app.js"></script>
+    <script type="module" src="{{ "js/app.js" | asset }}"></script>
     <script defer src="/assets/js/alpine.3.15.12.min.js"></script>
   </body>
 </html>
