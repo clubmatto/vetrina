@@ -8,7 +8,7 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       },
       "enabled": false
-    },
+    }
   },
   "command": {
     "commit": {
