@@ -26,6 +26,7 @@
         <p class="specs-intro">
           We try our best to detect your specs. Tweak our findings and the recommendations update live.
         </p>
+        <button type="button" class="reset-specs" x-show="manual" x-cloak @click="resetSpecs">reset my specs</button>
 
         <div class="machine-row">
           <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
@@ -176,6 +177,9 @@
       <script id="gpu-database" type="application/json">
         {{ gpu_database | json }}
       </script>
+      <script id="apple-chips" type="application/json">
+        {{ apple_chips | json }}
+      </script>
 
       <section class="best-pick-row" id="best-pick-row">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
@@ -313,7 +317,7 @@
           </div>
           <div class="detection-credit-item">
             <dt>RAM</dt>
-            <dd><code>navigator.deviceMemory</code> API</dd>
+            <dd><code>navigator.deviceMemory</code>, cross-checked against the detected chip on Apple Silicon</dd>
           </div>
           <div class="detection-credit-item">
             <dt>CPU</dt>

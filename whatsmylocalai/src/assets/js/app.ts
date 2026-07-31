@@ -13,10 +13,14 @@ declare global {
 export {};
 
 import {
+  chipRamCandidates,
+  detectAppleChip,
   detectGPU,
   detectVendor,
   detectOS,
   estimateVRAM,
+  suggestRAM,
+  type AppleChipDatabase,
   type GpuDatabase,
   type OS,
   type Vendor,
@@ -51,6 +55,7 @@ const PROBE_KEYS: readonly ProbeKey[] = [
 const GROUP_THRESHOLD = 6;
 
 const PROBE_SEEN_KEY = "wmla-probe-seen";
+const SPECS_KEY = "wmla-specs";
 const REVEAL_DELAY_MS = 250;
 
 function loadJSON(id: string): unknown {
@@ -70,8 +75,10 @@ document.addEventListener("alpine:init", () => {
     const state = {
       gpuName: null as string | null,
       vendor: "unknown" as Vendor,
+      chip: null as string | null,
       vram: 4,
-      vramSource: "wild guess",
+      detectedVramSource: "wild guess",
+      detectedRamNote: "",
       ram: 16,
       ramKnown: false,
       ramCapped: false,
@@ -89,6 +96,9 @@ document.addEventListener("alpine:init", () => {
         models: [],
       } as MergedRegistry,
       gpuDatabase: [] as GpuDatabase,
+      appleChips: [] as AppleChipDatabase,
+      savedSpecs: null as { ram: number; vram: number } | null,
+      manual: false,
       phase: "probing" as "probing" | "results",
       probeDone: Object.fromEntries(
         PROBE_KEYS.map((k) => [k, false]),
@@ -123,6 +133,29 @@ document.addEventListener("alpine:init", () => {
         };
         this.gpuDatabase =
           (loadJSON("gpu-database") as GpuDatabase | null) ?? [];
+        this.appleChips =
+          (loadJSON("apple-chips") as AppleChipDatabase | null) ?? [];
+
+        try {
+          const raw = localStorage.getItem(SPECS_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (
+              parsed &&
+              typeof parsed.ram === "number" &&
+              parsed.ram >= 2 &&
+              parsed.ram <= 256
+            ) {
+              this.savedSpecs = {
+                ram: parsed.ram,
+                vram:
+                  typeof parsed.vram === "number" && parsed.vram >= 1
+                    ? parsed.vram
+                    : 0,
+              };
+            }
+          }
+        } catch {}
 
         try {
           const saved = localStorage.getItem("runner");
@@ -136,14 +169,37 @@ document.addEventListener("alpine:init", () => {
       runDetection() {
         this.gpuName = detectGPU();
         this.vendor = this.gpuName ? detectVendor(this.gpuName) : "unknown";
+        this.chip = detectAppleChip(this.gpuName);
         this.os = detectOS(navigator.userAgent);
         this.cores = navigator.hardwareConcurrency || null;
         this.webgpu = "gpu" in navigator;
-        if (typeof navigator.deviceMemory === "number") {
-          this.ram = navigator.deviceMemory;
+
+        const saved = this.savedSpecs;
+        if (saved) {
+          this.ram = saved.ram;
           this.ramKnown = true;
-          this.ramCapped = navigator.deviceMemory === 8;
+          this.ramCapped = false;
+          this.vram = saved.vram || Math.round(saved.ram * 0.7);
+          this.manual = true;
+          return;
         }
+        this.manual = false;
+
+        const deviceMemory =
+          typeof navigator.deviceMemory === "number"
+            ? navigator.deviceMemory
+            : null;
+        const ramSuggestion = suggestRAM({
+          vendor: this.vendor,
+          chip: this.chip,
+          deviceMemory,
+          chipDatabase: this.appleChips,
+        });
+        this.ram = ramSuggestion.ram;
+        this.ramKnown = ramSuggestion.ramKnown;
+        this.ramCapped = ramSuggestion.ramCapped;
+        this.detectedRamNote = ramSuggestion.note;
+
         const estimate = estimateVRAM({
           vendor: this.vendor,
           gpuName: this.gpuName,
@@ -153,7 +209,7 @@ document.addEventListener("alpine:init", () => {
           gpuDatabase: this.gpuDatabase,
         });
         this.vram = estimate.vram;
-        this.vramSource = estimate.source;
+        this.detectedVramSource = estimate.source;
       },
 
       /**
@@ -192,11 +248,13 @@ document.addEventListener("alpine:init", () => {
       },
 
       get ramNote() {
-        if (!this.ramKnown)
-          return "RAM not reported by your browser. Set it yourself or use a Chromium-based browser";
-        if (this.ramCapped)
-          return "browsers cap reported ram at 8 GB — adjust if yours is higher";
-        return "";
+        if (this.manual) return "you set this — saved for next visit";
+        return this.detectedRamNote;
+      },
+
+      get vramSource() {
+        if (this.manual) return "you set this — saved for next visit";
+        return this.detectedVramSource;
       },
 
       get fittingModels(): MergedModel[] {
@@ -236,10 +294,43 @@ document.addEventListener("alpine:init", () => {
         if (field === "vram") {
           this.vram = Math.min(128, Math.max(1, this.vram + step));
         } else {
-          this.ram = Math.min(256, Math.max(2, this.ram + step));
           this.ramKnown = true;
-          if (this.vendor === "apple") this.vram = Math.round(this.ram * 0.7);
+          this.ramCapped = false;
+          if (this.vendor === "apple") {
+            const candidates = chipRamCandidates(this.chip, this.appleChips);
+            const idx = candidates ? candidates.indexOf(this.ram) : -1;
+            if (candidates && idx >= 0) {
+              const next = candidates[idx + step];
+              if (typeof next !== "number") return;
+              this.ram = next;
+            } else {
+              this.ram = Math.min(256, Math.max(2, this.ram + step));
+            }
+            this.vram = Math.round(this.ram * 0.7);
+          } else {
+            this.ram = Math.min(256, Math.max(2, this.ram + step));
+          }
         }
+        this.manual = true;
+        this.persistSpecs();
+      },
+
+      persistSpecs() {
+        try {
+          localStorage.setItem(
+            SPECS_KEY,
+            JSON.stringify({ ram: this.ram, vram: this.vram }),
+          );
+        } catch {}
+      },
+
+      resetSpecs() {
+        this.savedSpecs = null;
+        this.manual = false;
+        try {
+          localStorage.removeItem(SPECS_KEY);
+        } catch {}
+        this.runDetection();
       },
 
       toggleCap(cap: string) {

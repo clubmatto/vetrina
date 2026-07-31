@@ -10,6 +10,12 @@ export type OS =
 
 export type GpuDatabase = readonly (readonly [string, number])[];
 
+/** Apple chip name → the RAM configurations Apple actually sells it with. */
+export type AppleChipDatabase = readonly (readonly [
+  string,
+  readonly number[],
+])[];
+
 export interface VramEstimate {
   vram: number;
   source: string;
@@ -66,6 +72,78 @@ export function detectOS(userAgent: string): OS {
   if (/cros/i.test(userAgent)) return "chromeos";
   if (/linux/i.test(userAgent)) return "linux";
   return "unknown";
+}
+
+/**
+ * Extract the Apple Silicon chip from the WebGL renderer string (e.g. "Apple
+ * M3 Pro"). Only meaningful on Apple hardware; anything else returns null.
+ */
+export function detectAppleChip(gpuName: string | null): string | null {
+  if (!gpuName) return null;
+  const match = gpuName.match(/apple\s+(m\d(?:\s+(?:pro|max|ultra))?)/i);
+  return match ? match[1] : null;
+}
+
+/** RAM configs Apple sells `chip` with, or null if the chip is unknown. */
+export function chipRamCandidates(
+  chip: string | null,
+  database: AppleChipDatabase,
+): readonly number[] | null {
+  if (!chip) return null;
+  const lower = chip.toLowerCase();
+  const hit = database.find(([key]) => lower.includes(key.toLowerCase()));
+  return hit ? hit[1] : null;
+}
+
+/**
+ * RAM estimation. The browser only exposes `navigator.deviceMemory`, and
+ * Chromium caps it at 8 GB, so on Apple Silicon the chip name is the strongest
+ * signal we have: it pins down the RAM configs that chip is actually sold
+ * with. We default to the smallest config and tell the user the candidates,
+ * since the true value can't be read.
+ */
+export function suggestRAM(input: {
+  vendor: Vendor;
+  chip: string | null;
+  deviceMemory: number | null;
+  chipDatabase: AppleChipDatabase;
+}): {
+  ram: number;
+  ramKnown: boolean;
+  ramCapped: boolean;
+  note: string;
+} {
+  const { vendor, chip, deviceMemory, chipDatabase } = input;
+  const candidates = chipRamCandidates(chip, chipDatabase);
+
+  if (typeof deviceMemory !== "number") {
+    return {
+      ram: 16,
+      ramKnown: false,
+      ramCapped: false,
+      note: "RAM not reported by your browser. Set it yourself or use a Chromium-based browser",
+    };
+  }
+
+  if (deviceMemory === 8 && vendor === "apple" && chip && candidates) {
+    return {
+      ram: Math.max(8, candidates[0]),
+      ramKnown: true,
+      ramCapped: true,
+      note: `browsers cap reported RAM at 8 GB — ${chip} ships with ${candidates.join(" or ")} GB; tap + if yours is bigger`,
+    };
+  }
+
+  if (deviceMemory === 8) {
+    return {
+      ram: deviceMemory,
+      ramKnown: true,
+      ramCapped: true,
+      note: "browsers cap reported RAM at 8 GB — adjust if yours is higher",
+    };
+  }
+
+  return { ram: deviceMemory, ramKnown: true, ramCapped: false, note: "" };
 }
 
 /**

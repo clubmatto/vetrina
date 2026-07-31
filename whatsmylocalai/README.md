@@ -51,12 +51,18 @@ inlines it in the page. No network calls at runtime.
 1. **Passive detection** — GPU name via WebGL (`WEBGL_debug_renderer_info`), RAM
    via `navigator.deviceMemory`, CPU cores via `navigator.hardwareConcurrency`,
    OS from user agent.
-2. **VRAM estimation** — exact match against a GPU lookup table (confidence:
+2. **RAM cross-check** — `deviceMemory` is capped at 8 GB by Chromium, so on
+   Apple Silicon the detected chip (from the WebGL renderer string) pins down
+   the RAM configs that chip is actually sold with; we default to the smallest
+   and show the candidates.
+3. **VRAM estimation** — exact match against a GPU lookup table (confidence:
    high), ~70% of system RAM for Apple Silicon (confidence: medium), or a
    RAM-based guess (confidence: low).
-3. **Recommendations** — `suggestModelsForVRAM` (from `@auxot/model-registry`)
+4. **Recommendations** — `suggestModelsForVRAM` (from `@auxot/model-registry`)
    filters the 90+ Q4 models by VRAM. Best pick + also runs + beyond your
    machine. All adjustable via live steppers.
+5. **Corrections stick** — any tweak is saved to `localStorage` and reused on
+   the next visit (a "reset my specs" button restores detection).
 
 Everything runs client-side; nothing leaves the browser.
 
@@ -82,6 +88,7 @@ whatsmylocalai/
 ├── src/_data/
 │   ├── enrichment.json        # ollama tags + blurbs
 │   ├── gpu_database.json      # GPU VRAM lookup table
+│   ├── apple_chips.json       # Apple chip → RAM configs it ships with
 │   ├── models.js              # default-exports _lib/models-merge (only export!)
 │   └── site.js                # url, name, description
 ├── scripts/
