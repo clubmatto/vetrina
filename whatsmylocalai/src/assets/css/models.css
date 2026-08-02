@@ -265,7 +265,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--ds-text-secondary);
-  opacity: 0.6;
+  opacity: 0.85;
   transition:
     opacity var(--ds-transition-fast),
     color var(--ds-transition-fast);

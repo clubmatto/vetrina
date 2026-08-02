@@ -52,7 +52,7 @@
 
   --ds-text: light-dark(#1a1a1a, #eceff4);
   --ds-text-inverse: #ffffff;
-  --ds-text-secondary: color-mix(in srgb, var(--ds-text), transparent 30%);
+  --ds-text-secondary: color-mix(in srgb, var(--ds-text), transparent 15%);
   --ds-text-muted: light-dark(#aaa, #6c757d);
   --ds-text-opacity: 0.7;
 
@@ -111,7 +111,7 @@
 
   --ds-ok: light-dark(#16a34a, #a6e3a1);
   --ds-info: var(--ds-gradient-5);
-  --ds-warn: var(--ds-gradient-3);
+  --ds-warn: light-dark(#9a5a00, #ebcb8b);
   --ds-bad: var(--ds-gradient-2);
 
   --terminal-bg: light-dark(#f4f4f5, #1e1e2e);

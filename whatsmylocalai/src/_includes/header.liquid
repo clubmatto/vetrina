@@ -1,6 +1,6 @@
 <header class="nav">
   <div class="nav-inner">
-    <a href="/" class="wordmark">
+    <a href="/" class="wordmark" aria-label="What's my local AI — home">
       <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
         <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff006e"/><stop offset=".5" stop-color="#8338ec"/><stop offset="1" stop-color="#3a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text>
       </svg>
@@ -97,7 +97,14 @@
         method="POST"
         class="email-form"
       >
-        <input type="email" name="email" required placeholder="your@email.com" class="email-input">
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="your@email.com"
+          aria-label="Email address"
+          class="email-input"
+        >
         <button type="submit" class="email-submit">Subscribe</button>
       </form>
     </template>
