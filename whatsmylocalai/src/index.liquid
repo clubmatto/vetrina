@@ -25,13 +25,10 @@
 
       <div class="hero">
         <h1 class="hero-title">What's my local AI?</h1>
-        <p class="hero-sub">
-          We detect your hardware right here in your browser and tell you which local models to run. Nothing leaves your
-          machine.
-        </p>
+        <p class="hero-sub">Check what's the best model you can run locally!</p>
         <noscript>
           <p class="noscript-note">
-            This tool needs JavaScript — the detection runs locally in your browser, so there's nothing to upload.
+            This tool needs JavaScript. The detection runs locally in your browser, so there's nothing to upload.
           </p>
         </noscript>
       </div>
@@ -42,166 +39,271 @@
           <button type="button" class="reset-specs" x-show="manual" x-cloak @click="resetSpecs">reset my specs</button>
         </div>
         <p class="specs-intro">
-          We try our best to detect your specs. Tweak our findings and the recommendations update live.
+          We auto-detect what we can from your browser; everything else is a best guess. Tweak any value below to see
+          what else could run.
         </p>
 
-        <div class="machine-row">
-          <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
-          <div :class="{ 'is-probing': !probeDone.vram }" class="machine-row-inner">
-            <span class="machine-label">
-              <svg
-                class="spec-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/>
-              </svg>
-              VRAM
-            </span>
-            <div class="stepper">
-              <button type="button" @click="adjust('vram', -1)" aria-label="decrease VRAM">−</button>
-              <span class="stepper-value" x-text="probeDone.vram ? vram + ' GB' : '-- GB'"></span>
-              <button type="button" @click="adjust('vram', 1)" aria-label="increase VRAM">+</button>
+        <div class="machine-groups">
+          <div class="spec-group">
+            <h3 class="spec-group-title">Hardware</h3>
+            <div class="spec-row spec-row--gpu">
+              <div class="machine-spec" :class="{ custom: probeDone.gpu && !gpuDetected }">
+                <div x-show="!probeDone.gpu" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.gpu }" class="machine-spec-inner machine-spec-inner--gpu">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/>
+                    </svg>
+                    <span class="machine-spec-label">GPU</span>
+                    <span class="spec-edit-tag" x-show="probeDone.gpu && !gpuDetected" x-cloak>edited</span>
+                  </div>
+                  <div class="spec-select-wrap">
+                    <select
+                      class="spec-select"
+                      aria-label="GPU"
+                      :disabled="!probeDone.gpu"
+                      @change="setGpu($event.target.value)"
+                    >
+                      <template x-for="group in gpuOptionGroups" :key="group.label">
+                        <optgroup :label="group.label">
+                          <template x-for="opt in group.options" :key="opt.value">
+                            <option
+                              :value="opt.value"
+                              :disabled="!!opt.disabled"
+                              :selected="gpuSel === opt.value"
+                              x-text="opt.label"
+                            ></option>
+                          </template>
+                        </optgroup>
+                      </template>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="machine-note" x-text="vramSource" :style="!probeDone.vram ? 'visibility: hidden' : ''"></div>
-        </div>
 
-        <div class="machine-row">
-          <div x-show="!probeDone.ram" class="probe-overlay"><span class="probe-spinner"></span></div>
-          <div :class="{ 'is-probing': !probeDone.ram }" class="machine-row-inner">
-            <span class="machine-label">
-              <svg
-                class="spec-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4"/><path d="M8 16v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/><path d="M8 12h8"/>
-              </svg>
-              RAM
-            </span>
-            <div class="stepper">
-              <button type="button" @click="adjust('ram', -1)" aria-label="decrease RAM">−</button>
-              <span class="stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
-              <button type="button" @click="adjust('ram', 1)" aria-label="increase RAM">+</button>
+          <div class="spec-group">
+            <h3 class="spec-group-title">Memory</h3>
+            <div class="spec-row spec-row--2">
+              <div class="machine-spec" :class="{ custom: probeDone.ram && !ramDetected }">
+                <div x-show="!probeDone.ram" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.ram }" class="machine-spec-inner">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4"/><path d="M8 16v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1"/><path d="M8 12h8"/>
+                    </svg>
+                    <span class="machine-spec-label">RAM</span>
+                    <span class="spec-edit-tag" x-show="probeDone.ram && !ramDetected" x-cloak>edited</span>
+                  </div>
+                  <div class="spec-stepper">
+                    <button
+                      type="button"
+                      aria-label="decrease RAM"
+                      @pointerdown="startRepeat(() => adjust('ram', -1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjust('ram', -1)"
+                      @keydown.space.prevent="adjust('ram', -1)"
+                    >
+                      −
+                    </button>
+                    <span class="spec-stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
+                    <button
+                      type="button"
+                      aria-label="increase RAM"
+                      @pointerdown="startRepeat(() => adjust('ram', 1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjust('ram', 1)"
+                      @keydown.space.prevent="adjust('ram', 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="machine-spec" :class="{ custom: probeDone.vram && !vramDetected }">
+                <div x-show="!probeDone.vram" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.vram }" class="machine-spec-inner">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/>
+                    </svg>
+                    <span class="machine-spec-label">VRAM</span>
+                    <span class="spec-edit-tag" x-show="probeDone.vram && !vramDetected" x-cloak>edited</span>
+                  </div>
+                  <div class="spec-stepper">
+                    <button
+                      type="button"
+                      aria-label="decrease VRAM"
+                      @pointerdown="startRepeat(() => adjust('vram', -1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjust('vram', -1)"
+                      @keydown.space.prevent="adjust('vram', -1)"
+                    >
+                      −
+                    </button>
+                    <span class="spec-stepper-value" x-text="probeDone.vram ? vram + ' GB' : '-- GB'"></span>
+                    <button
+                      type="button"
+                      aria-label="increase VRAM"
+                      @pointerdown="startRepeat(() => adjust('vram', 1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjust('vram', 1)"
+                      @keydown.space.prevent="adjust('vram', 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div
-            class="machine-note"
-            :class="{ 'machine-note--warn': !ramKnown }"
-            :style="!probeDone.ram ? 'visibility: hidden' : ''"
-          >
-            <svg
-              class="warn-icon"
-              x-show="!ramKnown"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-            <span x-text="ramNote"></span>
-          </div>
-        </div>
 
-        <div class="machine-specs">
-          <div class="machine-spec">
-            <div x-show="!probeDone.gpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.gpu }" class="machine-spec-inner">
-              <div class="machine-spec-head">
-                <svg
-                  class="spec-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M6 10H4"/><path d="M6 14H4"/><path d="M20 10H18"/><path d="M20 14H18"/><path d="M10 6V4"/><path d="M14 6V4"/><path d="M10 20V18"/><path d="M14 20V18"/>
-                </svg>
-                <span class="machine-spec-label">GPU</span>
+          <div class="spec-group">
+            <h3 class="spec-group-title">Platform</h3>
+            <div class="spec-row spec-row--3">
+              <div class="machine-spec" :class="{ custom: probeDone.cpu && !coresDetected }">
+                <div x-show="!probeDone.cpu" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.cpu }" class="machine-spec-inner">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/>
+                    </svg>
+                    <span class="machine-spec-label">CPU</span>
+                    <span class="spec-edit-tag" x-show="probeDone.cpu && !coresDetected" x-cloak>edited</span>
+                  </div>
+                  <div class="spec-stepper">
+                    <button
+                      type="button"
+                      aria-label="decrease CPU cores"
+                      @pointerdown="startRepeat(() => adjustCores(-1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjustCores(-1)"
+                      @keydown.space.prevent="adjustCores(-1)"
+                    >
+                      −
+                    </button>
+                    <span class="spec-stepper-value" x-text="probeDone.cpu ? (cores || '--') + ' cores' : '--'"></span>
+                    <button
+                      type="button"
+                      aria-label="increase CPU cores"
+                      @pointerdown="startRepeat(() => adjustCores(1))"
+                      @pointerup="stopRepeat()"
+                      @pointerleave="stopRepeat()"
+                      @pointercancel="stopRepeat()"
+                      @keydown.enter.prevent="adjustCores(1)"
+                      @keydown.space.prevent="adjustCores(1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
-              <span class="machine-spec-value" x-text="probeDone.gpu ? gpuValue() : '--'"></span>
-            </div>
-          </div>
-          <div class="machine-spec">
-            <div x-show="!probeDone.cpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.cpu }" class="machine-spec-inner">
-              <div class="machine-spec-head">
-                <svg
-                  class="spec-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="7" y="7" width="10" height="10" rx="1.5"/><circle cx="12" cy="12" r="3"/><path d="M7 10H4"/><path d="M7 14H4"/><path d="M20 10H17"/><path d="M20 14H17"/><path d="M10 7V4"/><path d="M14 7V4"/><path d="M10 20V17"/><path d="M14 20V17"/>
-                </svg>
-                <span class="machine-spec-label">CPU</span>
+              <div class="machine-spec" :class="{ custom: probeDone.os && !osDetected }">
+                <div x-show="!probeDone.os" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.os }" class="machine-spec-inner">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/>
+                    </svg>
+                    <span class="machine-spec-label">OS</span>
+                    <span class="spec-edit-tag" x-show="probeDone.os && !osDetected" x-cloak>edited</span>
+                  </div>
+                  <div class="spec-select-wrap">
+                    <select
+                      class="spec-select"
+                      aria-label="OS"
+                      :disabled="!probeDone.os"
+                      @change="setOS($event.target.value)"
+                    >
+                      <template x-for="opt in osOptions" :key="opt.value">
+                        <option :value="opt.value" :selected="osSel === opt.value" x-text="opt.label"></option>
+                      </template>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <span
-                class="machine-spec-value"
-                x-text="probeDone.cpu ? (cores ? cores + ' cores' : 'unknown') : '--'"
-              ></span>
-            </div>
-          </div>
-          <div class="machine-spec">
-            <div x-show="!probeDone.os" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.os }" class="machine-spec-inner">
-              <div class="machine-spec-head">
-                <svg
-                  class="spec-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22H16"/><path d="M12 18V22"/><path d="M6 9L8.5 11L6 13"/>
-                </svg>
-                <span class="machine-spec-label">OS</span>
+              <div class="machine-spec machine-spec--webgpu" :class="{ custom: probeDone.webgpu && !webgpuDetected }">
+                <div x-show="!probeDone.webgpu" class="probe-overlay"><span class="probe-spinner"></span></div>
+                <div :class="{ 'is-probing': !probeDone.webgpu }" class="machine-spec-inner">
+                  <div class="machine-spec-head">
+                    <svg
+                      class="spec-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/>
+                    </svg>
+                    <span class="machine-spec-label">WebGPU</span>
+                    <span class="spec-edit-tag" x-show="probeDone.webgpu && !webgpuDetected" x-cloak>edited</span>
+                  </div>
+                  <button
+                    type="button"
+                    class="spec-switch"
+                    :class="{ on: webgpu }"
+                    role="switch"
+                    :aria-checked="webgpu"
+                    :aria-label="webgpu ? 'WebGPU supported — click to disable' : 'WebGPU not available — click to enable'"
+                    @click="toggleWebGPU()"
+                  >
+                    <span class="spec-switch-knob"></span>
+                  </button>
+                </div>
               </div>
-              <span class="machine-spec-value" x-text="probeDone.os ? os : '--'"></span>
-            </div>
-          </div>
-          <div class="machine-spec">
-            <div x-show="!probeDone.webgpu" class="probe-overlay"><span class="probe-spinner"></span></div>
-            <div :class="{ 'is-probing': !probeDone.webgpu }" class="machine-spec-inner">
-              <div class="machine-spec-head">
-                <svg
-                  class="spec-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polygon points="13,2 4,14 12,14 11,22 20,10 12,10"/>
-                </svg>
-                <span class="machine-spec-label">WebGPU</span>
-              </div>
-              <span
-                class="machine-spec-value"
-                :class="probeDone.webgpu ? (webgpu ? 'spec-status-ok' : 'spec-status-ko') : ''"
-                x-text="probeDone.webgpu ? (webgpu ? 'supported' : 'not available') : '--'"
-              ></span>
             </div>
           </div>
         </div>

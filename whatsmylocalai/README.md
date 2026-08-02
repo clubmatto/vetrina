@@ -60,9 +60,11 @@ inlines it in the page. No network calls at runtime.
    RAM-based guess (confidence: low).
 4. **Recommendations** — `suggestModelsForVRAM` (from `@auxot/model-registry`)
    filters the 90+ Q4 models by VRAM. Best pick + also runs + beyond your
-   machine. All adjustable via live steppers.
-5. **Corrections stick** — any tweak is saved to `localStorage` and reused on
-   the next visit (a "reset my specs" button restores detection).
+   machine. Simulate any machine — swap the GPU/OS in dropdowns, step
+   RAM/VRAM/cores, flip WebGPU — and the picks update live.
+5. **Corrections stick** — any tweak (GPU, RAM, VRAM, cores, OS, WebGPU) is
+   saved to `localStorage` and reused on the next visit (a "reset my specs"
+   button restores detection).
 
 Everything runs client-side; nothing leaves the browser.
 

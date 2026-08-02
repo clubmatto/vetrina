@@ -18,7 +18,6 @@ export type AppleChipDatabase = readonly (readonly [
 
 export interface VramEstimate {
   vram: number;
-  source: string;
 }
 
 export function detectGPU(): string | null {
@@ -91,7 +90,7 @@ export function chipRamCandidates(
 ): readonly number[] | null {
   if (!chip) return null;
   const lower = chip.toLowerCase();
-  const hit = database.find(([key]) => lower.includes(key.toLowerCase()));
+  const hit = database.find(([key]) => lower === key.toLowerCase());
   return hit ? hit[1] : null;
 }
 
@@ -99,8 +98,7 @@ export function chipRamCandidates(
  * RAM estimation. The browser only exposes `navigator.deviceMemory`, and
  * Chromium caps it at 8 GB, so on Apple Silicon the chip name is the strongest
  * signal we have: it pins down the RAM configs that chip is actually sold
- * with. We default to the smallest config and tell the user the candidates,
- * since the true value can't be read.
+ * with. We default to the smallest config, since the true value can't be read.
  */
 export function suggestRAM(input: {
   vendor: Vendor;
@@ -111,7 +109,6 @@ export function suggestRAM(input: {
   ram: number;
   ramKnown: boolean;
   ramCapped: boolean;
-  note: string;
 } {
   const { vendor, chip, deviceMemory, chipDatabase } = input;
   const candidates = chipRamCandidates(chip, chipDatabase);
@@ -121,7 +118,6 @@ export function suggestRAM(input: {
       ram: 16,
       ramKnown: false,
       ramCapped: false,
-      note: "RAM not reported by your browser. Set it yourself or use a Chromium-based browser",
     };
   }
 
@@ -130,7 +126,6 @@ export function suggestRAM(input: {
       ram: Math.max(8, candidates[0]),
       ramKnown: true,
       ramCapped: true,
-      note: `browsers cap reported RAM at 8 GB — ${chip} ships with ${candidates.join(" or ")} GB; tap + if yours is bigger`,
     };
   }
 
@@ -139,11 +134,10 @@ export function suggestRAM(input: {
       ram: deviceMemory,
       ramKnown: true,
       ramCapped: true,
-      note: "browsers cap reported RAM at 8 GB — adjust if yours is higher",
     };
   }
 
-  return { ram: deviceMemory, ramKnown: true, ramCapped: false, note: "" };
+  return { ram: deviceMemory, ramKnown: true, ramCapped: false };
 }
 
 /**
@@ -152,9 +146,6 @@ export function suggestRAM(input: {
  * 2. Known discrete GPU → lookup table.
  * 3. Known RAM → tiered guess.
  * 4. Nothing → wild guess.
- *
- * Browsers cap `deviceMemory` at 8 GB, so on Apple Silicon a capped report
- * (ramCapped) yields a *minimum* estimate, flagged as such in `source`.
  */
 export function estimateVRAM(input: {
   vendor: Vendor;
@@ -171,26 +162,23 @@ export function estimateVRAM(input: {
     if (ramCapped) {
       return {
         vram,
-        source:
-          "at least this much — browsers cap reported RAM at 8 GB on Macs; adjust if yours is higher",
       };
     }
-    return { vram, source: "unified memory (~70% of RAM)" };
+    return { vram };
   }
 
   if (gpuName) {
     const hit = lookupGPU(gpuName, gpuDatabase);
     if (hit) {
-      return { vram: hit.vram, source: "known GPU" };
+      return { vram: hit.vram };
     }
   }
 
   if (ramKnown) {
     return {
       vram: nearestTier(Math.max(2, ram * 0.5)),
-      source: vendor === "intel" ? "shared memory guess" : "guess from RAM",
     };
   }
 
-  return { vram: 4, source: "wild guess — adjust below" };
+  return { vram: 4 };
 }

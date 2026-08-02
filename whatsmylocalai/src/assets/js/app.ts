@@ -19,12 +19,36 @@ import {
   detectVendor,
   detectOS,
   estimateVRAM,
+  lookupGPU,
   suggestRAM,
   type AppleChipDatabase,
   type GpuDatabase,
   type OS,
   type Vendor,
 } from "./detect";
+
+/**
+ * Map the raw WebGL renderer string to a canonical GPU name that matches the
+ * option values in the dropdown: Apple chips become "Apple M1 Max", known
+ * discrete GPUs their database key ("RTX 4090"), anything else stays as-is.
+ */
+function canonicalGpuName(
+  gpuName: string | null,
+  vendor: Vendor,
+  chip: string | null,
+  database: GpuDatabase,
+): string | null {
+  if (vendor === "apple" && chip) return `Apple ${chip}`;
+  if (gpuName) {
+    const hit = lookupGPU(gpuName, database);
+    if (hit) return hit.key;
+    const match = gpuName.match(
+      /(apple m\d[^,)]*|nvidia geforce [^,)]*|amd radeon [^,)]*|intel[^,)]*)/i,
+    );
+    return match ? match[1] : gpuName;
+  }
+  return null;
+}
 import {
   availableCaps,
   isTight,
@@ -74,19 +98,20 @@ document.addEventListener("alpine:init", () => {
   window.Alpine.data("app", () => {
     const state = {
       gpuName: null as string | null,
+      gpuSel: "",
       vendor: "unknown" as Vendor,
       chip: null as string | null,
       vram: 4,
-      detectedVramSource: "wild guess",
-      detectedRamNote: "",
       ram: 16,
       ramKnown: false,
       ramCapped: false,
       cores: null as number | null,
       os: "unknown" as OS,
+      osSel: "",
       webgpu: false,
       runner: "lmstudio" as Runner,
       copiedId: null as string | null,
+      repeatTimer: null as number | null,
       filterQ: "",
       filterCaps: [] as string[],
       filterSort: "size-desc" as SortKey,
@@ -99,8 +124,20 @@ document.addEventListener("alpine:init", () => {
       } as MergedRegistry,
       gpuDatabase: [] as GpuDatabase,
       appleChips: [] as AppleChipDatabase,
-      savedSpecs: null as { ram: number; vram: number } | null,
-      manual: false,
+      savedSpecs: null as {
+        ram: number;
+        vram: number;
+        gpu?: string;
+        os?: string;
+        cores?: number;
+        webgpu?: boolean;
+      } | null,
+      detectedGpuName: null as string | null,
+      detectedOS: "unknown" as OS,
+      detectedRam: 16,
+      detectedVram: 4,
+      detectedCores: null as number | null,
+      detectedWebgpu: false,
       phase: "probing" as "probing" | "results",
       probeDone: Object.fromEntries(
         PROBE_KEYS.map((k) => [k, false]),
@@ -153,6 +190,14 @@ document.addEventListener("alpine:init", () => {
                   typeof parsed.vram === "number" && parsed.vram >= 1
                     ? parsed.vram
                     : 0,
+                gpu: typeof parsed.gpu === "string" ? parsed.gpu : undefined,
+                os: typeof parsed.os === "string" ? parsed.os : undefined,
+                cores:
+                  typeof parsed.cores === "number" ? parsed.cores : undefined,
+                webgpu:
+                  typeof parsed.webgpu === "boolean"
+                    ? parsed.webgpu
+                    : undefined,
               };
             }
           }
@@ -208,16 +253,12 @@ document.addEventListener("alpine:init", () => {
         this.cores = navigator.hardwareConcurrency || null;
         this.webgpu = "gpu" in navigator;
 
-        const saved = this.savedSpecs;
-        if (saved) {
-          this.ram = saved.ram;
-          this.ramKnown = true;
-          this.ramCapped = false;
-          this.vram = saved.vram || Math.round(saved.ram * 0.7);
-          this.manual = true;
-          return;
-        }
-        this.manual = false;
+        const detectedGpuName = canonicalGpuName(
+          this.gpuName,
+          this.vendor,
+          this.chip,
+          this.gpuDatabase,
+        );
 
         const deviceMemory =
           typeof navigator.deviceMemory === "number"
@@ -229,21 +270,47 @@ document.addEventListener("alpine:init", () => {
           deviceMemory,
           chipDatabase: this.appleChips,
         });
-        this.ram = ramSuggestion.ram;
-        this.ramKnown = ramSuggestion.ramKnown;
-        this.ramCapped = ramSuggestion.ramCapped;
-        this.detectedRamNote = ramSuggestion.note;
-
         const estimate = estimateVRAM({
           vendor: this.vendor,
           gpuName: this.gpuName,
-          ram: this.ram,
-          ramKnown: this.ramKnown,
-          ramCapped: this.ramCapped,
+          ram: ramSuggestion.ram,
+          ramKnown: ramSuggestion.ramKnown,
+          ramCapped: ramSuggestion.ramCapped,
           gpuDatabase: this.gpuDatabase,
         });
+
+        this.detectedGpuName = detectedGpuName;
+        this.detectedOS = this.os;
+        this.detectedCores = this.cores;
+        this.detectedWebgpu = this.webgpu;
+        this.detectedRam = ramSuggestion.ram;
+        this.detectedVram = estimate.vram;
+
+        const saved = this.savedSpecs;
+        if (saved) {
+          this.gpuSel = saved.gpu ?? detectedGpuName ?? "";
+          this.osSel = saved.os ?? this.os;
+          if (saved.os) this.os = saved.os as OS;
+          if (typeof saved.cores === "number") this.cores = saved.cores;
+          if (typeof saved.webgpu === "boolean") this.webgpu = saved.webgpu;
+          this.ram = saved.ram;
+          this.ramKnown = true;
+          this.ramCapped = false;
+          this.vram = saved.vram || Math.round(saved.ram * 0.7);
+          if (this.gpuSel) {
+            this.gpuName = this.gpuSel;
+            this.vendor = detectVendor(this.gpuSel);
+            this.chip = detectAppleChip(this.gpuSel);
+          }
+          return;
+        }
+
+        this.gpuSel = detectedGpuName ?? "";
+        this.osSel = this.os;
+        this.ram = ramSuggestion.ram;
+        this.ramKnown = ramSuggestion.ramKnown;
+        this.ramCapped = ramSuggestion.ramCapped;
         this.vram = estimate.vram;
-        this.detectedVramSource = estimate.source;
       },
 
       /**
@@ -281,14 +348,40 @@ document.addEventListener("alpine:init", () => {
         });
       },
 
-      get ramNote() {
-        if (this.manual) return "you set this — saved for next visit";
-        return this.detectedRamNote;
+      get gpuDetected() {
+        return !!this.detectedGpuName && this.gpuSel === this.detectedGpuName;
       },
 
-      get vramSource() {
-        if (this.manual) return "you set this — saved for next visit";
-        return this.detectedVramSource;
+      get osDetected() {
+        return this.osSel === this.detectedOS;
+      },
+
+      get ramDetected() {
+        return this.ram === this.detectedRam;
+      },
+
+      get vramDetected() {
+        return this.vram === this.detectedVram;
+      },
+
+      get coresDetected() {
+        return this.cores === this.detectedCores;
+      },
+
+      get webgpuDetected() {
+        return this.webgpu === this.detectedWebgpu;
+      },
+
+      /** True as soon as any spec stops matching what we detected. */
+      get manual() {
+        return !(
+          this.gpuDetected &&
+          this.osDetected &&
+          this.ramDetected &&
+          this.vramDetected &&
+          this.coresDetected &&
+          this.webgpuDetected
+        );
       },
 
       get fittingModels(): MergedModel[] {
@@ -350,9 +443,97 @@ document.addEventListener("alpine:init", () => {
             this.vram = Math.round(this.ram * 0.7);
           } else {
             this.ram = Math.min(256, Math.max(2, this.ram + step * 2));
+            const estimate = estimateVRAM({
+              vendor: this.vendor,
+              gpuName: this.gpuName,
+              ram: this.ram,
+              ramKnown: true,
+              ramCapped: false,
+              gpuDatabase: this.gpuDatabase,
+            });
+            this.vram = estimate.vram;
           }
         }
-        this.manual = true;
+        this.persistSpecs();
+      },
+
+      /**
+       * Hold-to-repeat for steppers: fires `step` once, then keeps firing on a
+       * timer while held, growing the step size the longer the hold lasts.
+       */
+      startRepeat(step: () => void) {
+        step();
+        this.stopRepeat();
+        let elapsed = 0;
+        this.repeatTimer = window.setInterval(() => {
+          elapsed += 140;
+          const factor = Math.min(16, 2 ** Math.floor(elapsed / 600));
+          for (let i = 0; i < factor; i++) step();
+        }, 140);
+      },
+
+      stopRepeat() {
+        if (this.repeatTimer !== null) {
+          window.clearInterval(this.repeatTimer);
+          this.repeatTimer = null;
+        }
+      },
+
+      applyGpuName(value: string | null) {
+        this.gpuName = value;
+        this.vendor = value ? detectVendor(value) : "unknown";
+        this.chip = detectAppleChip(value);
+      },
+
+      /**
+       * Re-derive RAM/VRAM from the current GPU selection, simulating a real
+       * machine: Apple chips pin down the RAM configs they ship with, known
+       * discrete GPUs get their VRAM from the lookup table, everything else
+       * falls back to a guess from RAM.
+       */
+      deriveFromGpu() {
+        if (this.vendor === "apple" && this.chip) {
+          const candidates = chipRamCandidates(this.chip, this.appleChips);
+          if (candidates && candidates.length) {
+            this.ram = candidates[0];
+            this.ramKnown = true;
+            this.ramCapped = false;
+          }
+          this.vram = Math.round(this.ram * 0.7);
+          return;
+        }
+
+        const estimate = estimateVRAM({
+          vendor: this.vendor,
+          gpuName: this.gpuName,
+          ram: this.ram,
+          ramKnown: this.ramKnown,
+          ramCapped: this.ramCapped,
+          gpuDatabase: this.gpuDatabase,
+        });
+        this.vram = estimate.vram;
+      },
+
+      setGpu(value: string) {
+        this.gpuSel = value;
+        this.applyGpuName(value);
+        this.deriveFromGpu();
+        this.persistSpecs();
+      },
+
+      setOS(value: string) {
+        this.osSel = value;
+        this.os = value as OS;
+        this.persistSpecs();
+      },
+
+      adjustCores(step: number) {
+        this.cores = Math.min(64, Math.max(1, (this.cores ?? 4) + step));
+        this.persistSpecs();
+      },
+
+      toggleWebGPU() {
+        this.webgpu = !this.webgpu;
         this.persistSpecs();
       },
 
@@ -360,14 +541,20 @@ document.addEventListener("alpine:init", () => {
         try {
           localStorage.setItem(
             SPECS_KEY,
-            JSON.stringify({ ram: this.ram, vram: this.vram }),
+            JSON.stringify({
+              ram: this.ram,
+              vram: this.vram,
+              gpu: this.gpuSel,
+              os: this.osSel,
+              cores: this.cores,
+              webgpu: this.webgpu,
+            }),
           );
         } catch {}
       },
 
       resetSpecs() {
         this.savedSpecs = null;
-        this.manual = false;
         try {
           localStorage.removeItem(SPECS_KEY);
         } catch {}
@@ -426,12 +613,72 @@ document.addEventListener("alpine:init", () => {
         return isTight(model, this.vram);
       },
 
-      gpuValue() {
-        if (!this.gpuName) return "unknown";
-        const match = this.gpuName.match(
-          /(apple m\d[^,)]*|nvidia geforce [^,)]*|amd radeon [^,)]*|intel[^,)]*)/i,
+      get gpuOptionGroups(): {
+        label: string;
+        options: { value: string; label: string; disabled?: boolean }[];
+      }[] {
+        const groups: {
+          label: string;
+          options: { value: string; label: string; disabled?: boolean }[];
+        }[] = [];
+
+        const apple: { value: string; label: string }[] = this.appleChips.map(
+          ([chip]) => ({ value: `Apple ${chip}`, label: `Apple ${chip}` }),
         );
-        return match ? match[1] : this.gpuName;
+        if (apple.length)
+          groups.push({ label: "Apple Silicon", options: apple });
+
+        const nvidia: { value: string; label: string }[] = [];
+        const amd: { value: string; label: string }[] = [];
+        const intel: { value: string; label: string }[] = [];
+        const other: { value: string; label: string }[] = [];
+        for (const [name] of this.gpuDatabase) {
+          const vendor = detectVendor(name);
+          const option = { value: name, label: name };
+          if (vendor === "nvidia") nvidia.push(option);
+          else if (vendor === "amd") amd.push(option);
+          else if (vendor === "intel") intel.push(option);
+          else other.push(option);
+        }
+        if (nvidia.length) groups.push({ label: "NVIDIA", options: nvidia });
+        if (amd.length) groups.push({ label: "AMD", options: amd });
+        if (intel.length) groups.push({ label: "Intel", options: intel });
+        if (other.length) groups.push({ label: "Other", options: other });
+
+        const detected = this.detectedGpuName;
+        if (detected) {
+          const known = groups.some((g) =>
+            g.options.some((o) => o.value === detected),
+          );
+          if (!known) {
+            groups.unshift({
+              label: "Your GPU",
+              options: [{ value: detected, label: detected }],
+            });
+          }
+        } else {
+          groups.unshift({
+            label: "Your GPU",
+            options: [{ value: "", label: "GPU not detected", disabled: true }],
+          });
+        }
+        return groups;
+      },
+
+      get osOptions(): { value: string; label: string }[] {
+        const labels: Record<OS, string> = {
+          android: "Android",
+          ios: "iOS",
+          windows: "Windows",
+          macos: "macOS",
+          chromeos: "ChromeOS",
+          linux: "Linux",
+          unknown: "Unknown",
+        };
+        return (Object.keys(labels) as OS[]).map((key) => ({
+          value: key,
+          label: labels[key],
+        }));
       },
 
       ramValue() {
