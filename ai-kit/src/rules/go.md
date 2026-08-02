@@ -79,23 +79,24 @@ sqlc diff
 All Go projects should use a Makefile with consistent targets:
 
 ```bash
-make test         # Run all tests
-make lint         # Run golangci-lint and go vet
-make build        # Build the binary
+make test   # Run unit tests
+make lint   # Run golangci-lint and go vet
+make build  # Build the binary
+make ci     # Full pipeline (lint + test + build)
 ```
 
-Common patterns used across projects:
+Common patterns:
 
 ```makefile
-# Test targets
-unit:       # Unit tests (no external dependencies)
+# Test
+unit:        # Unit tests (no external dependencies)
 integration: # Integration tests (testcontainers, etc.)
 test: unit integration   # Run all tests
 
 # Coverage
 coverage: # Combined unit + integration coverage via go tool covdata
 
-# Linting
+# Lint
 lint:
     golangci-lint run
     go vet ./...
@@ -103,7 +104,16 @@ lint:
 # Build with version injection
 build:
     go build -ldflags="-s -w -X main.version=$(VERSION)" -o bin/app
+
+# Aggregates the checks a change must pass before merge
+ci: lint test build
 ```
+
+### The `ci` Target
+
+Go projects in this repo expose a single `make ci` target that aggregates the
+checks a change must pass (`lint`, `test`, `build`), so CI/merge gates call one
+command. Add project extras (e.g. frontend typecheck, e2e) to `ci` as needed.
 
 ## 📝 Go Code Standards
 
