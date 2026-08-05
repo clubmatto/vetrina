@@ -87,8 +87,11 @@
           emailError = false;
           fetch($el.action, {
             method: 'POST',
-            body: new FormData($el),
-            headers: { 'Accept': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: $el.email.value,
+              product_id: $el.product_id.value
+            })
           })
             .then(r => { if (r.ok) { emailSubmitted = true } else { emailError = true } })
             .catch(() => { emailError = true })
@@ -105,6 +108,7 @@
           aria-label="Email address"
           class="email-input"
         >
+        <input type="hidden" name="product_id" value="35d7200b-d89e-46eb-b042-f30b6db020fa">
         <button type="submit" class="email-submit">Subscribe</button>
       </form>
     </template>

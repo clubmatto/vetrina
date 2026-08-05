@@ -4,3 +4,4 @@ dist
 package-lock.json
 src/sitemap.xml.liquid
 src/robots.txt.liquid
+src/llms.txt.liquid
