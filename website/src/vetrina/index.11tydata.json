@@ -1,6 +1,12 @@
 {
   "cards": [
     {
+      "href": "https://whatsmylocal.ai",
+      "icon": "cpu",
+      "title": "What's my local AI?",
+      "description": "Detect your hardware in the browser and get the best local model for your machine — Ollama or LM Studio. Nothing is uploaded."
+    },
+    {
       "href": "/vetrina/fakedata/",
       "icon": "layers",
       "title": "FakeData",

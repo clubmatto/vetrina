@@ -40,14 +40,18 @@ description: All your subscription quotas in your menu bar. Monitor every AI pro
     @submit.prevent="
       fetch($el.action, {
         method: 'POST',
-        body: new FormData($el),
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: $el.email.value,
+          product_id: $el.product_id.value
+        })
       }).then(r => { if(r.ok) submitted = true })
     "
     action="{{ apiBaseUrl }}/waiting-list/signup"
     method="POST"
   >
     <input type="email" name="email" required placeholder="your@email.com">
+    <input type="hidden" name="product_id" value="40d20edc-7f52-4559-95f3-1df9280b62ca">
     <button type="submit" class="ds-btn ds-btn--primary">Join Waitlist</button>
   </form>
   <div class="waiting-list-submitted" x-show="submitted">

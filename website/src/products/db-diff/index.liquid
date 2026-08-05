@@ -40,14 +40,18 @@ description: Know when your data drifts. Compare rows across databases using has
     @submit.prevent="
       fetch($el.action, {
         method: 'POST',
-        body: new FormData($el),
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: $el.email.value,
+          product_id: $el.product_id.value
+        })
       }).then(r => { if(r.ok) submitted = true })
     "
     action="{{ apiBaseUrl }}/waiting-list/signup"
     method="POST"
   >
     <input type="email" name="email" required placeholder="your@email.com">
+    <input type="hidden" name="product_id" value="f88793dd-6627-4661-b786-d6e0c22ccc15">
     <button type="submit" class="ds-btn ds-btn--primary">Join Waitlist</button>
   </form>
   <div class="waiting-list-submitted" x-show="submitted">
