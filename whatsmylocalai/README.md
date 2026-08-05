@@ -172,6 +172,18 @@ When a new open-weights model is released:
 
 Steps 1—2 are automatic — the data comes from community-maintained packages.
 
+## Deploy
+
+Production is served at **https://whatsmylocal.ai**.
+
+```bash
+npm run build   # production build → _site/
+```
+
+Deploy the contents of `_site/` to the hosting platform. The newsletter form
+posts to `apiBaseUrl` (`API_URL` env var, defaults to `https://api.matto.club`),
+so no per-deploy API config is needed unless the API moves.
+
 ## License
 
 MIT — see [LICENSE](/LICENSE) for details.
