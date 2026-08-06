@@ -8,11 +8,9 @@ import { rmSync } from "node:fs";
 const PORT = 4173;
 const SITE_DIR = new URL("../_site", import.meta.url).pathname;
 const DOCS_DIR = new URL("../docs", import.meta.url).pathname;
-const FRAMES_DIR = join(DOCS_DIR, "frames");
-const OUTPUT_GIF = join(DOCS_DIR, "demo.gif");
+const THEMES = ["light", "dark"];
 
-if (!existsSync(DOCS_DIR)) mkdirSync(DOCS_DIR, { recursive: true });
-if (!existsSync(FRAMES_DIR)) mkdirSync(FRAMES_DIR, { recursive: true });
+mkdirSync(DOCS_DIR, { recursive: true });
 
 const MIME = {
   ".html": "text/html",
@@ -38,43 +36,35 @@ const server = createServer((req, res) => {
   res.end(readFileSync(filePath));
 });
 
-server.listen(PORT, async () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+async function captureDemo(browser, theme) {
+  const framesDir = join(DOCS_DIR, `frames-${theme}`);
+  mkdirSync(framesDir, { recursive: true });
 
-  const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport: { width: 1280, height: 900 },
     deviceScaleFactor: 2,
+    colorScheme: theme,
   });
-
   const page = await context.newPage();
 
   let frameIdx = 0;
   const frames = [];
   const capture = async () => {
     const buf = await page.screenshot({ type: "png" });
-    const path = join(
-      FRAMES_DIR,
-      `f${String(frameIdx++).padStart(4, "0")}.png`,
-    );
+    const path = join(framesDir, `f${String(frameIdx++).padStart(4, "0")}.png`);
     writeFileSync(path, buf);
     frames.push(path);
   };
 
-  await page.goto(`http://localhost:${PORT}`, {
-    waitUntil: "domcontentloaded",
-  });
+  await page.goto(`http://localhost:${PORT}`, { waitUntil: "domcontentloaded" });
 
-  // wait for probes to start
   await page.waitForSelector(".probe-spinner", { timeout: 10000 });
 
-  // capture probing phase
   for (let i = 0; i < 25; i++) {
     await page.waitForTimeout(200);
     await capture();
   }
 
-  // wait for the best-pick card to appear with content
   await page
     .waitForSelector(".best-pick-card .model-name", { timeout: 20000 })
     .catch(() => {});
@@ -82,23 +72,35 @@ server.listen(PORT, async () => {
   await capture();
 
   await context.close();
-  await browser.close();
-  server.close();
+  return { frames, framesDir, theme };
+}
 
-  console.log(`Captured ${frames.length} frames, converting to GIF...`);
+server.listen(PORT, async () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+  const browser = await chromium.launch({ headless: true });
 
-  try {
-    rmSync(OUTPUT_GIF, { force: true });
-    execSync(
-      `ffmpeg -y -framerate 5 -i "${FRAMES_DIR}/f%04d.png" -vf "scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64[p];[s1][p]paletteuse=dither=bayer" "${OUTPUT_GIF}"`,
-      { stdio: "inherit" },
-    );
-    console.log(`GIF saved to ${OUTPUT_GIF}`);
-  } catch (e) {
-    console.error("ffmpeg conversion failed:", e.message);
+  const gifs = [];
+  for (const theme of THEMES) {
+    const { frames, framesDir } = await captureDemo(browser, theme);
+    console.log(`Captured ${frames.length} frames (${theme}), converting to GIF...`);
+    const outputGif = join(DOCS_DIR, `demo-${theme}.gif`);
+    try {
+      rmSync(outputGif, { force: true });
+      execSync(
+        `ffmpeg -y -framerate 5 -i "${frames[0].replace(/f\d+\.png$/, "f%04d.png")}" -vf "scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=64[p];[s1][p]paletteuse=dither=bayer" "${outputGif}"`,
+        { stdio: "inherit" },
+      );
+      console.log(`GIF saved to ${outputGif}`);
+      gifs.push(outputGif);
+    } catch (e) {
+      console.error(`ffmpeg conversion failed (${theme}):`, e.message);
+    }
+    for (const f of frames) rmSync(f, { force: true });
+    rmSync(framesDir, { recursive: true, force: true });
   }
 
-  for (const f of frames) rmSync(f, { force: true });
-  rmSync(FRAMES_DIR, { recursive: true, force: true });
+  await browser.close();
+  server.close();
+  console.log(`Generated: ${gifs.join(", ")}`);
   process.exit(0);
 });

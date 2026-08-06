@@ -7,8 +7,8 @@ recommends models to run with [Ollama](https://ollama.com) or
 [LM Studio](https://lmstudio.ai). All client-side, nothing leaves the browser.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/demo.gif">
-  <img alt="whatsmylocalai demo" src="docs/demo.gif" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/demo-dark.gif">
+  <img alt="whatsmylocalai demo" src="docs/demo-light.gif" width="100%">
 </picture>
 
 ## Table of Contents
@@ -98,7 +98,8 @@ whatsmylocalai/
 │   ├── demo.mjs               # Playwright demo GIF capture
 │   └── og-image.mjs           # Playwright og.png capture
 ├── docs/
-│   └── demo.gif               # README demo
+│   ├── demo-light.gif          # README demo (light)
+│   └── demo-dark.gif           # README demo (dark)
 ├── _site/                     # built output (generated)
 ├── eleventy.config.ts
 ├── package.json
@@ -139,7 +140,7 @@ node scripts/demo.mjs
 
 Requires [Playwright](https://playwright.dev) (installed as a dev dependency) to
 capture the page, and [ffmpeg](https://ffmpeg.org) to convert the recording to a
-GIF. The output is written to `docs/demo.gif`.
+GIF. The output is written to `docs/demo-light.gif` and `docs/demo-dark.gif`.
 
 ### Regenerating the Social Card
 
