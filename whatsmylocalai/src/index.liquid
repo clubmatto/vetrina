@@ -345,6 +345,28 @@
             </button>
             <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">Ollama</button>
           </div>
+          <button
+            type="button"
+            class="share-btn"
+            @click="shareResult()"
+            :class="{ copied: shareCopied }"
+            aria-label="share your result"
+          >
+            <svg
+              class="share-btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
+              <path d="M16 6l-4-4-4 4"/>
+              <path d="M12 2v13"/>
+            </svg>
+            <span class="share-btn-label" x-text="shareCopied ? 'link copied!' : 'share'"></span>
+          </button>
         </div>
 
         <article class="model-card best-pick-card" :class="{ tight: bestModel ? isTight(bestModel) : false }">

@@ -36,6 +36,48 @@
   box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
 }
 
+/* --- share ---------------------------------------------------------------- */
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-surface);
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+}
+
+.share-btn:hover,
+.share-btn:focus-visible {
+  color: var(--ds-text);
+}
+
+.share-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+.share-btn.copied {
+  background: var(--ds-gradient-text);
+  color: var(--ds-text-inverse);
+}
+
+.share-btn-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.share-btn-label {
+  line-height: 1;
+}
+
 /* --- performance vs. resource trade-off ------------------------------------ */
 
 .best-pick-controls {

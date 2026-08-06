@@ -132,6 +132,16 @@ document.addEventListener("alpine:init", () => {
         cores?: number;
         webgpu?: boolean;
       } | null,
+      sharedSpecs: null as {
+        ram: number;
+        vram: number;
+        gpu?: string;
+        os?: string;
+        cores?: number;
+        webgpu?: boolean;
+        perfBias?: number;
+      } | null,
+      shareCopied: false,
       detectedGpuName: null as string | null,
       detectedOS: "unknown" as OS,
       detectedRam: 16,
@@ -208,7 +218,13 @@ document.addEventListener("alpine:init", () => {
           if (saved === "ollama" || saved === "lmstudio") this.runner = saved;
         } catch {}
 
+        this.readSharedSpecs();
+        // A shared spec wins over any locally saved machine for this visit, so
+        // the link always replays the sharer's result rather than the viewer's.
+        if (this.sharedSpecs) this.savedSpecs = null;
+
         this.runDetection();
+        this.applySharedSpecs();
         this.revealProbes();
         this.initScrollSpy();
       },
@@ -559,6 +575,104 @@ document.addEventListener("alpine:init", () => {
           localStorage.removeItem(SPECS_KEY);
         } catch {}
         this.runDetection();
+      },
+
+      /** Decode machine specs from the query string, if a share link was used. */
+      readSharedSpecs() {
+        let shared: NonNullable<typeof this.sharedSpecs> | null = null;
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const ram = params.get("ram");
+          const vram = params.get("vram");
+          const gpu = params.get("gpu");
+          const os = params.get("os");
+          const cores = params.get("cores");
+          const perf = params.get("perf");
+          if (
+            ram !== null &&
+            vram !== null &&
+            Number.isFinite(Number(ram)) &&
+            Number.isFinite(Number(vram)) &&
+            Number(ram) >= 2 &&
+            Number(ram) <= 256 &&
+            Number(vram) >= 1 &&
+            Number(vram) <= 128
+          ) {
+            shared = {
+              ram: Number(ram),
+              vram: Number(vram),
+            };
+            if (cores !== null && Number.isFinite(Number(cores))) {
+              const parsedCores = Number(cores);
+              if (parsedCores >= 1 && parsedCores <= 64) {
+                shared.cores = parsedCores;
+              }
+            }
+            if (gpu) shared.gpu = gpu;
+            if (os) shared.os = os as OS;
+            if (perf !== null && Number.isFinite(Number(perf))) {
+              const parsedPerf = Number(perf);
+              if (parsedPerf >= 0 && parsedPerf <= 1) {
+                shared.perfBias = parsedPerf;
+              }
+            }
+          }
+        } catch {}
+        this.sharedSpecs = shared;
+      },
+
+      applySharedSpecs() {
+        const shared = this.sharedSpecs;
+        if (!shared) return;
+        this.ram = shared.ram;
+        this.vram = shared.vram;
+        this.ramKnown = true;
+        this.ramCapped = false;
+        if (shared.gpu) {
+          this.gpuSel = shared.gpu;
+          this.applyGpuName(shared.gpu);
+        }
+        if (shared.os) {
+          this.osSel = shared.os;
+          this.os = shared.os as OS;
+        }
+        if (typeof shared.cores === "number") this.cores = shared.cores;
+        if (typeof shared.webgpu === "boolean") this.webgpu = shared.webgpu;
+        if (typeof shared.perfBias === "number")
+          this.perfBias = shared.perfBias;
+      },
+
+      buildShareUrl() {
+        const params = new URLSearchParams();
+        params.set("ram", String(Math.round(this.ram)));
+        params.set("vram", String(Math.round(this.vram)));
+        if (this.gpuSel) params.set("gpu", this.gpuSel);
+        if (this.osSel && this.osSel !== "unknown")
+          params.set("os", this.osSel);
+        if (this.cores) params.set("cores", String(this.cores));
+        if (this.perfBias !== 1) params.set("perf", this.perfBias.toFixed(2));
+        return `${location.origin}${location.pathname}?${params.toString()}`;
+      },
+
+      async shareResult() {
+        const url = this.buildShareUrl();
+        const best = this.bestModel;
+        const text = best
+          ? `I can run ${best.model_name} locally (~${best.vram_requirements_gb} GB Q4). What fits your machine?`
+          : `What's the best local model your machine can run?`;
+        if (typeof navigator.share === "function") {
+          try {
+            await navigator.share({ title: "What's my local AI?", text, url });
+            return;
+          } catch {}
+        }
+        try {
+          await navigator.clipboard.writeText(url);
+          this.shareCopied = true;
+          setTimeout(() => {
+            this.shareCopied = false;
+          }, 1500);
+        } catch {}
       },
 
       toggleCap(cap: string) {

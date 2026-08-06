@@ -78,5 +78,297 @@
   "Qwen3-0.6B": {
     "ollama_tag": "qwen3:0.6b",
     "blurb": "pocket-sized — great for quick drafts."
+  },
+  "Kimi-K2.5": {
+    "ollama_tag": "kimi-k2.5",
+    "blurb": "moonshot's newest frontier — agentic reasoning at scale."
+  },
+  "Kimi-K2": {
+    "ollama_tag": "kimi-k2",
+    "blurb": "moonshot's frontier MoE, built for reasoning."
+  },
+  "DeepSeek-V3.1": {
+    "ollama_tag": "deepseek-v3.1",
+    "blurb": "deepseek's massive dense model — cheap frontier chat."
+  },
+  "DeepSeek-V3.1-Terminus": {
+    "ollama_tag": "deepseek-v3.1:terminus",
+    "blurb": "a deeper long-context cut of deepseek v3.1."
+  },
+  "DeepSeek-R1-0528": {
+    "ollama_tag": "deepseek-r1:0528",
+    "blurb": "deepseek's reasoning model, may edition."
+  },
+  "Qwen3-Coder-480B-A35B": {
+    "ollama_tag": "qwen3-coder:480b-a35b",
+    "blurb": "alibaba's giant coding MoE."
+  },
+  "Qwen3-Coder-480B-A35B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 480b coder, now with a 1M context."
+  },
+  "Llama-4-Maverick-17B-128E": {
+    "ollama_tag": "llama4:maverick",
+    "blurb": "meta's 128-expert MoE with vision."
+  },
+  "Qwen3.5-397B-A17B": {
+    "ollama_tag": "qwen3.5:397b-a17b",
+    "blurb": "alibaba's new flagship — vision and reasoning."
+  },
+  "Qwen3-VL-235B-A22B": {
+    "ollama_tag": "qwen3-vl:235b-a22b",
+    "blurb": "large vision-language MoE."
+  },
+  "Qwen3-VL-235B-A22B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 235b vision model with thinking mode."
+  },
+  "Qwen3-VL-235B-A22B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 235b VL, with a 1M context."
+  },
+  "Qwen3-VL-235B-A22B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 235b vision, 1M context."
+  },
+  "Qwen3-235B-A22B": {
+    "ollama_tag": "qwen3:235b-a22b",
+    "blurb": "alibaba's giant reasoning MoE."
+  },
+  "Qwen3-235B-A22B-Thinking-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 235b thinking revision."
+  },
+  "Qwen3-235B-A22B-Instruct-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 235b instruct revision."
+  },
+  "Qwen3-235B-A22B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 235b MoE with 128K context."
+  },
+  "MiniMax-M2.1": {
+    "ollama_tag": "minimax-m2.1",
+    "blurb": "minimax's agentic MoE — chat, tools, long context."
+  },
+  "Qwen3.5-122B-A10B": {
+    "ollama_tag": "qwen3.5:122b-a10b",
+    "blurb": "mid-size qwen3.5 — vision plus reasoning."
+  },
+  "gpt-oss-safeguard-120b": {
+    "ollama_tag": "",
+    "blurb": "openai's 120b safety and routing model."
+  },
+  "Llama-4-Scout-17B-16E": {
+    "ollama_tag": "llama4:scout",
+    "blurb": "meta's lighter MoE — vision and massive context."
+  },
+  "Qwen3-Coder-Next": {
+    "ollama_tag": "qwen3-coder:next",
+    "blurb": "alibaba's next-gen coding model."
+  },
+  "Qwen3-VL-32B": {
+    "ollama_tag": "qwen3-vl:32b",
+    "blurb": "vision-language, dense, mid-size."
+  },
+  "Qwen3-VL-32B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 32b vision model with thinking mode."
+  },
+  "Qwen3-VL-32B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 32b VL, with a 1M context."
+  },
+  "Qwen3-VL-32B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 32b vision, 1M context."
+  },
+  "Qwen3-32B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 32b with 128K context."
+  },
+  "granite-4.0-h-small": {
+    "ollama_tag": "granite4:32b",
+    "blurb": "ibm's 32b — huge context, enterprise tone."
+  },
+  "Qwen3-VL-30B-A3B": {
+    "ollama_tag": "qwen3-vl:30b-a3b",
+    "blurb": "efficient vision MoE."
+  },
+  "Qwen3-VL-30B-A3B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 30b vision MoE with thinking mode."
+  },
+  "Qwen3-VL-30B-A3B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 30b VL, with a 1M context."
+  },
+  "Qwen3-VL-30B-A3B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 30b vision, 1M context."
+  },
+  "Qwen3-30B-A3B-Instruct-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 30b instruct revision."
+  },
+  "Qwen3-30B-A3B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 30b-a3b with 128K context."
+  },
+  "Qwen3-30B-A3B-Thinking-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 30b thinking revision."
+  },
+  "Qwen3-Coder-30B-A3B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the coding MoE with a 1M context."
+  },
+  "gemma-3-27b-it-qat": {
+    "ollama_tag": "gemma3:27b-qat",
+    "blurb": "gemma 27b with quantized attention."
+  },
+  "gpt-oss-safeguard-20b": {
+    "ollama_tag": "",
+    "blurb": "openai's 20b safety model."
+  },
+  "Qwen3-14B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 14b with 128K context."
+  },
+  "Ministral-3-14B-Instruct-2512": {
+    "ollama_tag": "ministral-3:14b",
+    "blurb": "mistral's 14b — chat and vision."
+  },
+  "Ministral-3-14B-Reasoning-2512": {
+    "ollama_tag": "",
+    "blurb": "mistral's 14b reasoning edition."
+  },
+  "gemma-3-12b-it-qat": {
+    "ollama_tag": "gemma3:12b-qat",
+    "blurb": "gemma 12b with quantized attention."
+  },
+  "FLUX.1-schnell": {
+    "ollama_tag": "",
+    "blurb": "black forest labs' fast image generation."
+  },
+  "FLUX.2-klein-9B": {
+    "ollama_tag": "",
+    "blurb": "flux's lean image model."
+  },
+  "Qwen3-VL-8B": {
+    "ollama_tag": "qwen3-vl:8b",
+    "blurb": "vision-language 8b."
+  },
+  "Qwen3-VL-8B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 8b vision model with thinking mode."
+  },
+  "Qwen3-VL-8B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 8b vision, 1M context."
+  },
+  "Qwen3-VL-8B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 8b VL, with a 1M context."
+  },
+  "Qwen3-8B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 8b with 128K context."
+  },
+  "Ministral-3-8B-Reasoning-2512": {
+    "ollama_tag": "",
+    "blurb": "mistral's 8b reasoning edition."
+  },
+  "DeepSeek-R1-0528-Qwen3-8B": {
+    "ollama_tag": "",
+    "blurb": "r1-style reasoning distilled into qwen3 8b."
+  },
+  "gemma-3n-E4B-it": {
+    "ollama_tag": "gemma3n:e4b",
+    "blurb": "google's nimble gemma 3n."
+  },
+  "granite-4.0-h-tiny": {
+    "ollama_tag": "granite4:8b",
+    "blurb": "ibm's tiny granite with a huge context."
+  },
+  "Qwen3-VL-4B": {
+    "ollama_tag": "qwen3-vl:4b",
+    "blurb": "vision-language 4b."
+  },
+  "Qwen3-VL-4B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 4b vision model with thinking mode."
+  },
+  "Qwen3-VL-4B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 4b VL, with a 1M context."
+  },
+  "Qwen3-VL-4B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 4b vision, 1M context."
+  },
+  "Qwen3-4B-Instruct-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 4b instruct revision."
+  },
+  "Qwen3-4B-Thinking-2507": {
+    "ollama_tag": "",
+    "blurb": "latest 4b thinking revision."
+  },
+  "Qwen3-4B-128K": {
+    "ollama_tag": "",
+    "blurb": "the 4b with 128K context."
+  },
+  "gemma-3-4b-it-qat": {
+    "ollama_tag": "gemma3:4b-qat",
+    "blurb": "gemma 4b with quantized attention."
+  },
+  "gemma-3n-E2B-it": {
+    "ollama_tag": "gemma3n:e2b",
+    "blurb": "google's tiny gemma 3n."
+  },
+  "FLUX.2-klein-4B": {
+    "ollama_tag": "",
+    "blurb": "flux's smallest image model."
+  },
+  "Ministral-3-3B-Reasoning-2512": {
+    "ollama_tag": "",
+    "blurb": "mistral's 3b reasoning edition."
+  },
+  "Qwen3-VL-2B": {
+    "ollama_tag": "qwen3-vl:2b",
+    "blurb": "vision-language 2b."
+  },
+  "Qwen3-VL-2B-Thinking": {
+    "ollama_tag": "",
+    "blurb": "the 2b vision model with thinking mode."
+  },
+  "Qwen3-VL-2B-Thinking-1M": {
+    "ollama_tag": "",
+    "blurb": "thinking-mode 2b vision, 1M context."
+  },
+  "Qwen3-VL-2B-Instruct-1M": {
+    "ollama_tag": "",
+    "blurb": "the 2b VL, with a 1M context."
+  },
+  "Qwen3-1.7B": {
+    "ollama_tag": "qwen3:1.7b",
+    "blurb": "alibaba's pocket reasoning model."
+  },
+  "granite-4.0-350m": {
+    "ollama_tag": "",
+    "blurb": "ibm's sub-1b granite."
+  },
+  "granite-4.0-h-350m": {
+    "ollama_tag": "",
+    "blurb": "tiny granite with a huge context window."
+  },
+  "gemma-3-270m-it": {
+    "ollama_tag": "gemma3:270m",
+    "blurb": "google's smallest gemma."
+  },
+  "gemma-3-270m-it-qat": {
+    "ollama_tag": "",
+    "blurb": "gemma 270m with quantized attention."
   }
 }
