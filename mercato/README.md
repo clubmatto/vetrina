@@ -11,6 +11,7 @@ mercato/
 ├── drafts/         # In-progress / unpublished drafts
 ├── linkedin/       # LinkedIn posts
 ├── twitter/        # Twitter/X threads and posts
+├── producthunt/    # Product Hunt launch listings
 ├── reddit/         # Reddit posts and comments
 └── <platform>/     # future platforms
 ```
