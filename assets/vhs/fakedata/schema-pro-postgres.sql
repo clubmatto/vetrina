@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS line_items (
+  id UUID PRIMARY KEY,
+  order_id UUID NOT NULL,
+  product_id UUID NOT NULL,
+  date DATE NOT NULL,
+  quantity INTEGER NOT NULL,
+  total DOUBLE PRECISION NOT NULL
+);
