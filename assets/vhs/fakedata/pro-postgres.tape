@@ -20,7 +20,7 @@ Enter
 
 Sleep 1s
 
-Type "psql -d pro_demo -c 'SELECT date_trunc(''month'', date) AS month, count(*) AS line_items, sum(total) AS total FROM line_items GROUP BY 1 ORDER BY 1;'"
+Type `psql -d pro_demo -c "SELECT date_trunc('month', date) AS month, count(*) AS line_items, sum(total) AS total FROM line_items GROUP BY 1 ORDER BY 1;"`
 Enter
 
 Sleep 500ms
