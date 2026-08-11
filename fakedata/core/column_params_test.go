@@ -94,6 +94,12 @@ func TestColumnParams(t *testing.T) {
 			true,
 		},
 		{
+			"date: column named after a generator keeps column:generator:options",
+			"date:date:2020-01-01,2020-12-31",
+			isDate,
+			false,
+		},
+		{
 			"date: invalid format",
 			"date:not-a-date",
 			nil,

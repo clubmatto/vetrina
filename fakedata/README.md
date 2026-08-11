@@ -109,7 +109,7 @@ The column spec syntax is `[name:][generator[:options]]`:
 
 The parser disambiguates 2-part specs: if the first part is a known generator and the second is not, both are treated as generator and options (e.g. `int:10,20`). Otherwise the first part is the column name and the second is the generator (e.g. `login:email`).
 
-Three parts are always `column:generator:options` — unless the first part is a known generator, in which case it's `generator:options` (e.g. `distinct:50000:uuidv4`).
+Three parts are `column:generator:options` — unless the first part is a known generator and the second isn't, in which case it's `generator:options` (e.g. `distinct:50000:uuidv4`).
 
 Custom generators and their option formats:
 

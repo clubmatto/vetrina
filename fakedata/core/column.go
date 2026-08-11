@@ -38,7 +38,7 @@ func NewColumns(reg *Registry, keys []string) (Columns, error) {
 				key = specs[1]
 			}
 		default:
-			if reg.IsGenerator(specs[0]) {
+			if reg.IsGenerator(specs[0]) && !reg.IsGenerator(specs[1]) {
 				name = specs[0]
 				key = specs[0]
 				options = strings.Join(specs[1:], ":")

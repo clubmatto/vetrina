@@ -24,8 +24,9 @@ When two parts are given (`foo:bar`), the parser decides:
   (`int:10,20`)
 - Otherwise → `column:generator` (`login:email`)
 
-Three parts are always `column:generator:options` — unless the first part is a
-known generator, in which case it's `generator:options` (`distinct:50000:uuidv4`).
+Three parts are `column:generator:options` — unless the first part is a known
+generator and the second isn't, in which case it's `generator:options`
+(`distinct:50000:uuidv4`).
 
 ## Custom Generator Options
 
