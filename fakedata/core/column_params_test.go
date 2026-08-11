@@ -226,6 +226,68 @@ func TestColumnParams(t *testing.T) {
 			true,
 		},
 
+		// distinct
+		{
+			"distinct: valid pool of uuids",
+			"distinct:10:uuidv4",
+			uuidv4Invariant,
+			false,
+		},
+		{
+			"distinct: inner generator with options",
+			"distinct:10:date:2020-01-01,2020-12-31",
+			isDate,
+			false,
+		},
+		{
+			"distinct: empty options",
+			"distinct:",
+			nil,
+			true,
+		},
+		{
+			"distinct: missing inner generator",
+			"distinct:10",
+			nil,
+			true,
+		},
+		{
+			"distinct: non-numeric count",
+			"distinct:abc:uuidv4",
+			nil,
+			true,
+		},
+		{
+			"distinct: zero count",
+			"distinct:0:uuidv4",
+			nil,
+			true,
+		},
+		{
+			"distinct: negative count",
+			"distinct:-5:uuidv4",
+			nil,
+			true,
+		},
+		{
+			"distinct: unknown inner generator",
+			"distinct:10:nosuchgen",
+			nil,
+			true,
+		},
+		{
+			"distinct: invalid inner options",
+			"distinct:10:float:bad,2",
+			nil,
+			true,
+		},
+		{
+			"distinct: count exceeds inner domain",
+			"distinct:100:boolean",
+			nil,
+			true,
+		},
+
 		// unknown generator
 		{
 			"unknown generator",

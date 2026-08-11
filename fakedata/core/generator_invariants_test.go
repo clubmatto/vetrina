@@ -238,6 +238,8 @@ func TestGeneratorInvariants(t *testing.T) {
 		{name: "datetime", generator: "datetime", invariant: datetimeInvariant},
 		{name: "timestamp", generator: "timestamp", invariant: timestampInvariant},
 		{name: "epoch", generator: "epoch", invariant: epochInvariant},
+		{name: "distinct uuidv4", generator: "distinct:50:uuidv4", invariant: uuidv4Invariant},
+		{name: "distinct date", generator: "distinct:50:date:2020-01-01,2020-12-31", invariant: isDate},
 	}
 
 	for _, tt := range tests {

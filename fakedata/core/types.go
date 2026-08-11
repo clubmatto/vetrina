@@ -8,6 +8,12 @@ import (
 	"strings"
 )
 
+const (
+	distinctParts                 = 2
+	distinctMinCount              = 1
+	distinctMaxAttemptsMultiplier = 100
+)
+
 func boolean(r *Registry) string {
 	const booleanChoiceCount = 2
 
@@ -85,6 +91,62 @@ func enum(r *Registry, options string) (func() string, error) {
 	return r.withList(list), nil
 }
 
+func distinct(r *Registry, options string) (func() string, error) {
+	parts := strings.SplitN(options, ":", distinctParts)
+	if len(parts) != distinctParts || parts[0] == "" || parts[1] == "" {
+		return nil, fmt.Errorf("expected count:generator[:options], got: %s", options)
+	}
+
+	count, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return nil, fmt.Errorf("could not convert count: %v", err)
+	}
+	if count < distinctMinCount {
+		return nil, fmt.Errorf("count must be at least %d, got: %d", distinctMinCount, count)
+	}
+
+	innerParts := strings.SplitN(parts[1], ":", distinctParts)
+	innerKey := innerParts[0]
+	innerOptions := ""
+	if len(innerParts) > distinctParts-1 {
+		innerOptions = innerParts[1]
+	}
+
+	inner, err := r.ExtractFunc(innerKey, innerOptions)
+	if err != nil {
+		return nil, fmt.Errorf("could not build inner generator %q: %v", innerKey, err)
+	}
+
+	pool, err := buildDistinctPool(r, inner, count, innerKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.withList(pool), nil
+}
+
+func buildDistinctPool(r *Registry, inner func() string, count int, innerKey string) ([]string, error) {
+	seen := make(map[string]struct{}, count)
+	pool := make([]string, 0, count)
+	maxAttempts := count * distinctMaxAttemptsMultiplier
+
+	for attempts := 0; len(pool) < count && attempts < maxAttempts; attempts++ {
+		v := inner()
+		if _, ok := seen[v]; ok {
+			continue
+		}
+		seen[v] = struct{}{}
+		pool = append(pool, v)
+	}
+
+	if len(pool) < count {
+		return nil, fmt.Errorf(
+			"could not generate %d distinct values from %q after %d attempts", count, innerKey, maxAttempts)
+	}
+
+	return pool, nil
+}
+
 func floatWithOptions(r *Registry, options string) (func() string, error) {
 	if options == "" {
 		return func() string {
@@ -140,6 +202,11 @@ func registerTypes(r *Registry) {
 		"File must contain one value per line", CustomFunc: func(options string) (func() string, error) {
 		return file(r, options)
 	}})
+	r.Register(Generator{Name: "distinct", Desc: "value sampled from a pool of N distinct values produced by an " +
+		"inner generator. Accepts count:generator[:options], e.g. distinct:50000:uuidv4",
+		CustomFunc: func(options string) (func() string, error) {
+			return distinct(r, options)
+		}})
 	r.Register(Generator{Name: "float", Desc: "decimal number", CustomFunc: func(options string) (func() string, error) {
 		return floatWithOptions(r, options)
 	}})

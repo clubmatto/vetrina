@@ -14,6 +14,7 @@ var optionSignatures = map[string]string{
 	"float":        "precision,scale",
 	"enum":         "val1,val2,val3,...",
 	"file":         "path",
+	"distinct":     "count,generator[:options]",
 	"phone_number": "digits",
 	"date":         "YYYY-MM-DD,YYYY-MM-DD",
 	"datetime":     "YYYY-MM-DD,YYYY-MM-DD",
@@ -83,6 +84,7 @@ func showCustomGeneratorHelp(g *core.Generator) {
 		"date":         "2020-01-01,2024-12-31",
 		"enum":         "apple,banana,cherry",
 		"phone_number": "10",
+		"distinct":     "10:uuidv4",
 	}
 	if params, ok := exampleParams[g.Name]; ok {
 		output.Printf("Usage: %s:%s\n\nExample:\n\n", g.Name, params)

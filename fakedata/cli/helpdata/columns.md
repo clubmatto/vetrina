@@ -24,20 +24,28 @@ When two parts are given (`foo:bar`), the parser decides:
   (`int:10,20`)
 - Otherwise → `column:generator` (`login:email`)
 
-Three parts are always `column:generator:options`.
+Three parts are always `column:generator:options` — unless the first part is a
+known generator, in which case it's `generator:options` (`distinct:50000:uuidv4`).
 
 ## Custom Generator Options
 
-| Generator      | Options format         | Example                      | Default                         |
-|----------------|------------------------|------------------------------|---------------------------------|
-| `int`          | `min,max`              | `int:10,20`                  | `0,1000`                        |
-| `float`        | `precision,scale`      | `float:6,2`                  | normal distribution, 4 decimals |
-| `enum`         | `v1,v2,...`            | `enum:red,green,blue`        | `foo,bar,baz`                   |
-| `file`         | path                   | `file:./names.txt`           | required                        |
-| `date`         | `min,max` (YYYY-MM-DD) | `date:2024-01-01,2024-12-31` | last 365 days                   |
-| `datetime`     | `min,max` (YYYY-MM-DD) | `datetime:2024-01-01,`       | last year                       |
-| `timestamp`    | `min,max` (YYYY-MM-DD) | `timestamp:2024-01-01,`      | last year, RFC3339Nano          |
-| `phone_number` | digit count (8-12)     | `phone_number:10`            | 8 digits                        |
+| Generator      | Options format             | Example                         | Default    |
+|----------------|----------------------------|---------------------------------|------------|
+| `int`          | `min,max`                  | `int:10,20`                     | `0,1000`   |
+| `float`        | `precision,scale`          | `float:6,2`                     | normal distribution, 4 decimals |
+| `enum`         | `v1,v2,...`                | `enum:red,green,blue`           | `foo,bar,baz` |
+| `file`         | path                       | `file:./names.txt`              | required   |
+| `distinct`     | `count:generator[:options]`| `distinct:50000:uuidv4`         | required   |
+| `date`         | `min,max` (YYYY-MM-DD)     | `date:2024-01-01,2024-12-31`    | last 365 days |
+| `datetime`     | `min,max` (YYYY-MM-DD)     | `datetime:2024-01-01,`          | last year  |
+| `timestamp`    | `min,max` (YYYY-MM-DD)     | `timestamp:2024-01-01,`         | last year, RFC3339Nano |
+| `phone_number` | digit count (8-12)         | `phone_number:10`               | 8 digits   |
+
+`distinct` samples each row from a fixed pool of N unique values produced by an
+inner generator. This controls the *cardinality* of a column — how many distinct
+values appear across your rows. The inner generator may take its own options
+(`distinct:10000:date:2025-01-01,2026-08-01`) and must be able to produce at
+least N distinct values.
 
 ## Ordered Column Pairs
 

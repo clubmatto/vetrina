@@ -109,6 +109,8 @@ The column spec syntax is `[name:][generator[:options]]`:
 
 The parser disambiguates 2-part specs: if the first part is a known generator and the second is not, both are treated as generator and options (e.g. `int:10,20`). Otherwise the first part is the column name and the second is the generator (e.g. `login:email`).
 
+Three parts are always `column:generator:options` — unless the first part is a known generator, in which case it's `generator:options` (e.g. `distinct:50000:uuidv4`).
+
 Custom generators and their option formats:
 
 | Generator | Options | Example | Default |
@@ -117,10 +119,25 @@ Custom generators and their option formats:
 | `float` | `precision,scale` | `float:6,2` | normal distribution, 4 decimals |
 | `enum` | `v1,v2,...` | `enum:red,green,blue` | `foo,bar,baz` |
 | `file` | path | `file:./names.txt` | required |
+| `distinct` | `count:generator[:options]` | `distinct:50000:uuidv4` | required |
 | `date` | `min,max` (YYYY-MM-DD) | `date:2024-01-01,2024-12-31` | last 365 days |
 | `datetime` | `min,max` (YYYY-MM-DD) | `datetime:2024-01-01,` | last year, output YYYY-MM-DD HH:MM:SS |
 | `timestamp` | `min,max` (YYYY-MM-DD) | `timestamp:2024-01-01,` | last year, output RFC3339Nano |
 | `phone_number` | digit count | `phone_number:10` | 8 digits |
+
+### Composing Generators with `distinct`
+
+`distinct` samples each row from a fixed pool of N unique values produced by another generator — useful for controlling the *cardinality* of a column (how many distinct values appear across your rows) instead of letting every row be unique.
+
+```bash
+# 50000 unique ids, drawn uniformly across your rows
+fakedata order_id:distinct:50000:uuidv4
+
+# the inner generator can take its own options
+fakedata distinct:10000:date:2025-01-01,2026-08-01
+```
+
+The pool is built once up front; the same value can (and will) repeat across rows. The inner generator must be able to produce at least N distinct values — `distinct:100:boolean` is an error. Note that a pool whose inner generator isn't seedable (e.g. `uuidv4`, which uses crypto/rand) won't reproduce identical values across runs even with `--seed`.
 
 ## Templates
 
