@@ -29,10 +29,36 @@ setup() {
 
   if $needs_postgres; then
     echo "Setting up Postgres database for pro-postgres demo..."
-    dropdb --if-exists pro_demo
-    createdb pro_demo
-    psql -d pro_demo -q -f "$schema_postgres"
+    reset_pro_demo "$project_dir"
     echo "  -> pro_demo created"
+  fi
+}
+
+reset_pro_demo() {
+  local project_dir="$1"
+  dropdb --if-exists pro_demo
+  createdb pro_demo
+  psql -d pro_demo -q -f "$project_dir/schema-pro-postgres.sql"
+}
+
+before_each() {
+  local project_dir="$1"
+  local demo="$2"
+  if [[ "$demo" == "pro-postgres" ]]; then
+    reset_pro_demo "$project_dir"
+  fi
+}
+
+after_each() {
+  local project_dir="$1"
+  local demo="$2"
+  local theme="$3"
+  if [[ "$demo" == "pro-postgres" ]]; then
+    local raw="$project_dir/pro-postgres-$theme.mp4"
+    local tmp="${raw}.tmp"
+    echo "  -> fast-forwarding $raw"
+    bash "$project_dir/postprocess-speedup.sh" "$raw" "$tmp" "${TMPDIR:-/tmp}/pro-postgres-speedup-$theme"
+    mv "$tmp" "$raw"
   fi
 }
 
