@@ -100,6 +100,32 @@ to separate thread parts.
   demonstrates it
 - Keep the same core message as the LinkedIn version, but condense to essentials
 
+## Style
+
+Keep posts short. The goal is a teaser, not a summary: announce the topic,
+say why it matters in a line or two, link out.
+
+- **Open with a one-line announcement** — an emoji framing like 📢 or 🚀 is
+  on-brand.
+- **One hook line** naming the topic in everyday words, then 2-4 sentences max.
+- **Mention the topic, not the innards.** Omit specific numbers, timings, or
+  implementation details unless they _are_ the point of the post.
+- **Close with the link**: `Read it here: <url>` (LinkedIn), or just the URL
+  (Twitter).
+- **Conversational, fewest words.** No marketing adjectives, no "we thought
+  we'd" padding.
+- **Twitter is LinkedIn trimmed**: same announcement and hook, cut to
+  essentials, comfortably under 240 characters.
+
+### Example style anchors
+
+When editing a post, start from a real example from the same platform rather
+than rewriting from scratch:
+
+- LinkedIn: `linkedin/2026-07-13-ai-kit-announcement.md`,
+  `linkedin/2026-07-31-fakedata-v0-2-0-clickhouse.md`
+- Twitter: `twitter/2026-07-23-pro-custom-columns.md`
+
 ## Media Assets
 
 Posts can include terminal recordings produced with
@@ -116,3 +142,8 @@ See `assets/vhs/README.md` for the full VHS workflow.
 When asking an LLM to help edit a specific post, provide the single file. When
 asking for help with writing style or tone, pass all files filtered by platform
 or topic.
+
+Regardless of the task, pass at least one example post from the target platform
+alongside the request — the style is learned by example, not description.
+State the target length explicitly (LinkedIn ≈ 55-90 words, Twitter ≤ 200
+characters).

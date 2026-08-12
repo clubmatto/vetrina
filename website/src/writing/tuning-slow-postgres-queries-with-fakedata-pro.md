@@ -3,7 +3,6 @@ title: Tuning a Slow Postgres Query With FakeData Pro
 description: Fakedata loads a realistic Postgres fact table in one command, so
   EXPLAIN ANALYZE stops being a guessing game
 date: 2026-08-12
-draft: true
 tags:
   - fakedata-pro
   - postgres
