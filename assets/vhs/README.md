@@ -185,6 +185,23 @@ The file extension in `Output` determines the format (`.gif`, `.mp4`, etc.).
 These make good short GIFs for social media. Save the tape anywhere and run
 it through the generator — no project scaffolding needed.
 
+## LinkedIn / Social Clips
+
+For social announcements (LinkedIn, Twitter), record a one-off GIF — **do not**
+add the demo to the project's `gifs.txt` or generate MP4s. Project demos serve
+the website and READMEs; social clips are throwaway.
+
+1. Create a self-contained tape at `assets/vhs/<clip>.tape` with all settings
+   embedded (see One-Off Recordings above) and `Output <clip>-light.gif`.
+   Use the light theme — it's what social previews show.
+2. Keep it short, roughly **half** of a project demo: ~10 seconds. Trim `Sleep`
+   pauses and speed up typing with `Set TypingSpeed 20ms`.
+3. Generate it with an absolute path:
+   `./generate.sh --tape /Users/.../assets/vhs/<clip>.tape`
+4. Reference the resulting GIF in the post.
+
+Existing example: `assets/vhs/pro-clickhouse.tape`, `assets/vhs/distinct.tape`.
+
 ## GIF Manifest (`gifs.txt`)
 
 Each project can have a `gifs.txt` listing demos that should also produce GIF

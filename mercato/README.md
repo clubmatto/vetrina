@@ -131,9 +131,17 @@ than rewriting from scratch:
 Posts can include terminal recordings produced with
 [VHS](https://github.com/charmbracelet/vhs).
 
-- **Template**: `assets/vhs/linkedin.tape` is pre-configured for social clips
-- **Generate**: `vhs assets/vhs/<tape>.tape -o assets/vhs/<project>/<demo>.gif`
-- **Placement**: GIFs live in `assets/vhs/<project>/`, referenced by path in the post
+For social clips (LinkedIn, Twitter), record a one-off GIF — do **not** add the
+demo to the project's `gifs.txt` or generate MP4s. Project demos serve the
+website and READMEs; social clips are throwaway.
+
+1. Create a self-contained tape at `assets/vhs/<clip>.tape` with all settings
+   embedded (see One-Off Recordings in `assets/vhs/README.md`), outputting
+   `<clip>-light.gif` in the light theme.
+2. Keep it short, roughly half of a project demo: ~10 seconds.
+3. Generate it with an absolute path:
+   `./generate.sh --tape /Users/.../assets/vhs/<clip>.tape`
+4. Reference the resulting GIF in the post.
 
 See `assets/vhs/README.md` for the full VHS workflow.
 
