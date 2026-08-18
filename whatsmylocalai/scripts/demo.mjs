@@ -56,7 +56,9 @@ async function captureDemo(browser, theme) {
     frames.push(path);
   };
 
-  await page.goto(`http://localhost:${PORT}`, { waitUntil: "domcontentloaded" });
+  await page.goto(`http://localhost:${PORT}`, {
+    waitUntil: "domcontentloaded",
+  });
 
   await page.waitForSelector(".probe-spinner", { timeout: 10000 });
 
@@ -82,7 +84,9 @@ server.listen(PORT, async () => {
   const gifs = [];
   for (const theme of THEMES) {
     const { frames, framesDir } = await captureDemo(browser, theme);
-    console.log(`Captured ${frames.length} frames (${theme}), converting to GIF...`);
+    console.log(
+      `Captured ${frames.length} frames (${theme}), converting to GIF...`,
+    );
     const outputGif = join(DOCS_DIR, `demo-${theme}.gif`);
     try {
       rmSync(outputGif, { force: true });
