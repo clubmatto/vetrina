@@ -1,0 +1,94 @@
+---
+layout: page.liquid
+title: Guido Account Deletion
+description: Request deletion of your Guido account and associated data.
+display_title: Guido Account Deletion
+last_updated: "2026-08-19"
+---
+<div class="ds-prose">
+  <p>Last updated: {{ last_updated | formatDate }}</p>
+
+  <p>
+    Guido accounts consist of only an email address and password. We do not store any other personal information about
+    your account.
+  </p>
+
+  <p>
+    To request deletion of your Guido account and its associated data, submit the form below. We will process your
+    request and permanently delete the account within 30 days, as required by Google Play policy.
+  </p>
+
+  <h2>What gets deleted</h2>
+
+  <ul>
+    <li>Your account email address and password.</li>
+    <li>Any data associated with your account.</li>
+  </ul>
+
+  <p>
+    Note that data on your device itself — such as your preferences and saved simulator address — is cleared by simply
+    uninstalling the Guido app.
+  </p>
+
+  <h2>Request deletion</h2>
+
+  <div x-data="{ submitted: false }">
+    <div class="deletion-form">
+      <form
+        method="POST"
+        action="{{ apiBaseUrl }}/account-deletion"
+        @submit.prevent="
+          fetch($el.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: $el.name.value,
+              email: $el.email.value,
+              product_id: $el.product_id.value,
+              message: $el.message.value,
+              company_website: $el.company_website.value
+            })
+          }).then(r => { if(r.ok) submitted = true })
+        "
+      >
+        <div class="form-group honeypot" aria-hidden="true">
+          <label for="company_website">Company Website</label>
+          <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Account email">
+        </div>
+
+        <input type="hidden" name="product_id" value="bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc">
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            required
+            placeholder="Optional: any additional information you want to include with your deletion request."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Request Deletion</button>
+      </form>
+    </div>
+    <div class="form-success" x-show="submitted" style="display: none;">
+      <p>Thanks! Your deletion request has been received. We will process it within 30 days.</p>
+    </div>
+  </div>
+
+  <p class="direct-email">
+    Prefer email? You can also send your request to
+    <a href="mailto:hello@matto.club?subject=Guido%20account%20deletion%20request">hello@matto.club</a>.
+  </p>
+</div>
