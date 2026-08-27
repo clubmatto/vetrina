@@ -147,6 +147,14 @@ AGENTS.md template adapts to monorepo or single-repo mode automatically.
 | `kotlin.md`      | Kotlin conventions, project structure      |
 | `spring-boot.md` | Spring Boot conventions, project structure |
 
+**General Rules** (always installed):
+
+| Rule File      | Description                                      |
+| -------------- | ------------------------------------------------ |
+| `plan-mode.md` | Plan mode: concise plans, no time estimates      |
+| `unsure.md`    | When instructions are ambiguous, ask for clarity |
+| `writing.md`   | Writing style: progressive disclosure, no dashes |
+
 New rules are added over time. Run `ai-kit sync --all-rules` to install
 everything available.
 
