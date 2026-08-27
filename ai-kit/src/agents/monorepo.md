@@ -20,5 +20,6 @@ CRITICAL: When you encounter a file reference (e.g., `@.agents/rules/go.md`), us
 
 - [Plan Mode](.agents/rules/plan-mode.md)
 - [When You're Unsure](.agents/rules/unsure.md)
+- [Writing & Docs](.agents/rules/writing.md)
 
 _{{AGENTS_FOOTER}}_

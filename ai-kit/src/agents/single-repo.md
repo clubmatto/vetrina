@@ -6,5 +6,6 @@ This project uses {{LANGUAGE}}. Begin by reading the closest README.md, then ope
 
 - [Plan Mode](.agents/rules/plan-mode.md)
 - [When You're Unsure](.agents/rules/unsure.md)
+- [Writing & Docs](.agents/rules/writing.md)
 
 _{{AGENTS_FOOTER}}_
