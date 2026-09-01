@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.11] - 2026-09-01
+
+### Added
+
+- Writing rule: progressive disclosure, active voice, and concise phrasing for all projects
+- Writing & Docs reference in both AGENTS.md templates
+
+### Changed
+
+- Go rules: documented `make ci` as the aggregate check gate
+
 ## [0.0.10] - 2026-07-28
 
 ### Added
