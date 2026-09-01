@@ -51,6 +51,14 @@ image_height: 650
     </button>
     <button
       role="tab"
+      :class="{ active: tab === 'writing' }"
+      @click="tab = 'writing'"
+      :aria-selected="tab === 'writing'"
+    >
+      Writing Rules
+    </button>
+    <button
+      role="tab"
       :class="{ active: tab === 'skills' }"
       @click="tab = 'skills'"
       :aria-selected="tab === 'skills'"
@@ -102,11 +110,38 @@ image_height: 650
     <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync --languages=go,kotlin</div>
   </div>
 
+  <div class="ds-tab-body" x-show="tab === 'writing'">
+    <div class="ds-tab-body-text">
+      <p>
+        A writing rule installed in every project, no language detection needed. Your agents write like senior
+        engineers: active voice, progressive disclosure, no filler.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Writing Rules</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="Writing Rules demo (light theme)">
+          <source src="/assets/vhs/ai-kit/use-case-writing-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="Writing Rules demo (dark theme)">
+          <source src="/assets/vhs/ai-kit/use-case-writing-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command"><span class="ds-terminal__prompt">$</span> ai-kit sync</div>
+  </div>
+
   <div class="ds-tab-body" x-show="tab === 'skills'">
     <div class="ds-tab-body-text">
       <p>
-        Drop-in skills like Playwright automation and built-in commands for commits, session synthesis, and
-        feature interviews. Consistent output every time.
+        Drop-in skills like Playwright automation and built-in commands for commits, session synthesis, and feature
+        interviews. Consistent output every time.
       </p>
     </div>
     <div class="ds-terminal">
@@ -132,8 +167,8 @@ image_height: 650
   <div class="ds-tab-body" x-show="tab === 'updates'">
     <div class="ds-tab-body-text">
       <p>
-        Hash-based conflict detection. Edit any installed file and sync again — AI Kit won't overwrite local
-        changes. Your customizations stay intact.
+        Hash-based conflict detection. Edit any installed file and sync again — AI Kit won't overwrite local changes.
+        Your customizations stay intact.
       </p>
     </div>
     <div class="ds-terminal">
@@ -159,8 +194,8 @@ image_height: 650
   <div class="ds-tab-body" x-show="tab === 'custom'">
     <div class="ds-tab-body-text">
       <p>
-        Full control over your setup. Force monorepo or single-repo templates, install all language rules, skip opencode.json,
-        or target specific languages.
+        Full control over your setup. Force monorepo or single-repo templates, install all language rules, skip
+        opencode.json, or target specific languages.
       </p>
     </div>
     <div class="ds-terminal">
@@ -199,6 +234,10 @@ image_height: 650
       <div class="ds-feature-card">
         <h3>Language Rules</h3>
         <p>TypeScript, Go, Kotlin, and more — auto-detected from your project files</p>
+      </div>
+      <div class="ds-feature-card">
+        <h3>Writing Rules</h3>
+        <p>Active voice, progressive disclosure, no filler — installed in every project</p>
       </div>
       <div class="ds-feature-card">
         <h3>Skills</h3>
@@ -248,25 +287,40 @@ image_height: 650
       <thead>
         <tr>
           <th>Location</th>
-          <th>Description</th>
+          <th>What You Get</th>
+          <th>When</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>.agents/rules/</td>
-          <td>Language and framework rules (auto-detected)</td>
-        </tr>
-        <tr>
-          <td>.agents/skills/</td>
-          <td>Reusable AI capabilities</td>
+          <td>AGENTS.md</td>
+          <td>Agent instructions: monorepo or single-repo template</td>
+          <td>always</td>
         </tr>
         <tr>
           <td>opencode.json</td>
-          <td>Opencode configuration (optional)</td>
+          <td>Opencode config with pre-built commands wired in</td>
+          <td>optional</td>
         </tr>
         <tr>
-          <td>AGENTS.md</td>
-          <td>Agent instructions (monorepo or single-repo)</td>
+          <td>.agents/rules/</td>
+          <td>Language rules for TypeScript, Go, Kotlin, matched to your stack</td>
+          <td>auto-detected</td>
+        </tr>
+        <tr>
+          <td>.agents/rules/writing.md</td>
+          <td>Writing rule: active voice, progressive disclosure, no filler</td>
+          <td>always</td>
+        </tr>
+        <tr>
+          <td>.agents/rules/plan-mode.md, unsure.md</td>
+          <td>Planning and ask-when-unsure rules</td>
+          <td>always</td>
+        </tr>
+        <tr>
+          <td>.agents/skills/playwright-cli/</td>
+          <td>Playwright browser automation skill</td>
+          <td>always</td>
         </tr>
       </tbody>
     </table>

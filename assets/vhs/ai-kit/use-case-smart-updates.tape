@@ -1,5 +1,5 @@
 Hide
-Type "export PATH=/tmp/ai-kit/bin:$PATH && cd /tmp/ai-kit/smart-updates && clear"
+Type "export PATH=/tmp/ai-kit/bin:$PATH && cd /tmp/ai-kit/use-case-smart-updates && clear"
 Enter
 Show
 

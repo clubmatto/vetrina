@@ -58,6 +58,9 @@ before_each() {
       cat > "$demo_dir/package.json" <<<'{"name":"smart-updates-project"}'
       cat > "$demo_dir/index.ts" <<<'console.log("hello from smart-updates");'
       ;;
+    use-case-writing)
+      cat > "$demo_dir/package.json" <<<'{"name":"writing-project"}'
+      ;;
   esac
 }
 
