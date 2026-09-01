@@ -7,8 +7,9 @@ topics:
   - open-source
 ---
 
-ai-kit v0.0.11 is out! New writing rule: progressive disclosure, active
-voice, no filler.
+🚀ai-kit v0.0.11 is out 🚀
+
+New writing rule: progressive disclosure, active voice, no filler.
 
 Install: npm install -g @clubmatto/ai-kit
 
