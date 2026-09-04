@@ -230,6 +230,60 @@ article.post .post-content code:not([class*="language-"]) {
   font-size: 0.85em;
 }
 
+.agent-table-wrapper {
+  overflow-x: auto;
+  margin: 0 0 1.5em;
+}
+
+.agent-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.agent-table th,
+.agent-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.agent-table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.agent-table .agent-name,
+.agent-table .nw {
+  white-space: nowrap;
+}
+
+.agent-table .byline {
+  display: block;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.15rem;
+}
+
+.agent-table .agent-notes-row td {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding-top: 0.1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+article.post .post-content .agent-table-footnote {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: -0.75em;
+}
+
 @media (max-width: 640px) {
   article.post {
     padding: 1.5rem 1rem;
