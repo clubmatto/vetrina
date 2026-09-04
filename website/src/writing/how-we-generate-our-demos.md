@@ -1,5 +1,5 @@
 ---
-title: How We Generate Our Demos
+title: How we generate our demos
 description: A quick look at our VHS-powered pipeline for producing terminal
   recordings
 date: 2026-07-21
@@ -72,9 +72,9 @@ this looks and feel needs to be consistent across all demos.
 Fortunately, VHS can source other tapes so each recording is assembled from
 three files at generation time:
 
-* `config.tape`: shared base settings (font, size, padding, typing speed).
-* `config-{theme}.tape`: the light/dark colour palette.
-* `<demo>.tape`: the actual demo.
+- `config.tape`: shared base settings (font, size, padding, typing speed).
+- `config-{theme}.tape`: the light/dark colour palette.
+- `<demo>.tape`: the actual demo.
 
 This allows us to add new demos by focusing only on the content, it's a
 productive setup. In the first iterations, we had a bash

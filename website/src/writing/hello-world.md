@@ -1,5 +1,5 @@
 ---
-title: Hello, World
+title: Hello, world
 description: Club Matto origin story
 date: 2026-06-08
 tags:
