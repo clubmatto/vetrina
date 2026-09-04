@@ -249,6 +249,15 @@ article.post .post-content code:not([class*="language-"]) {
   vertical-align: top;
 }
 
+.agent-table tbody tr:nth-child(4n + 1),
+.agent-table tbody tr:nth-child(4n + 2) {
+  background: color-mix(in srgb, var(--text), transparent 96%);
+}
+
+.agent-table .agent-name a {
+  font-weight: 600;
+}
+
 .agent-table th {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -275,6 +284,7 @@ article.post .post-content code:not([class*="language-"]) {
   font-size: 0.8rem;
   color: var(--text-secondary);
   padding-top: 0.1rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--border-color);
 }
 
