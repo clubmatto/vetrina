@@ -2,13 +2,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}">
-  <meta property="og:title" content="{% if title and title != "Club Matto" %}{{ title }} - Club Matto{% else %}Club Matto{% endif %}">
+  <meta
+    property="og:title"
+    content="{% if title and title != "Club Matto" %}{{ title }} - Club Matto{% else %}Club Matto{% endif %}"
+  >
   <meta
     property="og:description"
     content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}"
   >
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-  <meta property="og:type" content="{% if page.url contains '/writing/' %}{% unless page.url contains '/tags/' %}article{% else %}website{% endunless %}{% else %}website{% endif %}">
+  <meta
+    property="og:type"
+    content="{% if page.url contains '/writing/' %}{% unless page.url contains '/tags/' %}article{% else %}website{% endunless %}{% else %}website{% endif %}"
+  >
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Club Matto">
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
@@ -33,7 +39,7 @@
     <meta name="go-import" content="matto.club/vetrina git https://github.com/clubmatto/vetrina">
   {%- endif %}
   <title>
-    {% if title and title != "Club Matto" %}{{ title }} - {% endif %}
+    {% if title and title != 'Club Matto' %}{{ title }} - {% endif %}
     Club Matto
   </title>
   <script type="application/ld+json">
@@ -59,25 +65,25 @@
     }
   </script>
   {% if page.url contains '/writing/' %}
-  {% unless page.url contains '/tags/' %}
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "{{ title }}",
-        "description": "{{ description }}",
-        "url": "{{ site.url }}{{ page.url }}",
-        "datePublished": "{{ date }}",
-        "author": [
-          {
-            "@type": "Organization",
-            "name": "Club Matto",
-            "url": "{{ site.url }}"
-          }
-        ]
-      }
-    </script>
-  {% endunless %}
+    {% unless page.url contains '/tags/' %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "{{ title }}",
+          "description": "{{ description }}",
+          "url": "{{ site.url }}{{ page.url }}",
+          "datePublished": "{{ date }}",
+          "author": [
+            {
+              "@type": "Organization",
+              "name": "Club Matto",
+              "url": "{{ site.url }}"
+            }
+          ]
+        }
+      </script>
+    {% endunless %}
   {% endif %}
   {% if page.url contains '/products/' %}
     <script type="application/ld+json">
