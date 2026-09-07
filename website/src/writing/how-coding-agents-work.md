@@ -2,12 +2,14 @@
 title: "How coding agents work: A new series"
 description: An intro to a new series of blog posts where we intend to
   understand coding agents in depth.
-date: 2026-09-04
-draft: true
+date: 2026-09-07
 tags:
   - ai
   - agents
   - meta
+image: /assets/writing/how-coding-agents-work.png
+image_width: 2400
+image_height: 1260
 ---
 
 It's not a secret that we practice agentic programming on a daily basis. At the
