@@ -106,6 +106,9 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "../assets/vhs/ai-kit/*.mp4": "assets/vhs/ai-kit",
   });
+  eleventyConfig.addPassthroughCopy({
+    "src/assets/writing": "assets/writing",
+  });
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);
