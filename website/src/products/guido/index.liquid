@@ -1,44 +1,136 @@
 ---
 layout: page.liquid
 title: Guido
-description: Your race engineer, on your phone. Turn any device into your sim racing co-driver — real-time telemetry from Gran Turismo 7, built with Kotlin Multiplatform.
+description: Your race engineer, on your phone. Guido turns a spare phone or tablet into a live race dashboard and a voice co-driver for Gran Turismo 7 — local, private, and zero-setup.
+image: /assets/products/guido/logo-wordmark.png
+image_width: 1200
+image_height: 1200
 ---
 <section class="product-hero">
   <div class="product-hero-content">
-    <div class="product-hero-icon">{{ 'gauge' | lucide }}</div>
-    <h1 class="product-hero-title">Guido</h1>
-    <p class="product-hero-tagline">Your race engineer, on your phone</p>
+    <div class="product-hero-logo-tile">
+      <img
+        src="/assets/products/guido/logo.png"
+        alt="Guido logo"
+        width="640"
+        height="640"
+      >
+    </div>
+    <h1 class="product-hero-title product-hero-title--guido">Guido</h1>
+    <p class="product-hero-tagline">Your personal race engineer for Gran Turismo 7</p>
+    <p class="product-hero-note">
+      A live race dashboard plus a voice co-driver that watches your fuel and talks you through the race, on the phone
+      or tablet you already own.
+    </p>
     <div class="product-hero-actions">
-      <a href="#how-it-works" class="ds-btn ds-btn--primary">Get Started</a>
+      <a
+        href="https://play.google.com/store/apps/details?id=club.matto.guido"
+        class="ds-btn ds-btn--primary"
+        >Get the beta on Google Play</a
+      >
+      <a href="/writing/meet-guido/" class="ds-btn ds-btn--secondary">Read the launch post</a>
     </div>
   </div>
 </section>
 
+<section class="product-screens">
+  <h2 class="product-section-title">Built for the track, not the pit lane</h2>
+  <div class="product-screens-grid">
+    <figure class="product-screen">
+      <img
+        src="/assets/products/guido/screen-dashboard.png"
+        alt="Guido dashboard with rev bar, tire temperatures, speed, gear, and downshift cues"
+        width="1920"
+        height="1080"
+        loading="lazy"
+      >
+      <figcaption class="product-screen-caption">
+        Full-screen landscape dashboard with shift lights and downshift cues
+      </figcaption>
+    </figure>
+    <figure class="product-screen">
+      <img
+        src="/assets/products/guido/screen-fuel.png"
+        alt="Guido dashboard showing fuel level and predicted range"
+        width="1920"
+        height="1080"
+        loading="lazy"
+      >
+      <figcaption class="product-screen-caption">Fuel level and predicted range, learned from your own laps</figcaption>
+    </figure>
+    <figure class="product-screen">
+      <img
+        src="/assets/products/guido/screen-searching.png"
+        alt="Guido searching for sim sessions on the local network"
+        width="1920"
+        height="1080"
+        loading="lazy"
+      >
+      <figcaption class="product-screen-caption">Zero setup: Guido finds your sim on the network by itself</figcaption>
+    </figure>
+    <figure class="product-screen">
+      <img
+        src="/assets/products/guido/screen-settings.png"
+        alt="Guido settings with speed and temperature units and community credits"
+        width="1920"
+        height="1080"
+        loading="lazy"
+      >
+      <figcaption class="product-screen-caption">Your units, your network, your call</figcaption>
+    </figure>
+  </div>
+</section>
+
 <section class="product-features">
-  <h2 class="product-section-title">What It Does</h2>
+  <h2 class="product-section-title">What Guido Does</h2>
   <div class="product-features-grid">
     <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'gauge' | lucide }}</div>
-      <h3 class="product-feature-title">Live Telemetry</h3>
+      <div class="product-feature-icon">{{ 'activity' | lucide }}</div>
+      <h3 class="product-feature-title">A dashboard built for racing</h3>
       <p class="product-feature-desc">
-        RPM rev bar, gear indicator, speed, tire temperatures, fuel level — all streamed in real time from Gran Turismo
-        7 over a Salsa20-encrypted UDP connection.
+        A 16-LED rev bar with shift lights, a big gear and speed readout, per-tire temperature gradients, red downshift
+        cues, and live assist status (TCS, ABS, ASM). Landscape, always-on, readable at a glance.
       </p>
     </article>
     <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'bell' | lucide }}</div>
-      <h3 class="product-feature-title">Smart Alerts</h3>
+      <div class="product-feature-icon">{{ 'mic' | lucide }}</div>
+      <h3 class="product-feature-title">A co-driver you can talk to</h3>
       <p class="product-feature-desc">
-        Downshift suggestions when you're approaching a corner too hot, rev limit warnings, and assist status indicators
-        — TCS, ABS, ASM at a glance.
+        Hold push-to-talk and ask: how much fuel is left? How many laps to go? What's the race advice? Guido listens and
+        answers out loud, in real time, while you keep your eyes on the track.
       </p>
     </article>
     <article class="product-feature-card">
-      <div class="product-feature-icon">{{ 'smartphone' | lucide }}</div>
-      <h3 class="product-feature-title">Cross-Platform</h3>
+      <div class="product-feature-icon">{{ 'fuel' | lucide }}</div>
+      <h3 class="product-feature-title">Fuel strategy, handled</h3>
       <p class="product-feature-desc">
-        Built with Kotlin Multiplatform and Compose. One codebase powers Android, iOS, and Desktop — so you can run your
-        dashboard on whatever screen you have.
+        Guido learns how much fuel your car actually burns per lap, predicts how far your tank will stretch, and speaks
+        up with a "box this lap" call before you run dry — not after.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'radar' | lucide }}</div>
+      <h3 class="product-feature-title">Zero setup</h3>
+      <p class="product-feature-desc">
+        Launch the app and it scans your network until your Gran Turismo 7 session shows up. No IP addresses, no port
+        forwarding. A manual address override is there if you ever need it.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'shield-check' | lucide }}</div>
+      <h3 class="product-feature-title">Private by design</h3>
+      <p class="product-feature-desc">
+        Telemetry never leaves your home network, and your voice is transcribed on your device. No cloud, no ads, no
+        analytics. Your races belong to you.
+      </p>
+    </article>
+    <article class="product-feature-card">
+      <div class="product-feature-icon">{{ 'radio-tower' | lucide }}</div>
+      <h3 class="product-feature-title">It stays with you for the whole race</h3>
+      <p class="product-feature-desc">
+        An always-on, edge-to-edge display that won't sleep mid-session. If the stream drops, Guido holds the dashboard
+        and reconnects in one tap — no re-doing setup while a race is live. And everything reads in your units: km/h,
+        mph, or m/s; Celsius or Fahrenheit.
       </p>
     </article>
   </div>
@@ -52,7 +144,7 @@ description: Your race engineer, on your phone. Turn any device into your sim ra
       <div class="product-step-icon">{{ 'radar' | lucide }}</div>
       <h3 class="product-step-title">Discover</h3>
       <p class="product-step-desc">
-        Launch Guido and it auto-discovers your PS5 on the local network. No IP configuration needed.
+        Guido listens on your local network — radar style — until your PS5 running GT7 shows up.
       </p>
     </div>
     <div class="product-step-connector"></div>
@@ -61,8 +153,7 @@ description: Your race engineer, on your phone. Turn any device into your sim ra
       <div class="product-step-icon">{{ 'plug' | lucide }}</div>
       <h3 class="product-step-title">Connect</h3>
       <p class="product-step-desc">
-        Guido connects to GT7's telemetry stream on port 33739 and decrypts the Salsa20-encrypted UDP packets in real
-        time.
+        Guido joins GT7's telemetry stream and decodes its Salsa20-encrypted packets in real time, frame by frame.
       </p>
     </div>
     <div class="product-step-connector"></div>
@@ -71,18 +162,57 @@ description: Your race engineer, on your phone. Turn any device into your sim ra
       <div class="product-step-icon">{{ 'flag' | lucide }}</div>
       <h3 class="product-step-title">Race</h3>
       <p class="product-step-desc">
-        Full-screen landscape dashboard with a 16-LED rev bar, tire temp gradients, and gear indicator — designed for
-        the track, not the pit lane.
+        Watch the dashboard or just ask out loud. Guido builds a model of your race and speaks up when it matters.
       </p>
     </div>
   </div>
 </section>
 
+<section class="product-tiers">
+  <h2 class="product-section-title">Two Ways to Race</h2>
+  <div class="product-tiers-grid">
+    <div class="product-tier">
+      <h3 class="product-tier-name">Free</h3>
+      <p class="product-tier-price">No account needed</p>
+      <p class="product-tier-desc">The full dashboard and a push-to-talk race engineer.</p>
+      <ul class="product-tier-list">
+        <li>Live race dashboard</li>
+        <li>Proactive calls like "box this lap"</li>
+        <li>Push-to-talk questions, answered on-device</li>
+      </ul>
+    </div>
+    <div class="product-tier">
+      <h3 class="product-tier-name">Pro</h3>
+      <p class="product-tier-price">Unlocked with a free account sign-in</p>
+      <p class="product-tier-desc">Everything in Free, for drivers who don't want to reach for a button mid-corner.</p>
+      <ul class="product-tier-list">
+        <li>Hands-free voice activation</li>
+        <li>Just speak — Guido knows when you're talking to it</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="product-requirements">
+  <div class="product-requirements-card">
+    <h3>What you need</h3>
+    <ul>
+      <li>Gran Turismo 7 running on a PS5, with telemetry enabled in the game settings</li>
+      <li>A phone or tablet on the same home network — Android 7.0 or newer works best mounted beside your wheel</li>
+      <li>That's it. No cables, no cloud, no account required for the Free tier</li>
+    </ul>
+  </div>
+</section>
+
 <section class="product-cta">
   <div class="product-cta-content">
-    <h2 class="product-cta-title">Turn any screen into your race engineer</h2>
-    <p class="product-cta-desc">Real-time GT7 telemetry on Android, iOS, and Desktop.</p>
-    <a href="#how-it-works" class="ds-btn ds-btn--primary">Get Started</a>
+    <h2 class="product-cta-title">Strap in. Guido will watch the numbers.</h2>
+    <p class="product-cta-desc">Now in beta on Google Play, with the iPhone release right behind it.</p>
+    <a
+      href="https://play.google.com/store/apps/details?id=club.matto.guido"
+      class="ds-btn ds-btn--primary"
+      >Get Guido</a
+    >
   </div>
 </section>
 

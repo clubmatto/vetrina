@@ -218,8 +218,9 @@ list!
 
 ## What's next
 
-In the next post, we'll do a comparative analysis of "our" coding agents on the
-main components that make up such a project:
+In the next posts, we'll demystify these components the best way we know — by
+building a tiny coding agent from scratch — and then do a comparative analysis
+of "our" coding agents on exactly those components:
 core agent loop, tool and permission model, context and memory handling,
 sub-agents, and sessions.
 

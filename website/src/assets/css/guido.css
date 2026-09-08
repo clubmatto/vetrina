@@ -1,0 +1,221 @@
+/* Guido's own brand: black surfaces + blue→mint gradient (the in-app G mark),
+   instead of the club matto hero gradient. Deepened in light theme for
+   contrast on the pale background. */
+.product-hero-title--guido {
+  background-image: linear-gradient(
+    135deg,
+    light-dark(#1a7fc4, #3ca0f3) 0%,
+    light-dark(#00987a, #33ffb9) 100%
+  );
+}
+
+.product-hero-logo-tile {
+  width: 128px;
+  height: 128px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 28px;
+  background: #000;
+  border: 1px solid rgba(60, 160, 243, 0.35);
+  box-shadow: 0 8px 32px var(--shadow-color-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-hero-logo-tile img {
+  width: 96px;
+  height: 96px;
+  display: block;
+}
+
+.product-hero-note {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: -1.25rem 0 2rem 0;
+}
+
+.product-screens {
+  padding: 5rem 0;
+}
+
+.product-screens-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.product-screen {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 2px 8px var(--shadow-color-sm);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.product-screen:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px var(--shadow-color-md);
+}
+
+.product-screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.product-screen-caption {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.product-feature-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ds-ok);
+  border: 1px solid var(--ds-ok);
+  border-radius: var(--ds-radius-full);
+  padding: 0.1rem 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-tiers {
+  padding: 5rem 0;
+}
+
+.product-tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.product-tier {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 2rem 1.75rem;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 8px var(--shadow-color-sm);
+  text-align: left;
+}
+
+.product-tier-name {
+  font-family: var(--font-sans);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.product-tier-price {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.25rem 0;
+}
+
+.product-tier-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 1.25rem 0;
+}
+
+.product-tier-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-tier-list li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 0.35rem 0 0.35rem 1.6rem;
+  position: relative;
+}
+
+.product-tier-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  background: var(--ds-ok);
+  opacity: 0.85;
+}
+
+.product-requirements {
+  padding: 0 0 5rem 0;
+}
+
+.product-requirements-card {
+  max-width: 700px;
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 8px var(--shadow-color-sm);
+  padding: 2rem 1.75rem;
+}
+
+.product-requirements-card h3 {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.product-requirements-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-requirements-card li {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  padding: 0.3rem 0 0.3rem 1.6rem;
+  position: relative;
+}
+
+.product-requirements-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  border: 2px solid var(--gradient-5);
+}
+
+@media (max-width: 768px) {
+  .product-screens-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-tiers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-screens {
+    padding: 3rem 0;
+  }
+
+  .product-tiers {
+    padding: 3rem 0;
+  }
+}
