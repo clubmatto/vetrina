@@ -15,32 +15,30 @@ image_height: 1260
 
 In the [first post of this series](/writing/how-coding-agents-work/) we
 shortlisted ten open-source coding agents that we want to understand in depth.
-Before we compare them, we want to do something more subversive: build one
-ourselves. Not a toy next to a real one — the real thing, as small as it can
-be while still deserving the name.
+Before we get there, we have to explain the general architecture of a coding
+agent. While they're obviously all different in the details, they share the
+anatomy.
 
-We call it **Pinocchio**: a little puppet that wants to be a real agent. A
-puppet is exactly how we
+The way we'll do this is by building a tiny coding agent, purposely
+simplified for educational purposes. We call it **Pinocchio**: a little
+puppet that wants to be a real agent. A
+puppet is a good metaphor of how we
 think about coding agents in [our own
-workflow](/writing/how-coding-agents-work/#whats-agentic-programming) — an
+workflow](/writing/how-coding-agents-work/#whats-agentic-programming): an
 extremely fast, extremely tireless apprentice that only moves when we pull the
 strings. And like any good puppet story, this one comes with a lesson about
 what's real and what's wood.
 
-We picked Go because it's the simplest language we know and we pretty much
-default to it every time we're building a CLI.
+We're building it Go because it's the simplest language we know
+and we pretty much default to it every time we're building a CLI.
 
 ## Why 5 versions?
-
-Pinocchio integrates only with DeepSeek, our daily driver, for simplicity sake.
 
 A coding agent is, at its very core, a program you use to ask LLMs to
 execute actions like read, write, change files on your behalf.
 
 While you don't need that much code to build a (radically) simple version
-there's a
-lot going on
-conceptually so we'll break how we build this in 5 steps:
+there's a lot going on conceptually so we'll break how we build this in 5 steps:
 
 1. **The loop**: A chat with amnesia. You can talk to Pinocchio, it'll
    talk back but it won't remember anything and won't be able to execute any
@@ -52,15 +50,17 @@ conceptually so we'll break how we build this in 5 steps:
    remember so context management gives it a better memory.
 5. **Sessions**: You can now start and stop talking to Pinocchio at will.
 
+Pinocchio integrates only with DeepSeek, our daily driver, for simplicity sake.
+
 ## Version 1: the loop
 
-The first thing you may notice is that **the agent loop is genuinely tiny**.
-That's not because we're trying to keep the code short but because
-the real coding agent,
-the part that take thousands of engineering hours, lives _around_ the loop.
+While we're building a "toy" agent, you will notice that **the agent loop is
+genuinely tiny**. We're trying to keep the code short here: in a production
+grade coding agent the part that take thousands of engineering hours lives
+_around_ the loop.
 
-Having said that, our v1 version is designed to explain the human-agent
-interaction at its most fundamental level:
+The v1 version beautifully explains the human-agent interaction at its most
+fundamental level:
 
 - The conversation has roles for each message so it can tell who's who (human,
   system, assistant, tools. More on this later).
@@ -73,7 +73,7 @@ of the way:
 
 {% codefile "writing/pinocchio/v1/main.go" "message" "request" "main" %}
 
-Now that we wrote a first version, let's try to use it:
+Now let's try it:
 
 ```bash
 go run v1/main.go
@@ -94,30 +94,28 @@ Once I can see the code, I’ll give you a detailed review.
 
 It works 🎉 but... we hit the most obvious limitation. Our v1 program is
 nothing more than a repackaged chat. You can ask questions, you get answers
-but you can't ask the agent to execute any actions for you. This is where
-tools come in.
+but the agent can't execute any actions for you. This is where tools come in.
 
 ## Version 2: tools
 
 Tools draw the line that separates an AI chat from an agent. Tools is how
-you give LLMs the ability to execute actions for you.
+LLMs gain the ability to execute actions for you.
 
-The way this works is that you declare the tools that are available to LLM and
-pass that together with your messages. That way the LLM knows what kind of
-actions can perform and will do so when relevant.
+It works this way: you pass available tools along with your messages to LLM aso
+that LLM knows what kind of actions can perform.
 
-Of course what the LLM sees is only definition of the available tools (a
-structured description) and the LLM will output tool calls only. That means
-the agent is responsible for the actual execution of the calls.
+Of course LLM sees only the definition of the available tools (a
+structured description) which uses to output tool calls. The agent is
+responsible for the actual execution of said calls.
 
-This has an implication on the structure of the code because, in order to
-achieve "autonomous actions", the LLM and the agent may have to exchange
-messages within the same turn. In practice this results in an inner loop
-inside the main agent loop which is responsible for the tool calls.
+This has a deep implication on the structure of the agent loop code because, in
+order to achieve "autonomous actions", the LLM and the agent may have to
+exchange messages within the same turn. In practice, this means we need an
+an inner loop inside the main loop to handle tool calls.
 
-Enough talk, let's look at the code. First the schema we hand to the model:
-three tools, each with a name, a description, and a JSON schema for its
-arguments.
+This may be harder to explain in words than in code. First the schema we hand to
+the model: since Pinocchio is purposely simple it has just three tools, each
+with a name, a description, and a JSON schema for its arguments.
 
 {% codefile "writing/pinocchio/v2/main.go" "tools" %}
 
@@ -125,7 +123,8 @@ Then the conversation itself grows. Messages make room for the tool calls the
 model asks for and for the results we hand back, and the request gets a
 `tools` field:
 
-{% diff "writing/pinocchio/v1/main.go" "writing/pinocchio/v2/main.go" "message" "request" %}
+{% diff "writing/pinocchio/v1/main.go" "writing/pinocchio/v2/main.go" "message"
+"request" %}
 
 The inner loop is the other half of the change. It lives inside `main`, keeps
 calling the model for as long as it asks for tools, and passes the tools to
