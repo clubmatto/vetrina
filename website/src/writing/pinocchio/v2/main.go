@@ -16,6 +16,8 @@ const (
 	model      = "deepseek-v4-flash"
 )
 
+// snip: message
+
 type Message struct {
 	Role             string     `json:"role"`
 	Content          string     `json:"content"`
@@ -23,6 +25,8 @@ type Message struct {
 	ToolCalls        []ToolCall `json:"tool_calls,omitempty"`
 	ToolCallID       string     `json:"tool_call_id,omitempty"`
 }
+
+// endsnip: message
 
 type ToolCall struct {
 	ID       string `json:"id"`
@@ -32,6 +36,8 @@ type ToolCall struct {
 		Arguments string `json:"arguments"`
 	} `json:"function"`
 }
+
+// snip: tools
 
 var tools = []map[string]any{
 	{
@@ -78,11 +84,17 @@ var tools = []map[string]any{
 	},
 }
 
+// endsnip: tools
+
+// snip: request
+
 type chatRequest struct {
 	Model    string           `json:"model"`
 	Messages []Message        `json:"messages"`
-	Tools    []map[string]any `json:"tools"`
+	Tools    []map[string]any `json:"tools,omitempty"`
 }
+
+// endsnip: request
 
 type chatResponse struct {
 	Choices []struct {
@@ -92,7 +104,7 @@ type chatResponse struct {
 
 // chat sends the conversation so far, plus the available tools, to the
 // DeepSeek chat completions API and returns the assistant's reply.
-func chat(messages []Message) (Message, error) {
+func chat(messages []Message, tools []map[string]any) (Message, error) {
 	key := os.Getenv("DEEPSEEK_API_KEY")
 	if key == "" {
 		return Message{}, fmt.Errorf("DEEPSEEK_API_KEY is not set")
@@ -131,6 +143,8 @@ func chat(messages []Message) (Message, error) {
 
 	return decoded.Choices[0].Message, nil
 }
+
+// snip: runTool
 
 // runTool executes a tool call and returns its output, or an error string
 // the model can read when the call fails.
@@ -192,6 +206,10 @@ func runTool(call ToolCall) string {
 	}
 }
 
+// endsnip: runTool
+
+// snip: main
+
 func main() {
 	var messages []Message
 	in := bufio.NewScanner(os.Stdin)
@@ -207,7 +225,7 @@ func main() {
 		messages = append(messages, Message{Role: "user", Content: text})
 
 		for {
-			assistant, err := chat(messages)
+			assistant, err := chat(messages, tools)
 			if err != nil {
 				panic(err)
 			}
@@ -229,3 +247,5 @@ func main() {
 		}
 	}
 }
+
+// endsnip: main

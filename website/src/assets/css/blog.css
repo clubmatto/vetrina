@@ -220,6 +220,18 @@ article.post .post-content pre .copy-button.copied {
   border-color: var(--terminal-prompt);
 }
 
+/* A terminal window (see _shortcodes/terminal.js) is a wrapper around a `pre`,
+   so it misses the `pre` margins above: give the window the same flow spacing,
+   and drop the inner block's margins so the terminal's own body padding is the
+   only inset. */
+article.post .post-content .ds-terminal {
+  margin: 1.5em 0;
+}
+
+article.post .post-content .ds-terminal__body > pre[class*="language-"] {
+  margin: 0;
+}
+
 article.post .post-content code:not([class*="language-"]) {
   background-color: var(--theme-toggle-bg);
   color: var(--ds-text-secondary);

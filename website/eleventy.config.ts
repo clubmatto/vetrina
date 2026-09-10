@@ -10,6 +10,7 @@ import { filterByTag } from "./src/_filters/tag.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
 import { codefileShortcode, diffShortcode } from "./src/_shortcodes/code.js";
+import { terminalFences } from "./src/_shortcodes/terminal.js";
 import {
   buildAll,
   buildCss,
@@ -20,6 +21,7 @@ import {
 
 export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.amendLibrary("md", terminalFences);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     formats: ["avif", "webp", "jpeg", "gif"],
     widths: ["auto"],

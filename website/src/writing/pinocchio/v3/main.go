@@ -81,7 +81,7 @@ var tools = []map[string]any{
 type chatRequest struct {
 	Model    string           `json:"model"`
 	Messages []Message        `json:"messages"`
-	Tools    []map[string]any `json:"tools"`
+	Tools    []map[string]any `json:"tools,omitempty"`
 }
 
 type chatResponse struct {
@@ -92,7 +92,7 @@ type chatResponse struct {
 
 // chat sends the conversation so far, plus the available tools, to the
 // DeepSeek chat completions API and returns the assistant's reply.
-func chat(messages []Message) (Message, error) {
+func chat(messages []Message, tools []map[string]any) (Message, error) {
 	key := os.Getenv("DEEPSEEK_API_KEY")
 	if key == "" {
 		return Message{}, fmt.Errorf("DEEPSEEK_API_KEY is not set")
@@ -218,7 +218,7 @@ func main() {
 		messages = append(messages, Message{Role: "user", Content: text})
 
 		for {
-			assistant, err := chat(messages)
+			assistant, err := chat(messages, tools)
 			if err != nil {
 				panic(err)
 			}

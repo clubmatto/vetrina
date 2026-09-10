@@ -16,15 +16,23 @@ const (
 	model      = "deepseek-v4-flash"
 )
 
+// snip: message
+
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
+// endsnip: message
+
+// snip: request
+
 type chatRequest struct {
 	Model    string    `json:"model"`
 	Messages []Message `json:"messages"`
 }
+
+// endsnip: request
 
 type chatResponse struct {
 	Choices []struct {
@@ -74,6 +82,8 @@ func chat(messages []Message) (Message, error) {
 	return decoded.Choices[0].Message, nil
 }
 
+// snip: main
+
 func main() {
 	var messages []Message
 	in := bufio.NewScanner(os.Stdin)
@@ -96,3 +106,5 @@ func main() {
 		fmt.Println(response.Content)
 	}
 }
+
+// endsnip: main

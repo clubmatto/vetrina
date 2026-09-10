@@ -64,16 +64,20 @@ interaction at its most fundamental level:
 - Each "request/response" cycle, meaning every time you get control back
   from the agent, is called a turn.
 
-{% codefile "v1/main.go" %}
+Here's the anatomy that matters: the shape of a message, the request we send,
+and the loop itself. The HTTP call lives in a small `chat` helper we leave out
+of the way:
+
+{% codefile "writing/pinocchio/v1/main.go" "message" "request" "main" %}
 
 Now that we wrote a first version, let's try to use it:
 
 ```bash
 go run v1/main.go
-> review v1.go in this directory
-I don’t have access to your local filesystem or directory contents, so I can’t open or review `v1.go` directly.
+> review v1/main.go in this directory
+I don’t have access to your local filesystem or directory contents, so I can’t open or review `v1/main.go` directly.
 
-Please paste the code from `v1.go` here, and let me know what kind of review you’re looking for, for example:
+Please paste the code from `v1/main.go` here, and let me know what kind of review you’re looking for, for example:
 
 - Bug fixes
 - Code style / Go best practices
@@ -108,9 +112,23 @@ achieve "autonomous actions", the LLM and the agent may have to exchange
 messages within the same turn. In practice this results in an inner loop
 inside the main agent loop which is responsible for the tool calls.
 
-Enough talk, let's look at the code.
+Enough talk, let's look at the code. First the schema we hand to the model:
+three tools, each with a name, a description, and a JSON schema for its
+arguments.
 
-{% diff "v1/main.go" "v2/main.go" %}
+{% codefile "writing/pinocchio/v2/main.go" "tools" %}
+
+Then the conversation itself grows. Messages make room for the tool calls the
+model asks for and for the results we hand back, and the request gets a
+`tools` field:
+
+{% diff "writing/pinocchio/v1/main.go" "writing/pinocchio/v2/main.go" "message" "request" %}
+
+The inner loop is the other half of the change. It lives inside `main`, keeps
+calling the model for as long as it asks for tools, and passes the tools to
+`chat` on every call:
+
+{% diff "writing/pinocchio/v1/main.go" "writing/pinocchio/v2/main.go" "main" %}
 
 As you can see, here we have the two major differences that transform a chat
 bot into an agent:
@@ -119,9 +137,11 @@ bot into an agent:
 - The inner action loop.
 
 The tools schema call is trivial but the inner loop contains the "meat" of
-what implementing tools in an agent is about. That `runAction` function is
+what implementing tools in an agent is about. That `runTool` function is
 where the agent, in this case pinocchio, will execute actions on behalf of
-the LLM and give back to the LLM the result.
+the LLM and give back to the LLM the result:
+
+{% codefile "writing/pinocchio/v2/main.go" "runTool" %}
 
 Now you could follow the "use bash for everything" approach, meaning you
 pass only one tool called "bash" to the LLM, or you could go much more
@@ -196,7 +216,7 @@ radically simple version of the rule based ask approval strategy.
 
 Here's how it looks like:
 
-{% diff "v2/main.go" "v3/main.go" %}
+{% diff "writing/pinocchio/v2/main.go" "writing/pinocchio/v3/main.go" %}
 
 and here's how it works:
 
@@ -243,7 +263,7 @@ Pinocchio does the simplest thing that works: when the conversation grows past
 a budget, it summarizes the first half with one extra model call and keep the
 recent stuff. Here's the code:
 
-{% diff "v3/main.go" "v4/main.go" %}
+{% diff "writing/pinocchio/v3/main.go" "writing/pinocchio/v4/main.go" %}
 
 As you can see this is a simple and practical solution. Now let's see it in
 action:
@@ -286,7 +306,7 @@ One append-only file fixes that. Every message is saved to `pinocchio.jsonl`
 the moment it's appended — one JSON document per line — and a `--resume`
 flag replays the file back into `messages` at startup:
 
-{% diff "v4/main.go" "v5/main.go" %}
+{% diff "writing/pinocchio/v4/main.go" "writing/pinocchio/v5/main.go" %}
 
 The save itself is seven lines and that's the whole trick; the rest of the
 diff is the replay — a flag, a file read, one JSON unmarshal per line.

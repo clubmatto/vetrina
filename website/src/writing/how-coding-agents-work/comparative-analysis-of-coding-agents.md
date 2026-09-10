@@ -12,7 +12,8 @@ tags:
 
 Two posts ago we [shortlisted ten open-source coding
 agents](/writing/how-coding-agents-work/) that we want to understand in depth.
-Last Thursday we built [Pinocchio](/writing/how-coding-agents-work/pinocchio/),
+Last Thursday we built
+[Pinocchio](/writing/how-coding-agents-work/building-pinocchio/),
 a real coding agent in a few hundred lines of Go: a loop, three tools, a y/N
 permission prompt, a context squeeze, and a JSONL session file.
 

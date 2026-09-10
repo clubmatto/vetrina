@@ -37,6 +37,8 @@ pre[class*="language-"] {
   --prism-attr-value: light-dark(#0a3069, #a3be8c);
   --prism-deleted: light-dark(#cf222e, #ff7b72);
   --prism-inserted: light-dark(#1a7f37, #7ee2a8);
+  --prism-deleted-bg: light-dark(#ffebe9, rgb(248 81 73 / 0.12));
+  --prism-inserted-bg: light-dark(#e6ffec, rgb(46 160 67 / 0.15));
 }
 
 .token.comment,
@@ -77,6 +79,69 @@ pre[class*="language-"] {
   color: var(--prism-inserted);
 }
 
+/* Diff rows. Each diff line is its own block, so the whole line gets a
+   GitHub-style background instead of just the text. Negative margins pull the
+   tint through the container's horizontal padding, edge to edge. */
+.diff-line {
+  display: block;
+  margin: 0 -1.5em;
+  padding: 0 0.75em;
+  box-shadow: inset 2px 0 0 transparent;
+}
+
+.diff-line-added {
+  background-color: var(--prism-inserted-bg);
+  box-shadow: inset 2px 0 0 var(--prism-inserted);
+}
+
+.diff-line-removed {
+  background-color: var(--prism-deleted-bg);
+  box-shadow: inset 2px 0 0 var(--prism-deleted);
+}
+
+.diff-line-coord {
+  color: var(--prism-comment);
+  background-color: color-mix(in srgb, var(--ds-text) 5%, transparent);
+}
+
+/* Two-column diff gutter: old | new, blank where the line only exists on one
+   side. Real numbers (not counters) because they come from the hunk headers. */
+.diff-line-number {
+  display: inline-block;
+  width: 3ch;
+  margin-right: 0.75em;
+  text-align: right;
+  color: var(--prism-comment);
+  opacity: 0.55;
+  user-select: none;
+}
+
+/* Line numbers for whole-file code blocks. Counters keep the numbers out of
+   the markup; `lines=off` renders the block without the gutter. The number box
+   stays in flow so a blank line still generates a line box: taken out of flow
+   it collapses to zero height and its number lands on top of the next one. The
+   negative margin tucks the gutter into the block's own left padding. */
+pre.has-line-numbers code {
+  counter-reset: line;
+}
+
+pre.has-line-numbers .code-line {
+  display: block;
+}
+
+pre.has-line-numbers .code-line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 3ch;
+  margin-left: -0.75em;
+  margin-right: 0.75em;
+  text-align: right;
+  color: var(--prism-comment);
+  opacity: 0.55;
+  user-select: none;
+}
+
 .token.operator,
 .token.entity,
 .token.url {
@@ -110,4 +175,16 @@ pre[class*="language-"] {
 
 .token.entity {
   cursor: help;
+}
+
+/* Terminal windows (see terminal.js) wrap a highlighted block. The inner block
+   keeps its tokens but drops the code-block chrome so the terminal background,
+   padding and line-height show through instead. */
+.ds-terminal__body > pre[class*="language-"] {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  font-size: inherit;
+  line-height: inherit;
 }
