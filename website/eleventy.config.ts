@@ -19,6 +19,39 @@ import {
   generateManifest,
 } from "./scripts/build.js";
 
+// Liquid tags cannot span lines, but an editor re-flowing a long shortcode call
+// will wrap one anyway, and the wrapped tag fails to parse — taking the whole
+// template with it. Glue wrapped tags back together before Liquid sees them.
+function joinWrappedTags(_data: unknown, content: string): string {
+  const out: string[] = [];
+  let pending: string | null = null;
+
+  for (const line of content.split("\n")) {
+    if (pending !== null) {
+      pending = `${pending} ${line.trim()}`;
+      if (!pending.includes("%}")) {
+        continue;
+      }
+      out.push(pending);
+      pending = null;
+      continue;
+    }
+
+    if (line.trimStart().startsWith("{%") && !line.includes("%}")) {
+      pending = line;
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  if (pending !== null) {
+    out.push(pending);
+  }
+
+  return out.join("\n");
+}
+
 export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.amendLibrary("md", terminalFences);
@@ -43,6 +76,7 @@ export default function (eleventyConfig: EleventyConfig) {
       return false;
     }
   });
+  eleventyConfig.addPreprocessor("wrappedTags", "md", joinWrappedTags);
 
   let isFirstBuild = true;
 
