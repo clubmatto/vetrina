@@ -1,5 +1,5 @@
 ---
-title: "How coding agents work: A new series"
+title: "How coding agents work"
 description: An intro to a new series of blog posts where we intend to
   understand coding agents in depth.
 date: 2026-09-07
@@ -43,11 +43,14 @@ words on what agentic programming means to Club Matto.
 These days, we do all our coding tasks via a coding agent. The agent
 does all the typing, we do all the reading. These are active sessions: we don't
 let the agents go on for hours and commit their work. We actively steer the
-agents toward verification loops we're most comfortable with (in short: end-to-end
-tests, sometimes with ad-hoc scripts, and very aggressive linting phases). We drive the interaction, the agent executes it. This also explains our
+agents toward verification loops we're most comfortable with (in short:
+end-to-end
+tests, sometimes with ad-hoc scripts, and very aggressive linting phases). We
+drive the interaction, the agent executes it. This also explains our
 love for DeepSeek v4 flash 0731. It's _really_ fast and _really_ cheap.
 
-We find this workflow quite productive but we can see some obvious limitations. For
+We find this workflow quite productive but we can see some obvious limitations.
+For
 example, coding editors don't make much sense in this context. They're optimized
 for, well, editing but we're now mostly looking at diffs since agents do all our
 typing. One other limitation we feel a lot is remote pair programming support in
@@ -71,11 +74,12 @@ criteria:
 - The project _must_ be multi-provider. We want harnesses we can point at
   whatever model we like (BYO key / OpenAI-compatible / local), no lock-in.
 
-While definitely more subjective, we also tried to select agents that focus
-**on simplicity/performance**.
+While definitely more subjective, we also tried to select agents that focus **on
+simplicity/performance**.
 
-Last but not least, we warmly welcome projects from the **Chinese ecosystem**. Three of the ten are official harnesses from Chinese AI labs
-(DeepSeek, Alibaba, Moonshot AI) and all three are multi-provider. If you only
+Last but not least, we warmly welcome projects from the **Chinese ecosystem**.
+Three of the ten are official harnesses from Chinese AI labs (DeepSeek, Alibaba,
+Moonshot AI) and all three are multi-provider. If you only
 follow Western launches, you're missing a lot of the experimentation happening
 in this space.
 
@@ -224,4 +228,4 @@ of "our" coding agents on exactly those components:
 core agent loop, tool and permission model, context and memory handling,
 sub-agents, and sessions.
 
-Follow along on the [series page](/writing/tags/agents/)
+Follow along on the [series page](/writing/how-coding-agents-work/)

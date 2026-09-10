@@ -1,8 +1,8 @@
 ---
-title: "How coding agents work: A comparative analysis of 10 open source coding agents"
+title: "A comparative analysis of 10 open source coding agents"
 description: We put ten open-source coding agents side by side — where their
   loops live, how they answer safety, context, sub-agents and sessions — and
-  measure everything against Pinocchio, our 100-line coding agent.
+  measure everything against Pinocchio, our tiny coding agent.
 date: 2026-09-14
 draft: true
 tags:
@@ -12,8 +12,8 @@ tags:
 
 Two posts ago we [shortlisted ten open-source coding
 agents](/writing/how-coding-agents-work/) that we want to understand in depth.
-Last Thursday we built [Pinocchio](/writing/a-coding-agent-in-100-lines-of-code/),
-a real coding agent in about a hundred lines of Go: a loop, three tools, a y/N
+Last Thursday we built [Pinocchio](/writing/how-coding-agents-work/pinocchio/),
+a real coding agent in a few hundred lines of Go: a loop, three tools, a y/N
 permission prompt, a context squeeze, and a JSONL session file.
 
 Pinocchio is many things — a teaching device, a demystification exercise, a
@@ -26,7 +26,7 @@ model and your machine, where the context goes, how agents spawn agents, and
 where the conversation lives.
 
 Keep Pinocchio in your head as the measuring stick. For every component,
-here's what a hundred lines grows into when a team maintains it for years.
+here's what a few hundred lines grows into when a team maintains it for years.
 
 The contestants, one more time with links: [OpenCode](https://github.com/sst/opencode)
 (SST), [Aider](https://github.com/paul-gauthier/aider),
@@ -62,7 +62,7 @@ Here's where the ten keep theirs:
     </thead>
     <tbody>
       <tr>
-        <td class="agent-name">Pinocchio<span class="byline">our 100-line baseline</span></td>
+        <td class="agent-name">Pinocchio<span class="byline">our minimal baseline</span></td>
         <td>The <code>while</code> from Thursday's post: one HTTP call, a tool dispatch, done.</td>
       </tr>
       <tr>
@@ -363,4 +363,4 @@ harness at a time, starting with the one we run ourselves:
 [OpenCode](https://github.com/sst/opencode). If Pinocchio was the anatomy
 class, the deep dives are the dissections.
 
-Follow along on the [series page](/writing/tags/agents/)
+Follow along on the [series page](/writing/how-coding-agents-work/)

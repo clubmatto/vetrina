@@ -9,6 +9,7 @@ import { tags } from "./src/_collections/tags.js";
 import { filterByTag } from "./src/_filters/tag.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
+import { codefileShortcode, diffShortcode } from "./src/_shortcodes/code.js";
 import {
   buildAll,
   buildCss,
@@ -64,6 +65,8 @@ export default function (eleventyConfig: EleventyConfig) {
 
   eleventyConfig.addShortcode("lucide", lucideShortcode);
   eleventyConfig.addFilter("lucide", lucideShortcode);
+  eleventyConfig.addShortcode("codefile", codefileShortcode);
+  eleventyConfig.addShortcode("diff", diffShortcode);
   eleventyConfig.addShortcode("asset", assetShortcode);
   eleventyConfig.addShortcode("svg", svgShortcode);
   eleventyConfig.addLiquidFilter("safe", (value: unknown) => value);

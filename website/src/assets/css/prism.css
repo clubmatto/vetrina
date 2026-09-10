@@ -35,6 +35,8 @@ pre[class*="language-"] {
   --prism-tag: light-dark(#116329, #a3be8c);
   --prism-attr-name: light-dark(#0550ae, #8fbcbb);
   --prism-attr-value: light-dark(#0a3069, #a3be8c);
+  --prism-deleted: light-dark(#cf222e, #ff7b72);
+  --prism-inserted: light-dark(#1a7f37, #7ee2a8);
 }
 
 .token.comment,
@@ -53,8 +55,7 @@ pre[class*="language-"] {
 .token.boolean,
 .token.number,
 .token.constant,
-.token.symbol,
-.token.deleted {
+.token.symbol {
   color: var(--prism-tag);
 }
 
@@ -62,9 +63,18 @@ pre[class*="language-"] {
 .token.attr-name,
 .token.string,
 .token.char,
-.token.builtin,
-.token.inserted {
+.token.builtin {
   color: var(--prism-selector);
+}
+
+.token.deleted,
+.token.deleted-sign {
+  color: var(--prism-deleted);
+}
+
+.token.inserted,
+.token.inserted-sign {
+  color: var(--prism-inserted);
 }
 
 .token.operator,

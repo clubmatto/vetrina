@@ -1,8 +1,8 @@
 ---
-title: "How coding agents work: A coding agent in 100 lines of code"
+title: "Building Pinocchio, a coding agent in five versions"
 description: We build Pinocchio, a tiny coding agent in Go, one version at a
   time — the loop, tool calls, a permission prompt, context squeezing, and a
-  session file. The whole anatomy of a coding agent in about a hundred lines.
+  session file. The whole anatomy of a coding agent.
 date: 2026-09-10
 draft: true
 tags:
@@ -24,42 +24,35 @@ extremely fast, extremely tireless apprentice that only moves when we pull the
 strings. And like any good puppet story, this one comes with a lesson about
 what's real and what's wood.
 
-We picked Go because it's the most honest language we know: nothing sneaks into
-your program while you're not looking — no framework, no runtime, no reflection
-on your soul. What you read is what runs.
+We picked Go because it's the simplest language we know and we pretty much
+default to it every time we're building a CLI.
 
-## TLDR
+## Why 5 versions?
 
-If you're short on time here's the whole agent:
+Pinocchio integrates only with DeepSeek, our daily driver, for simplicity sake.
 
-```go
-package main
+A coding agent is, at its very core, a program you use to ask LLMs to
+execute actions like read, write, change files on your behalf.
 
-// TODO write the agent :D
-```
+While you don't need that much code to build a (radically) simple version
+there's a
+lot going on
+conceptually so we'll break how we build this in 5 steps:
 
-Pinocchio talks to only DeepSeek, our daily driver, for simplicity sake.
-
-Ask the model what to do. If it wants to run tools, run them, hand the results
-back, and ask again. When it stops asking for tools, the turn is over. That's
-it. That's the heartbeat of every coding agent you've ever used.
-
-While it's just a hundred lines of code there's a lot going on conceptually
-so we'll break how we build this in 5 steps:
-
-- **1: The loop**: A chat with amnesia. You can talk to Pinocchio, it'll
-  talk back but it won't remember anything and won't do anything.
-- **2: Tool calls**: Now it can touch the machine.
-- **3: Permissions**: Unless you constrain it, Pinocchio will happily overwrite
-  your files.
-- **4: Context management**: The longer you talk, the more Pinocchio has to
-  remember so context management gives it a better memory.
-- **5: Sessions**: You can now start and stop talking to Pinocchio at will.
+1. **The loop**: A chat with amnesia. You can talk to Pinocchio, it'll
+   talk back but it won't remember anything and won't be able to execute any
+   actions for you.
+2. **Tool calls**: With tools, Pinocchio can do things on your behalf.
+3. **Permissions**: Unless you constrain it, Pinocchio will happily overwrite
+   your files.
+4. **Context management**: The longer you talk, the more Pinocchio has to
+   remember so context management gives it a better memory.
+5. **Sessions**: You can now start and stop talking to Pinocchio at will.
 
 ## Version 1: the loop
 
 The first thing you may notice is that **the agent loop is genuinely tiny**.
-That's not because we're trying to squeeze an agent into 100 lines but because
+That's not because we're trying to keep the code short but because
 the real coding agent,
 the part that take thousands of engineering hours, lives _around_ the loop.
 
@@ -71,14 +64,12 @@ interaction at its most fundamental level:
 - Each "request/response" cycle, meaning every time you get control back
   from the agent, is called a turn.
 
-```go
-// TODO put v1.go
-```
+{% codefile "v1/main.go" %}
 
 Now that we wrote a first version, let's try to use it:
 
 ```bash
-go run v1.go
+go run v1/main.go
 > review v1.go in this directory
 I don’t have access to your local filesystem or directory contents, so I can’t open or review `v1.go` directly.
 
@@ -109,7 +100,7 @@ pass that together with your messages. That way the LLM knows what kind of
 actions can perform and will do so when relevant.
 
 Of course what the LLM sees is only definition of the available tools (a
-strucutred description) and the LLM will output tool calls only. that means
+structured description) and the LLM will output tool calls only. That means
 the agent is responsible for the actual execution of the calls.
 
 This has an implication on the structure of the code because, in order to
@@ -119,15 +110,13 @@ inside the main agent loop which is responsible for the tool calls.
 
 Enough talk, let's look at the code.
 
-```go
-// TODO put v2.go to v1.go diff
-```
+{% diff "v1/main.go" "v2/main.go" %}
 
 As you can see, here we have the two major differences that transform a chat
 bot into an agent:
 
-- Line X: we pass tools schema to the LLM.
-- Line Y-Z: the inner action loop.
+- We pass the tools schema to the LLM.
+- The inner action loop.
 
 The tools schema call is trivial but the inner loop contains the "meat" of
 what implementing tools in an agent is about. That `runAction` function is
@@ -137,7 +126,7 @@ the LLM and give back to the LLM the result.
 Now you could follow the "use bash for everything" approach, meaning you
 pass only one tool called "bash" to the LLM, or you could go much more
 granular. Moreover, the implementation of each tools can follow different
-paths: you can do it "natively" using the stb lib of the language the agent
+paths: you can do it "natively" using the stdlib of the language the agent
 is written in, you can fork into a subprocess and delegate to a different
 program (it's common for search where some agents like to use `rg` for
 search), you can use a MCP or anything you can think of. The point is that,
@@ -202,14 +191,12 @@ a few common strategies:
 4. No-permission/delegation by design — runs with full privileges. Yes some
    do this and it works for them!
 
-For the sake of brevity, pinocchio implements a gated read_file which is a
+For the sake of brevity, pinocchio implements a gated write_file which is a
 radically simple version of the rule based ask approval strategy.
 
 Here's how it looks like:
 
-```go
-// TODO add v3 to v2 diff here
-```
+{% diff "v2/main.go" "v3/main.go" %}
 
 and here's how it works:
 
@@ -256,9 +243,7 @@ Pinocchio does the simplest thing that works: when the conversation grows past
 a budget, it summarizes the first half with one extra model call and keep the
 recent stuff. Here's the code:
 
-```go
-// TODO diff v4.go to v3.go 
-```
+{% diff "v3/main.go" "v4/main.go" %}
 
 As you can see this is a simple and practical solution. Now let's see it in
 action:
@@ -301,9 +286,7 @@ One append-only file fixes that. Every message is saved to `pinocchio.jsonl`
 the moment it's appended — one JSON document per line — and a `--resume`
 flag replays the file back into `messages` at startup:
 
-```go
-// TODO diff v5.go to v4.go
-```
+{% diff "v4/main.go" "v5/main.go" %}
 
 The save itself is seven lines and that's the whole trick; the rest of the
 diff is the replay — a flag, a file read, one JSON unmarshal per line.
@@ -368,7 +351,7 @@ of the series:
 
 - **System prompts**: we've debated including system prompts in this first
   article about pinocchio but system prompts have changed significantly
-  their role in codig agents recently so we plan to write about them soon.
+  their role in coding agents recently so we plan to write about them soon.
 - **Streaming**: Pinocchio stares at you in silence until the full reply
   arrives. This is highly distressing as a user and of course no real world
   coding agent works this way.
@@ -384,4 +367,4 @@ That's the map for the next post: we take the ten coding agents from our
 these edges, with Pinocchio as the measuring stick. The loop, it turns out, is
 the easy part.
 
-Follow along on the [series page](/writing/tags/agents/)
+Follow along on the [series page](/writing/how-coding-agents-work/)
