@@ -8,6 +8,9 @@ draft: true
 tags:
   - ai
   - agents
+image: /assets/writing/building-pinocchio.png
+image_width: 2400
+image_height: 1260
 ---
 
 In the [first post of this series](/writing/how-coding-agents-work/) we
