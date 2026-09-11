@@ -5,6 +5,37 @@ description: Your race engineer, on your phone. Guido turns a spare phone or tab
 image: /assets/products/guido/logo-wordmark.png
 image_width: 1200
 image_height: 1200
+screens:
+  - src: /assets/products/guido/screen-dashboard.png
+    thumb: /assets/products/guido/screen-dashboard-thumb.png
+    label: Dashboard
+    caption: Full-screen landscape dashboard with shift lights, tire temps and gear cues
+    alt: Guido dashboard with a 16-LED rev bar, tire temperatures, speed and gear
+  - src: /assets/products/guido/screen-speaking.png
+    thumb: /assets/products/guido/screen-speaking-thumb.png
+    label: Voice
+    caption: Ask out loud — Guido answers while you keep both hands on the wheel
+    alt: Guido dashboard with the voice badge showing green level bars while it answers
+  - src: /assets/products/guido/screen-welcome.png
+    thumb: /assets/products/guido/screen-welcome-thumb.png
+    label: Zero setup
+    caption: Zero setup — Guido finds your sim on the network by itself
+    alt: Guido welcome screen searching the local network for a sim session
+  - src: /assets/products/guido/screen-unlock-pro.png
+    thumb: /assets/products/guido/screen-unlock-pro-thumb.png
+    label: Unlock Pro
+    caption: Sign in to unlock hands-free voice activation
+    alt: Unlock Guido Pro sign-in screen with an email field and the Pro benefits
+  - src: /assets/products/guido/screen-settings.png
+    thumb: /assets/products/guido/screen-settings-thumb.png
+    label: Settings
+    caption: Your units, your network, your call
+    alt: Guido settings with units, connection, account and about sections
+  - src: /assets/products/guido/screen-no-signal.png
+    thumb: /assets/products/guido/screen-no-signal-thumb.png
+    label: Reconnect
+    caption: If the stream drops, Guido says so and reconnects on its own
+    alt: Guido dashboard showing the no-signal state
 ---
 <a class="product-banner" href="/writing/meet-guido/">
   <span class="product-banner__label">New</span>
@@ -38,51 +69,90 @@ image_height: 1200
   </a>
 </section>
 
-<section class="product-screens" id="screens">
+<section
+  class="product-screens"
+  id="screens"
+  x-data="{ index: 0, count: {{ screens | size }}, prev() { this.index = (this.index - 1 + this.count) % this.count }, next() { this.index = (this.index + 1) % this.count } }"
+>
   <h2 class="product-section-title">Built for the track, not the pit lane</h2>
-  <div class="product-screens-grid">
-    <figure class="product-screen">
-      <img
-        src="/assets/products/guido/screen-dashboard.png"
-        alt="Guido dashboard with rev bar, tire temperatures, speed, gear, and downshift cues"
-        width="1920"
-        height="1080"
-        loading="lazy"
+  <div class="guido-gallery">
+    <div
+      class="guido-gallery__stage"
+      tabindex="0"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Guido screenshots"
+      @keydown.arrow-left="prev()"
+      @keydown.arrow-right="next()"
+    >
+      {% for shot in screens %}
+        <figure
+          class="guido-gallery__slide"
+          :hidden="index !== {{ forloop.index0 }}"
+          {% unless forloop.first %}
+            hidden
+          {% endunless %}
+        >
+          <img
+            src="{{ shot.src }}"
+            alt="{{ shot.alt }}"
+            width="1920"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+          >
+          <figcaption class="guido-gallery__caption">
+            <span class="guido-gallery__label">{{ shot.label }}</span>
+            <span>{{ shot.caption }}</span>
+          </figcaption>
+        </figure>
+      {% endfor %}
+      <button
+        type="button"
+        class="guido-gallery__nav guido-gallery__nav--prev"
+        @click="prev()"
+        aria-label="Previous screenshot"
       >
-      <figcaption class="product-screen-caption">
-        Full-screen landscape dashboard with shift lights and downshift cues
-      </figcaption>
-    </figure>
-    <figure class="product-screen">
-      <img
-        src="/assets/products/guido/screen-fuel.png"
-        alt="Guido dashboard showing fuel level and predicted range"
-        width="1920"
-        height="1080"
-        loading="lazy"
+        {{ 'chevron-left' | lucide }}
+      </button>
+      <button
+        type="button"
+        class="guido-gallery__nav guido-gallery__nav--next"
+        @click="next()"
+        aria-label="Next screenshot"
       >
-      <figcaption class="product-screen-caption">Fuel level and predicted range, learned from your own laps</figcaption>
-    </figure>
-    <figure class="product-screen">
-      <img
-        src="/assets/products/guido/screen-searching.png"
-        alt="Guido searching for sim sessions on the local network"
-        width="1920"
-        height="1080"
-        loading="lazy"
-      >
-      <figcaption class="product-screen-caption">Zero setup: Guido finds your sim on the network by itself</figcaption>
-    </figure>
-    <figure class="product-screen">
-      <img
-        src="/assets/products/guido/screen-settings.png"
-        alt="Guido settings with speed and temperature units and community credits"
-        width="1920"
-        height="1080"
-        loading="lazy"
-      >
-      <figcaption class="product-screen-caption">Your units, your network, your call</figcaption>
-    </figure>
+        {{ 'chevron-right' | lucide }}
+      </button>
+      <span
+        class="guido-gallery__counter"
+        aria-hidden="true"
+        x-text="String(index + 1).padStart(2, '0') + ' / ' + String(count).padStart(2, '0')"
+        >01 / {{ screens | size -}}
+      </span>
+    </div>
+    <div class="guido-gallery__thumbs">
+      {% for shot in screens %}
+        <button
+          type="button"
+          class="guido-gallery__thumb"
+          :class="{ 'is-active': index === {{ forloop.index0 }} }"
+          :aria-current="index === {{ forloop.index0 }}"
+          @click="index = {{ forloop.index0 }}"
+          aria-label="Show {{ shot.label }}"
+          title="{{ shot.label }}"
+        >
+          <img
+            src="{{ shot.thumb }}"
+            alt=""
+            width="512"
+            height="288"
+            loading="lazy"
+            decoding="async"
+          >
+          <span class="guido-gallery__thumb-label">{{ shot.label }}</span>
+        </button>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
