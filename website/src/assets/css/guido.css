@@ -202,6 +202,76 @@
   border: 2px solid var(--gradient-5);
 }
 
+.product-roadmap {
+  padding: 5rem 0;
+}
+
+.product-roadmap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 760px;
+}
+
+.product-roadmap-item {
+  position: relative;
+  padding: 0 0 2.25rem 2rem;
+}
+
+.product-roadmap-item::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 0.4rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--gradient-4);
+}
+
+.product-roadmap-item::after {
+  content: "";
+  position: absolute;
+  left: 0.44rem;
+  top: 1.35rem;
+  bottom: 0.1rem;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.product-roadmap-item:last-child {
+  padding-bottom: 0;
+}
+
+.product-roadmap-item:last-child::after {
+  display: none;
+}
+
+.product-roadmap-phase {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gradient-4);
+  margin: 0 0 0.35rem 0;
+}
+
+.product-roadmap-title {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.9;
+}
+
+.product-roadmap-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .product-screens-grid {
     grid-template-columns: 1fr;
@@ -216,6 +286,10 @@
   }
 
   .product-tiers {
+    padding: 3rem 0;
+  }
+
+  .product-roadmap {
     padding: 3rem 0;
   }
 }

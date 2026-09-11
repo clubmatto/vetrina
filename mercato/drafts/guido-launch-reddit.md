@@ -54,8 +54,8 @@ Honest bits:
 - GT7 only for now, Android only for now. The iPhone build is in App Store
   review and should follow right behind. The next sim isn't decided yet:
   Le Mans Ultimate is the most likely, and the Assetto Corsa family may land
-  in the same release — the protocol layer was built multi-sim from day one,
-  so it's a matter of wiring each one in.
+  in the same release — Guido was built with multi-sim in mind, so it's a
+  matter of wiring each one in.
 - Free tier: full dashboard + proactive calls + PTT, no account needed.
   There's a Pro tier (free email sign-in) that adds hands-free voice
   activation, so you can just talk instead of reaching for a button
@@ -63,7 +63,7 @@ Honest bits:
 - No ads, no analytics, no cloud server anywhere. Telemetry stays on your
   LAN.
 
-It's on Google Play as a beta:
+It's on Google Play in closed beta:
 https://play.google.com/store/apps/details?id=club.matto.guido
 
 If you try it, we want to hear the rough edges — especially from endurance
