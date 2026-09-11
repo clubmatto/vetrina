@@ -10,6 +10,8 @@ const DEFAULT_OPTIONS = {
   "stroke-width": 2,
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
+  "aria-hidden": "true",
+  focusable: "false",
   class: "lucide-icon",
 };
 
