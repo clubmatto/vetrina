@@ -98,6 +98,16 @@ intelligence, richer race strategy, more questions he can answer. The
 [roadmap on the product page](/products/guido/#roadmap) stays current as that
 lands.
 
-The closed beta is live on Google Play. If you race, give Guido a seat on your
-rig and tell us what it should learn next, we read everything at
+## Get in
+
+Guido is in closed beta on Android, so there is nothing to download yet. Join
+the waiting list and we'll send your invite as soon as there's room — and tell
+you the moment iPhone support or a new sim lands.
+
+{% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
+{% assign waitlist_heading = nil %}
+{% assign waitlist_note = 'No spam. One email when there is news.' %}
+{% include 'waitlist-form.liquid' %}
+
+If you race, tell us what Guido should learn next, we read everything at
 [hello@matto.club](mailto:hello@matto.club).

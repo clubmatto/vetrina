@@ -1,0 +1,77 @@
+{%- comment -%}
+  Waiting-list form. Posts to the email-collector's /waiting-list/signup.
+
+  Set these before including (they persist across includes in the same page,
+  so reset any you do not want to reuse):
+    waitlist_product_id  required, the product's UUID
+    waitlist_heading     optional line above the form
+    waitlist_note        optional line below it (HTML allowed)
+    waitlist_button      optional button label
+{%- endcomment -%}
+<div
+  class="product-waitlist"
+  x-data="
+    {
+      submitted: false,
+      error: '',
+      sending: false,
+      async submit(form) {
+        this.error = '';
+        this.sending = true;
+        try {
+          const resp = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: form.email.value,
+              product_id: form.product_id.value,
+              company_website: form.company_website.value
+            })
+          });
+          if (resp.ok) {
+            this.submitted = true;
+            return;
+          }
+          const body = await resp.json().catch(() => ({}));
+          this.error = body.error || 'Something went wrong. Please try again.';
+        } catch {
+          this.error = 'Could not reach the server. Please try again later.';
+        } finally {
+          this.sending = false;
+        }
+      }
+    }
+  "
+>
+  {%- if waitlist_heading -%}
+    <p class="product-waitlist-heading">{{ waitlist_heading }}</p>
+  {%- endif -%}
+  <form
+    x-show="!submitted"
+    @submit.prevent="submit($el)"
+    action="{{ apiBaseUrl }}/waiting-list/signup"
+    method="POST"
+  >
+    <input type="email" name="email" required placeholder="your@email.com" aria-label="Email address">
+    <input
+      type="text"
+      name="company_website"
+      class="honeypot"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    >
+    <input type="hidden" name="product_id" value="{{ waitlist_product_id }}">
+    <button type="submit" class="ds-btn ds-btn--primary" :disabled="sending">
+      <span x-show="!sending">{{ waitlist_button | default: 'Join the waiting list' }}</span>
+      <span x-show="sending" x-cloak>Joining…</span>
+    </button>
+  </form>
+  <div class="product-waitlist-status" aria-live="polite">
+    <p class="form-success" x-show="submitted" x-cloak>You're on the list. We'll email you as soon as there's room.</p>
+    <p class="form-error" x-show="error" x-cloak x-text="error"></p>
+  </div>
+  {%- if waitlist_note -%}
+    <p class="product-waitlist-note">{{ waitlist_note }}</p>
+  {%- endif -%}
+</div>
