@@ -14,10 +14,14 @@ image_height: 1200
         alt="Guido logo"
         width="640"
         height="640"
+        eleventy:ignore
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
       >
     </div>
     <h1 class="product-hero-title product-hero-title--guido">Guido</h1>
-    <p class="product-hero-tagline">Your personal race engineer for sim racing — starting with Gran Turismo 7</p>
+    <p class="product-hero-tagline">Your personal race engineer for sim racing</p>
     <p class="product-hero-note">
       A live race dashboard plus a voice co-driver that watches your fuel and talks you through the race, on the phone
       or tablet you already own.
@@ -82,9 +86,9 @@ image_height: 1200
 </section>
 
 <section class="product-features">
-  <h2 class="product-section-title">What Guido Does</h2>
+  <h2 class="product-section-title">What Guido does</h2>
   <div class="product-features-grid">
-    <article class="product-feature-card">
+    <article class="product-feature-card product-feature-card--primary">
       <div class="product-feature-icon">{{ 'activity' | lucide }}</div>
       <h3 class="product-feature-title">A dashboard built for racing</h3>
       <p class="product-feature-desc">
@@ -92,7 +96,7 @@ image_height: 1200
         cues, and live assist status (TCS, ABS, ASM). Landscape, always-on, readable at a glance.
       </p>
     </article>
-    <article class="product-feature-card">
+    <article class="product-feature-card product-feature-card--primary">
       <div class="product-feature-icon">{{ 'mic' | lucide }}</div>
       <h3 class="product-feature-title">A co-driver you can talk to</h3>
       <p class="product-feature-desc">
@@ -113,7 +117,7 @@ image_height: 1200
       <h3 class="product-feature-title">Zero setup</h3>
       <p class="product-feature-desc">
         Launch the app and it scans your network until your sim session shows up — Gran Turismo 7 today. No IP
-        addresses, no port forwarding. A manual address override is there if you ever need it.
+        addresses, no port forwarding.
       </p>
     </article>
     <article class="product-feature-card">
@@ -126,18 +130,17 @@ image_height: 1200
     </article>
     <article class="product-feature-card">
       <div class="product-feature-icon">{{ 'radio-tower' | lucide }}</div>
-      <h3 class="product-feature-title">It stays with you for the whole race</h3>
+      <h3 class="product-feature-title">Built for the whole stint</h3>
       <p class="product-feature-desc">
-        An always-on, edge-to-edge display that won't sleep mid-session. If the stream drops, Guido holds the dashboard
-        and reconnects in one tap — no re-doing setup while a race is live. And everything reads in your units: km/h,
-        mph, or m/s; Celsius or Fahrenheit.
+        An always-on, edge-to-edge display that won't sleep mid-session, a one-tap reconnect if the stream drops, and
+        your units throughout: km/h, mph or m/s, Celsius or Fahrenheit.
       </p>
     </article>
   </div>
 </section>
 
 <section class="product-how-it-works" id="how-it-works">
-  <h2 class="product-section-title">How It Works</h2>
+  <h2 class="product-section-title">How it works</h2>
   <div class="product-steps">
     <div class="product-step">
       <div class="product-step-number">1</div>
@@ -171,7 +174,7 @@ image_height: 1200
 </section>
 
 <section class="product-tiers">
-  <h2 class="product-section-title">Two Ways to Race</h2>
+  <h2 class="product-section-title">Two ways to race</h2>
   <div class="product-tiers-grid">
     <div class="product-tier">
       <h3 class="product-tier-name">Free</h3>
@@ -264,9 +267,9 @@ image_height: 1200
 </section>
 
 <div class="product-tos-link">
-  <a href="/products/guido/privacy/">Privacy Policy</a>
+  <a href="/products/guido/privacy/">Privacy policy</a>
   ·
-  <a href="/products/guido/account-deletion/">Account Deletion</a>
+  <a href="/products/guido/account-deletion/">Account deletion</a>
   ·
-  <a href="/products/guido/terms/">Terms of Service</a>
+  <a href="/products/guido/terms/">Terms of service</a>
 </div>

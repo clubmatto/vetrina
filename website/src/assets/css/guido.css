@@ -77,17 +77,15 @@
   border-top: 1px solid var(--border-color);
 }
 
-.product-feature-badge {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ds-ok);
-  border: 1px solid var(--ds-ok);
-  border-radius: var(--ds-radius-full);
-  padding: 0.1rem 0.6rem;
-  margin-bottom: 0.75rem;
+/* The dashboard and the co-driver are the product; the other cards support
+   them. A tinted border and a larger icon are enough to say so. */
+.product-feature-card--primary {
+  border-color: color-mix(in srgb, var(--gradient-5), transparent 45%);
+}
+
+.product-feature-card--primary .product-feature-icon svg {
+  width: 44px;
+  height: 44px;
 }
 
 .product-tiers {
