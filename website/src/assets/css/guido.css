@@ -68,13 +68,16 @@
   height: auto;
 }
 
+.product-screen picture {
+  display: block;
+}
+
 .product-screen-caption {
   font-size: 0.85rem;
   color: var(--text-secondary);
   text-align: center;
   padding: 0.75rem 1rem;
   margin: 0;
-  border-top: 1px solid var(--border-color);
 }
 
 /* The dashboard and the co-driver are the product; the other cards support

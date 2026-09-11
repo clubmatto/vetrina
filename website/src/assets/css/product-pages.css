@@ -73,10 +73,16 @@
 
 .product-features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   max-width: var(--max-width);
   margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .product-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .product-feature-card {
@@ -122,74 +128,6 @@
   margin: 0;
 }
 
-.product-how-it-works {
-  padding: 5rem 0;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--gradient-4), transparent 95%) 0%,
-    color-mix(in srgb, var(--gradient-5), transparent 95%) 50%,
-    color-mix(in srgb, var(--gradient-1), transparent 97%) 100%
-  );
-}
-
-.product-steps {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.product-step {
-  flex: 1;
-  text-align: center;
-  padding: 0 1rem;
-}
-
-.product-step-number {
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--gradient-4);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-
-.product-step-icon {
-  color: var(--gradient-5);
-  margin-bottom: 1rem;
-}
-
-.product-step-icon svg {
-  width: 28px;
-  height: 28px;
-  stroke-width: 1.5;
-}
-
-.product-step-title {
-  font-family: var(--font-sans);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  opacity: 0.9;
-}
-
-.product-step-desc {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-.product-step-connector {
-  width: 40px;
-  flex-shrink: 0;
-  border-top: 2px dashed var(--border-color);
-  margin-top: 5.5rem;
-}
-
 .product-cta {
   padding: 5rem 0;
   text-align: center;
@@ -220,24 +158,6 @@
     grid-template-columns: 1fr;
   }
 
-  .product-steps {
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  .product-step {
-    padding: 1.5rem 0;
-  }
-
-  .product-step-connector {
-    width: 2px;
-    height: 24px;
-    border-top: none;
-    border-left: 2px dashed var(--border-color);
-    margin-top: 0;
-  }
-
   .product-hero {
     min-height: 70vh;
     padding: 5rem 0 3rem;
@@ -251,10 +171,6 @@
   }
 
   .product-features {
-    padding: 3rem 0;
-  }
-
-  .product-how-it-works {
     padding: 3rem 0;
   }
 
