@@ -203,36 +203,73 @@ screens:
       <div class="product-feature-icon">{{ 'radio-tower' | lucide }}</div>
       <h3 class="product-feature-title">Built for the whole stint</h3>
       <p class="product-feature-desc">
-        An always-on, edge-to-edge display that won't sleep mid-session, a one-tap reconnect if the stream drops, and
+        An always-on, edge-to-edge display that won't sleep mid-session, an automatic reconnect if the stream drops, and
         your units throughout: km/h, mph or m/s, Celsius or Fahrenheit.
       </p>
     </article>
   </div>
 </section>
 
-<section class="product-tiers">
-  <h2 class="product-section-title">Two ways to race</h2>
+<section class="product-tiers" id="beta-testing-program">
+  <h2 class="product-section-title">Beta testing program</h2>
+  <div class="product-tiers-intro">
+    <p>
+      Guido is in closed beta on Android, and we're letting people in a few at a time. Joining early is the way to shape
+      the app: tell us what's broken, what's missing, and which sim Guido should learn next. If you'd rather wait for
+      something finished, that's fair — this isn't it yet.
+    </p>
+    <p>
+      What beta means, plainly: the app will be updated frequently, and features might move or change shape between
+      sessions, and there are rough edges we haven't sanded down.
+    </p>
+    <p class="product-tiers-benefits">
+      <strong>Your benefits.</strong> Guido before the public launch, a direct say in what gets built, and a line to us
+      while the decisions are still open.
+    </p>
+  </div>
+
   <div class="product-tiers-grid">
     <div class="product-tier">
-      <h3 class="product-tier-name">Free</h3>
-      <p class="product-tier-price">No account needed</p>
+      <div class="product-tier-head">
+        <h3 class="product-tier-name">Free</h3>
+      </div>
+      <p class="product-tier-price">Free forever — no account needed</p>
       <p class="product-tier-desc">The full dashboard and a push-to-talk race engineer.</p>
       <ul class="product-tier-list">
         <li>Live race dashboard</li>
+        <li>Zero setup — Guido finds your sim on the network by itself</li>
         <li>Proactive calls like "box this lap"</li>
         <li>Push-to-talk questions, answered on-device</li>
       </ul>
     </div>
-    <div class="product-tier">
-      <h3 class="product-tier-name">Pro</h3>
-      <p class="product-tier-price">Free in the beta, and for 6 months after launch</p>
+    <div class="product-tier product-tier--featured">
+      <div class="product-tier-head">
+        <h3 class="product-tier-name">Pro</h3>
+        <span class="product-tier-pill">Early bird</span>
+      </div>
+      <p class="product-tier-price">Free during the beta</p>
       <p class="product-tier-desc">Everything in Free, for drivers who don't want to reach for a button mid-corner.</p>
       <ul class="product-tier-list">
-        <li>Hands-free voice activation</li>
-        <li>Just speak — Guido knows when you're talking to it</li>
+        <li>Hands-free voice activation — just speak, no button</li>
+        <li>A more advanced feature set, growing over time</li>
+        <li>Six months of Pro on us after the beta</li>
       </ul>
     </div>
   </div>
+
+  <div class="product-tiers-note">
+    <p>
+      <strong>What happens after the beta.</strong> Free stays free — it isn't a trial and it isn't going behind a
+      paywall. Pro becomes a paid subscription once the beta wraps up; everyone who joined during it keeps Pro free for
+      six months.
+    </p>
+  </div>
+
+  {% assign waitlist_heading = "Leave your email and we'll send your invite when there's room. No spam." %}
+  {% assign waitlist_button = 'Join the beta' %}
+  {% assign waitlist_note = null %}
+  {% include 'waitlist-form.liquid' %}
+  {% assign waitlist_button = null %}
 </section>
 
 <section class="product-requirements">

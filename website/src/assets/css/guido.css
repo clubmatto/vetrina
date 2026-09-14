@@ -1,3 +1,10 @@
+/* One content column for the page's cards, notes and forms, so the sections
+   stop stepping in and out of each other. The screenshot gallery and the
+   feature grid are the only wide bands, and they share --max-width. */
+:root {
+  --guido-column: 760px;
+}
+
 /* Guido's own brand: black surfaces + blue→mint gradient (the in-app G mark),
    instead of the club matto hero gradient. Deepened in light theme for
    contrast on the pale background. */
@@ -102,7 +109,7 @@
 /* Waiting-list capture: the closed beta has no public store link, so this is
    the primary call to action on the page. */
 .product-waitlist {
-  max-width: 560px;
+  max-width: var(--guido-column);
   margin: 0 auto 1.5rem auto;
 }
 
@@ -382,14 +389,24 @@
 }
 
 .product-tiers {
+  /* The launch post links straight to #beta-testing-program; keep the heading
+     clear of the fixed nav. */
+  scroll-margin-top: 5rem;
   padding: 5rem 0;
+}
+
+/* Hero and closing CTA: same column as everything else below the fold. */
+.product-hero-content,
+.product-cta-content {
+  width: 100%;
+  max-width: var(--guido-column);
 }
 
 .product-tiers-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  max-width: 900px;
+  max-width: var(--guido-column);
   margin: 0 auto;
 }
 
@@ -447,12 +464,86 @@
   opacity: 0.85;
 }
 
+/* Beta framing around the tiers: intro copy above, pricing promise below,
+   then the waiting-list form that actually gets people in. */
+.product-tiers-intro {
+  max-width: var(--guido-column);
+  margin: 0 auto 3rem auto;
+  text-align: left;
+}
+
+.product-tiers-intro p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.product-tiers-intro p:last-child {
+  margin-bottom: 0;
+}
+
+.product-tier--featured {
+  border-color: color-mix(in srgb, var(--gradient-5), transparent 45%);
+  box-shadow: 0 6px 20px var(--shadow-color-lg);
+}
+
+.product-tier-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.product-tier-head .product-tier-name {
+  margin: 0;
+}
+
+.product-tier-pill {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gradient-5);
+  border: 1px solid color-mix(in srgb, var(--gradient-5), transparent 55%);
+  border-radius: var(--ds-radius-full);
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+.product-tiers-note {
+  max-width: var(--guido-column);
+  margin: 3rem auto 0 auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 8px var(--shadow-color-sm);
+  padding: 1.5rem 1.75rem;
+  text-align: left;
+}
+
+.product-tiers-note p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.product-tiers-note strong {
+  color: var(--text);
+}
+
+.product-tiers .product-waitlist {
+  margin-top: 3rem;
+}
+
 .product-requirements {
   padding: 0 0 5rem 0;
 }
 
 .product-requirements-card {
-  max-width: 700px;
+  max-width: var(--guido-column);
   margin: 0 auto;
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -501,7 +592,7 @@
   list-style: none;
   padding: 0;
   margin: 0 auto;
-  max-width: 760px;
+  max-width: var(--guido-column);
 }
 
 .product-roadmap-item {
