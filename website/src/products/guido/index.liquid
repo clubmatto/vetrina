@@ -37,37 +37,43 @@ screens:
     caption: If the stream drops, Guido says so and reconnects on its own
     alt: Guido dashboard showing the no-signal state
 ---
-<a class="product-banner" href="/writing/meet-guido/">
-  <span class="product-banner__label">New</span>
-  <span class="product-banner__text">Read the launch post</span>
-  <span class="product-banner__arrow" aria-hidden="true">{{ 'arrow-right' | lucide }}</span>
-</a>
-
-<section class="product-hero">
-  <div class="product-hero-content">
-    <div class="product-hero-logo-tile">
-      <img
-        src="/assets/products/guido/logo.png"
-        alt="Guido logo"
-        width="640"
-        height="640"
-        eleventy:ignore
-        loading="eager"
-        decoding="sync"
-        fetchpriority="high"
-      >
-    </div>
-    <h1 class="product-hero-title product-hero-title--guido">Guido</h1>
-    <p class="product-hero-tagline">Your personal race engineer for sim racing</p>
-    {% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
-    {% assign waitlist_heading = null %}
-    {% assign waitlist_note = "Closed beta on Android. We'll email your invite when there's room." %}
-    {% include 'waitlist-form.liquid' %}
-  </div>
-  <a class="product-hero-scroll" href="#screens" aria-label="See the dashboard and what Guido does">
-    {{ 'arrow-down' | lucide }}
+<div class="product-hero-screen">
+  <a class="product-banner" href="/writing/meet-guido/">
+    <span class="product-banner__label">New</span>
+    <span class="product-banner__text">Read the launch post</span>
+    <span class="product-banner__arrow" aria-hidden="true">{{ 'arrow-right' | lucide }}</span>
   </a>
-</section>
+
+  <section class="product-hero">
+    <div class="product-hero-content">
+      {%- comment -%}
+        The lockup artwork already spells out "Guido", so there is no title text.
+        The h1 is kept purely so the page still has a top-level heading; the
+        accessible name comes from the image alt.
+      {%- endcomment -%}
+      <h1 class="product-hero-logo">
+        <img
+          src="/assets/products/guido/logo-lockup.png"
+          alt="Guido"
+          width="900"
+          height="942"
+          eleventy:ignore
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+        >
+      </h1>
+      <p class="product-hero-tagline">Your personal race engineer for sim racing</p>
+      {% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
+      {% assign waitlist_heading = null %}
+      {% assign waitlist_note = "Closed beta on Android. We'll email your invite when there's room." %}
+      {% include 'waitlist-form.liquid' %}
+      <div class="product-hero-more">
+        <a href="#screens" class="ds-btn ds-btn--secondary">Learn more</a>
+      </div>
+    </div>
+  </section>
+</div>
 
 <section
   class="product-screens"
@@ -266,10 +272,8 @@ screens:
   </div>
 
   {% assign waitlist_heading = "Leave your email and we'll send your invite when there's room. No spam." %}
-  {% assign waitlist_button = 'Join the beta' %}
   {% assign waitlist_note = null %}
   {% include 'waitlist-form.liquid' %}
-  {% assign waitlist_button = null %}
 </section>
 
 <section class="product-requirements">
@@ -331,7 +335,7 @@ screens:
 <section class="product-cta">
   <div class="product-cta-content">
     <h2 class="product-cta-title">Strap in. Guido will watch the numbers.</h2>
-    <p class="product-cta-desc">Join the waiting list and we'll send your invite as soon as there's room.</p>
+    <p class="product-cta-desc">Join the beta and we'll send your invite as soon as there's room.</p>
     {% assign waitlist_heading = null %}
     {% assign waitlist_note = 'Already in the closed beta? <a href="https://play.google.com/store/apps/details?id=club.matto.guido">Open Guido on Google Play</a>.' %}
     {% include 'waitlist-form.liquid' %}

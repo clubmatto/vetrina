@@ -63,7 +63,7 @@
     >
     <input type="hidden" name="product_id" value="{{ waitlist_product_id }}">
     <button type="submit" class="ds-btn ds-btn--primary" :disabled="sending">
-      <span x-show="!sending">{{ waitlist_button | default: 'Join the waiting list' }}</span>
+      <span x-show="!sending">{{ waitlist_button | default: 'Join the beta' }}</span>
       <span x-show="sending" x-cloak>Joining…</span>
     </button>
   </form>
