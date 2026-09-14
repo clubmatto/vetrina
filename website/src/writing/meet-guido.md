@@ -100,7 +100,7 @@ lands.
 ## Get in
 
 Guido is in closed beta on Android, so the store listing isn't public yet.
-Join the waiting list and we'll send your invite as soon as there's room — and
+Join the beta and we'll send your invite as soon as there's room — and
 tell you the moment iPhone support or a new sim lands.
 
 {% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
