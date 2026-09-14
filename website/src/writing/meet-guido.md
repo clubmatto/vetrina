@@ -4,14 +4,13 @@ description: "We're launching Guido: the spare phone on your sim rig becomes a
   live race dashboard and a voice co-driver for Gran Turismo 7, with more sims
   on the roadmap. Local, private, zero setup."
 date: 2026-09-11
-draft: true
 tags:
   - guido
   - launch
   - sim-racing
 image: /assets/writing/meet-guido.png
-image_width: 1200
-image_height: 1200
+image_width: 2400
+image_height: 1260
 ---
 
 Real life race drivers always have someone on the radio. A race engineer
