@@ -19,7 +19,7 @@ The dashboard: a spare phone becomes a full-screen race display. 16-LED shift
 lights, gear and speed at peripheral-vision size, per-tire temps, downshift
 cues, assist status.
 
-Zero setup: Guido finds your PS5 on the network by himself.
+Zero setup: Guido finds your PS5 on the network by itself.
 
 # 3/5
 
@@ -35,12 +35,13 @@ drive.
 Private by design: telemetry stays on your network, speech recognition runs
 on your device. No cloud, no ads, no analytics.
 
-Dashboard + push-to-talk are free. A pro account unlocks hands-free voice.
+Dashboard + push-to-talk are free. Pro (paid; free in beta + 6 months after
+launch) unlocks hands-free voice.
 
 # 5/5
 
-Our first Kotlin Multiplatform product: one codebase, Android today, iPhone
-right behind it (in App Store review now), desktop from the same code.
+Our first Kotlin Multiplatform product: one codebase, Android in closed beta
+today, iPhone right behind it (in App Store review now), desktop too.
 
 Join the beta testing program: https://matto.club/products/guido/#beta-testing-program
 The story: https://matto.club/writing/meet-guido/

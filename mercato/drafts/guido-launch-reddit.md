@@ -12,18 +12,17 @@ topics:
 race dashboard *and* a voice co-driver: it learns your car's fuel burn, calls
 "box this lap" before you run dry, and answers your questions over
 push-to-talk while you drive. Free tier covers the dashboard and
-push-to-talk; no
-cloud, everything runs on your network and your device. Beta link at the
-bottom. We'd love *any* kind of feedback!
+push-to-talk. No cloud: everything runs on your network and your device.
+Beta link at the bottom. We'd love *any* kind of feedback!
 
 ---
 
 Like a lot of you, we run a second screen on the rig for GT7. And like a lot
-of you, we noticed we don't really *read* it mid-race, it's distracting. You're
+of you, we noticed we don't really *read* it mid-race: it's distracting. You're
 not going to look at a fuel number on a phone mounted next to you at 250 km/h
-and do "okay, 12.4 liters, that's 9 laps at this burn rate" in your head. Real
-world drivers don't do that math either: their engineer does it and the answer
-arrives on the radio.
+and do "okay, 12.4 liters, that's 9 laps at this burn rate" in your head.
+Real-world drivers don't do that math either: their engineer does it and the
+answer arrives on the radio.
 
 So we built the engineer instead of just another dashboard. Guido is an Android
 app (an iPhone build is in App Store review and will follow soon!) that:
@@ -31,7 +30,7 @@ app (an iPhone build is in App Store review and will follow soon!) that:
 **Watches the race like an engineer would.** It reads GT7's telemetry over
 your local network (the Salsa20-encrypted UDP stream, decoded on-device) and
 builds a model of your session: current lap, how much fuel the car actually
-burned on your previous laps, learned from your driving, not a database,
+burned on your previous laps — learned from your driving, not a database —
 and how many laps the tank will stretch to. When remaining fuel drops below
 what the race distance needs, it says "Box this lap" out loud.
 
@@ -58,8 +57,9 @@ Honest bits:
   in the same release. Guido was built with multi-sim in mind, so it's a
   matter of wiring each one in.
 - Free tier: full dashboard + proactive calls + PTT, no account needed.
-  There's a Pro tier (free email sign-in) that adds hands-free voice
-  activation, so you can just talk instead of reaching for a button
+  There's a Pro tier — paid, but free for everyone during the beta, and free
+  for 6 months after public launch if you join now — that adds hands-free
+  voice activation, so you can just talk instead of reaching for a button
   mid-corner.
 - No ads, no analytics, no cloud server anywhere. Telemetry stays on your
   LAN.
@@ -67,6 +67,6 @@ Honest bits:
 Join the beta testing program:
 https://matto.club/products/guido/#beta-testing-program
 
-If you try it, we want to hear the rough edge especially from endurance
+If you try it, we want to hear the rough edges, especially from endurance
 racers, since fuel strategy is the feature closest to our hearts. We'll
-answer any comment you have so ask away!
+answer any comment you have, so ask away!

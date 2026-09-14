@@ -16,7 +16,7 @@ image_height: 1200
 
 Real life race drivers always have someone on the radio. A race engineer
 reads the telemetry, does the math mid-race, and tells the driver what matters
-when it matters: fuel, tyres, gaps, strategy. The driver drives; the engineer
+when it matters: fuel, tires, gaps, strategy. The driver drives; the engineer
 talks.
 
 Sim racers, though, just have dashboards. Games like GT7 stream their
@@ -27,7 +27,7 @@ them, at the right moment, and do the math in your head. Doing that while
 racing might be harder than racing itself!
 
 So we built the thing we wanted: not another dashboard, but a
-co-driver. Today we're releasing it. Its name is
+co-driver. Today we're releasing it as a closed beta. Its name is
 [Guido](/products/guido/).
 
 Guido speaks Gran Turismo 7 today because we wanted to get this out the door
@@ -37,9 +37,9 @@ release, and more queued up behind those. We chose GT7 as a starting point for
 two reasons:
 
 - GT7 is underserved compared to other games (to be fair, it's harder to
-  make things work on ps4/ps5).
+  make things work on PS4/PS5).
 - When we got started with sim racing, GT7 was our first game and we wanted
-  to pay hommage to the game that got us started.
+  to pay homage to the game that got us started.
 
 ## A polished dashboard
 
@@ -63,12 +63,12 @@ Guido watches the race the way an engineer would. As the telemetry streams in,
 it builds a model of your session: which lap you're on, how much fuel the car
 actually burns per lap and how many laps the tank will stretch to. When the math
 stops working in your
-favor, he speaks up: _"Box this lap."_
+favor, it speaks up: _"Box this lap."_
 
 It goes both ways, too. Hold the push-to-talk button and ask. How much fuel is
 left? How many laps to go? What's the advice? Guido answers out loud, in
 plain English, while your hands stay on the wheel. It's also polite
-about it: if you just asked about fuel, he won't interrupt you a lap later to
+about it: if you just asked about fuel, it won't interrupt you a lap later to
 say the thing you already know.
 
 If you're concerned about your data: none of that leaves your Wi-Fi. The speech
@@ -78,36 +78,35 @@ Pro, we don't even know your email!
 
 ## Free and Pro
 
-The dashboard, push-to-talk, and the calls Guido makes on his own are free. No
+The dashboard, push-to-talk, and the calls Guido makes on its own are free. No
 account needed.
 
-Signing in with an email unlocks Pro, which adds hands-free voice activation:
-with the "hey Guido!" trigger word you just talk to Guido instead of reaching
-for a button.
+Signing in with an email unlocks Pro, free while we're in beta. It adds
+hands-free voice activation: with the "hey Guido!" trigger word you just talk
+to Guido instead of reaching for a button.
 
-Joining the closed beta grants you Pro access for a year starting from the
-official public launch!
+Join the closed beta and Pro stays free for 6 months after the public launch.
 
 ## What's next
 
 Guido speaks GT7 today, and it's not staying monolingual for long: Le Mans
 Ultimate is the most likely next stop, quite possibly with the Assetto Corsa
 family in the same release, with F1 and iRacing queued up behind those. The
-engineer keeps learning too: tyre and shift
-intelligence, richer race strategy, more questions he can answer. The
+engineer keeps learning too: tire and shift
+intelligence, richer race strategy, more questions it can answer. The
 [roadmap on the product page](/products/guido/#roadmap) stays current as that
 lands.
 
 ## Get in
 
-Guido is in closed beta on Android, so there is nothing to download yet. Join
-the waiting list and we'll send your invite as soon as there's room — and tell
-you the moment iPhone support or a new sim lands.
+Guido is in closed beta on Android, so the store listing isn't public yet.
+Join the waiting list and we'll send your invite as soon as there's room — and
+tell you the moment iPhone support or a new sim lands.
 
 {% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
 {% assign waitlist_heading = nil %}
 {% assign waitlist_note = 'No spam. One email when there is news.' %}
 {% include 'waitlist-form.liquid' %}
 
-If you race, tell us what Guido should learn next, we read everything at
+If you race, tell us what Guido should learn next. We read everything at
 [hello@matto.club](mailto:hello@matto.club).
