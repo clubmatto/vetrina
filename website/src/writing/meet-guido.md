@@ -9,8 +9,8 @@ tags:
   - launch
   - sim-racing
 image: /assets/writing/meet-guido.png
-image_width: 2400
-image_height: 1260
+image_width: 1200
+image_height: 1200
 ---
 
 Real life race drivers always have someone on the radio. A race engineer
