@@ -208,6 +208,61 @@ pre.has-line-numbers .code-line::before {
   cursor: help;
 }
 
+/* Embedded code (see code.js) renders as a gist-like card: the highlighted
+   block on top, then a footer linking back to the source file(s) in the
+   repository. The wrapper owns the outer margin and the rounding so the block
+   and the footer read as a single card. */
+.embed {
+  margin: 1.5em 0;
+}
+
+/* `figure.embed` (not just `.embed`) so this out-specifies the post stylesheet's
+   `article.post .post-content pre` rule, which otherwise keeps its own margin
+   and rounding and leaves a gap above the footer. */
+figure.embed > pre[class*="language-"] {
+  margin: 0;
+  border: 1px solid var(--ds-border);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.embed-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em 0.6em;
+  padding: 0.45em 0.9em;
+  background-color: var(--ds-surface-hover);
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 6px 6px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.embed-source__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  color: var(--ds-text-secondary);
+  text-decoration: none;
+}
+
+.embed-source__link:hover {
+  color: var(--ds-text);
+  text-decoration: underline;
+}
+
+.embed-source__link .lucide-icon {
+  width: 0.9em;
+  height: 0.9em;
+  opacity: 0.7;
+}
+
+.embed-source__arrow {
+  color: var(--ds-text-muted);
+}
+
 /* Terminal windows (see terminal.js) wrap a highlighted block. The inner block
    keeps its tokens but drops the code-block chrome so the terminal background,
    padding and line-height show through instead. */

@@ -59,8 +59,8 @@ exchange a turn.
 
 Here's the anatomy that matters: the shape of a message, the question we
 send, the answer we get back, and the loop itself. The HTTP call lives in a
-small `chat` helper we leave out of the way (TODO: but you can read the full
-source here):
+small `chat` helper we leave out of the way — you can [read the full
+source](https://github.com/clubmatto/vetrina/blob/main/website/src/writing/pinocchio/v1/main.go).
 
 {% codefile "writing/pinocchio/v1/main.go" "message" "request" "main" %}
 
@@ -74,9 +74,7 @@ it can tell who's who (human, system, assistant, tools). More on this later.
 
 Now let's try it:
 
-TODO: we have to improve how we show "terminals" as now they're bash only
-
-```txt
+```text
 go run v1/main.go
 > review v1/main.go in this directory
 I don’t have access to your local filesystem or
@@ -206,8 +204,6 @@ Here's how it looks like:
 {% diff "writing/pinocchio/v2/main.go" "writing/pinocchio/v3/main.go" %}
 
 and here's how it works:
-
-TODO: same as the other block
 
 ```text
 > count files in this directory and show names

@@ -5,6 +5,7 @@ import Prism from "prismjs";
 import "prismjs/components/prism-diff.js";
 import "prismjs/plugins/diff-highlight/prism-diff-highlight.js";
 import { createTwoFilesPatch } from "diff";
+import { lucideShortcode } from "./lucide.js";
 
 // Paths are relative to the Eleventy input directory (src/), so any file in
 // the site can be embedded from any post:
@@ -20,6 +21,13 @@ import { createTwoFilesPatch } from "diff";
 // scanner matches anywhere in a line so they work in every language. Marker
 // lines never reach the rendered output.
 const SRC_DIR = dirname(dirname(fileURLToPath(import.meta.url)));
+
+// Every embed gets a footer linking back to its source, gist style. Sources are
+// embedded with paths relative to src/, and the site lives under website/ in the
+// monorepo, so the repository path is just this prefix plus the argument.
+const REPO_URL = "https://github.com/clubmatto/vetrina";
+const REPO_REF = "main";
+const REPO_SRC = "website/src";
 
 const EXTENSIONS = {
   bash: "bash",
@@ -400,6 +408,26 @@ function renderDiff(diffText, language, numbered) {
   return `<pre class="${classes}"><code class="${classes}">${rows.join("")}</code></pre>`;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function sourceLink(filePath) {
+  const href = `${REPO_URL}/blob/${REPO_REF}/${REPO_SRC}/${filePath}`;
+  const icon = lucideShortcode("file-code", { size: 14 });
+  return `<a class="embed-source__link" href="${escapeHtml(href)}">${icon}<span>${escapeHtml(filePath)}</span></a>`;
+}
+
+// embed wraps a rendered block in the gist-like card chrome and appends the
+// footer that links back to the source.
+function embed(body, footer) {
+  return `<figure class="embed">${body}<figcaption class="embed-source">${footer}</figcaption></figure>`;
+}
+
 function failure(kind, detail) {
   console.error(`[${kind}] ${detail}`);
   return `<!-- ${kind}: ${detail} -->`;
@@ -431,7 +459,8 @@ export async function codefileShortcode(filePath, ...args) {
     return failure("codefile", `unknown Prism language: ${language}`);
   }
 
-  return render(code.replace(/\n$/, ""), language, lines);
+  const body = render(code.replace(/\n$/, ""), language, lines);
+  return embed(body, sourceLink(filePath));
 }
 
 export async function diffShortcode(oldPath, newPath, ...args) {
@@ -494,7 +523,9 @@ export async function diffShortcode(oldPath, newPath, ...args) {
   const diffText =
     firstHunk === -1 ? "" : patchLines.slice(firstHunk).join("\n").trim();
 
-  return renderDiff(diffText, language, lines);
+  const body = renderDiff(diffText, language, lines);
+  const footer = `${sourceLink(oldPath)}<span class="embed-source__arrow" aria-hidden="true">→</span>${sourceLink(newPath)}`;
+  return embed(body, footer);
 }
 
 export default function (eleventyConfig) {
