@@ -4,7 +4,6 @@ description: We build Pinocchio, a tiny coding agent in Go, one version at a
   time — the loop, tool calls, a permission prompt, context squeezing, and a
   session file. The whole anatomy of a coding agent.
 date: 2026-09-15
-draft: true
 tags:
   - ai
   - agents
