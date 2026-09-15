@@ -182,7 +182,7 @@ asked you anything. Between Pinocchio deciding to call `write_file` and
 model's intent and your full permissions. That's where permissions model
 comes in.
 
-## Version 3: asking permission
+## Version 3: asking for permission
 
 Real world coding agents approach permissions in very different ways. Here's
 a few common strategies:
