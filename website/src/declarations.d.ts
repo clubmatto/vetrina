@@ -17,8 +17,28 @@ declare module "@11ty/eleventy" {
     addPassthroughCopy: (path: string | Record<string, string>) => void;
     addCollection: (name: string, fn: unknown) => void;
     addWatchTarget: (path: string) => void;
+    amendLibrary: (
+      engineName: string,
+      callback: (library: unknown) => void,
+    ) => void;
+    addPreprocessor: (
+      name: string,
+      fileExtensions: string | string[],
+      callback: (data: Record<string, unknown>, content: string) => unknown,
+    ) => void;
+    setServerOptions: (
+      options?: Record<string, unknown>,
+      override?: boolean,
+    ) => void;
     on: (event: string, callback: Function) => void;
   }
+}
+
+declare module "@11ty/eleventy-img" {
+  export const eleventyImageTransformPlugin: (
+    eleventyConfig: unknown,
+    options?: unknown,
+  ) => void;
 }
 
 declare const Alpine: {

@@ -1,6 +1,7 @@
 import postcss from "postcss";
 import postcssImport from "postcss-import";
 import esbuild from "esbuild";
+import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
 
@@ -8,6 +9,7 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const srcDir = path.join(process.cwd(), "src/assets");
 const distDir = path.join(process.cwd(), "_site/assets");
+const sharedCssDir = path.join(process.cwd(), "..", "assets/css");
 
 function ensureDir(dir: string): void {
   if (!fs.existsSync(dir)) {
@@ -117,13 +119,51 @@ export async function generateManifest(): Promise<void> {
   );
 }
 
-export function hasChanged(files: string[], type: "css" | "js"): boolean {
-  const pattern = type === "css" ? "/css/" : "/js/";
-  return files.some((file) => file.includes(pattern));
-}
-
 export async function buildAll(): Promise<void> {
   await buildCss();
   await buildJs();
   await generateManifest();
+}
+
+function debounce(fn: () => void, wait = 50): () => void {
+  let timer: NodeJS.Timeout | undefined;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(fn, wait);
+  };
+}
+
+let assetWatchers: chokidar.FSWatcher[] | null = null;
+
+// Rebuild CSS/JS independently from Eleventy: Eleventy's own watcher would
+// re-render every template whenever a style or script changes, and the
+// resulting HTML rewrites turn CSS hot-swaps into full page reloads.
+export function watchAssets(): void {
+  if (assetWatchers) {
+    return;
+  }
+
+  const rebuildCss = debounce(() => {
+    buildCss().catch((error: unknown) => {
+      console.error("CSS rebuild failed:", error);
+    });
+  });
+
+  const rebuildJs = debounce(() => {
+    buildJs().catch((error: unknown) => {
+      console.error("JS rebuild failed:", error);
+    });
+  });
+
+  const options = {
+    ignoreInitial: true,
+    awaitWriteFinish: { stabilityThreshold: 100, pollInterval: 20 },
+  };
+
+  assetWatchers = [
+    chokidar
+      .watch([path.join(srcDir, "css"), sharedCssDir], options)
+      .on("all", rebuildCss),
+    chokidar.watch(path.join(srcDir, "js"), options).on("all", rebuildJs),
+  ];
 }

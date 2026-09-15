@@ -11,13 +11,7 @@ import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
 import { codefileShortcode, diffShortcode } from "./src/_shortcodes/code.js";
 import { terminalFences } from "./src/_shortcodes/terminal.js";
-import {
-  buildAll,
-  buildCss,
-  buildJs,
-  hasChanged,
-  generateManifest,
-} from "./scripts/build.js";
+import { buildAll, watchAssets } from "./scripts/build.js";
 
 // Liquid tags cannot span lines, but an editor re-flowing a long shortcode call
 // will wrap one anyway, and the wrapped tag fails to parse — taking the whole
@@ -68,8 +62,9 @@ export default function (eleventyConfig: EleventyConfig) {
       },
     },
   });
-  eleventyConfig.addWatchTarget("src/assets");
-  eleventyConfig.addWatchTarget("../assets/css");
+  eleventyConfig.setServerOptions({
+    watch: ["_site/assets/css/**/*.css", "_site/assets/js/main.js"],
+  });
 
   eleventyConfig.addPreprocessor("drafts", "*", (data) => {
     if (data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
@@ -84,18 +79,13 @@ export default function (eleventyConfig: EleventyConfig) {
     if (isFirstBuild) {
       await buildAll();
       isFirstBuild = false;
-    }
-  });
 
-  eleventyConfig.on("eleventy.beforeWatch", async (changedFiles: string[]) => {
-    if (changedFiles && changedFiles.length > 0) {
-      if (hasChanged(changedFiles, "css")) {
-        await buildCss();
+      // Eleventy templates do not depend on the CSS/JS sources, so asset
+      // edits are rebuilt by a dedicated watcher. The dev server watches the
+      // compiled output and hot-swaps stylesheets without a page reload.
+      if (process.env.ELEVENTY_RUN_MODE !== "build") {
+        watchAssets();
       }
-      if (hasChanged(changedFiles, "js")) {
-        await buildJs();
-      }
-      await generateManifest();
     }
   });
 
