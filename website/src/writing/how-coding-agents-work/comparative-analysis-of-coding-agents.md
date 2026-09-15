@@ -3,7 +3,7 @@ title: "A comparative analysis of 10 open source coding agents"
 description: We put ten open-source coding agents side by side — where their
   loops live, how they answer safety, context, sub-agents and sessions — and
   measure everything against Pinocchio, our tiny coding agent.
-date: 2026-09-14
+date: 2026-09-19
 draft: true
 tags:
   - ai

@@ -81,11 +81,17 @@ pre[class*="language-"] {
 
 /* Diff rows. Each diff line is its own block, so the whole line gets a
    GitHub-style background instead of just the text. Negative margins pull the
-   tint through the container's horizontal padding, edge to edge. */
+   tint through the container's horizontal padding, edge to edge.
+   The +/- prefix (and the gutter, when present) are taken out of flow and
+   their width is reserved with padding so tab stops start at the code. Kept
+   in flow they shift the first stop off the tab grid and a single tab of
+   indentation renders as one column instead of two. */
 .diff-line {
   display: block;
+  position: relative;
+  min-height: 1lh;
   margin: 0 -1.5em;
-  padding: 0 0.75em;
+  padding: 0 0.75em 0 calc(0.75em + 1ch);
   box-shadow: inset 2px 0 0 transparent;
 }
 
@@ -104,38 +110,63 @@ pre[class*="language-"] {
   background-color: color-mix(in srgb, var(--ds-text) 5%, transparent);
 }
 
+.diff-line .prefix {
+  position: absolute;
+  left: 0.75em;
+}
+
 /* Two-column diff gutter: old | new, blank where the line only exists on one
-   side. Real numbers (not counters) because they come from the hunk headers. */
-.diff-line-number {
-  display: inline-block;
+   side. Real numbers (not counters) because they come from the hunk headers.
+   Absolutely positioned so they do not move the tab stops (see .diff-line). */
+pre.has-line-numbers .diff-line {
+  padding-left: calc(0.75em + 6ch + 1.5em + 1ch);
+}
+
+pre.has-line-numbers .diff-line .prefix {
+  left: calc(0.75em + 6ch + 1.5em);
+}
+
+pre.has-line-numbers .diff-line-number {
+  position: absolute;
+  top: 0;
   width: 3ch;
-  margin-right: 0.75em;
   text-align: right;
   color: var(--prism-comment);
   opacity: 0.55;
   user-select: none;
 }
 
+pre.has-line-numbers .diff-line-number:nth-child(1) {
+  left: 0.75em;
+}
+
+pre.has-line-numbers .diff-line-number:nth-child(2) {
+  left: calc(0.75em + 3ch + 0.75em);
+}
+
 /* Line numbers for whole-file code blocks. Counters keep the numbers out of
-   the markup; `lines=off` renders the block without the gutter. The number box
-   stays in flow so a blank line still generates a line box: taken out of flow
-   it collapses to zero height and its number lands on top of the next one. The
-   negative margin tucks the gutter into the block's own left padding. */
+   the markup; `lines=off` renders the block without the gutter. Like the diff
+   gutter, the number is absolutely positioned so it does not move the tab
+   stops, and `min-height` keeps a blank line from collapsing to zero height
+   (and stacking its number on the next one). The negative left tucks the
+   number into the block's own left padding. */
 pre.has-line-numbers code {
   counter-reset: line;
 }
 
 pre.has-line-numbers .code-line {
   display: block;
+  position: relative;
+  min-height: 1lh;
+  padding-left: 3ch;
 }
 
 pre.has-line-numbers .code-line::before {
   counter-increment: line;
   content: counter(line);
-  display: inline-block;
+  position: absolute;
+  left: -0.75em;
   width: 3ch;
-  margin-left: -0.75em;
-  margin-right: 0.75em;
   text-align: right;
   color: var(--prism-comment);
   opacity: 0.55;

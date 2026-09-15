@@ -201,6 +201,35 @@ function select(code, regions) {
   return parts.join("\n\n") + "\n";
 }
 
+// selectPair collects the named regions from both sides of a diff. A region
+// that exists on only one side contributes nothing to the other, so a block
+// added in the new version renders as a fully added hunk (and a removed block
+// as a fully removed one). A region missing from both files is still an error.
+function selectPair(oldCode, newCode, regions) {
+  const oldParts = [];
+  const newParts = [];
+
+  for (const region of regions) {
+    const oldPart = extractRegion(oldCode, region);
+    const newPart = extractRegion(newCode, region);
+    if (oldPart === null && newPart === null) {
+      return null;
+    }
+    if (oldPart !== null) {
+      oldParts.push(oldPart);
+    }
+    if (newPart !== null) {
+      newParts.push(newPart);
+    }
+  }
+
+  return { old: joinRegions(oldParts), new: joinRegions(newParts) };
+}
+
+function joinRegions(parts) {
+  return parts.length > 0 ? parts.join("\n\n") + "\n" : "";
+}
+
 function load(filePath) {
   const full = resolve(SRC_DIR, filePath);
   if (!full.startsWith(SRC_DIR + sep)) {
@@ -364,7 +393,11 @@ function renderDiff(diffText, language, numbered) {
     return `<span class="diff-line diff-line-${kind}">${gutter}${line}</span>`;
   });
 
-  return `<pre class="language-${grammar}"><code class="language-${grammar}">${rows.join("")}</code></pre>`;
+  const classes = numbered
+    ? `language-${grammar} has-line-numbers`
+    : `language-${grammar}`;
+
+  return `<pre class="${classes}"><code class="${classes}">${rows.join("")}</code></pre>`;
 }
 
 function failure(kind, detail) {
@@ -427,20 +460,17 @@ export async function diffShortcode(oldPath, newPath, ...args) {
     return failure("diff", `no language for ${oldPath}; pass lang=<name>`);
   }
 
-  const oldCode =
+  const pair =
     regions.length > 0
-      ? select(oldFile.code, regions)
-      : stripMarkers(oldFile.code);
-  const newCode =
-    regions.length > 0
-      ? select(newFile.code, regions)
-      : stripMarkers(newFile.code);
-  if (oldCode === null || newCode === null) {
+      ? selectPair(oldFile.code, newFile.code, regions)
+      : { old: stripMarkers(oldFile.code), new: stripMarkers(newFile.code) };
+  if (pair === null) {
     return failure(
       "diff",
-      `missing region(s) in ${oldPath} -> ${newPath}: ${regions.join(", ")}`,
+      `missing region(s) in both ${oldPath} and ${newPath}: ${regions.join(", ")}`,
     );
   }
+  const { old: oldCode, new: newCode } = pair;
 
   if (!(await ensureLanguage(language))) {
     return failure("diff", `unknown Prism language: ${language}`);

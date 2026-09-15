@@ -12,10 +12,9 @@ import (
 )
 
 const (
-	apiBaseURL  = "https://api.deepseek.com"
-	model       = "deepseek-v4-flash"
-	budget      = 96 * 1024 // characters; tokens are roughly chars/4
-	sessionFile = "pinocchio.jsonl"
+	apiBaseURL = "https://api.deepseek.com"
+	model      = "deepseek-v4-flash"
+	budget     = 96 * 1024 // characters; tokens are roughly chars/4
 )
 
 type Message struct {
@@ -248,9 +247,9 @@ func compact(messages []Message) []Message {
 }
 
 // save appends a message to the session file, one JSON document per line.
-func save(m Message) {
+func save(file string, m Message) {
 	b, _ := json.Marshal(m)
-	f, _ := os.OpenFile(sessionFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	f, _ := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	defer f.Close()
 	f.Write(append(b, '\n'))
 }
@@ -258,8 +257,8 @@ func save(m Message) {
 // loadSession replays the session file into messages. A torn last line
 // (the crash that killed us mid-write) simply fails to unmarshal and is
 // dropped: one lost message, not a lost file.
-func loadSession() []Message {
-	b, err := os.ReadFile(sessionFile)
+func loadSession(file string) []Message {
+	b, err := os.ReadFile(file)
 	if err != nil {
 		return nil
 	}
@@ -274,22 +273,18 @@ func loadSession() []Message {
 }
 
 // appendMsg records m on disk, then appends it to the conversation.
-func appendMsg(messages []Message, m Message) []Message {
-	save(m)
+func appendMsg(file string, messages []Message, m Message) []Message {
+	save(file, m)
 	return append(messages, m)
 }
 
 func main() {
-	resume := false
-	for _, a := range os.Args[1:] {
-		if a == "--resume" {
-			resume = true
-		}
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, "usage: pinocchio <session-file>")
+		os.Exit(1)
 	}
-	if !resume {
-		_ = os.Remove(sessionFile)
-	}
-	messages := loadSession()
+	file := os.Args[1]
+	messages := loadSession(file)
 	in := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("> ")
@@ -300,7 +295,7 @@ func main() {
 		if text == "" {
 			continue
 		}
-		messages = appendMsg(messages, Message{Role: "user", Content: text})
+		messages = appendMsg(file, messages, Message{Role: "user", Content: text})
 
 		for {
 			messages = compact(messages)
@@ -308,7 +303,7 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			messages = appendMsg(messages, assistant)
+			messages = appendMsg(file, messages, assistant)
 
 			if len(assistant.ToolCalls) == 0 {
 				fmt.Println(assistant.Content)
@@ -317,7 +312,7 @@ func main() {
 			for _, call := range assistant.ToolCalls {
 				fmt.Printf("\n>> %s\n", call.Function.Name)
 				result := runTool(call)
-				messages = appendMsg(messages, Message{
+				messages = appendMsg(file, messages, Message{
 					Role:       "tool",
 					ToolCallID: call.ID,
 					Content:    result,
