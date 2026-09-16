@@ -2,6 +2,27 @@
 layout: base.liquid
 ---
 <article class="post">
+  <nav
+    class="post-toc"
+    aria-label="On this page"
+    x-data="toc"
+    x-show="items.length > 1"
+    x-cloak
+  >
+    <template x-for="item in items" :key="item.id">
+      <button
+        type="button"
+        class="post-toc-dot"
+        :class="{ active: activeId === item.id }"
+        :aria-label="item.label"
+        :aria-current="activeId === item.id ? 'true' : null"
+        @click="scrollTo(item.id)"
+      >
+        <span class="post-toc-label" x-text="item.label"></span>
+      </button>
+    </template>
+  </nav>
+
   <header class="post-header">
     <h1>{{ title }}</h1>
     <div class="post-metadata">

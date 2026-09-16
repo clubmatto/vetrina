@@ -11,6 +11,7 @@ import { lucideShortcode } from "./src/_shortcodes/lucide.js";
 import { assetShortcode, svgShortcode } from "./src/_shortcodes/asset.js";
 import { codefileShortcode, diffShortcode } from "./src/_shortcodes/code.js";
 import { terminalFences } from "./src/_shortcodes/terminal.js";
+import { headingIds } from "./src/_shortcodes/headings.js";
 import { buildAll, watchAssets } from "./scripts/build.js";
 
 // Liquid tags cannot span lines, but an editor re-flowing a long shortcode call
@@ -49,6 +50,7 @@ function joinWrappedTags(_data: unknown, content: string): string {
 export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.amendLibrary("md", terminalFences);
+  eleventyConfig.amendLibrary("md", headingIds);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
     formats: ["avif", "webp", "jpeg", "gif"],
     widths: ["auto"],

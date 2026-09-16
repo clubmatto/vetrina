@@ -1,4 +1,5 @@
 import "./browser";
+import "./toc";
 
 declare const API_BASE_URL: string;
 

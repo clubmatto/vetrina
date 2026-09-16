@@ -306,6 +306,85 @@ article.post .post-content .agent-table-footnote {
   margin-top: -0.75em;
 }
 
+/* --- table of contents dot rail -------------------------------------------- */
+
+.post-toc {
+  position: fixed;
+  /* Half the 72ch content column plus room for the longest heading label, so
+     labels end just left of the post card. */
+  left: calc(50% - 36ch - 15rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ds-space-3);
+  z-index: 90;
+}
+
+.post-toc-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-1) 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.post-toc-dot::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid var(--text-secondary);
+  border-radius: var(--ds-radius-full);
+  transition:
+    background-color var(--ds-transition-fast),
+    border-color var(--ds-transition-fast),
+    transform var(--ds-transition-fast);
+}
+
+.post-toc-label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.55;
+  white-space: nowrap;
+  transition:
+    color var(--ds-transition-fast),
+    opacity var(--ds-transition-fast);
+}
+
+.post-toc-dot:hover .post-toc-label {
+  color: var(--text);
+  opacity: 1;
+}
+
+.post-toc-dot.active::before {
+  background: var(--gradient-4);
+  border-color: var(--gradient-4);
+  transform: scale(1.5);
+}
+
+.post-toc-dot.active .post-toc-label {
+  color: var(--text);
+  opacity: 1;
+}
+
+.post-toc-dot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring-color-strong);
+  border-radius: var(--ds-radius-md);
+}
+
+@media (max-width: 1280px) {
+  .post-toc {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   article.post {
     padding: 1.5rem 1rem;
