@@ -135,6 +135,13 @@ function debounce(fn: () => void, wait = 50): () => void {
 
 let assetWatchers: chokidar.FSWatcher[] | null = null;
 
+function closeAssetWatchers(): void {
+  for (const watcher of assetWatchers ?? []) {
+    void watcher.close();
+  }
+  assetWatchers = null;
+}
+
 // Rebuild CSS/JS independently from Eleventy: Eleventy's own watcher would
 // re-render every template whenever a style or script changes, and the
 // resulting HTML rewrites turn CSS hot-swaps into full page reloads.
@@ -166,4 +173,9 @@ export function watchAssets(): void {
       .on("all", rebuildCss),
     chokidar.watch(path.join(srcDir, "js"), options).on("all", rebuildJs),
   ];
+
+  // The dev server stops its own watchers and the HTTP server on Ctrl+C, then
+  // relies on the event loop draining to exit. An open chokidar watcher keeps
+  // the process alive forever, so close ours on the same signal.
+  process.once("SIGINT", closeAssetWatchers);
 }
