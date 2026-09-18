@@ -1,0 +1,20 @@
+{%- comment -%}
+  Hardware and sim requirements, shared by the Guido product page and the
+  install landing page.
+
+  Set guido_roadmap_href before including when the roadmap lives on another
+  page, e.g. '/products/guido/#roadmap' from the install page. Defaults to the
+  in-page anchor the product page uses.
+{%- endcomment -%}
+{%- assign guido_roadmap_href = guido_roadmap_href | default: '#roadmap' -%}
+<section class="product-requirements">
+  <div class="product-requirements-card">
+    <h3>What you need</h3>
+    <ul>
+      <li>Gran Turismo 7 running on a PS5, with telemetry enabled in the game settings — the sim supported today</li>
+      <li>A phone or tablet on the same home network, running Android 7.0 or newer — best mounted beside your wheel</li>
+      <li>That's it. No cables, no cloud, no account required for the Free tier</li>
+      <li>More sims are on the <a href="{{ guido_roadmap_href }}">roadmap</a> — Guido is built for multiple sims</li>
+    </ul>
+  </div>
+</section>

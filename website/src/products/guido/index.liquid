@@ -218,21 +218,7 @@ screens:
 
 <section class="product-tiers" id="beta-testing-program">
   <h2 class="product-section-title">Beta testing program</h2>
-  <div class="product-tiers-intro">
-    <p>
-      Guido is in closed beta on Android, and we're letting people in a few at a time. Joining early is the way to shape
-      the app: tell us what's broken, what's missing, and which sim Guido should learn next. If you'd rather wait for
-      something finished, that's fair — this isn't it yet.
-    </p>
-    <p>
-      What beta means, plainly: the app will be updated frequently, and features might move or change shape between
-      sessions, and there are rough edges we haven't sanded down.
-    </p>
-    <p class="product-tiers-benefits">
-      <strong>Your benefits.</strong> Guido before the public launch, a direct say in what gets built, and a line to us
-      while the decisions are still open.
-    </p>
-  </div>
+  {% include 'guido-beta-intro.liquid' %}
 
   <div class="product-tiers-grid">
     <div class="product-tier">
@@ -263,30 +249,14 @@ screens:
     </div>
   </div>
 
-  <div class="product-tiers-note">
-    <p>
-      <strong>What happens after the beta.</strong> Free stays free — it isn't a trial and it isn't going behind a
-      paywall. Pro becomes a paid subscription once the beta wraps up; everyone who joined during it keeps Pro free for
-      six months.
-    </p>
-  </div>
+  {% include 'guido-beta-after.liquid' %}
 
   {% assign waitlist_heading = "Leave your email and we'll send your invite when there's room. No spam." %}
   {% assign waitlist_note = null %}
   {% include 'waitlist-form.liquid' %}
 </section>
 
-<section class="product-requirements">
-  <div class="product-requirements-card">
-    <h3>What you need</h3>
-    <ul>
-      <li>Gran Turismo 7 running on a PS5, with telemetry enabled in the game settings — the sim supported today</li>
-      <li>A phone or tablet on the same home network, running Android 7.0 or newer — best mounted beside your wheel</li>
-      <li>That's it. No cables, no cloud, no account required for the Free tier</li>
-      <li>More sims are on the <a href="#roadmap">roadmap</a> — Guido is built for multiple sims</li>
-    </ul>
-  </div>
-</section>
+{% include 'guido-requirements.liquid' %}
 
 <section class="product-roadmap" id="roadmap">
   <h2 class="product-section-title">Roadmap</h2>
