@@ -100,115 +100,115 @@ list!
     </thead>
     <tbody>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/sst/opencode">OpenCode</a>
           <span class="byline">by SST</span>
         </td>
-        <td class="nw">TypeScript</td>
-        <td class="nw">MIT</td>
-        <td>BYO, OpenAI-compatible</td>
+        <td class="nw" data-label="Language">TypeScript</td>
+        <td class="nw" data-label="License">MIT</td>
+        <td data-label="Models">BYO, OpenAI-compatible</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Model-agnostic and fast. The harness we run ourselves.</td>
       </tr>
       <tr>
-        <td class="agent-name"><a href="https://github.com/paul-gauthier/aider">Aider</a></td>
-        <td class="nw">Python</td>
-        <td class="nw">Apache-2.0</td>
-        <td>BYO via LiteLLM</td>
+        <td class="agent-name" data-label="Agent"><a href="https://github.com/paul-gauthier/aider">Aider</a></td>
+        <td class="nw" data-label="Language">Python</td>
+        <td class="nw" data-label="License">Apache-2.0</td>
+        <td data-label="Models">BYO via LiteLLM</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">The pioneer of repo maps and git-integrated diffs.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a>
           <span class="byline">by DeepSeek</span>
         </td>
-        <td class="nw">TypeScript</td>
-        <td class="nw">MIT</td>
-        <td>Multi-protocol</td>
+        <td class="nw" data-label="Language">TypeScript</td>
+        <td class="nw" data-label="License">MIT</td>
+        <td data-label="Models">Multi-protocol</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Everything is a plugin.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/QwenLM/qwen-code">Qwen Code</a>
           <span class="byline">by Alibaba</span>
         </td>
-        <td class="nw">TypeScript</td>
-        <td class="nw">Apache-2.0</td>
-        <td>Multi-protocol</td>
+        <td class="nw" data-label="Language">TypeScript</td>
+        <td class="nw" data-label="License">Apache-2.0</td>
+        <td data-label="Models">Multi-protocol</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Speaks OpenAI, Anthropic, and Gemini protocols.</td>
       </tr>
       <tr>
-        <td class="agent-name"><a href="https://github.com/earendil-works/pi">Pi</a></td>
-        <td class="nw">TypeScript</td>
-        <td class="nw">MIT</td>
-        <td>BYO, 40+ providers</td>
+        <td class="agent-name" data-label="Agent"><a href="https://github.com/earendil-works/pi">Pi</a></td>
+        <td class="nw" data-label="Language">TypeScript</td>
+        <td class="nw" data-label="License">MIT</td>
+        <td data-label="Models">BYO, 40+ providers</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">A minimal harness on a unified LLM API.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/MoonshotAI/kimi-code">Kimi Code CLI</a>
           <span class="byline">by Moonshot AI</span>
         </td>
-        <td class="nw">TypeScript</td>
-        <td class="nw">MIT</td>
-        <td>Kimi, Claude, OpenAI-compatible</td>
+        <td class="nw" data-label="Language">TypeScript</td>
+        <td class="nw" data-label="License">MIT</td>
+        <td data-label="Models">Kimi, Claude, OpenAI-compatible</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Multi-provider out of the box.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/charmbracelet/crush">Crush</a>
           <span class="byline">by Charmbracelet</span>
         </td>
-        <td class="nw">Go</td>
-        <td class="nw">FSL-1.1-MIT*</td>
-        <td>BYO</td>
+        <td class="nw" data-label="Language">Go</td>
+        <td class="nw" data-label="License">FSL-1.1-MIT*</td>
+        <td data-label="Models">BYO</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Premium TUI, your LLM of choice.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/All-Hands-AI/OpenHands">OpenHands</a>
           <span class="byline">by All Hands AI</span>
         </td>
-        <td class="nw">TypeScript, Python</td>
-        <td class="nw">MIT</td>
-        <td>BYO via LiteLLM</td>
+        <td class="nw" data-label="Language">TypeScript, Python</td>
+        <td class="nw" data-label="License">MIT</td>
+        <td data-label="Models">BYO via LiteLLM</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">A full platform with a Docker-sandboxed runtime.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/block/goose">Goose</a>
           <span class="byline">by Block</span>
         </td>
-        <td class="nw">Rust</td>
-        <td class="nw">Apache-2.0</td>
-        <td>BYO</td>
+        <td class="nw" data-label="Language">Rust</td>
+        <td class="nw" data-label="License">Apache-2.0</td>
+        <td data-label="Models">BYO</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Local-first and extensible.</td>
       </tr>
       <tr>
-        <td class="agent-name">
+        <td class="agent-name" data-label="Agent">
           <a href="https://github.com/openai/codex">Codex CLI</a>
           <span class="byline">by OpenAI</span>
         </td>
-        <td class="nw">Rust</td>
-        <td class="nw">Apache-2.0</td>
-        <td>BYO, OpenAI-compatible</td>
+        <td class="nw" data-label="Language">Rust</td>
+        <td class="nw" data-label="License">Apache-2.0</td>
+        <td data-label="Models">BYO, OpenAI-compatible</td>
       </tr>
       <tr class="agent-notes-row">
         <td colspan="4">Extensible via custom providers; built-in Ollama, LM Studio, and Bedrock.</td>

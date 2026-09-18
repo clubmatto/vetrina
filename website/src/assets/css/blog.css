@@ -174,6 +174,64 @@ article.post .post-content blockquote {
   margin: 1.5em 0;
 }
 
+/* --- admonitions ---------------------------------------------------------- */
+
+/* The container syntax (:::note[Title]) turned into design-system styled
+   blocks by the admonitions markdown-it plugin. The type is carried on
+   data-admonition so the accent and the label come from one place. */
+article.post .post-content .admonition {
+  margin: 1.5em 0;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--admonition-accent);
+  border-radius: var(--ds-radius-lg);
+  background: var(--admonition-bg);
+}
+
+/* A nested container sits inside the padding, so it does not need the outer
+   spacing and reads as part of the block that contains it. */
+article.post .post-content .admonition .admonition {
+  margin: 1em 0;
+  padding: 0.6rem 0.8rem;
+}
+
+article.post .post-content .admonition[data-admonition="note"] {
+  --admonition-accent: color-mix(in srgb, var(--text), transparent 45%);
+  --admonition-bg: color-mix(in srgb, var(--text), transparent 95%);
+}
+
+article.post .post-content .admonition[data-admonition="tip"] {
+  --admonition-accent: var(--admonition-tip);
+  --admonition-bg: color-mix(in srgb, var(--admonition-tip), transparent 94%);
+}
+
+article.post .post-content .admonition[data-admonition="warning"] {
+  --admonition-accent: var(--admonition-warning);
+  --admonition-bg: color-mix(
+    in srgb,
+    var(--admonition-warning),
+    transparent 94%
+  );
+}
+
+article.post .post-content .admonition-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--admonition-accent);
+}
+
+article.post .post-content .admonition > :last-child {
+  margin-bottom: 0;
+}
+
+article.post .post-content .admonition > :first-child {
+  margin-top: 0;
+}
+
 article.post .post-content ul,
 article.post .post-content ol {
   margin-bottom: 1.5em;
@@ -285,7 +343,10 @@ article.post .post-content code:not([class*="language-"]) {
   border-bottom: 1px solid var(--border-color);
 }
 
-.agent-table .agent-name,
+/* `.nw` marks a cell whose value must not wrap (licenses, languages). The
+   agent name is deliberately excluded: forcing a long name onto one line sets
+   a minimum width the table cannot shrink below, which pushes the whole table
+   past the content column. */
 .agent-table .nw {
   white-space: nowrap;
 }
@@ -304,6 +365,73 @@ article.post .post-content code:not([class*="language-"]) {
   padding-top: 0.1rem;
   padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--border-color);
+}
+
+/* Narrow screens turn each row into a stacked block, with the column name
+   repeated as a label from the cell's own data-label. A comparison table read
+   sideways in a 358px column is worse than no table at all. */
+@media (max-width: 640px) {
+  .agent-table-wrapper {
+    overflow-x: visible;
+  }
+
+  .agent-table thead {
+    display: none;
+  }
+
+  .agent-table,
+  .agent-table tbody,
+  .agent-table tr,
+  .agent-table td {
+    display: block;
+  }
+
+  .agent-table tr {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .agent-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .agent-table td {
+    padding: 0.1rem 0;
+  }
+
+  .agent-table td[data-label]:not([data-label=""])::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.15rem;
+  }
+
+  /* The agent name is the row's heading, not a labelled field. */
+  .agent-table td.agent-name::before {
+    display: none;
+  }
+
+  .agent-table .agent-name {
+    margin-bottom: 0.35rem;
+  }
+
+  .agent-table .agent-name,
+  .agent-table .nw {
+    white-space: normal;
+  }
+
+  /* Rows are separated by a border here, so the zebra striping that helps in
+     the grid would only add noise. The striping rules are more specific than
+     a plain `tr` selector, so this resets them at the same specificity. */
+  .agent-table:not(.agent-table--rows) tbody tr:nth-child(4n + 1),
+  .agent-table:not(.agent-table--rows) tbody tr:nth-child(4n + 2),
+  .agent-table--rows tbody tr:nth-child(even) {
+    background: transparent;
+  }
 }
 
 article.post .post-content .agent-table-footnote {

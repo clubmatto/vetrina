@@ -33,6 +33,10 @@
   --theme-toggle-bg: light-dark(#ffffff44, #ffffff22);
   --theme-toggle-hover: light-dark(#0000001a, #ffffff44);
 
+  /* Admonition accents. light-dark keeps them legible on both surfaces. */
+  --admonition-tip: light-dark(#2f9e44, #51cf66);
+  --admonition-warning: light-dark(#e8590c, #ffa94d);
+
   --dash-color: color-mix(in srgb, var(--text), transparent 85%);
   --dash-vertical: repeating-linear-gradient(
     to bottom,
