@@ -261,8 +261,14 @@ article.post .post-content code:not([class*="language-"]) {
   vertical-align: top;
 }
 
-.agent-table tbody tr:nth-child(4n + 1),
-.agent-table tbody tr:nth-child(4n + 2) {
+/* Two rows per agent (a detail row plus a notes row), so the band advances
+   every two rows. Row-per-agent tables opt out and use the rule below. */
+.agent-table:not(.agent-table--rows) tbody tr:nth-child(4n + 1),
+.agent-table:not(.agent-table--rows) tbody tr:nth-child(4n + 2) {
+  background: color-mix(in srgb, var(--text), transparent 96%);
+}
+
+.agent-table--rows tbody tr:nth-child(even) {
   background: color-mix(in srgb, var(--text), transparent 96%);
 }
 
@@ -304,6 +310,66 @@ article.post .post-content .agent-table-footnote {
   font-size: 0.8rem;
   color: var(--text-secondary);
   margin-top: -0.75em;
+}
+
+/* --- collapsible analysis blocks ------------------------------------------ */
+
+article.post .post-content .analysis {
+  margin: 0 0 1.5em;
+}
+
+article.post .post-content .analysis > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem 0.3rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--theme-toggle-bg);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+article.post .post-content .analysis > summary::-webkit-details-marker {
+  display: none;
+}
+
+article.post .post-content .analysis > summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 0.34em solid currentColor;
+  border-top: 0.26em solid transparent;
+  border-bottom: 0.26em solid transparent;
+  transition: transform 0.15s ease;
+}
+
+article.post .post-content .analysis[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+article.post .post-content .analysis > summary:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--text), transparent 72%);
+}
+
+article.post .post-content .analysis > summary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring-color);
+}
+
+article.post .post-content .analysis[open] > summary {
+  margin-bottom: 0.9rem;
+}
+
+/* The last table in an open block already carries its own bottom margin. */
+article.post .post-content .analysis > .agent-table-wrapper:last-child {
+  margin-bottom: 0;
 }
 
 /* --- table of contents dot rail -------------------------------------------- */
