@@ -47,12 +47,13 @@ to finish. That is what keeps the loop small while everything around it grows.
 
 There is a second thing the loop carries, and this is where the ten part ways.
 The conversation it sends the model is built from its own copy of the session,
-and that copy is not the same thing as the saved history. Most of the ten let
-the two drift apart; only DeepSeek Harness and Codex refuse. DeepSeek Harness
-states it as a rule — anything the model can see must already be in the saved
-session, and a request is frozen once it goes out — while Codex gets there from
-the other side, storing the conversation as a list of items it can read back or
-branch.
+and that copy is not the same thing as the saved history. The two can drift
+apart, and most of the ten do nothing to stop them. DeepSeek Harness states the
+opposite as a rule — anything the model can see must already be in the saved
+session, and a request is frozen once it goes out. Codex gets there from the
+other side, storing the conversation as a list of items it can read back or
+branch, and OpenCode takes a third route, rebuilding the request from the stored
+parts each turn rather than keeping its own copy to edit.
 
 It matters because of what reads the history afterwards. Resuming replays it,
 branching copies it, sub-agents inherit it, and compaction edits it, so a
@@ -62,10 +63,11 @@ refuse the drift, which is not a coincidence.
 
 Three ways we saw the drift happen:
 
-- **Tool results flatten into text.** Aider's transcripts are markdown files,
-  and its parser turns every message into a role and a string. A tool result
-  becomes a block of text with nothing saying which call produced it, and there
-  is nowhere to put an image.
+- **Tool results never make it back at all.** Aider's transcripts are markdown
+  files, written one fragment at a time. Replaying one turns every message into
+  a role and a string, and tool messages are dropped outright — so a resumed
+  session has no record of what ran, let alone which call produced it, and
+  there is nowhere to put an image.
 - **Reasoning gets thrown away.** Codex keeps an `encrypted_content` blob on its
   reasoning items, because some providers want their own reasoning sent back
   with the next request. It cannot rebuild that blob, only keep it and return
@@ -149,7 +151,7 @@ much the model should be trusted with.
       <tr>
         <td class="agent-name" data-label="Agent">Codex</td>
         <td data-label="Tool catalogue">~15 handler families: apply_patch, exec, plan, collaboration</td>
-        <td data-label="How the model sees them">One static list per turn. No deferral</td>
+        <td data-label="How the model sees them">Three levels: in the initial list, deferred into a namespace until the model searches for it, or reachable only as a nested call</td>
       </tr>
     </tbody>
   </table>
