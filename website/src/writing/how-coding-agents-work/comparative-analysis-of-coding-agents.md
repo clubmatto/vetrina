@@ -98,60 +98,60 @@ much the model should be trusted with.
     <thead>
       <tr>
         <th>Agent</th>
-        <th>Tool catalogue</th>
+        <th>Catalogue</th>
         <th>How the model sees them</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="agent-name" data-label="Agent">OpenCode</td>
-        <td data-label="Tool catalogue">~15 built-ins, plus MCP and plugins</td>
-        <td data-label="How the model sees them">Filtered per agent; GPT-class models get <code>apply_patch</code> instead of <code>edit</code>/<code>write</code></td>
-      </tr>
-      <tr>
         <td class="agent-name" data-label="Agent">Aider</td>
-        <td data-label="Tool catalogue">None: text edit protocols</td>
+        <td data-label="Catalogue">None: text edit protocols</td>
         <td data-label="How the model sees them">No tool calls at all. The model writes SEARCH/REPLACE blocks or fenced shell and the parser applies them</td>
       </tr>
       <tr>
-        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
-        <td data-label="Tool catalogue">A shipped bundle plus installable packages</td>
-        <td data-label="How the model sees them">Code Mode: only <code>run_code</code> is native, and every sub-call re-enters the same guarded pipeline</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Qwen Code</td>
-        <td data-label="Tool catalogue">~30, with wildcard-expanded families</td>
-        <td data-label="How the model sees them">Deferred tools stay hidden until <code>tool_search</code> loads them, budget-checked to keep the prompt prefix stable</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Pi</td>
-        <td data-label="Tool catalogue">7</td>
-        <td data-label="How the model sees them">All of them. No visibility mechanism</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Kimi CLI</td>
-        <td data-label="Tool catalogue">Built-ins, user tools, and MCP</td>
-        <td data-label="How the model sees them">Progressive disclosure: MCP and deferred tools load on demand through <code>select_tools</code></td>
+        <td class="agent-name" data-label="Agent">Codex</td>
+        <td data-label="Catalogue">~15 handler families: apply_patch, exec, plan, collaboration</td>
+        <td data-label="How the model sees them">Three levels: in the initial list, deferred into a namespace until the model searches for it, or reachable only as a nested call</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">Crush</td>
-        <td data-label="Tool catalogue">~16 built-ins, plus LSP and MCP resources</td>
+        <td data-label="Catalogue">~16 built-ins, plus LSP and MCP resources</td>
         <td data-label="How the model sees them">Scoped per agent; the <code>task</code> agent is restricted to read-only tools</td>
       </tr>
       <tr>
-        <td class="agent-name" data-label="Agent">OpenHands</td>
-        <td data-label="Tool catalogue">A default trio, plus conditional sets and browser tools</td>
-        <td data-label="How the model sees them">Declared by the client per conversation, gated on what the server advertises as usable</td>
+        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
+        <td data-label="Catalogue">A shipped bundle plus installable packages</td>
+        <td data-label="How the model sees them">Code Mode: only <code>run_code</code> is native, and every sub-call re-enters the same guarded pipeline</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">Goose</td>
-        <td data-label="Tool catalogue">Whatever the extensions provide</td>
+        <td data-label="Catalogue">Whatever the extensions provide</td>
         <td data-label="How the model sees them">Everything installed. No visibility mechanism</td>
       </tr>
       <tr>
-        <td class="agent-name" data-label="Agent">Codex</td>
-        <td data-label="Tool catalogue">~15 handler families: apply_patch, exec, plan, collaboration</td>
-        <td data-label="How the model sees them">Three levels: in the initial list, deferred into a namespace until the model searches for it, or reachable only as a nested call</td>
+        <td class="agent-name" data-label="Agent">Kimi CLI</td>
+        <td data-label="Catalogue">Built-ins, user tools, and MCP</td>
+        <td data-label="How the model sees them">Progressive disclosure: MCP and deferred tools load on demand through <code>select_tools</code></td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenCode</td>
+        <td data-label="Catalogue">~15 built-ins, plus MCP and plugins</td>
+        <td data-label="How the model sees them">Filtered per agent; GPT-class models get <code>apply_patch</code> instead of <code>edit</code>/<code>write</code></td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenHands</td>
+        <td data-label="Catalogue">A default trio, plus conditional sets and browser tools</td>
+        <td data-label="How the model sees them">Declared by the client per conversation, gated on what the server advertises as usable</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Pi</td>
+        <td data-label="Catalogue">7</td>
+        <td data-label="How the model sees them">All of them. No visibility mechanism</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Qwen Code</td>
+        <td data-label="Catalogue">~30, with wildcard-expanded families</td>
+        <td data-label="How the model sees them">Deferred tools stay hidden until <code>tool_search</code> loads them, budget-checked to keep the prompt prefix stable</td>
       </tr>
     </tbody>
   </table>
@@ -184,59 +184,48 @@ ten:
       <tr>
         <th>Agent</th>
         <th>Strategy</th>
-        <th>Detail</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="agent-name" data-label="Agent">Pi</td>
-        <td data-label="Strategy">None by design</td>
-        <td data-label="Detail">No permission system at all; bash runs freely.</td>
-      </tr>
-      <tr>
         <td class="agent-name" data-label="Agent">Aider</td>
         <td data-label="Strategy">Reversibility</td>
-        <td data-label="Detail">Per-action confirmations with git as the safety net, rather than a permission gate.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Kimi</td>
-        <td data-label="Strategy">Rule-based</td>
-        <td data-label="Detail">Approval prompts plus a permission policy chain.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Crush</td>
-        <td data-label="Strategy">Rule-based</td>
-        <td data-label="Detail">A 60-command deny-list, safe-command auto-approval, and hooks.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenCode</td>
-        <td data-label="Strategy">Rule-based</td>
-        <td data-label="Detail">Allow/ask/deny rules, ask by default, no sandbox.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Goose</td>
-        <td data-label="Strategy">Rule-based + LLM judge</td>
-        <td data-label="Detail">Auto/Approve/SmartApprove/Chat modes plus an LLM judge.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Qwen</td>
-        <td data-label="Strategy">LLM-as-judge</td>
-        <td data-label="Detail">A layered cascade with a fail-closed LLM classifier.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenHands</td>
-        <td data-label="Strategy">Rule-based + LLM judge</td>
-        <td data-label="Detail">Server-side policies, an LLM analyzer, and a Docker runtime.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
-        <td data-label="Strategy">OS-level sandboxing</td>
-        <td data-label="Detail">A real OS sandbox (bwrap/Landlock/Seatbelt/ACL); fails closed.</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">Codex</td>
         <td data-label="Strategy">OS-level sandboxing</td>
-        <td data-label="Detail">OS sandboxes, exec policy, an LLM guardian, and a network MITM proxy.</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Crush</td>
+        <td data-label="Strategy">Rule-based</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
+        <td data-label="Strategy">OS-level sandboxing</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Goose</td>
+        <td data-label="Strategy">Rule-based + LLM judge</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Kimi</td>
+        <td data-label="Strategy">Rule-based</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenCode</td>
+        <td data-label="Strategy">Rule-based</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenHands</td>
+        <td data-label="Strategy">Rule-based + LLM judge</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Pi</td>
+        <td data-label="Strategy">None by design</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Qwen</td>
+        <td data-label="Strategy">LLM-as-judge</td>
       </tr>
     </tbody>
   </table>
@@ -246,8 +235,12 @@ Pi's README says it plainly: there is no built-in permission system, and the
 process runs with the permissions of whoever launched it. A permission gate
 exists only as an example extension.
 
-Even from a glance at the table you can tell the default is _prompt-based_
-safety: rules and questions. Only two agents make _isolation_ the default:
+Almost everything else in the table is some variation of the same idea. OpenCode
+evaluates allow, ask and deny rules and asks by default. Kimi layers approval
+prompts on top of a permission policy chain. Crush bans sixty commands outright
+and auto-approves the ones it knows are safe. OpenHands moves the whole question
+server-side, with policies written by the client and a Docker runtime underneath.
+Only two agents make _isolation_ the default:
 
 - **DeepSeek Harness** wraps every command in an operating-system sandbox and
   _fails closed_ when none is available, so if the OS can't confine the command,
@@ -348,14 +341,9 @@ one stream. A server makes the client a client.
     </thead>
     <tbody>
       <tr>
-        <td class="agent-name" data-label="Agent">OpenCode</td>
-        <td data-label="Where the conversation lives">SQLite rows for messages and their parts</td>
-        <td data-label="What that buys">Resuming is a <code>SELECT</code>; the TUI is a view of the database</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Crush</td>
-        <td data-label="Where the conversation lives">SQLite rows, written behind a 33ms debounce</td>
-        <td data-label="What that buys">The same, without paying for a write on every token</td>
+        <td class="agent-name" data-label="Agent">Aider</td>
+        <td data-label="Where the conversation lives">A markdown transcript: one line per message</td>
+        <td data-label="What that buys">A log you can read, at the cost of structure</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">Codex</td>
@@ -363,24 +351,29 @@ one stream. A server makes the client a client.
         <td data-label="What that buys">The conversation is both durable and queryable</td>
       </tr>
       <tr>
+        <td class="agent-name" data-label="Agent">Crush</td>
+        <td data-label="Where the conversation lives">SQLite rows, written behind a 33ms debounce</td>
+        <td data-label="What that buys">The same, without paying for a write on every token</td>
+      </tr>
+      <tr>
         <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
         <td data-label="Where the conversation lives">An event log</td>
         <td data-label="What that buys">History, resume, forking and telemetry are all projections of one stream</td>
       </tr>
       <tr>
-        <td class="agent-name" data-label="Agent">Qwen, Pi, Kimi</td>
-        <td data-label="Where the conversation lives">Event logs, replayed to rebuild state</td>
-        <td data-label="What that buys">State is derivable rather than stored</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Aider</td>
-        <td data-label="Where the conversation lives">A markdown transcript: one line per message</td>
-        <td data-label="What that buys">A log you can read, at the cost of structure</td>
+        <td class="agent-name" data-label="Agent">OpenCode</td>
+        <td data-label="Where the conversation lives">SQLite rows for messages and their parts</td>
+        <td data-label="What that buys">Resuming is a <code>SELECT</code>; the TUI is a view of the database</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">OpenHands</td>
         <td data-label="Where the conversation lives">The agent server</td>
         <td data-label="What that buys">The client is a view, so many surfaces share one session</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Qwen, Pi, Kimi</td>
+        <td data-label="Where the conversation lives">Event logs, replayed to rebuild state</td>
+        <td data-label="What that buys">State is derivable rather than stored</td>
       </tr>
     </tbody>
   </table>
