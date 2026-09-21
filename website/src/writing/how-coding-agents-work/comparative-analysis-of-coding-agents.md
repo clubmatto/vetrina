@@ -16,8 +16,8 @@ agents. The idea is to use them as a reference of how coding agents work. A week
 ago we built
 [Pinocchio](/writing/how-coding-agents-work/building-pinocchio/),
 a tiny coding agent so we could have a better
-understanding of the anatomy of a coding agent. That exercise landed us on
-five fundamental components:
+understanding of the anatomy of a coding agent. That exercise thought us
+coding agents have five fundamental components:
 
 1. The loop
 2. Tool calls
@@ -27,110 +27,38 @@ five fundamental components:
 
 We analysed the source code of our shortlisted coding agents through the
 lenses of these five components so our comparison is grounded in the same (we
-argue simple) mental model we used to build Pinocchio.
-
-As a reminder, the selection criteria are the
-ones we [went through in the first
-post](/writing/how-coding-agents-work/#how-we-chose-10-coding-agents): open
-source, multi-provider, no lock-in.
+argue simple) mental model we used to explain what a coding agent is made of.
 
 ## The loop
 
 :::note[TL;DR]
-the loop is nearly identical everywhere, and message
-parts are where the real divergence lives. Nine of the ten run an ordinary loop;
-Aider replaces it with a REPL and a text edit protocol. In all ten the loop is a
-small part of the codebase, and the interesting decisions are made one level
-down, in what the loop reads and what it writes down. The loop is the same
-everywhere because there is only one thing for it to speak: all ten send the
-same
-request-parts-answer shape, because that is what the model APIs hand them. What
-differs is what a part is allowed to be and where the parts are kept, which is
-exactly what the rest of this section is about.
+The loop is nearly identical in structure across the whole list.
 :::
 
-<div class="agent-table-wrapper">
-  <table class="agent-table agent-table--rows">
-    <thead>
-      <tr>
-        <th>Agent</th>
-        <th>The loop</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenCode</td>
-        <td data-label="The loop">A plain <code>while(true)</code> over parts persisted as SQLite rows.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Aider</td>
-        <td data-label="The loop">A chat REPL with a text edit protocol; no tool loop at all.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
-        <td data-label="The loop"><code>while (await turn())</code>, event-driven, fully plugin-composable.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Qwen Code</td>
-        <td data-label="The loop">A recursive async generator feeding a streaming UI.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Pi</td>
-        <td data-label="The loop">A double <code>while</code>: inner for tool calls, outer for follow-ups that arrive after the agent would have stopped.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Kimi Code CLI</td>
-        <td data-label="The loop">A step machine. Each step reads the context, records what happened, and returns; the loop itself keeps no history.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Goose</td>
-        <td data-label="The loop">Two loops in one repository: a 6,000-line legacy loop and a new state machine, live side by side during a migration.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Codex CLI</td>
-        <td data-label="The loop">A background submission loop plus a per-turn runner, speaking a single event protocol to every client.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Crush<span class="byline">outside the repo</span></td>
-        <td data-label="The loop">The loop is <code>charm.land/fantasy</code> (<a href="https://github.com/charmbracelet/fantasy">charmbracelet/fantasy</a>), a library Crush depends on but doesn't vendor. Crush still decides everything around the loop, and calling into a shared loop is a deliberate trade: one implementation, fixed once for everyone who uses it.</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenHands<span class="byline">outside the repo</span></td>
-        <td data-label="The loop">A separate Python agent server owns the loop; the repository we read is the Agent Canvas control plane, a TypeScript frontend watching that server's event stream. The server itself lives in <a href="https://github.com/OpenHands/software-agent-sdk">OpenHands/software-agent-sdk</a>.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+In all of them, the loop is a
+small part of the codebase, and the interesting decisions are made _around_
+the loop. The coding agent is the product _around_ a simple question/answer
+loop.
 
-The more interesting story is what the loop moves. A model's reply is not one
-block of text. It arrives as a series of separate pieces, each with its own
-type. Some are prose. Some are the model thinking out loud. One might be an
-instruction to run a tool, and the next the output of that tool. Another might
-be an image.
+What the loop carries around is where the comparison starts. A model's reply is
+not one block of text: it arrives as parts, each with its own type, and the type
+is what lets the agent act halfway through the reply instead of waiting for it
+to finish. That is what keeps the loop small while everything around it grows.
 
-The types are what let the agent act halfway through a reply. The moment a
-piece saying "run this command" arrives, the agent can run the command and feed
-the result back into the conversation, without waiting for the rest of the reply
-to finish. Codex defines eighteen kinds of these pieces for a single
-conversation. That is why the loop can stay small while the system around it
-grows.
+There is a second thing the loop carries, and this is where the ten part ways.
+The conversation it sends the model is built from its own copy of the session,
+and that copy is not the same thing as the saved history. Most of the ten let
+the two drift apart; only DeepSeek Harness and Codex refuse. DeepSeek Harness
+states it as a rule — anything the model can see must already be in the saved
+session, and a request is frozen once it goes out — while Codex gets there from
+the other side, storing the conversation as a list of items it can read back or
+branch.
 
-There is a second thing to notice. When the agent asks the model for the next
-step, it builds that request from its own copy of the conversation — and that
-copy is not the same thing as the saved history. The two can drift apart.
-DeepSeek Harness and Codex are the two that do not let them.
-
-DeepSeek Harness states it as a rule: anything the model can see must already be
-in the saved session, and a request is frozen once it goes out. Codex gets there
-from the other side, by storing the conversation as a list of items it can read
-back or branch.
-
-This matters later, not now. When the request and the history drift apart,
-nothing crashes; what breaks are the features that read the history afterwards.
-Resuming replays it. Branching copies it. Sub-agents inherit it. And compaction
-edits it, which makes the history its input, its output, and its subject — the
-one place where getting this wrong compounds. We will come back to compaction
-in its own post.
+It matters because of what reads the history afterwards. Resuming replays it,
+branching copies it, sub-agents inherit it, and compaction edits it, so a
+history that has stopped matching what was actually sent degrades every one of
+those features. The agents built for long unattended runs are the two that
+refuse the drift, which is not a coincidence.
 
 Three ways we saw the drift happen:
 
@@ -151,68 +79,102 @@ Three ways we saw the drift happen:
   the markers too, so the degradation has stages and the first one is
   recoverable.
 
-This is why "the loop is a few dozen lines" keeps being true and keeps being
-unhelpful. The problems in the next sections are all about these pieces and what
-happens to them over a long session. The loop just keeps asking for the next
-one.
-
 ## Tool calls
 
 :::note[TL;DR]
-the loop above does not know what a file is. Tools
-are how an agent does anything at all, and the ten differ on two things: which
-tools exist, and which of them the model can see at once. A tool is a name, a
-JSON schema, and a function to run — and that abstraction is identical
-everywhere, because there is one tool-call protocol to speak. What differs is
-how much surface each agent chooses to expose to the model, and how carefully it
-hides the rest. That is a question of ambition rather than category, which is
-why
-the names below do not sort into tidy groups.
+The ten agree on what a tool _is_ — a name, a schema, a function — and split on
+how much of that surface the model gets to see. Some hand over the whole set.
+Some hide most of it until the model asks. Aider has none at all.
 :::
 
-OpenCode ships about fifteen of them: read, write, edit, patch, shell, glob,
-grep, task, plan, skill, LSP, web fetch, web search, todo, and a couple more.
-Codex has its own list, plus a tool that reports how much context window is
-left. DeepSeek Harness has no single list at all: every tool is its own
-installable package, so one deployment gets bash and web search and another does
-not. Goose is the furthest out — its extensions _are_ MCP servers, so the MCP
-ecosystem is its tool set, and installing a tool means installing a server.
-Kimi lets the model choose: it ships a `select-tools` tool the model can call to
-change which other tools it has.
+Tool handling is where the list stops looking uniform, because the catalogues
+differ by an order of magnitude and the selection policies disagree about how
+much the model should be trusted with.
 
-The second difference is visibility. Nobody hands the model everything at once,
-because a hundred tool schemas would swamp the conversation before it starts.
-Codex is the most explicit about it, with three levels: a tool is in the model's
-initial list, or registered but left out until the model searches for it, or
-reachable only as a nested call. OpenCode filters the list per agent, which is
-how a read-only explorer sub-agent becomes read-only. Kimi's `select-tools` puts
-the same decision in the model's hands.
-
-Two implementations are worth a note. In DeepSeek Harness's Code Mode, the model
-stops calling tools directly and writes a small program that calls them, with
-every sub-call going through the same permission checks. OpenHands can run a
-tool in your browser instead of on the machine running the agent, which lets the
-agent drive its own UI.
+<div class="agent-table-wrapper">
+  <table class="agent-table agent-table--rows">
+    <thead>
+      <tr>
+        <th>Agent</th>
+        <th>Tool catalogue</th>
+        <th>How the model sees them</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenCode</td>
+        <td data-label="Tool catalogue">~15 built-ins, plus MCP and plugins</td>
+        <td data-label="How the model sees them">Filtered per agent; GPT-class models get <code>apply_patch</code> instead of <code>edit</code>/<code>write</code></td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Aider</td>
+        <td data-label="Tool catalogue">None: text edit protocols</td>
+        <td data-label="How the model sees them">No tool calls at all. The model writes SEARCH/REPLACE blocks or fenced shell and the parser applies them</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
+        <td data-label="Tool catalogue">A shipped bundle plus installable packages</td>
+        <td data-label="How the model sees them">Code Mode: only <code>run_code</code> is native, and every sub-call re-enters the same guarded pipeline</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Qwen Code</td>
+        <td data-label="Tool catalogue">~30, with wildcard-expanded families</td>
+        <td data-label="How the model sees them">Deferred tools stay hidden until <code>tool_search</code> loads them, budget-checked to keep the prompt prefix stable</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Pi</td>
+        <td data-label="Tool catalogue">7</td>
+        <td data-label="How the model sees them">All of them. No visibility mechanism</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Kimi CLI</td>
+        <td data-label="Tool catalogue">Built-ins, user tools, and MCP</td>
+        <td data-label="How the model sees them">Progressive disclosure: MCP and deferred tools load on demand through <code>select_tools</code></td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Crush</td>
+        <td data-label="Tool catalogue">~16 built-ins, plus LSP and MCP resources</td>
+        <td data-label="How the model sees them">Scoped per agent; the <code>task</code> agent is restricted to read-only tools</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenHands</td>
+        <td data-label="Tool catalogue">A default trio, plus conditional sets and browser tools</td>
+        <td data-label="How the model sees them">Declared by the client per conversation, gated on what the server advertises as usable</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Goose</td>
+        <td data-label="Tool catalogue">Whatever the extensions provide</td>
+        <td data-label="How the model sees them">Everything installed. No visibility mechanism</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Codex</td>
+        <td data-label="Tool catalogue">~15 handler families: apply_patch, exec, plan, collaboration</td>
+        <td data-label="How the model sees them">One static list per turn. No deferral</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ## Permissions
 
 :::note[TL;DR]
 Almost every agent deals with some variation of gated rules. Only DeepSeek
-Harness and Codex make _isolation_ the default. Aider/Pi have no rules.
+Harness and Codex make _isolation_ the default. Aider and Pi have no policy
+engine: Aider gates actions case by case, and Pi does not gate them at all.
 :::
 
-In the first post we laid out the four strategies real agents use: rule-based
-ask-approval, where a per-call engine answers allow, ask, or deny; OS-level
-sandboxing, where a kernel boundary is the baseline; LLM-as-judge, where a
-hidden
-model call classifies the risk; and no permission by design, where the agent
-runs
-with full privileges. All ten land in the table below, and all four strategies
-have practitioners among them. What is worth watching is not which strategy a
-harness picks, but how far it takes it.
+In the first post we laid out the four strategies real agents use:
 
-The same tool — "run a bash command" — means something different in every one
-of the ten:
+- **Rule-based ask-approval.** A per-call engine answers allow, ask, or deny.
+- **OS-level sandboxing.** A kernel boundary is the baseline.
+- **LLM-as-judge.** A hidden model call classifies the risk.
+- **No permission by design.** The agent runs with full privileges.
+
+All ten land in the table below, and all four strategies have practitioners
+among them. What is worth watching is not which strategy a harness picks, but how far it takes it.
+
+The same tool — "run a bash command" — means something different in each of the
+ten:
 
 <div class="agent-table-wrapper">
   <table class="agent-table agent-table--rows">
@@ -282,14 +244,16 @@ Pi's README says it plainly: there is no built-in permission system, and the
 process runs with the permissions of whoever launched it. A permission gate
 exists only as an example extension.
 
-Notice the shape of the list: most of it is _prompt-based_ safety, rules and
-questions. Only DeepSeek Harness and Codex make _isolation_ the default — dsh
-wraps every command in an operating-system sandbox and _fails closed_ when none
-is available: if the OS can't confine the command, the command never runs. Codex
-goes further still, enforcing network policy through an in-process
-man-in-the-middle proxy and hardening its own process before `main()` runs.
+Even from a glance at the table you can tell the default is _prompt-based_
+safety: rules and questions. Only two agents make _isolation_ the default:
 
-And notice how many rows now contain an LLM making safety decisions. Goose's
+- **DeepSeek Harness** wraps every command in an operating-system sandbox and
+  _fails closed_ when none is available, so if the OS can't confine the command,
+  the command never runs.
+- **Codex** goes further still, enforcing network policy through an in-process
+  man-in-the-middle proxy and hardening its own process before `main()` runs.
+
+Also noticeable: many agents ask an LLM making safety decisions. Goose's
 SmartApprove, Qwen's AUTO mode, and Codex's "guardian" all make hidden model
 calls to judge whether a tool call is safe. Qwen's classifier is a two-stage
 setup: a fast, cheap first pass whose allow path returns in roughly 300ms, plus
@@ -299,13 +263,11 @@ not "allow." Safety decisions becoming model calls is a fascinating and
 slightly unsettling trend: your safety net now has its own failure modes,
 latency, and token bill — and a prompt, however terse, never hallucinates.
 
-Worth a special mention: Aider's answer is _reversibility_ instead of
-permissioning. It commits your dirty files before editing, auto-commits every
-AI edit with a message written by a small model, and gates `/undo` on session
-ownership. Five strategies, then: that one is not a stricter or looser version
-of the other four, which is why it gets its own paragraph. Git as a safety net —
-the oldest harness on the list, and arguably the only one with a genuinely
-different answer to "what if the agent does something wrong?"
+Last but not least: Aider's answer is _reversibility_
+instead of permissions. It commits your dirty files before editing,
+auto-commits every AI edit with a message written by a small model, and gates
+`/undo` on session
+ownership.
 
 ## Context management
 
@@ -316,19 +278,22 @@ recent tail verbatim, and only summarize when you must. The how and then
 when though is where they differ.
 :::
 
-Every one of the ten does some version of the same trick: when the conversation
-outgrows a budget, throw away the parts you can afford to lose and keep the
-recent tail. This is the most universal problem in the field — long sessions
-overflow, and the trigger is usually a fraction of the context window rather
-than a fixed size. The convergence is not surprising: a context window is a hard
-limit handed to every harness by the provider, and no design can argue with it.
-Whatever an agent believes about who drives the conversation, the cheapest
-tokens
-to drop are the same tokens. The one place design does reach in is what gets
+Every agent in the list does some version of the same trick: when the
+conversation outgrows a budget, throw away the parts you can afford to lose and
+keep the
+recent tail.
+
+The convergence is not surprising: a context window is a hard
+limit handed to every harness by the provider, and no design can ignore the
+limit. Whatever an agent believes about who drives the conversation, the
+cheapest tokens to drop are the same tokens. The one place design does reach in
+is what gets
 assembled before compaction ever runs, and there Aider stands alone — which is
 where this section ends.
 
-The refinement axes are where the personalities show.
+Four choices are where the personalities show: when to drop old output, how
+much recent tail to keep, whether to rewrite the summary or refine it, and
+whether compaction is an agent in its own right.
 
 - **Dropping old tool output before summarizing.** The bloat is mostly tool
   output, and old tool outputs can be dropped or truncated _without a model
@@ -347,59 +312,87 @@ The refinement axes are where the personalities show.
   prompt, deny-by-default permissions. Compaction is just another model call,
   which makes it testable and overridable like any other agent.
 
-And before compaction even enters the picture, there's the question of what
-context to assemble in the first place. Most of the ten leave it to the agent
-at runtime: grep, glob, LSP lookups, paid per token. Aider is the exception. It
-builds a _repo map_: it parses the codebase with tree-sitter, builds a graph of
-definition/reference edges, runs PageRank on it (a search engine's algorithm
+There's the question of what context to assemble in the first place. Most of
+the ten leave it to the agent at runtime: grep, glob, LSP lookups, paid per
+token. Aider is the _only_ exception as it builds a _repo map_: it parses the
+codebase with tree-sitter, builds a graph of definition/reference edges, runs
+PageRank on it (a search engine's algorithm
 deciding what code the model should see), and renders a token-budgeted skeleton
-of the important signatures. It's the only pre-built index on the list.
+of the important signatures.
 
 ## Sessions
 
 :::note[TL;DR]
-there are only three answers — a database, an
-append-only log, or a server. Nowhere else in this comparison do the answers
-separate so perfectly, with no exceptions: where the conversation lives is the
-purest expression of what each agent thinks it is for. An agent that imagines
-a
-human and a machine working through a problem together keeps a file they can
-both
-read. An agent that imagines running for hours keeps a record it can
-replay. An agent that imagines many surfaces sharing one brain keeps the
-conversation somewhere central and lets the surfaces stay views.
+Three distinct approaches: use a database, use an append-only log, or delegate
+to a server.
 :::
 
-1. **The database is the truth.** OpenCode persists messages and their parts as
-   SQLite rows, which makes resuming a `SELECT` and the TUI a database view.
-   Crush does the same with a 33ms write debounce. Codex keeps a SQLite index
-   alongside its transcripts.
-2. **The append-only log is the truth.** dsh, Qwen, Pi, and Kimi write event
-   logs
-   and rebuild state by replaying them. dsh is the purest expression: the
-   session _is_ the log, and history, resume,
-   forking, and telemetry are all projections
-   of the same event stream.
-3. **The server is the truth.** OpenHands keeps conversations on the agent
-   server; the control-plane client is a view.
+Sessions are where the conversation stops being a live process and becomes
+something you can point at. The moment that happens, every harness has to
+decide what the session _is_, and there are only three answers: a database, an
+append-only log, or a server. The choice decides what the harness can do with a
+session afterwards. A database makes resuming a query and the interface a view
+of it. An append-only log makes resume, branching and telemetry projections of
+one stream. A server makes the client a client.
 
-Resume quality varies accordingly, from trivial (re-read SQLite) to lossy (Aider
-restores a session by replaying a
-markdown transcript — every message
-becomes plain text, so images and structured parts don't survive the round
-trip). When we squint at persistence and architecture together, the three
-answers line up with what each harness is for: the pair-programmers keep files,
-the autonomous loops either own a database or own an event log, and the
-platforms
-push the session onto a server. OpenHands is the clearest case — its
-conversations live on the agent server, and the repository we read is the view.
+<div class="agent-table-wrapper">
+  <table class="agent-table agent-table--rows">
+    <thead>
+      <tr>
+        <th>Agent</th>
+        <th>Where the conversation lives</th>
+        <th>What that buys</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenCode</td>
+        <td data-label="Where the conversation lives">SQLite rows for messages and their parts</td>
+        <td data-label="What that buys">Resuming is a <code>SELECT</code>; the TUI is a view of the database</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Crush</td>
+        <td data-label="Where the conversation lives">SQLite rows, written behind a 33ms debounce</td>
+        <td data-label="What that buys">The same, without paying for a write on every token</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Codex</td>
+        <td data-label="Where the conversation lives">A SQLite index alongside its transcripts</td>
+        <td data-label="What that buys">The conversation is both durable and queryable</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
+        <td data-label="Where the conversation lives">An event log</td>
+        <td data-label="What that buys">History, resume, forking and telemetry are all projections of one stream</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Qwen, Pi, Kimi</td>
+        <td data-label="Where the conversation lives">Event logs, replayed to rebuild state</td>
+        <td data-label="What that buys">State is derivable rather than stored</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">Aider</td>
+        <td data-label="Where the conversation lives">A markdown transcript: one line per message</td>
+        <td data-label="What that buys">A log you can read, at the cost of structure</td>
+      </tr>
+      <tr>
+        <td class="agent-name" data-label="Agent">OpenHands</td>
+        <td data-label="Where the conversation lives">The agent server</td>
+        <td data-label="What that buys">The client is a view, so many surfaces share one session</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-The config models deserve a footnote of their own, because they say a lot about
-each project: config as data (JSON/YAML/TOML), config as code (Crush's `crushrc`
-is a _bash script_ executed by the same interpreter as its bash tool), config as
-composition (dsh composes profiles out of plugin bundles and patch layers — even
-its agent loop is a replaceable row), and config as god-object (Qwen's central
-`Config` class is nearly 9,000 lines).
+Those three answers are also a good summary of what each harness is for. Aider's
+transcript makes resume lossy — every message becomes plain text, so images and
+structured parts do not survive the round trip — while the database systems
+re-read and the log systems replay. The pattern underneath is the working
+rhythm: a single conversation between one human and one agent stays in a local
+file you can read, an agent you expect to run for hours gets a durable log it
+can replay, and a system that answers from several surfaces pushes the session
+onto a server. OpenHands is the clearest case, because the repository we read is
+only the view.
 
 ## Conclusions
 
@@ -411,9 +404,7 @@ where their bug trackers live, and that's where the quality of your daily
 experience is decided. The loop itself is a few dozen lines of code. Everything
 else is the product.
 
-The plan for the next posts is to publish our per-agent deep dives, one harness
-at a time, starting with the one we run ourselves:
-[OpenCode](https://github.com/anomalyco/opencode). If the first two posts were
-the anatomy class, the deep dives are the dissections.
+In the upcoming articles, we'll start digging into specific parts of the
+anatomy of a coding agent so stay tuned for more content!
 
-Follow along on the [series page](/writing/how-coding-agents-work/)
+Follow along on the [series page](/writing/how-coding-agents-work/).
