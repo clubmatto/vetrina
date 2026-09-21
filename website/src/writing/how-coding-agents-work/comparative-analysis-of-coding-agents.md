@@ -206,7 +206,7 @@ ten:
       <tr>
         <td class="agent-name" data-label="Agent">Crush</td>
         <td data-label="Strategy">Rule-based</td>
-        <td data-label="Detail">61 banned commands, safe-command auto-approval, and hooks.</td>
+        <td data-label="Detail">A 60-command deny-list, safe-command auto-approval, and hooks.</td>
       </tr>
       <tr>
         <td class="agent-name" data-label="Agent">OpenCode</td>
