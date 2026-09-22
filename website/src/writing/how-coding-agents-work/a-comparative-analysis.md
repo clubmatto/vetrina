@@ -4,7 +4,6 @@ description: We read ten open-source coding agents through the same five
   components — the loop, tools, permissions, context, sessions — and found
   where they agree on the anatomy and split on everything else.
 date: 2026-09-22
-draft: true
 tags:
   - ai
   - agents
