@@ -173,7 +173,8 @@ In the first post we laid out the four strategies real agents use:
 - **No permission by design.** The agent runs with full privileges.
 
 All ten land in the table below, and all four strategies have practitioners
-among them. What is worth watching is not which strategy a harness picks, but how far it takes it.
+among them. What is worth watching is not which strategy a harness picks, but
+how far it takes it.
 
 The same tool — "run a bash command" — means something different in each of the
 ten:
@@ -239,7 +240,8 @@ Almost everything else in the table is some variation of the same idea. OpenCode
 evaluates allow, ask and deny rules and asks by default. Kimi layers approval
 prompts on top of a permission policy chain. Crush bans sixty commands outright
 and auto-approves the ones it knows are safe. OpenHands moves the whole question
-server-side, with policies written by the client and a Docker runtime underneath.
+server-side, with policies written by the client and a Docker runtime
+underneath.
 Only two agents make _isolation_ the default:
 
 - **DeepSeek Harness** wraps every command in an operating-system sandbox and
@@ -252,17 +254,17 @@ Also noticeable: many agents ask an LLM making safety decisions. Goose's
 SmartApprove, Qwen's AUTO mode, and Codex's "guardian" all make hidden model
 calls to judge whether a tool call is safe. Qwen's classifier is a two-stage
 setup: a fast, cheap first pass whose allow path returns in roughly 300ms, plus
-a full review for the calls that first pass wants to block — and it fails
-closed, so an API error, a timeout, or a malformed response all mean "block,"
-not "allow." Safety decisions becoming model calls is a fascinating and
-slightly unsettling trend: your safety net now has its own failure modes,
-latency, and token bill — and a prompt, however terse, never hallucinates.
+a full review for the calls that first pass wants to block.
+
+Safety decisions ◊becoming model calls is a fascinating and slightly
+unsettling trend: your safety net now has its own failure modes,
+latency, and token bill.
 
 Last but not least: Aider's answer is _reversibility_
 instead of permissions. It commits your dirty files before editing,
 auto-commits every AI edit with a message written by a small model, and gates
-`/undo` on session
-ownership.
+`/undo` on session ownership. As we never got to use Aider yet, it's unclear 
+to us how it deals with state that isn't in git. We'll come back to this soon.
 
 ## Context management
 
@@ -275,45 +277,42 @@ when though is where they differ.
 
 Every agent in the list does some version of the same trick: when the
 conversation outgrows a budget, throw away the parts you can afford to lose and
-keep the
-recent tail.
+keep the recent tail. The convergence is not surprising: context window is a
+hard provider limit, and no design can ignore it.
 
-The convergence is not surprising: a context window is a hard
-limit handed to every harness by the provider, and no design can ignore the
-limit. Whatever an agent believes about who drives the conversation, the
-cheapest tokens to drop are the same tokens. The one place design does reach in
-is what gets
-assembled before compaction ever runs, and there Aider stands alone — which is
-where this section ends.
-
-Four choices are where the personalities show: when to drop old output, how
-much recent tail to keep, whether to rewrite the summary or refine it, and
+Four choices are where the coding agent personalities show: when to drop old
+output, how much recent tail to keep, whether to rewrite the summary or refine
+it, and
 whether compaction is an agent in its own right.
 
 - **Dropping old tool output before summarizing.** The bloat is mostly tool
   output, and old tool outputs can be dropped or truncated _without a model
   call_. OpenCode prunes old tool results first and only then summarizes what
   remains; dsh spills oversized output to a side store and leaves a reference
-  behind; Goose summarizes old tool-call/result pairs. Do the cheap thing first.
+  behind; Goose summarizes old tool-call/result pairs.
 - **Keeping the recent tail verbatim.** OpenCode reserves the last quarter of
   the usable window; dsh keeps 16%. Whole-transcript summarization exists (Crush
-  does it, with a prompt that bluntly
-  tells the model the summary will be
-  its _only_ context) but tail-preservation is the dominant design.
+  does it, with a prompt that bluntly tells the model the summary will be its
+  _only_ context) but tail-preservation is the dominant design.
 - **Updating, not regenerating.** Pi refines its existing summary incrementally
   instead of re-summarizing from scratch every time.
-- **Compaction as an agent.** Our favorite implementation detail of the whole
-  study: OpenCode implements summarization as a hidden agent — no tools, its own
+- **Compaction as an agent.** Our very cool implementation detail: OpenCode
+  implements summarization as a hidden agent — no tools, its own
   prompt, deny-by-default permissions. Compaction is just another model call,
   which makes it testable and overridable like any other agent.
 
-There's the question of what context to assemble in the first place. Most of
-the ten leave it to the agent at runtime: grep, glob, LSP lookups, paid per
-token. Aider is the _only_ exception as it builds a _repo map_: it parses the
+Context compaction is very important because, as explained, it's a limit you
+can't avoid dealing with. But equally important it the
+question of what context to assemble in the first place. Most agents leave
+it to the agent at runtime: grep, glob, LSP lookups, paid per
+token.
+
+Aider is the _only_ exception as it builds a _repo map_: it parses the
 codebase with tree-sitter, builds a graph of definition/reference edges, runs
 PageRank on it (a search engine's algorithm
-deciding what code the model should see), and renders a token-budgeted skeleton
-of the important signatures.
+deciding what code the model should see. We're not convinced this is the
+right algorithm but love the general strategy), and renders a token-budgeted
+skeleton of the important signatures.
 
 ## Sessions
 
@@ -322,13 +321,17 @@ Three distinct approaches: use a database, use an append-only log, or delegate
 to a server.
 :::
 
-Sessions are where the conversation stops being a live process and becomes
-something you can point at. The moment that happens, every harness has to
-decide what the session _is_, and there are only three answers: a database, an
-append-only log, or a server. The choice decides what the harness can do with a
-session afterwards. A database makes resuming a query and the interface a view
+Sessions are how coding agents persist your conversations. That means every
+harness has to decide how to persist, and our list gave us three
+answers: a database, an append-only log, or a server.
+
+As every programming decision, this leads to different tradeoffs. A database
+makes resuming a query and the interface a view
 of it. An append-only log makes resume, branching and telemetry projections of
-one stream. A server makes the client a client.
+one stream. Delegating to a server makes the agent a "dumb" client that
+doesn't need to know anything about where sessions are and how they're stored.
+
+Here's the overview:
 
 <div class="agent-table-wrapper">
   <table class="agent-table agent-table--rows">
@@ -378,16 +381,6 @@ one stream. A server makes the client a client.
     </tbody>
   </table>
 </div>
-
-Those three answers are also a good summary of what each harness is for. Aider's
-transcript makes resume lossy — every message becomes plain text, so images and
-structured parts do not survive the round trip — while the database systems
-re-read and the log systems replay. The pattern underneath is the working
-rhythm: a single conversation between one human and one agent stays in a local
-file you can read, an agent you expect to run for hours gets a durable log it
-can replay, and a system that answers from several surfaces pushes the session
-onto a server. OpenHands is the clearest case, because the repository we read is
-only the view.
 
 ## Conclusions
 
