@@ -1,16 +1,15 @@
 # Mercato
 
-Public-facing posts authored by the team across social platforms. Stored here so
-LLMs have the context they need when helping edit or draft new content.
+Public-facing posts authored by the team across social platforms. Stored here so LLMs have
+the context they need when helping edit or draft new content.
 
-Everything in this directory is public — **drafts included**. A draft is content we
-are happy for anyone to read before it goes out; nothing here needs to be kept
-private.
+Everything in this directory is public, **drafts included**. A draft is content we are happy
+for anyone to read before it goes out, so nothing here needs to be kept private.
 
-`drafts/` corresponds to the `editing` column on the Marketing board in Lasagna. A
-post gets a file there when work starts on it, and the file moves to
+`drafts/` corresponds to the `editing` column on the Marketing board in Lasagna. A post
+gets a file there when work starts on it, and the file moves to
 `<platform>/YYYY-MM-DD-<slug>.md` when it publishes. **An empty `drafts/` is a normal
-state**, not a backlog problem — it just means nothing is in flight right now.
+state**, not a backlog problem. It just means nothing is in flight.
 
 ## Directory Structure
 
@@ -25,8 +24,8 @@ mercato/
 └── <platform>/     # future platforms
 ```
 
-Each platform directory contains flat markdown files (no subdirectories per
-year/month — at our volume, a flat list is more scannable).
+Each platform directory contains flat markdown files, with no subdirectories per year or
+month. At our volume a flat list is more scannable.
 
 ## File Naming
 
@@ -36,30 +35,29 @@ year/month — at our volume, a flat list is more scannable).
 YYYY-MM-DD-descriptive-kebab-slug.md
 ```
 
-Examples: `2026-07-07-fakedata-pro-announcement.md`, `2026-07-04-club-matto-origin-story.md`
+Examples: `2026-07-07-fakedata-pro-announcement.md`,
+`2026-07-04-club-matto-origin-story.md`
 
-Date prefix ensures chronological sort. Slug makes each file unique and
-identifiable at a glance.
+The date prefix keeps the list chronological. The slug makes each file identifiable at a
+glance.
 
 ### Drafts
 
-Drafts live in `drafts/` and use the same kebab-slug convention **without** the
-date prefix:
+Drafts live in `drafts/` and use the same kebab-slug convention **without** the date
+prefix:
 
 ```
 descriptive-kebab-slug.md
 ```
 
-Example: `fakedata-v0-1-0.md`
+Drafts follow the same frontmatter schema as published posts. The `platform` field
+indicates the intended platform.
 
-Drafts follow the same frontmatter schema as published posts, but the `platform`
-field indicates the intended platform.
+When the same content targets multiple platforms, suffix the secondary platform to the
+slug:
 
-When the same content targets multiple platforms, suffix the secondary platform
-name to the slug:
-
-- `fakedata-pro-dry-run.md`          (primary — usually LinkedIn)
-- `fakedata-pro-dry-run-twitter.md`  (Twitter version)
+- `fakedata-pro-dry-run.md` (primary, usually LinkedIn)
+- `fakedata-pro-dry-run-twitter.md` (Twitter version)
 
 ## Frontmatter Schema
 
@@ -73,17 +71,16 @@ topics:
   - fakedata
   - fakedata-pro
   - announcement
-format: take
+format: we-measured
 source: https://matto.club/writing/tuning-slow-postgres-queries-with-fakedata-pro/
 ---
 ```
 
-Use `topics` to tag projects, products, themes. This is the primary mechanism
-for cross-platform search (e.g. `grep "fakedata-pro" mercato/**/*.md`).
+Use `topics` to tag projects, products and themes. This is the primary mechanism for
+cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
-`format` is the slot the post fills, and `source` is where it came from. Together
-they answer "which kind of post actually earns attention?" — without them the
-calendar is guesswork:
+`format` is the slot the post fills and `source` is where it came from. Together they
+answer which kind of post earns attention:
 
 | `format` | Meaning |
 |---|---|
@@ -95,10 +92,10 @@ calendar is guesswork:
 | `take` | A principle or opinion |
 | `reshare` | Evergreen, community, book review |
 
-`source` points at the article, PR, or card the post came from — the article URL
-for a harvest, `https://github.com/clubmatto/...` for a code-derived post.
+`source` points at the article, PR or card the post came from. Use the article URL for a
+harvest, or a `https://github.com/clubmatto/...` link for a code-derived post.
 
-## Searching / Filtering
+## Searching and Filtering
 
 | Query | Command |
 |---|---|
@@ -108,48 +105,41 @@ for a harvest, `https://github.com/clubmatto/...` for a code-derived post.
 
 ## Adding a New Post
 
-### Draft-first (recommended)
-1. Create the file in `drafts/` with a descriptive kebab slug (no date prefix)
-2. Set `platform` in frontmatter to the target platform
-3. When ready to publish, move to `mercato/<platform>/YYYY-MM-DD-<slug>.md`
+### Draft-first, recommended
+
+1. Create the file in `drafts/` with a descriptive kebab slug and no date prefix.
+2. Set `platform` in the frontmatter to the target platform.
+3. When it publishes, move it to `mercato/<platform>/YYYY-MM-DD-<slug>.md`.
+
+Moving the card on the Marketing board is part of the same step.
 
 ### Direct publish
-1. Create the file at `mercato/<platform>/YYYY-MM-DD-descriptive-slug.md`
-2. Add frontmatter as specified above
-3. Write the body in plain markdown
 
-For thread-based platforms (Twitter, Reddit), use markdown headings or blockquotes
+1. Create the file at `mercato/<platform>/YYYY-MM-DD-descriptive-slug.md`.
+2. Add the frontmatter described above.
+3. Write the body in plain markdown.
+
+For thread-based platforms such as Twitter and Reddit, use markdown headings or blockquotes
 to separate thread parts.
 
-### Twitter Posts
+## Platform Rules
 
-- Body (excluding frontmatter) must be **280 characters or fewer** — that is X's
-  hard limit. Aim for **~200**; that is the length the existing posts sit at.
-- If a terminal GIF is attached, omit the command from the tweet text — the GIF
-  demonstrates it
-- Keep the same core message as the LinkedIn version, but condense to essentials
+Voice, tone, punctuation and structure come from the Writing & Docs rule that ai-kit
+installs at `.agents/rules/writing.md`. Follow it, and do not restate it here.
 
-## Style
+These are the mercato specifics:
 
-Keep posts short. The goal is a teaser, not a summary: announce the topic,
-say why it matters in a line or two, link out.
-
-- **Open with a one-line announcement** — an emoji framing like 📢 or 🚀 is
-  on-brand.
-- **One hook line** naming the topic in everyday words, then 2-4 sentences max.
-- **Mention the topic, not the innards.** Omit specific numbers, timings, or
-  implementation details unless they _are_ the point of the post.
-- **Close with the link**: `Read it here: <url>` (LinkedIn), or just the URL
-  (Twitter).
-- **Conversational, fewest words.** No marketing adjectives, no "we thought
-  we'd" padding.
-- **Twitter is LinkedIn trimmed**: same announcement and hook, cut to
-  essentials, comfortably under 200 characters.
+- **LinkedIn: 55 to 90 words.** Close with `Read it here: <url>`.
+- **Twitter: 280 characters at most, aim for 200.** Close with the bare URL.
+- **Twitter is LinkedIn trimmed.** Same announcement and hook, cut to essentials.
+- **Mention the topic, not the innards.** Leave out numbers, timings and implementation
+  details unless they are the point of the post.
+- **If a terminal GIF is attached, omit the command from the text.** The GIF shows it.
 
 ### Example style anchors
 
-When editing a post, start from a real example from the same platform rather
-than rewriting from scratch:
+When editing a post, start from a real example from the same platform instead of rewriting
+from scratch:
 
 - LinkedIn: `linkedin/2026-07-13-ai-kit-announcement.md`,
   `linkedin/2026-07-31-fakedata-v0-2-0-clickhouse.md`
@@ -160,27 +150,22 @@ than rewriting from scratch:
 Posts can include terminal recordings produced with
 [VHS](https://github.com/charmbracelet/vhs).
 
-For social clips (LinkedIn, Twitter), record a one-off GIF — do **not** add the
-demo to the project's `gifs.txt` or generate MP4s. Project demos serve the
-website and READMEs; social clips are throwaway.
+For social clips, record a one-off GIF. Do **not** add the demo to the project's `gifs.txt`
+or generate MP4s. Project demos serve the website and READMEs, while social clips are
+throwaway.
 
-1. Create a self-contained tape at `assets/vhs/<clip>.tape` with all settings
-   embedded (see One-Off Recordings in `assets/vhs/README.md`), outputting
-   `<clip>-light.gif` in the light theme.
-2. Keep it short, roughly half of a project demo: ~10 seconds.
-3. Generate it with an absolute path:
-   `./generate.sh --tape /Users/.../assets/vhs/<clip>.tape`
+1. Create a self-contained tape at `assets/vhs/<clip>.tape` with all settings embedded. See
+   One-Off Recordings in `assets/vhs/README.md`.
+2. Keep it short, roughly half of a project demo, so about 10 seconds.
+3. Generate it with an absolute path: `./generate.sh --tape /Users/.../assets/vhs/<clip>.tape`
 4. Reference the resulting GIF in the post.
 
 See `assets/vhs/README.md` for the full VHS workflow.
 
 ## LLM Usage
 
-When asking an LLM to help edit a specific post, provide the single file. When
-asking for help with writing style or tone, pass all files filtered by platform
-or topic.
+When asking an LLM to edit a specific post, provide that single file. When asking for help
+with style or tone, pass all files filtered by platform or topic.
 
-Regardless of the task, pass at least one example post from the target platform
-alongside the request — the style is learned by example, not description.
-State the target length explicitly (LinkedIn ≈ 55-90 words, Twitter ≤ 200
-characters).
+Always pass at least one example post from the target platform alongside the request. The
+style is learned by example, not description. State the target length explicitly.
