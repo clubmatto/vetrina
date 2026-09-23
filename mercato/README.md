@@ -51,7 +51,12 @@ descriptive-kebab-slug.md
 ```
 
 Drafts follow the same frontmatter schema as published posts. The `platform` field
-indicates the intended platform.
+indicates the intended platform, and `publish_date` carries the scheduled date from the
+board card. A batch leaves several posts in `drafts/` at once, so without a date in the
+file there is no telling Monday's post from Sunday's. The filename stays undated: the
+slug is the stable identity linking card to file, and a slipped slot becomes a one-line
+change instead of a rename. On publish the date moves into the filename and the field
+is dropped.
 
 When the same content targets multiple platforms, suffix the secondary platform to the
 slug:
@@ -77,8 +82,12 @@ topics:
 Use `topics` to tag projects, products and themes. This is the primary mechanism for
 cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
+Drafts add one field, `publish_date: YYYY-MM-DD`, the scheduled date from the board
+card. It is the only plan-like field a draft carries.
+
 Which slot a post filled, and the article it was harvested from, are tracked on the
-Marketing board rather than here. Mercato is the published record, not the plan.
+Marketing board rather than here. The scheduled date is the one exception, and only
+while a post is still a draft. Mercato is the published record, not the plan.
 
 ## Searching and Filtering
 
@@ -93,8 +102,10 @@ Marketing board rather than here. Mercato is the published record, not the plan.
 ### Draft-first, recommended
 
 1. Create the file in `drafts/` with a descriptive kebab slug and no date prefix.
-2. Set `platform` in the frontmatter to the target platform.
-3. When it publishes, move it to `mercato/<platform>/YYYY-MM-DD-<slug>.md`.
+2. Set `platform` in the frontmatter to the target platform, and `publish_date` to the
+   card's due date.
+3. When it publishes, drop `publish_date` and move the file to
+   `mercato/<platform>/YYYY-MM-DD-<slug>.md`.
 
 Moving the card on the Marketing board is part of the same step.
 
