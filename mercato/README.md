@@ -71,32 +71,14 @@ topics:
   - fakedata
   - fakedata-pro
   - announcement
-format: we-measured
-source: https://matto.club/writing/tuning-slow-postgres-queries-with-fakedata-pro/
 ---
 ```
 
 Use `topics` to tag projects, products and themes. This is the primary mechanism for
 cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
-`format` is the slot the post fills and `source` is where it came from. Together they
-answer which kind of post earns attention:
-
-| `format` | Meaning |
-|---|---|
-| `article` | The long-form post itself |
-| `shipped` | One thing that changed in a repo |
-| `from-the-series` | One idea lifted out of a long-form article |
-| `we-measured` | A number and what it means |
-| `how-we-work` | Process or an anonymized client pattern |
-| `take` | A principle or opinion |
-| `reshare` | Evergreen, community, book review |
-
-`source` points at the article, PR or card the post came from. Use the article URL for a
-harvest, or a `https://github.com/clubmatto/...` link for a code-derived post.
-
-Both fields are required for new posts. Posts published before 23 Sep 2026 do not carry
-them, and they have not been backfilled.
+Which slot a post filled, and the article it was harvested from, are tracked on the
+Marketing board rather than here. Mercato is the published record, not the plan.
 
 ## Searching and Filtering
 
