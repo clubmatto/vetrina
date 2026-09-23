@@ -95,6 +95,9 @@ answer which kind of post earns attention:
 `source` points at the article, PR or card the post came from. Use the article URL for a
 harvest, or a `https://github.com/clubmatto/...` link for a code-derived post.
 
+Both fields are required for new posts. Posts published before 23 Sep 2026 do not carry
+them, and they have not been backfilled.
+
 ## Searching and Filtering
 
 | Query | Command |
