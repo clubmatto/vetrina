@@ -3,12 +3,21 @@
 Public-facing posts authored by the team across social platforms. Stored here so
 LLMs have the context they need when helping edit or draft new content.
 
+Everything in this directory is public — **drafts included**. A draft is content we
+are happy for anyone to read before it goes out; nothing here needs to be kept
+private.
+
+`drafts/` corresponds to the `editing` column on the Marketing board in Lasagna. A
+post gets a file there when work starts on it, and the file moves to
+`<platform>/YYYY-MM-DD-<slug>.md` when it publishes. **An empty `drafts/` is a normal
+state**, not a backlog problem — it just means nothing is in flight right now.
+
 ## Directory Structure
 
 ```
 mercato/
 ├── README.md
-├── drafts/         # In-progress / unpublished drafts
+├── drafts/         # In-progress drafts (legitimately empty sometimes)
 ├── linkedin/       # LinkedIn posts
 ├── twitter/        # Twitter/X threads and posts
 ├── producthunt/    # Product Hunt launch listings
@@ -64,11 +73,30 @@ topics:
   - fakedata
   - fakedata-pro
   - announcement
+format: take
+source: https://matto.club/writing/tuning-slow-postgres-queries-with-fakedata-pro/
 ---
 ```
 
 Use `topics` to tag projects, products, themes. This is the primary mechanism
 for cross-platform search (e.g. `grep "fakedata-pro" mercato/**/*.md`).
+
+`format` is the slot the post fills, and `source` is where it came from. Together
+they answer "which kind of post actually earns attention?" — without them the
+calendar is guesswork:
+
+| `format` | Meaning |
+|---|---|
+| `article` | The long-form post itself |
+| `shipped` | One thing that changed in a repo |
+| `from-the-series` | One idea lifted out of a long-form article |
+| `we-measured` | A number and what it means |
+| `how-we-work` | Process or an anonymized client pattern |
+| `take` | A principle or opinion |
+| `reshare` | Evergreen, community, book review |
+
+`source` points at the article, PR, or card the post came from — the article URL
+for a harvest, `https://github.com/clubmatto/...` for a code-derived post.
 
 ## Searching / Filtering
 
@@ -95,7 +123,8 @@ to separate thread parts.
 
 ### Twitter Posts
 
-- Body (excluding frontmatter) must be **240 characters or fewer**
+- Body (excluding frontmatter) must be **280 characters or fewer** — that is X's
+  hard limit. Aim for **~200**; that is the length the existing posts sit at.
 - If a terminal GIF is attached, omit the command from the tweet text — the GIF
   demonstrates it
 - Keep the same core message as the LinkedIn version, but condense to essentials
@@ -115,7 +144,7 @@ say why it matters in a line or two, link out.
 - **Conversational, fewest words.** No marketing adjectives, no "we thought
   we'd" padding.
 - **Twitter is LinkedIn trimmed**: same announcement and hook, cut to
-  essentials, comfortably under 240 characters.
+  essentials, comfortably under 200 characters.
 
 ### Example style anchors
 
