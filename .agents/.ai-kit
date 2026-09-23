@@ -1,14 +1,14 @@
 {
-  "version": "0.0.10",
+  "version": "0.0.11",
   "files": {
     "opencode.json": {
       "sourceHash": "4ca6cd3cf457526c2ee321c0b542b5ea4166f9b53c4ed52ca3f09be444462eba"
     },
     "AGENTS.md": {
-      "sourceHash": "cf36c441f752947c9ee774a6751e9fc9615128d3e6f3ad32f2ebd76d247307b7"
+      "sourceHash": "56a7f7db634b777aad4d8880929280a699e0eb3bd3667719da08e31894c277be"
     },
     ".agents/rules/go.md": {
-      "sourceHash": "4180c62509a1cfc8e0ee95f3092a2c3a75223a364e981d5a84bc13c1151787dc"
+      "sourceHash": "fc3c6a311a326fbf6d4a80ffe36ffaf331909326a9b624865f1a8113dd99e302"
     },
     ".agents/rules/plan-mode.md": {
       "sourceHash": "58438322db8854682cd840f1c6f8a8aaa8a6bb5c23a45c2bf15a8b5fe13a4f57"
@@ -18,6 +18,9 @@
     },
     ".agents/rules/unsure.md": {
       "sourceHash": "0b156517b0776cb20d5b14a04efcace6d075c5593722e7ce21bc4c1b5b7627da"
+    },
+    ".agents/rules/writing.md": {
+      "sourceHash": "fbc49fd8df82948927b6180a5447cb9b842e2d1f1391f1c8669eb4089e258005"
     },
     ".agents/skills/playwright-cli/SKILL.md": {
       "sourceHash": "dfb5c48560bc58439168aa74ca6eab223023ffe369836a75a5c3eef483714fd9"

@@ -20,5 +20,6 @@ CRITICAL: When you encounter a file reference (e.g., `@.agents/rules/go.md`), us
 
 - [Plan Mode](.agents/rules/plan-mode.md)
 - [When You're Unsure](.agents/rules/unsure.md)
+- [Writing & Docs](.agents/rules/writing.md)
 
-_This file was last updated: 2026-07-29. Always check the `.agents/rules/` directory for the most current language-specific guidelines._
+_This file was last updated: 2026-09-23. Always check the `.agents/rules/` directory for the most current language-specific guidelines._
