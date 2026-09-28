@@ -21,23 +21,28 @@ components above are the skeleton: each one is a mechanism you can point at in
 the loop, which is what makes them comparable across ten codebases. The system
 prompt is not that. It is data rather than machinery, every harness assembles it
 its own way, and reading it tells you much less about how an agent is put
-together. For a post about the bare bones, it was a poor fit.
+together. For a post about the bare bones, it was a poor fit. //TODO unclear 
+what this "less about" comparison is
 
-None of that is an argument against the prompt. Before your message reaches the
+// TODO would drop the first sentence here. Also the word document may be 
+out of place in the agents vocabulary (I'd use context... but maybe that's 
+also inaccurate)
+
+None of that is an argument against the prompt. Before a message reaches the
 model, the harness puts a document in front of it. You never type that document
 and you rarely read it, but it decides who the agent thinks it is, what it knows
 about your machine, and how it uses its tools. It kept turning up inside other
 sections. Under context management, because the prompt is part of what the
 context manager assembles. Under tool calls, because the tool catalogue travels
-in the same request. It deserved better than a paragraph in someone else's
-section, so it gets a deep dive of its own.
+in the same request. It deserved better than a paragraph in a section about 
+something else, so it gets a deep dive of its own.
 
 So we went back to the source of all ten and looked at how each one builds its
 system prompt.
 
 :::note[TL;DR]
 None of them ship a single prompt string. Every harness assembles the prompt from
-parts, and they disagree on three things: how the tool surface is taught, what
+parts, and they disagree on three things: how the tool surface is exposed, what
 belongs in the stable prefix, and how much of it you can see.
 :::
 
@@ -60,9 +65,9 @@ instructions, and the untuned 175B GPT-3. The tuned one won. Instruction followi
 stopped being something you coaxed out of a model and became something the model
 was trained to do.
 
-The second change was the API shape. Chat-tuned models arrived in 2023 with
-roles, and the system role gave instructions a place to live, separate from the
-conversation. For a while the results were mixed, and a whole craft grew around
+The second change was the API shape. Chat-tuned models shipped with
+roles for the first time in 2023, and the system role gave instructions a 
+place to live, separate from the conversation. For a while the results were mixed, and a whole craft grew around
 it: persona paragraphs, examples smuggled into the system message, reassurance
 that the model was allowed to answer at all. That era gave us the phrase prompt
 engineering.
@@ -78,7 +83,7 @@ channel developer messages rather than system messages, which is a fair summary
 of what happened. The slot stopped being the model's personality and became the
 application's configuration.
 
-The economics moved too. Prompt caching arrived from Anthropic and OpenAI in the
+The economics moved too. Anthropic and OpenAI shipped prompt caching in the
 second half of 2024 and turned the front of the request into a priced object.
 That shift is subtle, because it happens in the deeper layers of the model rather
 than in the text you write. It is also significant: it changed what a good system
@@ -92,7 +97,9 @@ If you take one thing from this piece, take this: on a modern model the system
 prompt is where the agent gets configured, and it is the part of the request with
 the best ratio of effect to effort.
 
-It is where the agent learns about you. Project conventions live there, or in the
+The system prompt is where the agent learns about you. Project conventions live 
+there,
+or in the
 files the harness reads into it, which is why an agent with a weak prompt asks
 where the tests are, invents a command your repository does not use, and writes
 commit messages in a style nobody here has ever written. When people say an agent
@@ -100,7 +107,9 @@ commit messages in a style nobody here has ever written. When people say an agen
 git status in front of the model on every turn. You feel this the moment you
 switch agents and your carefully written instructions become invisible.
 
-It is where the agent learns what it can do. Tool descriptions and the guidance
+The system prompt is where the agent learns what it can do. Tool descriptions 
+and 
+the guidance
 for using them travel in the same document, and that is what decides whether the
 model reaches for a tool at all, whether it uses the tool the way its author
 meant, and whether it checks a file before editing it. What the prompt does not
@@ -112,6 +121,8 @@ than a boundary: DeepSeek Harness injects the active sandbox mode as a
 runtime-context section, and its approval sentence tells the model not to ask for
 an escalation it would not get. A rule the model ignores is a bug. A rule the
 harness enforces cannot be ignored.
+
+// TODO not sure I get any of this
 
 It is also where you pay, and the reason has nothing to do with how well the text
 is written. That is worth two minutes, so it comes next.
@@ -129,6 +140,8 @@ message for a mediocre system prompt, which is the worst property a thing this
 consequential can have.
 
 ## What a cached token is
+
+// TODO here feels like there's a bit of a gap with the prev para
 
 A model starts every request from zero. It has no memory of the last one, so the
 whole conversation goes out again, prompt and all. To produce the first token,
@@ -155,6 +168,9 @@ the exact tensors that get stored, and it is the clearest explanation we have
 read. Everything below assumes that picture.
 
 ## Where the prompt goes, and who outranks whom
+
+// TODO not worth a para. I'd use this as an excuse to remind the reader 
+it's not static (next para) and where it goes
 
 Every API has somewhere to put this text, and they do not agree on the shape.
 
@@ -183,6 +199,9 @@ tool result or a web page has no rank, so a harness that mixes it into the promp
 is relying on the model to keep the two apart.
 
 ## The prompt is assembled, not written
+
+// TODO probably a short reminder that the system prompt isn't static helps 
+here with the flow
 
 Aider is the most explicit about the shape. It builds the prompt as eight ordered
 chunks: `system`, `examples`, `readonly_files`, `repo`, `done`, `chat_files`,
@@ -295,7 +314,7 @@ relevance, then injects the survivors into the prompt. Goose keeps a
 top-of-mind block and a recall extension. Pi injects skills as `<skill>` XML
 blocks. The prompt is the delivery mechanism for all of it.
 
-## How the tools are taught
+## How the tools are exposed
 
 The tool list is a schema, but the teaching happens in two other places.
 
@@ -320,7 +339,7 @@ therefore the prompt prefix, stable across turns.
 
 A stable prompt is cheap, but a prompt that never changes is a prompt that cannot
 tell the model anything new. Three pressures pull against each other, and every
-harness in the list is picking a point between them.
+harness in the list makes their own tradeoff.
 
 **Stability.** Every token before the first difference is billed at the cached
 rate. Keep the prefix identical and you keep hitting the cache.
@@ -336,7 +355,8 @@ threshold closer, and compaction is what eventually rewrites the history and
 takes the cache with it. Goose skips its context block entirely below a 32k
 window, trading information for room.
 
-The move the ten make is to stop treating the prompt as one string and split it
+The strategy the agents employ is to stop treating the prompt as one 
+string and split it
 into blocks with different change rates. DeepSeek Harness reassembles the prompt
 on every step, but only re-logs the request header when the system, the tools or
 the config actually changed, and it persists the runtime context as a snapshot so
@@ -347,6 +367,8 @@ window back and you lose your prefix. Aider pins cache-control headers on its
 chunks so the early ones stay stable across turns.
 
 ## Tricks that keep the prefix warm
+
+// TODO this should be merged with the cache para?
 
 None of this is exotic. It is the same handful of moves, whether you write a
 harness or an application.
@@ -377,6 +399,8 @@ harness or an application.
   thread every few minutes to keep the cache alive.
 
 ## What you cannot see
+
+// TODO would drop this
 
 The prompt is the part of the agent you are most likely to tune and the part that
 is easiest to hide.
