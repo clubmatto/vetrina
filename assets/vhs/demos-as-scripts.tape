@@ -1,4 +1,4 @@
-Output demos-as-scripts.gif
+Output demos-as-scripts-light.gif
 Set FontFamily "JetBrainsMono Nerd Font"
 Set FontSize 22
 Set Width 1300
@@ -9,12 +9,16 @@ Set TypingSpeed 20ms
 
 Type "# our README demos are scripts, not screen recordings"
 Enter
-Sleep 800ms
+Sleep 500ms
 
-Type "# vhs turns a tape into the gif"
+Type "cat demos-as-scripts.tape | grep -v ^Set"
 Enter
-Sleep 800ms
+Sleep 1500ms
 
 Type "fakedata --seed 42 -n 6 name:full_name email city"
 Enter
-Sleep 2.5s
+Sleep 2s
+
+Type "# this gif? made by the script above"
+Enter
+Sleep 1s
