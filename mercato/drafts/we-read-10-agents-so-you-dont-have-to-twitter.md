@@ -2,7 +2,7 @@
 title: "We read 10 coding agents so you don't have to"
 platform: twitter
 publish_date: 2026-10-01
-image: website/src/assets/writing/comparative-analysis-of-coding-agents.png
+image: https://matto.club/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
   - ai

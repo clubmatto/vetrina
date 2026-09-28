@@ -145,6 +145,9 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "src/assets/products": "assets/products",
   });
+  eleventyConfig.addPassthroughCopy({
+    "src/assets/social": "assets/social",
+  });
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);
