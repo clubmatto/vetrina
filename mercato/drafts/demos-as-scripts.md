@@ -8,8 +8,8 @@ topics:
   - fakedata
   - open-source
 ---
-
-Our README demos are not screen recordings. They are scripts.
+ 
+The gif demos we publish to show our products are not screen recordings. They are scripts!
 
 A VHS tape sets commands, theme and timing. The GIF is generated from it, so the demo never drifts from the tool.
 
