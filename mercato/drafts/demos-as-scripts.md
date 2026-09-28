@@ -2,7 +2,7 @@
 title: "Our README demos are scripts, not screen recordings"
 platform: twitter
 publish_date: 2026-09-28
-image: https://raw.githubusercontent.com/clubmatto/vetrina/main/assets/vhs/demos-as-scripts-light.gif
+image: assets/vhs/demos-as-scripts-light.gif
 topics:
   - clubmatto
   - fakedata
