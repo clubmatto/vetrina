@@ -82,8 +82,13 @@ topics:
 Use `topics` to tag projects, products and themes. This is the primary mechanism for
 cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
-Drafts add one field, `publish_date: YYYY-MM-DD`, the scheduled date from the board
-card. It is the only plan-like field a draft carries.
+Drafts add two fields. `publish_date: YYYY-MM-DD` is the scheduled date from the board
+card, and is dropped at publish. `image:` is the full link to the image that ships with
+the post: a `https://matto.club/...` URL for site-served assets, a
+`https://raw.githubusercontent.com/clubmatto/vetrina/main/...` URL for repo-only ones
+like the VHS clips. Both platform files of a multi-platform post carry the same image.
+Text-only posts omit the field, and published files keep it as the record of what
+shipped.
 
 Which slot a post filled, and the article it was harvested from, are tracked on the
 Marketing board rather than here. The scheduled date is the one exception, and only
