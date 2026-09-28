@@ -9,7 +9,9 @@ topics:
   - open-source
 ---
 
-Every coding agent we read is the same five components: loop, tools, permissions, context, sessions.
+Struggling to understand how coding agents are built? This is the mental model we landed on.
+
+Every agent is the same five components: loop, tools, permissions, context, sessions.
 
 The loop is a few dozen lines of code. Everything else is the product.
 
