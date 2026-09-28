@@ -2,6 +2,7 @@
 title: "A better model won't fix a bad agent loop"
 platform: twitter
 publish_date: 2026-10-03
+image: https://matto.club/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
   - ai
