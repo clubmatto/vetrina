@@ -2,7 +2,7 @@
 title: "Reshare: the how coding agents work series"
 platform: twitter
 publish_date: 2026-10-04
-image: website/src/assets/writing/how-coding-agents-work.png
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-coding-agents-work.png
 topics:
   - agents
   - ai
