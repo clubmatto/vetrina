@@ -104,8 +104,9 @@ while a post is still a draft. Mercato is the published record, not the plan.
 1. Create the file in `drafts/` with a descriptive kebab slug and no date prefix.
 2. Set `platform` in the frontmatter to the target platform, and `publish_date` to the
    card's due date.
-3. When it publishes, drop `publish_date` and move the file to
-   `mercato/<platform>/YYYY-MM-DD-<slug>.md`.
+3. Link the file from the Marketing board card's description.
+4. When it publishes, drop `publish_date`, move the file to
+   `mercato/<platform>/YYYY-MM-DD-<slug>.md`, and repoint the card's description link.
 
 Moving the card on the Marketing board is part of the same step.
 
