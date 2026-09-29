@@ -151,6 +151,22 @@ fun getUserUpdates(userId: Long): Flow<UserUpdate> = callbackFlow {
 }
 ```
 
+### Test names in common source sets
+
+Kotlin/Native rejects a backticked test name that contains a comma, and the JVM suite you just ran green does
+not catch it: the failure lands on the native compile, `compileTestKotlinIosArm64` and its siblings.
+
+```
+e: ...MultiSimFinderTest.kt:81:9 Name contains illegal characters: ",".
+```
+
+Modules with only a JVM target may keep the commas, because no native target compiles their tests. Everywhere
+else write the name without them, and check before committing:
+
+```bash
+grep -rn 'fun `[^`]*,' --include=*.kt .
+```
+
 ### Good Practices
 
 - Use version catalogs (libs.versions.toml) for centralized dependency management
