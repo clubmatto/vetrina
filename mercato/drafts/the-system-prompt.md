@@ -3,7 +3,7 @@ title: "The system prompt, across 10 coding agents"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-09-29
+publish_date: 2026-09-30
 topics:
   - agents
   - ai

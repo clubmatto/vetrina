@@ -3,7 +3,7 @@ title: "Every coding agent is five components"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-09-30
+publish_date: 2026-09-29
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
