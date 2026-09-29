@@ -1,5 +1,5 @@
 ---
-title: "The system prompt, across 10 coding agents"
+title: "How coding agents work, deep dive: The system prompt"
 description: Every request to a coding agent carries instructions you never
   typed. We read ten open-source agents to see what goes into that text, how the
   tools are taught, and what it costs to keep it stable.
@@ -8,9 +8,6 @@ draft: true
 tags:
   - ai
   - agents
-image: /assets/writing/the-system-prompt.png
-image_width: 2400
-image_height: 1260
 ---
 
 We started this series by shortlisting [ten open-source coding
