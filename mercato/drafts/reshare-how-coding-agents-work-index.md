@@ -1,6 +1,7 @@
 ---
 title: "Reshare: the how coding agents work series"
-platform: twitter
+platforms:
+  - twitter
 publish_date: 2026-10-04
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-coding-agents-work.png
 topics:
@@ -8,6 +9,8 @@ topics:
   - ai
   - open-source
 ---
+
+## Twitter
 
 Reshare: we are taking ten open-source coding agents apart, one component at a time. Loop, tools, permissions, context, sessions.
 

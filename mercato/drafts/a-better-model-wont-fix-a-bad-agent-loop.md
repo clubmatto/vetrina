@@ -1,12 +1,15 @@
 ---
 title: "A better model won't fix a bad agent loop"
-platform: twitter
+platforms:
+  - twitter
 publish_date: 2026-10-03
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
   - ai
 ---
+
+## Twitter
 
 A better model won't fix a bad agent loop.
 

@@ -50,19 +50,17 @@ prefix:
 descriptive-kebab-slug.md
 ```
 
-Drafts follow the same frontmatter schema as published posts. The `platform` field
-indicates the intended platform, and `publish_date` carries the scheduled date from the
-board card. A batch leaves several posts in `drafts/` at once, so without a date in the
-file there is no telling Monday's post from Sunday's. The filename stays undated: the
-slug is the stable identity linking card to file, and a slipped slot becomes a one-line
-change instead of a rename. On publish the date moves into the filename and the field
-is dropped.
+One file per draft. The frontmatter carries a `platforms` list instead of the published
+singular `platform`, plus `publish_date` for the scheduled date from the board card. A
+batch leaves several posts in `drafts/` at once, so without a date in the file there is
+no telling Monday's post from Sunday's. The filename stays undated: the slug is the
+stable identity linking card to file, and a slipped slot becomes a one-line change
+instead of a rename. On publish the date moves into the filename and the field is
+dropped.
 
-When the same content targets multiple platforms, suffix the secondary platform to the
-slug:
-
-- `fakedata-pro-dry-run.md` (primary, usually LinkedIn)
-- `fakedata-pro-dry-run-twitter.md` (Twitter version)
+The body carries one `## <Platform>` section per entry in `platforms`, in the same
+order. Platform-specific titles and copy live inside their sections; the frontmatter
+`title` is the draft's working title.
 
 ## Frontmatter Schema
 
@@ -82,12 +80,13 @@ topics:
 Use `topics` to tag projects, products and themes. This is the primary mechanism for
 cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
-Drafts add two fields. `publish_date: YYYY-MM-DD` is the scheduled date from the board
-card, and is dropped at publish. `image:` is the GitHub link to the image that ships
-with the post, the same form as the card's `Image:` line, for example
+A draft replaces `platform` with a `platforms` list and adds `publish_date: YYYY-MM-DD`,
+the scheduled date from the board card, which is dropped at publish. The `image:` field
+is the GitHub link to the image that ships with the post, the same form as the card's
+`Image:` line, for example
 `https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-coding-agents-work.png`.
-Both platform files of a multi-platform post carry the same image. Text-only posts omit
-the field, and published files keep it as the record of what shipped.
+Text-only posts omit the field, and published files keep it as the record of what
+shipped.
 
 Which slot a post filled, and the article it was harvested from, are tracked on the
 Marketing board rather than here. The scheduled date is the one exception, and only
@@ -106,11 +105,12 @@ while a post is still a draft. Mercato is the published record, not the plan.
 ### Draft-first, recommended
 
 1. Create the file in `drafts/` with a descriptive kebab slug and no date prefix.
-2. Set `platform` in the frontmatter to the target platform, and `publish_date` to the
-   card's due date.
+2. List the target platforms in `platforms`, write one `## <Platform>` section per
+   platform, and set `publish_date` to the card's due date.
 3. Link the file from the Marketing board card's description.
-4. When it publishes, drop `publish_date`, move the file to
-   `mercato/<platform>/YYYY-MM-DD-<slug>.md`, and repoint the card's description link.
+4. When it publishes, drop `publish_date`, split the sections into one file per platform
+   at `mercato/<platform>/YYYY-MM-DD-<slug>.md` with singular `platform:` frontmatter,
+   and repoint the card's description link.
 
 Moving the card on the Marketing board is part of the same step.
 
