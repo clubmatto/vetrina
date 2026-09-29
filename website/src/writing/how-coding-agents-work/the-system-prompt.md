@@ -21,285 +21,146 @@ sessions.
 
 There is a sixth thing in every request, and we left it out on purpose. The five
 components above are the skeleton: each one is a mechanism you can point at in
-the loop, which is what makes them comparable across ten codebases. The system
-prompt is not that. It is data rather than machinery, every harness assembles it
-its own way, and reading it tells you much less about how an agent is put
-together. For a post about the bare bones, it was a poor fit. //TODO unclear 
-what this "less about" comparison is
+the agent's architecture, which is what makes them comparable across ten codebases. The system
+prompt is not that. It is data rather than machinery, and understanding its content doesn't change the overall general
+picture of how the "bones" of this skeleton compose into a complete body.
 
-// TODO would drop the first sentence here. Also the word document may be 
-out of place in the agents vocabulary (I'd use context... but maybe that's 
-also inaccurate)
+Yet, the content of the system prompt is foundational to the well-functioning of the harness. It's information that
+decides who the agent thinks it is, what it knows about your machine, and how it uses its tools. Not only that, but
+its role and shape changed significantly with time, as we'll see in a moment.
 
-None of that is an argument against the prompt. Before a message reaches the
-model, the harness puts a document in front of it. You never type that document
-and you rarely read it, but it decides who the agent thinks it is, what it knows
-about your machine, and how it uses its tools. It kept turning up inside other
-sections. Under context management, because the prompt is part of what the
-context manager assembles. Under tool calls, because the tool catalogue travels
-in the same request. It deserved better than a paragraph in a section about 
-something else, so it gets a deep dive of its own.
-
-So we went back to the source of all ten and looked at how each one builds its
-system prompt.
+In short, it was hard to summarize in a paragraph, and we decided it was worth its own deep dive. So we went back to the
+source of all ten and looked at how each one builds its system prompt.
 
 :::note[TL;DR]
-None of them ship a single prompt string. Every harness assembles the prompt from
-parts, and they disagree on three things: how the tool surface is exposed, what
-belongs in the stable prefix, and how much of it you can see.
+None of the harnesses ship a single prompt string. Each of them assembles the prompt from
+parts, and they diverge on two things: how the tool surface is exposed and what
+belongs to the stable context prefix.
 :::
 
-## How we got here
+## A brief history of system prompts
 
 The system prompt is not a fixed idea. Its job has changed twice, and the prompt
-had to change with it. Two things drove that: training made models far better at
+had to change with it. Two motions drove this evolution: training made models far better at
 following instructions, and the APIs grew a proper channel to send them.
 
 Before chat models, instructions were just more text. You wrote them next to your
 input and hoped, because the completion endpoint saw a single string and had no
-dedicated channel for them. Getting a model to follow a rule was a matter of
+dedicated channel for special instructions. Getting a model to follow the user's will was a matter of
 phrasing, examples, and luck.
 
 The first change was training. Scaling a model up did not make it better at
-following instructions, which is why prompting carried so much weight. Training a
-model to follow them did. In 2022, [InstructGPT](https://arxiv.org/abs/2203.02155)
+following instructions, which is why prompting carried so much weight. But training a
+model to follow them instead did. In 2022, [InstructGPT](https://arxiv.org/abs/2203.02155)
 had people compare two models side by side: a 1.3B model tuned to follow
 instructions, and the untuned 175B GPT-3. The tuned one won. Instruction following
 stopped being something you coaxed out of a model and became something the model
 was trained to do.
 
 The second change was the API shape. Chat-tuned models shipped with
-roles for the first time in 2023, and the system role gave instructions a 
+roles for the first time in 2023, and the system role gave instructions a
 place to live, separate from the conversation. For a while the results were mixed, and a whole craft grew around
-it: persona paragraphs, examples smuggled into the system message, reassurance
-that the model was allowed to answer at all. That era gave us the phrase prompt
-engineering.
+closing the gap: persona paragraphs, examples smuggled into the system message, reassurance
+that the model was allowed to answer at all. That era gave us the phrase "prompt
+engineering".
 
 Then two things happened at once. First, the later rounds of tuning, the ones
 that turn a text predictor into an assistant, kept absorbing the behaviour people
 used to write into prompts. Second, providers started formalizing what a system
-prompt is: not a magic trick, but an instruction channel with a defined rank.
+prompt is: not a magic trick, but an instruction channel with a defined rank in the model's attention. Instructions
+in lower ranks cannot override a contradicting statement in a higher rank.
 OpenAI's [Model Spec](https://model-spec.openai.com/), first published in May
-2024, spells the chain of command out: root, then system, then developer, then
-user, then guidelines. The naming followed. OpenAI's newer models call that
-channel developer messages rather than system messages, which is a fair summary
-of what happened. The slot stopped being the model's personality and became the
-application's configuration.
+2024, spells this chain of command out: root, then system, then developer, then
+user, then guidelines. At this point the slot stopped being
+the model's personality and became the application's configuration.
 
-The economics moved too. Anthropic and OpenAI shipped prompt caching in the
-second half of 2024 and turned the front of the request into a priced object.
+A note about naming here: OpenAI's newer models call the channel you write to _developer_ messages rather than _system_
+messages, because the spec gave the name
+"system" to OpenAI's own tier above it. That is _API vocabulary_, not _harness
+vocabulary_ though. Every harness we read calls the text it assembles the system prompt,
+but the role it travels in is inconsistent: some send it as a system message,
+and others switch to developer when the model supports it, or send it in a
+top-level field instead of a message at all. Both terms express the same concept.
+
+The economics moved too. Google shipped context caching for Gemini in May 2024,
+and Anthropic and OpenAI followed later that year, which turned the front of the
+request into a priced object (more on this in a moment).
 That shift is subtle, because it happens in the deeper layers of the model rather
 than in the text you write. It is also significant: it changed what a good system
-prompt looks like.
+prompt looks like and put a definite price distinction between good and bad prompts.
 
 So the prompt did not become less important over time. It changed shape.
 
-## Why it still matters
+## So what is a system prompt, anyway?
 
-If you take one thing from this piece, take this: on a modern model the system
-prompt is where the agent gets configured, and it is the part of the request with
-the best ratio of effect to effort.
+If you take one thing from this article, take this: on a modern model the system
+prompt is where the agent gets configured, and it enhances and guards everything the user types.
 
-The system prompt is where the agent learns about you. Project conventions live 
-there,
-or in the
-files the harness reads into it, which is why an agent with a weak prompt asks
-where the tests are, invents a command your repository does not use, and writes
-commit messages in a style nobody here has ever written. When people say an agent
-"gets" their repo, most of the time they mean the harness puts `AGENTS.md` and a
-git status in front of the model on every turn. You feel this the moment you
-switch agents and your carefully written instructions become invisible.
+The system prompt is where the agent learns about you. Project conventions live
+there, or in the files the harness reads into it. This is, for example, why an agent with a weak prompt asks where the
+tests are,
+invents a command your repository does not use, and writes commit messages in a style inconsistent with past history.
+When people say an agent "gets" their repo, most of the time it's because the harness puts `AGENTS.md` and a git
+status in front
+of the user input on every turn. You feel this the moment you switch agents and your carefully written instructions
+become invisible.
 
-The system prompt is where the agent learns what it can do. Tool descriptions 
-and 
-the guidance
-for using them travel in the same document, and that is what decides whether the
-model reaches for a tool at all, whether it uses the tool the way its author
-meant, and whether it checks a file before editing it. What the prompt does not
-do is enforce anything. Allow/ask/deny rules, sandboxes and the LLM judges from
-the comparative analysis all run in the harness, outside the model's context, and
-when a model call is part of a safety decision it is a separate call with its own
-prompt. Harnesses do describe the policy to the model, which is a nudge rather
-than a boundary: DeepSeek Harness injects the active sandbox mode as a
-runtime-context section, and its approval sentence tells the model not to ask for
-an escalation it would not get. A rule the model ignores is a bug. A rule the
-harness enforces cannot be ignored.
+The system prompt is also where the agent learns what it can do. Tool descriptions and
+the guidance for using them travel in the same document, and that decides whether the
+model reaches for a tool at all, and whether it uses the tool the way its author
+meant.
 
-// TODO not sure I get any of this
+Maybe even more importantly, thanks to the ranking system the system prompt enables harnesses to behave the same way
+for every user who talks to them. The same system also enables blocking users from bypassing the
+harness' developer message, as the model is trained to refuse arguments that try to reinterpret a higher-level
+instruction.
 
-It is also where you pay, and the reason has nothing to do with how well the text
-is written. That is worth two minutes, so it comes next.
+Note, though, that one thing the system prompt cannot do (yet?) is to ensure its instructions are followed to the
+letter. It is still text fed to the model and not a fixed code path in the LLM. So whether a rule holds is
+probabilistic, and even the Model Spec admits that production models "do not yet fully reflect" the intended behaviour. 
+Beyond the ranking, the
+system prompt gets no special treatment: the model processes it like any other input. You might be tempted to think tool
+calls are more deterministic in nature, but it's not true at the LLM level: instead, it's the harness that validates the
+name and arguments against the schema it declared, rejecting invalid calls.
 
-And it is the trust boundary. Instructions in the prompt outrank the user, which
-is what makes prompt injection worth worrying about: a file or a web page can
-contain text shaped like an instruction, and it has no rank at all in the chain
-of command. A coding agent reads files all day, so none of the ten get to ignore
-this.
+## Ok cool, but how does it look like?
 
-The uncomfortable part is that none of it announces itself. A good system prompt
-produces an agent that feels like it has already read your notes. A bad one
-produces an agent that forgets, oversteps, or gets expensive. There is no error
-message for a mediocre system prompt, which is the worst property a thing this
-consequential can have.
-
-## What a cached token is
-
-// TODO here feels like there's a bit of a gap with the prev para
-
-A model starts every request from zero. It has no memory of the last one, so the
-whole conversation goes out again, prompt and all. To produce the first token,
-the model has to read that entire input and build the internal state it will
-reuse while generating the rest. That state is the key/value cache, and it is why
-a long prompt has a higher time to first token than a short one: there is more
-input to read before anything comes out.
-
-Providers keep that state for the prefix of a request. If the next request starts
-with the same tokens, on the same model, with the same tools, the provider skips
-the work and bills the reused tokens at a fraction of the input price. Cached
-input currently costs a tenth of what normal input costs on both OpenAI and
-Anthropic, and skipping the read is where the latency win comes from.
-
-The match is literal and it stops at the first difference. Change one token near
-the front and everything after it is processed and paid for again. The system
-prompt sits at the front by construction, which is why the prompt, more than
-anything else in the request, is a caching decision.
-
-If you want the mechanism rather than the summary, read Sam Rose's [Prompt
-caching: 10x cheaper LLM tokens, but
-how?](https://ngrok.com/blog/prompt-caching). It goes from tokens to attention to
-the exact tensors that get stored, and it is the clearest explanation we have
-read. Everything below assumes that picture.
-
-## Where the prompt goes, and who outranks whom
-
-// TODO not worth a para. I'd use this as an excuse to remind the reader 
-it's not static (next para) and where it goes
-
-Every API has somewhere to put this text, and they do not agree on the shape.
+The system prompt is not a static text field. Every API has somewhere to pass it, although providers do not agree on
+which place.
 
 - **A top-level parameter.** Anthropic's Messages API takes a `system` parameter
   next to the messages, and there is deliberately no `system` role in the message
   list. OpenAI's Responses API takes `instructions` in the same place. Gemini
   takes a `systemInstruction` field.
 - **A message role.** OpenAI's Chat Completions API puts it in the message list as
-  `role: "system"`, and its newer models name the same channel `developer`. The
-  Model Spec uses that split to separate the platform's own instructions from
-  yours: `system` is what OpenAI sends, `developer` is what you send.
+  `role: "system"`, and its newer models name the same channel `developer`. DeepSeek
+  does the same: a system message inside `messages`, named `system`.
 
-The shape matters less than the rank. Wherever the text lives, it is an
-instruction channel with a higher authority than the user's messages. The Model
-Spec makes the order explicit: root, then system, then developer, then user, then
-guidelines. A user cannot ask the model to ignore your developer message, and the
-spec instructs the model to refuse arguments that try to reinterpret a
-higher-level instruction. That privilege is the point: it is how you make an
-agent behave the same way for every user who talks to it.
+What the harness assembles into it varies just as much. Aider is the most explicit
+about the order: eight chunks, `system`, `examples`, `readonly_files`, `repo`, `done`,
+`chat_files`, `cur`, `reminder`, shaped per model by `ModelSettings`. Aider leans on the same trick whenever it needs to
+put something
+in the conversation that has no dedicated slot: a user message plus an assistant
+`"Ok."` agreeing to it. That is how file contents, the done-turn markers, and the
+system text itself travel when `use_system_prompt` is off.
 
-Two caveats come with it. The enforcement is a training property, not a switch,
-and the Model Spec says outright that production models "do not yet fully
-reflect" it, so a prompt is a strong preference rather than a guarantee. And the
-same privilege is what makes prompt injection interesting: text from a file, a
-tool result or a web page has no rank, so a harness that mixes it into the prompt
-is relying on the model to keep the two apart.
+Qwen Code renders five layers separated by `---`: a base section with identity, mandates
+and tool guidance, then context files, an appended prompt, git status, and the
+auto-memory section. Crush renders a Go template filled with the date, the git status,
+the context files it finds on disk and the available skills as XML. DeepSeek Harness
+reassembles the prompt per step from sections, contexts, tools and variables, and Codex
+assembles the system text, the context and the thread items in one pass. Kimi CLI works
+from a resolved profile that carries the prompt, the tool list and the model preference,
+and OpenHands builds it server-side, out of the client's reach. Different shapes for the
+same job.
 
-## The prompt is assembled, not written
-
-// TODO probably a short reminder that the system prompt isn't static helps 
-here with the flow
-
-Aider is the most explicit about the shape. It builds the prompt as eight ordered
-chunks: `system`, `examples`, `readonly_files`, `repo`, `done`, `chat_files`,
-`cur`, `reminder`. The context blocks are wrapped as a user message plus an
-assistant message agreeing to it, because the protocol has nowhere else to put
-them.
-
-Qwen Code layers five sections separated by `---`: a base section with identity,
-mandates and tool guidance, then context files, an appended prompt, git status,
-and the auto-memory section. Environment context adds the working directory, the
-date, the OS, the workspace structure, and the available skills.
-
-Crush renders a Go template. `templates/coder.md.tpl` is filled with the date,
-the git status (branch, `git status --short | head -20`, recent commits), the
-context files it finds on disk, and the available skills as XML.
-
-DeepSeek Harness assembles the prompt per step from sections, contexts, tools and
-variables. Codex's `build_prompt` assembles the system text, the context, and the
-thread items in one pass.
-
-Four different shapes for the same job, and that is half the list:
-
-<div class="agent-table-wrapper">
-  <table class="agent-table agent-table--rows">
-    <thead>
-      <tr>
-        <th>Agent</th>
-        <th>Assembled from</th>
-        <th>Where the text lives</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="agent-name" data-label="Agent">Aider</td>
-        <td data-label="Assembled from">Eight ordered chunks: system, examples, read-only files, repo map, done, chat files, current turn, reminder</td>
-        <td data-label="Where the text lives"><code>coders/chat_chunks.py</code>, shaped per model by <code>ModelSettings</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Codex</td>
-        <td data-label="Assembled from">System text, context, and thread items</td>
-        <td data-label="Where the text lives"><code>session/turn.rs</code>, <code>build_prompt</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Crush</td>
-        <td data-label="Assembled from">A Go template filled with date, git status, context files, skills</td>
-        <td data-label="Where the text lives"><code>internal/agent/prompt/prompt.go</code>, <code>templates/coder.md.tpl</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">DeepSeek Harness</td>
-        <td data-label="Assembled from">Sections, contexts, tools and variables</td>
-        <td data-label="Where the text lives"><code>packages/core/system-prompt</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Goose</td>
-        <td data-label="Assembled from">Prompt parts contributed by extensions, plus a per-turn context block</td>
-        <td data-label="Where the text lives"><code>agents/moim.rs</code> and the platform extensions</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Kimi CLI</td>
-        <td data-label="Assembled from">A resolved profile: system prompt, tool list, model preference</td>
-        <td data-label="Where the text lives"><code>session/subagent-host.ts</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenCode</td>
-        <td data-label="Assembled from">Environment info, instructions, skills, MCP instructions</td>
-        <td data-label="Where the text lives"><code>src/session/prompt.ts</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">OpenHands</td>
-        <td data-label="Assembled from">Built server-side, per conversation</td>
-        <td data-label="Where the text lives">Not in the client we reviewed</td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Pi</td>
-        <td data-label="Assembled from">Session state, plus <code>promptSnippet</code> and <code>promptGuidelines</code> from extensions</td>
-        <td data-label="Where the text lives"><code>packages/coding-agent/src/core/agent-session.ts</code></td>
-      </tr>
-      <tr>
-        <td class="agent-name" data-label="Agent">Qwen Code</td>
-        <td data-label="Assembled from">Five layers: base, context files, appended prompt, git status, auto-memory</td>
-        <td data-label="Where the text lives"><code>packages/core/src/core/prompts.ts</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## What the agent knows about you
-
-Three ingredients show up in almost every harness.
+The same split shows up in what goes in, and three ingredients show up in almost every
+harness.
 
 **Where it is.** The working directory, the date, the OS, and the git status of
-the repository. Crush shells out for the branch, a short status and the recent
-commits. Qwen adds the workspace structure and the available skills. Goose
-prepends a `<turn-context>` block with the current time, the working directory,
-the compaction status and the turn budget.
+the repository. Qwen adds the workspace structure. Goose prepends a `<turn-context>`
+block with the current time, the working directory, the compaction status and the turn
+budget.
 
 **Your rules.** Every harness needs a way to hand it project instructions, and
 every harness invented a file name for it. Crush reads the widest set:
@@ -310,128 +171,112 @@ per-session instructions, skills and MCP instructions. Aider takes the files you
 add to the chat, pastes them in full, and adds a repo map on top.
 
 That the harnesses read each other's file names is the pragmatic move, and also
-a confession: none of those names won, so they read all of them.
+a statement that none of those names "won", so they read all of them.
 
 **What it learned.** Qwen scores memories lexically, has the model judge
 relevance, then injects the survivors into the prompt. Goose keeps a
 top-of-mind block and a recall extension. Pi injects skills as `<skill>` XML
 blocks. The prompt is the delivery mechanism for all of it.
 
-## How the tools are exposed
+## System prompts and token caching
 
-The tool list is a schema, but the teaching happens in two other places.
+Earlier we brushed over a topic that has been assuming increasing relevance in the last months: token caching. It's
+worth understanding how it works here because system prompts have the strongest influence on cache hit ratios, and
+in turn the cache hit ratio influences your inference provider's bill and the perceived speed of the model/harness
+combination.
 
-The first is the tool description. Crush makes this explicit: tool descriptions
-are templated documents (`bash.md.tpl`, `edit.md.tpl`, and so on) that carry
-behavioral contracts into the model context, from banned commands to
-read-before-edit rules. Combined with the coder template, Crush teaches the same
-conventions twice. Pi does the same at a smaller scale: an extension registers a
-tool and contributes its `promptSnippet` and `promptGuidelines` with it.
+A caching mechanism for input tokens is a smart idea because a model starts every request from zero. It has no memory of
+the last one, so the whole conversation goes out again, prompt and all. To produce the first token, the model has to
+read that entire input and build the internal state it will reuse while generating the rest. That state is the key/value
+cache, and it is why a long prompt has a higher time to first token than a short one: there is more input to process
+before anything comes out.
 
-The second place is the prompt covering for a tool that is not there. Goose ships
-no `read` and no `grep` on purpose. The system prompt tells the model to use
-`cat`, `sed` and `rg` through `shell` instead. The instruction is the tool.
+Keeping this internal state means that if the next request starts
+with the same tokens, on the same model, with the same tools, the provider skips
+the work and bills the reused tokens at a fraction of the input price. The discount on cached input varies
+significantly by provider, within a range of ~10-50x cheaper than non-cached input, so the impact on the user's cost
+is significant. Moreover, the more tokens are cached, the faster an answer is produced.
 
-Two harnesses go the other way and shrink the surface instead. DeepSeek Harness
-in Code Mode exposes a single `run_code` tool plus a generated SDK prompt, so the
-model writes a program instead of choosing from a catalogue. Qwen hides deferred
-tools until `tool_search` loads them, which keeps the declaration list, and
-therefore the prompt prefix, stable across turns.
+The downside of this mechanism is that the match is literal and it stops at the first difference. Change one token near
+the front and everything after it is processed and paid for again even if it's the same as the previous turn. The system
+prompt sits at the front by construction, so in this regard it can provide the biggest benefits and the most
+disruption if not managed carefully.
 
-## KV caching and the bill
+If you want to know more about the mechanics of token (aka KV) caching, read Sam Rose's [Prompt
+caching: 10x cheaper LLM tokens, but
+how?](https://ngrok.com/blog/prompt-caching). We won't delve deeper into the technical functioning of token caching
+but we'll instead turn our attention to the practical consequences for the user and the implications for the
+dynamic management of system prompts.
+
+## Token caching and the bill
 
 A stable prompt is cheap, but a prompt that never changes is a prompt that cannot
-tell the model anything new. Three pressures pull against each other, and every
-harness in the list makes their own tradeoff.
+tell the model anything new. Similarly, the more context you give to the LLM the better its output, but the fewer
+tokens remain available for the user input. These are fundamental and unavoidable tensions that stem from the nature
+of a LLM, and every harness employs one or more techniques to strike a balance between these three competing
+factors:
 
-**Stability.** Every token before the first difference is billed at the cached
-rate. Keep the prefix identical and you keep hitting the cache.
+- **Stability.** Every token before the first difference is billed at the cached
+  rate. Keep the prefix identical and you keep hitting the cache.
 
-**Freshness.** The most useful parts of a prompt are often the ones that change:
-the current branch, the file you just touched, the todo list, the compaction
-state, the time. Goose puts all of it in a per-turn `<turn-context>` block, and
-nothing in that block can live in a cached prefix.
+- **Freshness.** The most useful parts of a prompt are often the ones that change and adapt to the current request:
+  the current branch, the file you just touched, the todo list.
 
-**Budget.** Everything in the prompt is context window you cannot spend on the
-conversation. A long prompt is cheap to reuse, but it also brings the compaction
-threshold closer, and compaction is what eventually rewrites the history and
-takes the cache with it. Goose skips its context block entirely below a 32k
-window, trading information for room.
-
-The strategy the agents employ is to stop treating the prompt as one 
-string and split it
-into blocks with different change rates. DeepSeek Harness reassembles the prompt
-on every step, but only re-logs the request header when the system, the tools or
-the config actually changed, and it persists the runtime context as a snapshot so
-that replaying a session rebuilds the same policy. Kimi CLI refreshes the prompt
-after compaction and reinjects the reminders the summary dropped, the goal and
-the loadable-tools manifest. That is the honest cost of compaction: you buy
-window back and you lose your prefix. Aider pins cache-control headers on its
-chunks so the early ones stay stable across turns.
+- **Budget.** Everything in the prompt is context window you cannot spend on the
+  conversation. A long prompt is cheap to reuse and narrows down the LLM's range of action, but it also brings the
+  compaction threshold closer, and compaction is what eventually rewrites the history and decimates the cache hit ratio.
 
 ## Tricks that keep the prefix warm
 
-// TODO this should be merged with the cache para?
-
-None of this is exotic. It is the same handful of moves, whether you write a
-harness or an application.
+Every harness resends the whole prefix on every turn, so anything it chooses to put in that prefix is a cache decision.
+That is why the strategy the agents employ is to stop treating the prompt as one string and split it into blocks with
+different change rates. No matter the specific steps each harness takes, they all really stem from the same 
+handful of principles:
 
 - **Stable first, volatile last.** Instructions and reference material at the
   front, changing content at the end. OpenAI's guide says it plainly: timestamps
-  and user-specific content belong at the end rather than the beginning.
+  and user-specific content belong at the end rather than the beginning. Goose is
+  explicit about the split: the current branch, the file it just touched and the
+  compaction state go in a per-turn `<turn-context>` block, and nothing in that
+  block can live in a cached prefix, so the prefix stays stable and only the tail
+  changes.
 - **Do not touch the tool list.** Tool definitions are part of the prefix, so
-  adding, removing, renaming or reordering them changes it. To disable tools for
-  one call, pass `tool_choice: "none"` instead of dropping the definitions, or
-  restrict the callable set with `allowed_tools`. Qwen Code's `tool_search` is
-  the same idea from the other direction: it keeps the declaration list stable on
-  purpose and appends deferred tools at the end.
-- **Append, do not rewrite.** Editing, trimming or summarising an earlier message
-  changes the prefix. That is the hidden bill for compaction, and it is why the
-  harnesses that compact are careful about when they do it.
-- **Clear the minimum cacheable length.** Anything shorter than that is not
-  cached at all, so a shared block just below the threshold caches nothing.
-  Adding genuinely useful stable material can be cheaper than leaving it out,
-  which is a strange sentence that the pricing makes true.
-- **Put the breakpoint where the stability ends.** A breakpoint at the boundary
-  between the stable block and the volatile tail means the tail is processed at
-  the normal rate instead of being written to the cache on every call. Writing a
-  breakpoint can cost a little more than ordinary input, so it should sit in
-  front of content you will actually reuse.
-- **Keep the session warm.** Caches expire in minutes. An agent that sits idle
+  adding, removing, renaming or reordering them changes it. Scope instead of
+  rewriting: Crush filters the list per agent and restricts its `task` agent to
+  read-only tools, so an agent gets fewer tools without the declarations changing.
+  Qwen Code's `tool_search` works from the other end, keeping the declaration list
+  stable on purpose and appending deferred tools at the end.
+- **Append, do not rewrite.** Rewriting a line near the front of the prompt
+  invalidates everything after it, so new rules and new context go at the end.
+  Qwen Code assembles its prompt in layers and the third layer is `appendPrompt`,
+  which is what `--append-system-prompt` feeds: your additions extend the prompt
+  instead of editing it.
+- **Clear the minimum cacheable length.** Anything shorter than what a model declares as the minimum cacheable
+  number of tokens is not cached at all, so a shared block just below the threshold caches nothing. As
+  counterintuitive that might sound, adding genuinely useful stable material can be cheaper than leaving it out.
+- **Put the breakpoint where the stability ends.** A breakpoint caches everything
+  up to its own position, so it belongs at the end of the content you want reused:
+  the tail is then processed at the normal rate instead of being written to the
+  cache on every call. Writing a breakpoint can cost a little more than ordinary
+  input, though. Aider marks the last message of each stable chunk, so the system prompt,
+  the examples, the repo map and the files in chat stay cached while the current
+  turn does not.
+- **Keep the session warm.** Caches are maintained per session and expire in minutes. An agent that sits idle
   for an hour pays full price on the next turn, which is why Aider pings the
   thread every few minutes to keep the cache alive.
 
-## What you cannot see
-
-// TODO would drop this
-
-The prompt is the part of the agent you are most likely to tune and the part that
-is easiest to hide.
-
-OpenHands builds prompts server-side. The client we reviewed declares tools per
-conversation and lets the agent server own the text, so the assembly is not in
-the repository we read. Crush is the mirror image: its step loop lives in an
-external library, but the prompt does not, so the interesting part stayed
-reviewable.
-
-Aider makes the visibility question configurable per model.
-`use_system_prompt` decides whether a system message is used at all,
-`examples_as_sys_msg` decides whether the edit examples travel as system
-messages, and `reminder` decides whether the reminder arrives as a system or a
-user message.
-
 ## Conclusions
 
-The five components we wrote about are the machine. The system prompt is the
+The five components we wrote about are the machinery. The system prompt is the
 configuration, and after reading ten codebases it is the first file we would open
 in a new agent: it says what the tool thinks it is, what it assumes about your
 repository, and what it will do without asking.
 
 It is also where the edges of the design show up first. Cache stability,
-instruction-file conventions and compaction all meet in the prompt, which is why
-the ten harnesses agree on the ingredients and split on everything that happens
-around them.
+instruction-file conventions and compaction all meet in the prompt. Yet the problem of striking a balance between
+the various tensions converging into the system prompt is complex enough that
+the ten harnesses agree on the need for a system prompt but employ different techniques to manage it.
 
-In the next posts we will keep digging into single parts of the anatomy.
+In the next posts we will keep digging into another part of a coding agent's anatomy.
 
 Follow along on the [series page](/writing/how-coding-agents-work/).
