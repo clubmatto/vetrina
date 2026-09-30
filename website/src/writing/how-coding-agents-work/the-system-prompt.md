@@ -4,7 +4,6 @@ description: Every request to a coding agent carries instructions you never
   typed. We read ten open-source agents to see what goes into that text, how the
   tools are taught, and what it costs to keep it stable.
 date: 2026-09-30
-draft: true
 tags:
   - ai
   - agents
