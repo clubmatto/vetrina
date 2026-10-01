@@ -5,6 +5,7 @@ import { eq } from "./src/_filters/comparison.js";
 import { formatDate } from "./src/_filters/date.js";
 import { asset } from "./src/_filters/asset.js";
 import { posts, postsByYear } from "./src/_collections/posts.js";
+import { seriesPosts } from "./src/_collections/series.js";
 import { tags } from "./src/_collections/tags.js";
 import { filterByTag } from "./src/_filters/tag.js";
 import { lucideShortcode } from "./src/_shortcodes/lucide.js";
@@ -148,6 +149,7 @@ export default function (eleventyConfig: EleventyConfig) {
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);
+  eleventyConfig.addCollection("seriesPosts", seriesPosts);
   eleventyConfig.addCollection("tagList", tags);
 
   eleventyConfig.addLiquidFilter("filterByTag", filterByTag);

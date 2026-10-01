@@ -1,0 +1,50 @@
+{% if series and collections.seriesPosts.length > 1 %}
+  {% if series_index %}
+    <section class="series-toc" aria-label="Posts in this series">
+      <h2>Posts in this series</h2>
+      <ol>
+        {% for post in collections.seriesPosts %}
+          <li
+            {% if post.url == page.url %}
+              aria-current="page"
+            {% endif %}
+          >
+            <div class="post-row">
+              <a href="{{ post.url }}" class="post-title">{{ post.data.title }}</a>
+              <span class="date">{{ post.date | formatDate }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+  {% else %}
+    {% assign isCurrent = false %}
+    {% for post in collections.seriesPosts %}
+      {% if isCurrent %}
+        {% assign nextPost = post %}
+        {% break %}
+      {% elsif post.url == page.url %}
+        {% assign isCurrent = true %}
+      {% else %}
+        {% assign previousPost = post %}
+      {% endif %}
+    {% endfor %}
+    {% if isCurrent %}
+      <nav class="series-nav" aria-label="Series navigation">
+        {% if previousPost %}
+          <a class="series-nav-post" href="{{ previousPost.url }}">
+            <span class="series-nav-label">Previous</span>
+            <span class="series-nav-title">{{ previousPost.data.title }}</span>
+          </a>
+        {% endif %}
+        <a class="series-nav-overview" href="{{ collections.seriesPosts[0].url }}">Series overview</a>
+        {% if nextPost %}
+          <a class="series-nav-post series-nav-next" href="{{ nextPost.url }}">
+            <span class="series-nav-label">Next</span>
+            <span class="series-nav-title">{{ nextPost.data.title }}</span>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endif %}
+{% endif %}

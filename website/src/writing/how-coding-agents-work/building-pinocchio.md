@@ -7,6 +7,7 @@ date: 2026-09-15
 tags:
   - ai
   - agents
+series: how-coding-agents-work
 image: /assets/writing/building-pinocchio.png
 image_width: 2400
 image_height: 1260
@@ -371,5 +372,3 @@ In the next post, we'll apply the five-point framework to the shortlist of
 coding agents we introduced in the opening article of the series. The goal
 is to make a comparative analysis of real world agents to understand their
 relative strengths and weaknesses.
-
-Follow along on the [series page](/writing/how-coding-agents-work/)

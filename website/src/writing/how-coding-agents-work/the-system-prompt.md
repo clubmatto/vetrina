@@ -7,6 +7,7 @@ date: 2026-09-30
 tags:
   - ai
   - agents
+series: how-coding-agents-work
 ---
 
 We started this series by shortlisting [ten open-source coding
@@ -370,5 +371,3 @@ techniques to manage it.
 
 In the next posts we will keep digging into parts of a coding agent's
 anatomy.
-
-Follow along on the [series page](/writing/how-coding-agents-work/).

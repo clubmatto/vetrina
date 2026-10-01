@@ -7,6 +7,8 @@ tags:
   - ai
   - agents
   - meta
+series: how-coding-agents-work
+series_index: true
 image: /assets/writing/how-coding-agents-work.png
 image_width: 2400
 image_height: 1260
@@ -227,5 +229,3 @@ building a tiny coding agent from scratch — and then do a comparative analysis
 of "our" coding agents on exactly those components:
 core agent loop, tool and permission model, context and memory handling,
 sub-agents, and sessions.
-
-Follow along on the [series page](/writing/how-coding-agents-work/)

@@ -7,6 +7,7 @@ date: 2026-09-22
 tags:
   - ai
   - agents
+series: how-coding-agents-work
 image: /assets/writing/comparative-analysis-of-coding-agents.png
 image_width: 2400
 image_height: 1260
@@ -392,5 +393,3 @@ else is the product.
 It's worth noting that so far we still only scratched the surface of what there's to know on each subject. That's
 why in the upcoming articles, we'll start digging into specific parts of the
 anatomy of a coding agent, so stay tuned for more content!
-
-Follow along on the [series page](/writing/how-coding-agents-work/).
