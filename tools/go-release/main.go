@@ -64,7 +64,7 @@ func main() {
 	uploadArchives(releaseID, projectDir, info.project, info.version, targets)
 
 	if cfg.brewPath != "" {
-		generateFormula(info.version, checksums, cfg.brewPath, repoRoot)
+		generateFormula(info.project, info.version, checksums, cfg.brewPath, repoRoot)
 		commitFormula(cfg.brewPath, repoRoot)
 	}
 }
@@ -415,25 +415,48 @@ func doRequest(req *http.Request) *http.Response {
 	return resp
 }
 
-func generateFormula(version string, cs checksums, brewPath, repoRoot string) {
+// formulaDescriptions is the one line each formula carries, keyed by project
+// directory name. A missing entry is not fatal: the desc is cosmetic, while the
+// class name, binary name and URLs are not.
+var formulaDescriptions = map[string]string{
+	"fakedata": "CLI tool to generate fake data rows for testing and development",
+	"db-diff":  "Compare one table across two databases by checksumming",
+}
+
+// formulaClassName turns a project directory into a Homebrew formula class.
+// db-diff becomes DbDiff, fakedata becomes Fakedata.
+func formulaClassName(project string) string {
+	var sb strings.Builder
+	for _, part := range strings.Split(project, "-") {
+		if part == "" {
+			continue
+		}
+		sb.WriteString(strings.ToUpper(part[:1]))
+		sb.WriteString(part[1:])
+	}
+
+	return sb.String()
+}
+
+func generateFormula(project, version string, cs checksums, brewPath, repoRoot string) {
 	absPath := filepath.Join(repoRoot, brewPath)
 	dir := filepath.Dir(absPath)
 	os.MkdirAll(dir, 0755)
 
 	urlFor := func(goos, goarch string) string {
-		name := fmt.Sprintf("fakedata_%s_%s_%s.tar.gz", version, goos, goarch)
+		name := fmt.Sprintf("%s_%s_%s_%s.tar.gz", project, version, goos, goarch)
 		return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", info.repo, info.tag, name)
 	}
 
 	shaFor := func(goos, goarch string) string {
-		name := fmt.Sprintf("fakedata_%s_%s_%s.tar.gz", version, goos, goarch)
+		name := fmt.Sprintf("%s_%s_%s_%s.tar.gz", project, version, goos, goarch)
 		return cs[name]
 	}
 
 	var sb strings.Builder
-	fmt.Fprintf(&sb, `class Fakedata < Formula
-  desc "CLI tool to generate fake data rows for testing and development"
-  homepage "https://matto.club/vetrina/fakedata"
+	fmt.Fprintf(&sb, `class %s < Formula
+  desc "%s"
+  homepage "https://matto.club/vetrina/%s"
   license "MIT"
   version "%s"
 
@@ -456,20 +479,26 @@ func generateFormula(version string, cs checksums, brewPath, repoRoot string) {
   end
 
   def install
-    bin.install "fakedata"
+    bin.install "%s"
   end
 
   test do
-    output = shell_output("#{bin}/fakedata --help")
-    assert_match "fakedata", output
+    output = shell_output("#{bin}/%s --help")
+    assert_match "%s", output
   end
 end
 `,
+		formulaClassName(project),
+		formulaDescriptions[project],
+		project,
 		version,
 		urlFor("darwin", "amd64"), shaFor("darwin", "amd64"),
 		urlFor("darwin", "arm64"), shaFor("darwin", "arm64"),
 		urlFor("linux", "amd64"), shaFor("linux", "amd64"),
 		urlFor("linux", "arm64"), shaFor("linux", "arm64"),
+		project,
+		project,
+		project,
 	)
 
 	if err := os.WriteFile(absPath, []byte(sb.String()), 0644); err != nil {
