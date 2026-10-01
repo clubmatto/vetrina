@@ -1,0 +1,13 @@
+/bin/
+.vscode
+/dist
+*.perf
+*.db
+.coverdata
+*.out
+.idea
+/tmp
+
+.unit.out
+coverage.html
+coverage.txt

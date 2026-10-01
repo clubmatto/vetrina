@@ -1,0 +1,35 @@
+name: db-diff Release
+
+on:
+  push:
+    tags:
+      - "db-diff/v[0-9]+.[0-9]+.[0-9]+"
+    paths:
+      - "db-diff/**"
+      - ".github/workflows/db-diff-release.yml"
+      - "tools/go-release/**"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Release
+        run: |
+          go run -C tools/go-release . \
+            --tag-prefix db-diff/ \
+            --tag ${{ github.ref_name }} \
+            --repo ${{ github.repository }} \
+            --brew Formula/db-diff.rb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

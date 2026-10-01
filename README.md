@@ -9,6 +9,7 @@
 
 [![ai-kit CI](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml)
 [![fakedata CI](https://github.com/clubmatto/vetrina/actions/workflows/fakedata-ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/fakedata-ci.yml)
+[![db-diff CI](https://github.com/clubmatto/vetrina/actions/workflows/db-diff-ci.yml/badge.svg)](https://github.com/clubmatto/vetrina/actions/workflows/db-diff-ci.yml)
 [![License: MIT](https://img.shields.io/github/license/clubmatto/vetrina)](LICENSE)
 
 The Club Matto monorepo — open source CLI tools and projects for developers.
@@ -19,6 +20,7 @@ The Club Matto monorepo — open source CLI tools and projects for developers.
 |------------------------|------------------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------|
 | [ai-kit](./ai-kit)     | Sync AI rules, skills, and commands into any project | TypeScript            | `npm install -g @clubmatto/ai-kit`                                                      |
 | [fakedata](./fakedata) | Generate fake data rows for testing and development  | Go                    | `go install matto.club/vetrina/fakedata@latest` / `brew tap clubmatto/vetrina https://github.com/clubmatto/vetrina && brew install clubmatto/vetrina/fakedata` |
+| [db-diff](./db-diff)   | Compare one table across two databases by checksumming | Go                  | `go install matto.club/vetrina/db-diff@latest` / `brew tap clubmatto/vetrina https://github.com/clubmatto/vetrina && brew install clubmatto/vetrina/db-diff` |
 | [mercato](./mercato)   | Public social media posts by the team                | Markdown              | —                                                                                       |
 | [website](./website)   | Club Matto website                                   | TypeScript / Eleventy | —                                                                                       |
 | [whatsmylocalai](./whatsmylocalai) | Which local AI can your machine run?     | Eleventy / JS         | —                                                                                       |
@@ -38,6 +40,9 @@ cd ai-kit && npm install && npm run ci
 # fakedata (Go)
 cd fakedata && make test
 
+# db-diff (Go)
+cd db-diff && make test
+
 # mercato (content)
 # No build step — posts are plain markdown
 
@@ -56,8 +61,9 @@ Every push and pull request runs automated checks:
 |--------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 | [ai-kit CI](.github/workflows/ai-kit-ci.yml)           | ![ai-kit CI](https://github.com/clubmatto/vetrina/actions/workflows/ai-kit-ci.yml/badge.svg)           | TypeScript lint, typecheck, test, integration |
 | [fakedata CI](.github/workflows/fakedata-ci.yml)       | ![fakedata CI](https://github.com/clubmatto/vetrina/actions/workflows/fakedata-ci.yml/badge.svg)       | Go lint + test                                |
+| [db-diff CI](.github/workflows/db-diff-ci.yml)         | ![db-diff CI](https://github.com/clubmatto/vetrina/actions/workflows/db-diff-ci.yml/badge.svg)         | Go lint + unit + integration                  |
 
-Releases are triggered by version tags (`ai-kit/v*.*.*`, `fakedata/v*.*.*`) and
+Releases are triggered by version tags (`ai-kit/v*.*.*`, `fakedata/v*.*.*`, `db-diff/v*.*.*`) and
 publish to npm, GitHub Releases, and Homebrew automatically.
 
 ## Contributing
