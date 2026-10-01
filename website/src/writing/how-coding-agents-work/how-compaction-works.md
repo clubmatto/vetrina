@@ -2,7 +2,7 @@
 title: "How compaction works, and which algorithm wins"
 description: Every coding agent eventually runs out of context window. We
   read ten open-source agents to see how they squeeze a conversation back
-  under budget: when they trigger, what they keep, what they summarize, and
+  under budget. When they trigger, what they keep, what they summarize, and
   what the whole operation costs.
 date: 2026-10-06
 draft: true
