@@ -7,6 +7,7 @@ publish_date: 2026-10-02
 topics:
   - clubmatto
   - how-we-work
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/why-we-use-jenkins-instead-of-github-actions.png
 ---
 
 ## LinkedIn
