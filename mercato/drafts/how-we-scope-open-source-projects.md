@@ -4,6 +4,7 @@ platforms:
   - linkedin
   - twitter
 publish_date: 2026-10-01
+image: https://github.com/clubmatto/vetrina/blob/main/assets/logo.png
 topics:
   - clubmatto
   - open-source
