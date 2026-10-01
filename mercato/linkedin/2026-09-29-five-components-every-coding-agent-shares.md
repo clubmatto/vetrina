@@ -1,17 +1,12 @@
 ---
 title: "Every coding agent is five components"
-platforms:
-  - linkedin
-  - twitter
-publish_date: 2026-09-29
+platform: linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
   - ai
   - open-source
 ---
-
-## LinkedIn
 
 📢 Every coding agent comes down to the same five components 📢
 
@@ -21,12 +16,3 @@ Ten open-source agents later, they all agree on the anatomy: the loop, tools, pe
 
 Read it here: https://matto.club/writing/how-coding-agents-work/a-comparative-analysis/
 
-## Twitter
-
-Struggling to understand how coding agents are built? This is the mental model we landed on.
-
-Every agent is the same five components: loop, tools, permissions, context, sessions.
-
-The loop is a few dozen lines of code. Everything else is the product.
-
-https://matto.club/writing/how-coding-agents-work/a-comparative-analysis/
