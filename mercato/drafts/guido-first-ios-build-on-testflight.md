@@ -21,7 +21,7 @@ Guido turns a spare phone into a race engineer for your rig: a live Gran Turismo
 
 It finds your PS5 on your network by itself, and your telemetry never leaves it. Hands-free voice is free during early access.
 
-If you have a PS5 and Gran Turismo 7, we would love a few stints of honest feedback: https://matto.club/products/guido/
+If you have a PS5 and Gran Turismo 7, write to us with the email tied to your Apple account and we'll send the TestFlight invite: https://matto.club/products/guido/
 
 ## Twitter
 
@@ -29,4 +29,4 @@ If you have a PS5 and Gran Turismo 7, we would love a few stints of honest feedb
 
 We're looking for sim racers to test it. A live Gran Turismo 7 dashboard, and a co-driver you ask out loud: fuel, laps left, tyre temps.
 
-If you race on a PS5, tell us how it goes: https://matto.club/products/guido/
+If you race on a PS5, send us your Apple account email and we'll invite you: https://matto.club/products/guido/
