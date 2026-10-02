@@ -13,11 +13,11 @@ topics:
 
 ## LinkedIn
 
-🚀 Guido is on TestFlight for iPhone and iPad 🚀
+🚀 Guido is on TestFlight for iPhone 🚀
 
 We're looking for sim racers to test it.
 
-Guido turns a spare phone or tablet into a race engineer for your rig: a live Gran Turismo 7 dashboard, and a co-driver you can ask out loud. Fuel, laps left, tyre temperatures, answered by voice so you keep your eyes on the road.
+Guido turns a spare phone into a race engineer for your rig: a live Gran Turismo 7 dashboard, and a co-driver you can ask out loud. Fuel, laps left, tyre temperatures, answered by voice so you keep your eyes on the road.
 
 It finds your PS5 on your network by itself, and your telemetry never leaves it. Hands-free voice is free during early access.
 
@@ -25,7 +25,7 @@ If you have a PS5 and Gran Turismo 7, we would love a few stints of honest feedb
 
 ## Twitter
 
-🚀 Guido is on TestFlight for iPhone and iPad 🚀
+🚀 Guido is on TestFlight for iPhone 🚀
 
 We're looking for sim racers to test it. A live Gran Turismo 7 dashboard, and a co-driver you ask out loud: fuel, laps left, tyre temps.
 
