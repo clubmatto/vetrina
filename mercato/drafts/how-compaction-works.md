@@ -15,16 +15,23 @@ topics:
 
 📢 How coding agents work: compaction 📢
 
-Every agent eventually runs out of context window. We read ten open-source agents to see how they squeeze a conversation back under budget: when they trigger, what they keep, what they summarize.
+Every agent eventually runs out of context window. We read ten open-source
+agents to see how they squeeze a conversation back under budget: when they
+trigger, what they keep, what they summarize.
 
-Seven strategies, one shared skeleton. Compaction is a model call, so it can fail, and it busts the token cache. So which algorithm wins?
+The numbers all converge. The philosophy doesn't. What the summary preserves,
+whether the squeeze is recoverable, whether the record survives: that's where
+the ten differ. So which algorithm wins? None of them.
 
-Read it here: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
+Read it
+here: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
 
 ## Twitter
 
 📢 How coding agents work: compaction 📢
 
-Every agent compacts the same way: drop cheap tokens, keep the recent tail, summarize when you must. Seven strategies split from there, and the cache bill decides.
+Every agent compacts the same way: trigger early, prune first, keep the tail,
+summarize the rest. The math converges, the philosophy doesn't. No algorithm
+wins.
 
 https://matto.club/writing/how-coding-agents-work/how-compaction-works/
