@@ -3,7 +3,7 @@ title: "Same model, different writer?"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-10-03
+publish_date: 2026-10-10
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt.png
 topics:
   - agents
