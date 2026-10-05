@@ -15,11 +15,12 @@ image_width: 2400
 image_height: 1260
 ---
 
-In this article of the series, we'll finally deep-dive into how compaction
-works. We explained briefly in the past that compaction isn't a feature
-coding agents have but an actual budget limitation models come with. So
-there's no work around it. You *must* deal with context management to keep
-your sessions within budget.
+In this article of the series we finally deep-dive into how compaction works.
+[The comparative analysis](/writing/how-coding-agents-work/a-comparative-analysis/)
+touched on it briefly. To be clear about why it matters: the context window is
+a budget limitation models come with, not a design choice harnesses get to
+negotiate. So there's no workaround. You *must* deal with context management
+to keep your sessions within budget.
 
 ## Why compaction exists at all
 
@@ -43,7 +44,13 @@ many different strategies you can employ.
 
 ## Conceptually, a simple problem (but simple ain't easy)
 
-// TODO what makes tokens cheap?
+Not all tokens cost the same to keep. What makes a token cheap is whether
+you can re-derive it. A file's contents are cheap: the file is still on
+disk. A test run is cheap: you can run it again. What the user asked for,
+the decisions made along the way, the constraints discovered the hard way:
+nothing can regenerate those, so they stay expensive no matter how old they
+are. Compaction strategies mostly exploit this difference: handle the cheap
+tokens with deletion and spend the model call on the expensive ones.
 
 :::note[TL;DR]
 Trigger before overflow, throw away cheap tokens first,
@@ -73,28 +80,34 @@ see lots of different strategies at play.
 
 When to trigger is the most uniform decision across agents:
 
-// TODO in alphabetical order
+| Agent            | When it compacts                                                                      |
+|------------------|---------------------------------------------------------------------------------------|
+| Aider            | In a background thread when history exceeds a small budget (1/16 of the window)       |
+| Codex            | Before sampling, when the pending tokens would overflow the budget                    |
+| Crush            | When 20k tokens remain on >200k windows, or 20% on smaller ones                       |
+| DeepSeek Harness | At 0.8 of the model's context window (`thresholdRatio`)                               |
+| Goose            | At 0.8 (`GOOSE_AUTO_COMPACT_THRESHOLD`), reactively on overflow, capped at 2 attempts |
+| Kimi CLI         | At ~0.85 (`compactionTriggerRatio`), or manually via `/compact`                       |
+| OpenCode         | When overflow is detected at step finish; auto-compaction is enqueued                 |
+| OpenHands        | When the event stream exceeds a fixed event count (`max_size`), checked every step    |
+| Qwen Code        | On `token_limit`, detected from the API response or estimated                         |
 
-| Agent                | When it compacts                                                    |
-|----------------------|---------------------------------------------------------------------|
-| DeepSeek Harness     | At 0.8 of the model's context window                                |
-| (`thresholdRatio`)   |                                                                     |
-| Goose                | At 0.8 (`GOOSE_AUTO_COMPACT_THRESHOLD`), reactively on overflow,    |
-| capped at 2 attempts |                                                                     |
-| Kimi CLI             | At ~0.85 (`compactionTriggerRatio`), or manually via                |
-| `/compact`           |                                                                     |
-| Crush                | When 20k tokens remain on >200k windows, or 20% on smaller ones     |
-| OpenCode             | When overflow is detected at step finish, auto-compaction is        |
-| enqueued             |                                                                     |
-| Qwen Code            | On `token_limit`, detected from the API response or estimated       |
-| Codex                | Before sampling, when the pending tokens would overflow the budget  |
-| Aider                | In a background thread when history exceeds a small budget (1/16 of |
-| the window)          |                                                                     |
+Clustering around 0.8 is not a coincidence, and it's not the only tradeoff
+hiding in the trigger. The summarizer needs room to work: the compaction call
+sends the history out and expects a summary back, so firing at 99% would mean
+asking a model to summarize a prompt that barely fits. There's also a cache
+bill to consider. The API replays the whole conversation on every request,
+and providers cache long prefixes and bill them cheaper. A compacted context
+is a brand-new prefix: every squeeze throws the cache away. Fire too eagerly
+and you pay that bill over and over. Fire too late and the next request
+fails.
 
-Clustering around 0.8 is not a coincidence. The summarizer needs room
-to work: the compaction call sends the history out and expects a
-summary back, so firing at 99% would mean asking a model to summarize a
-prompt that barely fits.
+Not everyone fires on a ratio. Codex checks the budget before every sample,
+OpenCode waits for an actual overflow and reacts, OpenHands counts events
+instead of tokens. The majority curates the budget ahead of time; the
+minority treats compaction as emergency response. That split, curate versus
+react, is the first qualitative difference between these agents and it won't
+be the last.
 
 ## The how
 
@@ -107,31 +120,25 @@ In practice, most agents employ more than one strategy to compact a session.
 
 The cheapest token is the one you never send to the summarizer. Old tool
 output is large, replaceable (the file is still on disk), and can be
-dropped without LLM calls:
+dropped without LLM calls. This is the closest thing to a consensus move in
+the whole list: four of the ten implement a model-free relief valve, and
+they all reach for it before the expensive step.
 
-// TODO alphabetical order
-
-- **OpenCode** clears old tool results once more than 40k tokens of them
-  accumulate, until at least 20k are freed. No model call, no summary, the
-  file stays on disk if the model needs it again.
 - **DeepSeek Harness** truncates oversized tool results (head 4096, tail
   1024 chars) and *spills* anything over 50KB to a side store, leaving a
   locator behind. The conversation keeps a pointer; the bytes move out.
+- **Goose** summarizes old tool-call/result *pairs* into a chain summary.
+- **OpenCode** clears old tool results once more than 40k tokens of them
+  accumulate, until at least 20k are freed. No model call, no summary, the
+  file stays on disk if the model needs it again.
 - **Qwen Code** calls its version *microcompaction*: old tool results and
   media become `[Old tool result content cleared]`, keeping the recent
   five, triggered by idle time or size.
-- **Goose** summarizes old tool-call/result *pairs* into a chain summary.
-
-This is the closest thing to a consensus move in the whole list: four of
-the ten implement a model-free relief valve, and they all reach for it
-before the expensive step.
-
-// TODO this para and the previous one should switch so it flows more logically
 
 ### Budget the tail, summarize the head
 
-The textbook "obvious" algorithm: Pick how much recent context survives
-verbatim, summarize the rest. Here's some examples of how agents implement
+The textbook "obvious" algorithm: pick how much recent context survives
+verbatim, summarize the rest. Here are some examples of how agents implement
 this strategy:
 
 - **OpenCode** reserves the last 25% of the usable window (capped between
@@ -141,6 +148,11 @@ this strategy:
 - **Kimi CLI** selects a head and a tail within a token budget, inserts an
   elision marker between them, and rebuilds the history as `[kept head,
   marker, kept tail, summary]`.
+- **OpenHands** turns the whole strategy into a pluggable component: a
+  `Condenser` sits between the event stream and the model, and the default
+  implementation keeps the first events and the recent tail while
+  summarizing the middle into a single summary event. Swap in a different
+  condenser and the compaction strategy changes without touching the agent.
 - **Pi** keeps 20k tokens of recent history with `findCutPoint()` snapping
   the cut to entry boundaries so the summary never lands mid-operation.
 
@@ -200,24 +212,24 @@ The compaction call has its own prompt, cost, latency, and failure modes.
 Each agent has its own coping mechanisms.
 :::
 
-There's some sort of memeable lesson into compaction: the fix for "the model
-call is too big" is another model call.
+There's a memeable lesson in compaction: the fix for "the model call is too
+big" is another model call.
 
 That call has a prompt, a token budget, and a
 latency bill paid at the worst possible moment: right when the agent was
-busy.
+busy. The cost is real. You pay to send the history to the summarizer, you
+pay again for the summary that comes back, and the session stalls while
+both happen.
 
-Since compaction is "just" an API call... it can fail so the harnesses take
+Since compaction is "just" an API call, it can fail. The harnesses take
 that into account:
 
-// TODO reorder
-
-- **Kimi** treats compaction as a full LLM call with retry logic and
-  *overflow-shrink*: if the summarizer input is itself too large, it
-  shrinks it and tries again. Media gets stripped along the way.
 - **Codex** has a model fallback: if the summarizer model is unavailable,
   another one takes the call. Pre- and post-compaction hooks let external
   code intercept the whole thing.
+- **Kimi CLI** treats compaction as a full LLM call with retry logic and
+  *overflow-shrink*: if the summarizer input is itself too large, it
+  shrinks it and tries again. Media gets stripped along the way.
 - **OpenCode** takes the most elegant architectural position: compaction
   is a *hidden agent*, with zero tools, its own prompt, and a pinned
   model. It's testable like any agent, overridable like any agent, and
@@ -238,24 +250,55 @@ truth for resume, undo and branching. Harnesses with an event log keep the
 original; the others lose what the summary loses.
 :::
 
-When we first did a comparative analysis of coding agents, we explained that
-one big challenge of such systems is that they drift. Now, looking at how
-they deal with compaction, it should be a little clearer why this happens.
+When we first did a
+[comparative analysis](/writing/how-coding-agents-work/a-comparative-analysis/)
+of coding agents, we explained that one big challenge of such systems is
+that they drift. Now, looking at how they deal with compaction, it should
+be a little clearer why this happens.
 
-No matter the approach, summarizing rewrites the history of a conversation
-so a few (more advanced?) coding agents remember everything.
+No matter the approach, summarizing rewrites the history of a conversation.
+A few coding agents refuse to let that rewrite be lossy and keep the
+original around.
 
 In our research, we found that DeepSeek Harness has the most
-interesting approach. It enforces" model-visible ⟺ logged" as a runtime
+interesting approach. It enforces "model-visible ⟺ logged" as a runtime
 invariant: compaction is
 a *projection* over the log, a surface replacement, and the original
-events are all still on disk. Kimi logs compaction as typed records on
+events are all still on disk. Kimi CLI logs compaction as typed records on
 its wire log, so a resumed session rebuilds not just the messages but
 the compaction state itself.
 
 The lesson generalizes beyond compaction: **the conversation the model sees
-and the record the user keeps are two different things**. Te harnesses
-keep them separate recover gracefully from every squeeze.
+and the record the user keeps are two different things**. The harnesses
+that keep them separate recover gracefully from every squeeze.
+
+## So which one wins?
+
+By now the uncomfortable answer should be visible: no algorithm wins,
+because the algorithm is not where the differences are. The quantitative
+choices all converge. Everyone fires early, everyone reaches for
+model-free relief before the expensive step, everyone keeps a tail and
+summarizes the head. Swap one agent's compaction into another and you
+wouldn't notice by lunch.
+
+The differences that survive contact with a long session are qualitative:
+
+- **What the summary preserves.** Pi summarizes into a structured state
+  snapshot (goal, constraints, progress, decisions, next steps) and keeps
+  updating it as the session continues. Crush summarizes into one blunt
+  prose dump. The first agent wakes up from compaction knowing what it was
+  doing; the second wakes up with vibes.
+- **Whether the squeeze is recoverable.** Kimi CLI degrades in stages, each
+  recoverable from the one before. Crush truncates hard at the summary
+  message and whatever the summary missed is gone.
+- **Whether the record survives.** DeepSeek Harness keeps the original
+  events on disk and treats compaction as a projection. Most harnesses
+  edit the history in place, and the rewrite *is* the history.
+
+The thresholds and the budgets are settings. These three choices are
+design decisions about what a harness thinks a conversation is: a plan to
+keep, a transcript to compress, or a log to project. That's where coding
+agents qualitatively differ: not in the math, in the philosophy.
 
 ## Conclusions
 
@@ -266,3 +309,6 @@ tail you keep decides how well the agent steers after compaction runs. The
 summary format decides what your agent remembers for the rest of the
 session. And whether the record and the conversation are the same file
 decides how much of a long session survives a resume.
+
+Read the series from the start:
+[how coding agents work](/writing/how-coding-agents-work/).
