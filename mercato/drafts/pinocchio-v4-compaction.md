@@ -11,8 +11,8 @@ topics:
 
 ## Twitter
 
-Pinocchio v4 has one compaction strategy: summarize the first half, keep the recent tail. 20 lines of Go.
+Pinocchio v4 has one compaction strategy: summarize the first half, keep the recent tail. About 40 lines of Go.
 
-The ten agents we read carry seven. Verdict: you need one good one.
+The ten agents we read layer seven. Fine for a puppet. The pipeline wins the week.
 
 https://matto.club/writing/how-coding-agents-work/how-compaction-works/
