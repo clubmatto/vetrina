@@ -2,23 +2,23 @@ class DbDiff < Formula
   desc "Compare one table across two databases by checksumming"
   homepage "https://matto.club/vetrina/db-diff"
   license "MIT"
-  version "0.0.2"
+  version "0.0.3"
 
   if OS.mac?
     if Hardware::CPU.intel?
-      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.2/db-diff_0.0.2_darwin_amd64.tar.gz"
-      sha256 "68a621f4ecf7f9cdc2cd092060725a4d7fb6de267006325a14a71bf8f024a3ce"
+      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.3/db-diff_0.0.3_darwin_amd64.tar.gz"
+      sha256 "d7ea63a38f903dc6a1643538f08c2bcbec344e041e9dbdbe1c429b5f729414ac"
     elsif Hardware::CPU.arm?
-      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.2/db-diff_0.0.2_darwin_arm64.tar.gz"
-      sha256 "974e300adee3295f9cf96c43cce74f313f69325fbd93f52dce934b873f9dc128"
+      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.3/db-diff_0.0.3_darwin_arm64.tar.gz"
+      sha256 "4bab130175e58cdfefc134cd8580910977d602928d06a20d77a0110644c68fe4"
     end
   elsif OS.linux?
     if Hardware::CPU.intel?
-      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.2/db-diff_0.0.2_linux_amd64.tar.gz"
-      sha256 "a3cc3621dd37dffd14d12ce7bdc75e11992f4aeda07c820803d8a1d67f98738c"
+      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.3/db-diff_0.0.3_linux_amd64.tar.gz"
+      sha256 "a0bb1c50a78f041a4a1573a5f419ec24646383fcc2d8782c971fff9aa19efaaa"
     elsif Hardware::CPU.arm?
-      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.2/db-diff_0.0.2_linux_arm64.tar.gz"
-      sha256 "a2178e3692601997cd43664d7a4d4a593831eff7f6975077fe43979f657c3192"
+      url "https://github.com/clubmatto/vetrina/releases/download/db-diff/v0.0.3/db-diff_0.0.3_linux_arm64.tar.gz"
+      sha256 "fb8f99fbce20dae2da294500a83489e1adb39d185a95a9d6d8b63baf73c508e2"
     end
   end
 
