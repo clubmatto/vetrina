@@ -166,7 +166,7 @@ These are known and deliberate for this version:
   fast in practice but not free.
 - **The comparison is not transactional.** Rows written while `db-diff` runs can show up as
   differences. Run it against a quiesced replica when that matters.
-- **Session settings are not pinned.** Each connection renders values with its own timezone and
-  charset, so both sides should use the same settings. See
+- **Session settings are not pinned.** Each connection renders `timestamptz`, `TIMESTAMP` and
+  `DateTime` values with its own timezone, so both sides should use the same settings. See
   [how-it-works.md](docs/how-it-works.md#why-the-same-engine-only).
 - **PostgreSQL 14 or newer**, because the segment checksum uses the `bit_xor` aggregate.

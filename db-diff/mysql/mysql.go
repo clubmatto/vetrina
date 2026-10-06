@@ -81,12 +81,20 @@ func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange dif
 // a column that is NULL on one side and empty on the other would look equal,
 // which is one of the replication artifacts this tool exists to find. The bitmap
 // is one fixed width character per column, so it cannot collide with a digest.
+//
+// The column digest casts to BINARY, not CHAR. CAST(x AS CHAR) decodes the
+// value through the connection character set, and bytes that cannot be decoded
+// become the empty string: X'DEADBEEF' and X'DEADBEE0' both hash as MD5(”), so
+// two tables that differ in a BLOB, BINARY or VARBINARY column compare equal and
+// the diff reports no differences. CAST(x AS BINARY) takes the stored bytes
+// instead, which distinguishes them. For text the two are the same bytes, so
+// this changes nothing for VARCHAR and TEXT.
 func rowHashExpr(columns []string) string {
 	parts := make([]string, len(columns))
 	bitmap := make([]string, len(columns))
 	for i, column := range columns {
 		identifier := sqlbuild.MySQLIdentifier(column)
-		parts[i] = fmt.Sprintf("MD5(COALESCE(CAST(%s AS CHAR), ''))", identifier)
+		parts[i] = fmt.Sprintf("MD5(COALESCE(CAST(%s AS BINARY), ''))", identifier)
 		bitmap[i] = fmt.Sprintf("IF(%s IS NULL, '0', '1')", identifier)
 	}
 

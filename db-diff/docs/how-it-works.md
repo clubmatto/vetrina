@@ -106,11 +106,18 @@ a timestamp carries different precision; a decimal pads differently. Checking th
 value across engines therefore hashes two different strings, and the diff reports every row as
 changed.
 
-There is a second, sharper reason. Each engine renders a value using its session settings:
-PostgreSQL formats a `timestamptz` in the session `TimeZone`, MySQL decodes text in the
-connection charset, ClickHouse formats a `DateTime` in the column timezone. Two databases with
-different settings hash identical rows differently, so even a same engine comparison needs the
-two connections to agree. `db-diff` does not pin these settings for you.
+There is a second, sharper reason. Each engine renders some values using its session settings:
+PostgreSQL formats a `timestamptz` in the session `TimeZone`, MySQL converts a `TIMESTAMP` by
+the session `time_zone` (a `DATETIME` is unaffected), and ClickHouse formats a `DateTime` in the
+column timezone. Two databases with different settings hash identical rows differently, so even
+a same engine comparison needs the two connections to agree. `db-diff` does not pin these
+settings for you.
+
+MySQL used to be worse than that: the column digest cast each value `AS CHAR`, which decoded it
+through the connection *character set*. Bytes that could not be decoded became the empty string,
+so two different `BLOB` values hashed alike, and the same text hashed differently under a
+different connection charset. The digest now casts `AS BINARY` and takes the stored bytes, which
+removes both problems.
 
 Fixing all of that means defining a canonical text form per type and having each dialect
 produce it, which is the type aware work behind cross engine support. Until then `db-diff`
