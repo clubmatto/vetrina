@@ -5,7 +5,6 @@ description: Every coding agent eventually runs out of context. We
   under budget. When they trigger, what they keep, what they summarize, and
   what the whole operation costs.
 date: 2026-10-06
-draft: true
 tags:
   - ai
   - agents
