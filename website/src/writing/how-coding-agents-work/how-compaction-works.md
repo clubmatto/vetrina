@@ -76,7 +76,7 @@ When to trigger is the most uniform decision across agents:
 | Crush            | When 20k tokens remain on >200k windows, or 20% on smaller ones                       |
 | DeepSeek Harness | At 0.8 of the model's context window (`thresholdRatio`)                               |
 | Goose            | At 0.8 (`GOOSE_AUTO_COMPACT_THRESHOLD`), reactively on overflow, capped at 2 attempts |
-| Kimi CLI         | At ~0.85 (`compactionTriggerRatio`), or manually via `/compact`                       |
+| Kimi Code CLI    | At ~0.85 (`compactionTriggerRatio`), or manually via `/compact`                       |
 | OpenCode         | When overflow is detected at step finish; auto-compaction is enqueued                 |
 | OpenHands        | When the event stream exceeds a fixed event count (`max_size`), checked every step    |
 | Qwen Code        | On `token_limit`, detected from the API response or estimated                         |
@@ -97,7 +97,7 @@ is a brand-new prefix: every squeeze throws the cache away. Fire too eagerly
 and you pay that bill over and over. Fire too late and the next request
 fails.
 
-The when is interesting also from a user perspective: most harnesses
+The "when" is interesting also from a user perspective: most harnesses
 summarize in the foreground, stalling the session while the call runs. But
 some agents, like Aider, never compact in your way: a background thread
 summarizes while you keep working.
@@ -141,7 +141,7 @@ the cheap tokens without too much finesse. Here are a few examples:
 ### Keep the tail verbatim
 
 Keeping the recent tail is the closest thing to a consensus move in the whole
-article: Crush is the only harness we saw skip it. The most recent context is
+article: Crush is the only harness we saw skipping it. The most recent context is
 the most important part of the conversation, and no summary preserves it as
 well as the original text, so it stays. What differs is how much survives and
 where the cut lands:
@@ -241,14 +241,14 @@ because the algorithm is not where the differences are. The quantitative
 choices all converge. Most fire early, everyone reaches for cheaper relief
 before the expensive step, almost everyone keeps a tail and summarizes the
 head. You could probably swap one agent's compaction into another and you
-wouldn't notice too much (maybe worth a real test?).
+wouldn't notice too much (maybe worth a real test, actually).
 
 The differences that survive contact with a long session are qualitative:
 
 - **What the summary preserves.** Pi writes a state snapshot that keeps
   updating; Crush writes one prose dump. Both get a summary of course but
   the output will look _and_ feel very different.
-- **Whether the squeeze is recoverable.** Kimi CLI degrades in stages; Crush
+- **Whether the squeeze is recoverable.** Kimi Code CLI degrades in stages; Crush
   truncates hard and whatever the summary missed is gone.
 - **Whether the record survives.** DeepSeek Harness treats compaction as a
   projection over a log it keeps; most harnesses edit the history in place,
