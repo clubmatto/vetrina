@@ -1,0 +1,102 @@
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "deepseek-flash",
+        "name": "DeepSeek V4.1 Flash",
+        "baseUrl": "https://api.deepseek.com/v1",
+        "envKey": "DEEPSEEK_API_KEY"
+      }
+    ]
+  },
+  "security": {
+    "auth": {
+      "selectedType": "openai"
+    }
+  },
+  "model": {
+    "name": "deepseek-flash"
+  },
+  "tools": {
+    "disabled": [
+      "advisor",
+      "agent",
+      "artifact",
+      "ask_user_question",
+      "create_sub_session",
+      "cron_create",
+      "cron_delete",
+      "cron_list",
+      "display_image",
+      "edit",
+      "enter_plan_mode",
+      "enter_worktree",
+      "exec",
+      "exit_plan_mode",
+      "exit_worktree",
+      "get_goal",
+      "glob",
+      "grep_search",
+      "image_gen",
+      "list_agents",
+      "list_directory",
+      "loop_wakeup",
+      "lsp",
+      "manage_memory",
+      "monitor",
+      "notebook_edit",
+      "omni_caption_audio",
+      "omni_caption_image",
+      "omni_clip_audio",
+      "omni_clip_image",
+      "omni_clip_video",
+      "omni_convert_image",
+      "omni_downsample_audio",
+      "omni_downsample_image",
+      "omni_downscale_video",
+      "omni_extract_audio",
+      "omni_extract_keyframes",
+      "omni_ocr_image",
+      "omni_recall_media_memory",
+      "omni_transcribe_audio",
+      "omni_understand_video_segments",
+      "propose_goal",
+      "read_file",
+      "read_mcp_resource",
+      "record_artifact",
+      "record_source",
+      "report_findings",
+      "request_shutdown",
+      "save_memory",
+      "search_memory",
+      "send_message",
+      "skill",
+      "structured_output",
+      "task_create",
+      "task_list",
+      "task_stop",
+      "task_update",
+      "team_create",
+      "team_delete",
+      "team_plan_approval",
+      "thread_block",
+      "thread_create",
+      "thread_post",
+      "thread_read",
+      "thread_review",
+      "thread_wait",
+      "todo_write",
+      "tool_call",
+      "tool_search",
+      "update_goal",
+      "web_fetch",
+      "web_search",
+      "workflow",
+      "write_file",
+      "zoom_image"
+    ]
+  },
+  "memory": {
+    "enableManagedAutoMemory": false
+  }
+}

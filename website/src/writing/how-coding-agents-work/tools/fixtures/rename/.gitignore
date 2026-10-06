@@ -1,0 +1,3 @@
+# The fixture needs a real .env: two of the keys being renamed live here, and one
+# of the decoys does too. The website tree ignores .env files generally.
+!.env

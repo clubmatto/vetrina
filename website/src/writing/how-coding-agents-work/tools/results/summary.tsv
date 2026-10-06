@@ -1,0 +1,8 @@
+label	declared	turns	calls	input	output	cached	wall_s
+rename-one-tool	1	4	3	25643	1900	23680	11.8
+rename-all-declared	28	9	26	227537	6129	222720	32.8
+rename-on-demand	2	11	20	150423	8355	142080	43.0
+references-one-tool	1	4	3	24739	1170	22528	8.4
+references-all-declared	28	3	6	64201	982	62464	7.0
+references-on-demand	2	4	6	31508	931	27904	7.2
+references-all-declared+lsp	29	4	10	91445	1559	78592	10.3

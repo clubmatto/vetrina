@@ -1,0 +1,26 @@
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "deepseek-flash",
+        "name": "DeepSeek V4.1 Flash",
+        "baseUrl": "https://api.deepseek.com/v1",
+        "envKey": "DEEPSEEK_API_KEY"
+      }
+    ]
+  },
+  "security": {
+    "auth": {
+      "selectedType": "openai"
+    }
+  },
+  "model": {
+    "name": "deepseek-flash"
+  },
+  "tools": {
+    "eager": []
+  },
+  "memory": {
+    "enableManagedAutoMemory": false
+  }
+}

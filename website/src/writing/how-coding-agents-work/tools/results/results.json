@@ -1,0 +1,163 @@
+{
+  "environment": {
+    "harness": "Qwen Code 0.25.0",
+    "model": "deepseek-flash (DeepSeek V4.1-Flash)",
+    "date": "2026-10-06",
+    "note": "One run per cell. Single observations, not averages."
+  },
+  "runs": [
+    {
+      "label": "rename-one-tool",
+      "fixture": "rename",
+      "mode": "one-tool",
+      "declared_tools": 1,
+      "turns": 4,
+      "tool_calls": 3,
+      "tools_used": [
+        "run_shell_command"
+      ],
+      "input_tokens": 25643,
+      "output_tokens": 1900,
+      "cached_input_tokens": 23680,
+      "duration_ms": 11845,
+      "outcome": {
+        "renamed": 8,
+        "left": 0,
+        "decoy_kept": 8,
+        "decoy_renamed": 0
+      }
+    },
+    {
+      "label": "rename-all-declared",
+      "fixture": "rename",
+      "mode": "all-declared",
+      "declared_tools": 28,
+      "turns": 9,
+      "tool_calls": 26,
+      "tools_used": [
+        "edit",
+        "glob",
+        "grep_search",
+        "read_file"
+      ],
+      "input_tokens": 227537,
+      "output_tokens": 6129,
+      "cached_input_tokens": 222720,
+      "duration_ms": 32834,
+      "outcome": {
+        "renamed": 8,
+        "left": 0,
+        "decoy_kept": 8,
+        "decoy_renamed": 0
+      }
+    },
+    {
+      "label": "rename-on-demand",
+      "fixture": "rename",
+      "mode": "on-demand",
+      "declared_tools": 2,
+      "turns": 11,
+      "tool_calls": 20,
+      "tools_used": [
+        "tool_call",
+        "tool_search"
+      ],
+      "input_tokens": 150423,
+      "output_tokens": 8355,
+      "cached_input_tokens": 142080,
+      "duration_ms": 43036,
+      "outcome": {
+        "renamed": 8,
+        "left": 0,
+        "decoy_kept": 8,
+        "decoy_renamed": 0
+      }
+    },
+    {
+      "label": "references-one-tool",
+      "fixture": "references",
+      "mode": "one-tool",
+      "declared_tools": 1,
+      "turns": 4,
+      "tool_calls": 3,
+      "tools_used": [
+        "run_shell_command"
+      ],
+      "input_tokens": 24739,
+      "output_tokens": 1170,
+      "cached_input_tokens": 22528,
+      "duration_ms": 8447,
+      "outcome": {
+        "names_HandleProfile": true,
+        "names_BuildReport": true,
+        "names_Charge": true
+      }
+    },
+    {
+      "label": "references-all-declared",
+      "fixture": "references",
+      "mode": "all-declared",
+      "declared_tools": 28,
+      "turns": 3,
+      "tool_calls": 6,
+      "tools_used": [
+        "glob",
+        "grep_search",
+        "read_file"
+      ],
+      "input_tokens": 64201,
+      "output_tokens": 982,
+      "cached_input_tokens": 62464,
+      "duration_ms": 6968,
+      "outcome": {
+        "names_HandleProfile": true,
+        "names_BuildReport": true,
+        "names_Charge": true
+      }
+    },
+    {
+      "label": "references-on-demand",
+      "fixture": "references",
+      "mode": "on-demand",
+      "declared_tools": 2,
+      "turns": 4,
+      "tool_calls": 6,
+      "tools_used": [
+        "tool_call",
+        "tool_search"
+      ],
+      "input_tokens": 31508,
+      "output_tokens": 931,
+      "cached_input_tokens": 27904,
+      "duration_ms": 7211,
+      "outcome": {
+        "names_HandleProfile": true,
+        "names_BuildReport": true,
+        "names_Charge": true
+      }
+    },
+    {
+      "label": "references-all-declared+lsp",
+      "fixture": "references",
+      "mode": "all-declared+lsp",
+      "declared_tools": 29,
+      "turns": 4,
+      "tool_calls": 10,
+      "tools_used": [
+        "glob",
+        "grep_search",
+        "lsp",
+        "read_file"
+      ],
+      "input_tokens": 91445,
+      "output_tokens": 1559,
+      "cached_input_tokens": 78592,
+      "duration_ms": 10344,
+      "outcome": {
+        "names_HandleProfile": true,
+        "names_BuildReport": true,
+        "names_Charge": true
+      }
+    }
+  ]
+}

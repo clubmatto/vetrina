@@ -1,0 +1,3 @@
+# The experiment harness ships with the article, and its fixtures contain
+# markdown that must not be published as posts.
+src/writing/how-coding-agents-work/tools/
