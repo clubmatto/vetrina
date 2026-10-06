@@ -1,5 +1,5 @@
 ---
-title: "How compaction works, and which algorithm wins"
+title: "How coding agents work, deep dive: Compaction"
 description: Every coding agent eventually runs out of context window. We
   read ten open-source agents to see how they squeeze a conversation back
   under budget. When they trigger, what they keep, what they summarize, and
