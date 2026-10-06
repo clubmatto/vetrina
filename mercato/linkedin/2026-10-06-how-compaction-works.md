@@ -1,9 +1,6 @@
 ---
-title: "How compaction works, and which algorithm wins"
-platforms:
-  - linkedin
-  - twitter
-publish_date: 2026-10-06
+title: "Compaction, across 10 coding agents"
+platform: linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-compaction-works.png
 topics:
   - agents
@@ -11,9 +8,7 @@ topics:
   - open-source
 ---
 
-## LinkedIn
-
-📢 How coding agents work: compaction 📢
+📢 How coding agents work, deep dive: Compaction 📢
 
 Every agent eventually runs out of context window. We read ten open-source
 agents to see how they squeeze a conversation back under budget: when they
@@ -25,13 +20,3 @@ the ten differ. So which algorithm wins? None of them.
 
 Read it
 here: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
-
-## Twitter
-
-📢 How coding agents work: compaction 📢
-
-Every agent compacts the same way: trigger early, prune first, keep the tail,
-summarize the rest. The math converges, the philosophy doesn't. No algorithm
-wins.
-
-https://matto.club/writing/how-coding-agents-work/how-compaction-works/
