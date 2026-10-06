@@ -14,29 +14,27 @@ series: how-coding-agents-work
 
 We started this series by shortlisting [ten open-source coding
 agents](/writing/how-coding-agents-work/), then we built
-[Pinocchio](/writing/how-coding-agents-work/building-pinocchio/) to find the
+[Pinocchio](/writing/how-coding-agents-work/building-pinocchio/) to discover the
 anatomy they share: the loop, tool calls, permissions, context management, and
 sessions. We have since taken the [system
-prompt](/writing/how-coding-agents-work/the-system-prompt/) apart, and how
+prompt](/writing/how-coding-agents-work/the-system-prompt/) apart, and looked at how
 [compaction](/writing/how-coding-agents-work/how-compaction-works/) works.
 
-Tool calls are the second of those five components, and the one that makes an
-agent an agent. Take the tools away and you have a chat model with a terminal
-attached: it can talk about your repository, but it cannot read it.
+It's now time we take a look at tools, the one component that gives an agent real agency (pun intended). Without 
+tools, the LLM has no means to get the agent perform actions on its behalf, so all we're left with is a chat bot. 
 
-Tools are also the part of the machine a harness author controls most directly.
-Context management is a policy, permissions are a policy, but the tool list is
-the interface itself. Every choice about it shows up on the bill, because a tool
-description is text you pay for on every turn, whether the model uses the tool or
-not.
+Most of what we'll discuss below stems out of a fundamental tension: tools mean capability, but also mean more 
+tokens eaten up from the available context (and in turn a direct impact on the bill, see our [system prompt deep 
+dive](/writing/how-coding-agents-work/the-system-prompt/) to understand why). 
+Harnesses set each other apart in the way they navigate this tension.
 
 :::note[TL;DR]
-No two harnesses agree on how much surface to declare. The spread runs from a
-single general tool to roughly thirty. Both ends buy something real and pay for
-it: granular tools give you gating, validation and guardrails, while a single
-general tool gives you composition and a small prefix. Hiding tools behind a
-search trades prefix tokens for discovery turns, and that trade only pays off in
-longer sessions.
+Harnesses pretty much all disagree on how many tools to let the LLM choose from. The spread runs from a
+single general tool to roughly thirty. We ran two tasks through three
+configurations of one harness, and every one of them got the right answer,
+including the traps we planted. What changed was the bill. A full catalogue costs
+around 15,000 tokens of schema on every turn, and the same rename task took three tool
+calls with just a shell available, and twenty-six with everything declared.
 :::
 
 ## What is a tool, anyway?
@@ -155,56 +153,114 @@ every day.
 
 That harness can be configured into the three surfaces we care about:
 
-- **Bash only.** Whole-tool deny rules for everything except the shell, which
-  leaves one general tool in the list.
-- **All declared.** Every tool marked eager, so the model sees the full catalogue
-  from the first turn.
-- **On demand.** The eager list left empty, so the core tools are declared and the
-  rest stay hidden until a tool search reveals them.
+- **One tool.** Every tool but the shell disabled in the registry, so the model
+  sees exactly one generic command.
+- **Everything declared.** The deferred-preload budget raised until the whole
+  catalogue lands in the first request: 28 tool schemas instead of the 14 the
+  harness ships with by default.
+- **On demand.** The declaration allowlist left empty, so nothing but the search
+  bridge is declared and every other tool waits behind it.
 
 The second and third configurations are the same catalogue with different
 visibility, which is what makes the pair worth running: same tools, same
-capability, different bill. For the lookup task the specialized tool is the
-harness's own language server integration, which is the reason we picked this
-harness over the others in the shortlist.
+capability, different bill. For the lookup task we also ran a fourth
+configuration with the harness's language server support switched on, which is
+behind an experimental flag, to see what the model does when a precise tool is
+sitting next to a searchable one.
 
-Per run we record the model turns, the tool calls, input, output and cached
-tokens, wall clock, and whether the trap survived. We report latency as a function
-of turns rather than as a measured time, because provider latency dominates it and
-would drown the signal.
+Per run we recorded the model turns, the tool calls, input, output and cached
+tokens, wall clock, and whether the traps survived. We report turns next to the
+wall clock because provider latency is a large part of the elapsed time, and we
+would rather show both than attribute the difference to the tools.
 
-<!-- RESULTS PENDING
-Both tasks in all three modes, then the table goes here. Nothing in the argument
-depends on the direction of the numbers, but the article should not ship without
-them.
--->
+The fixtures, the three configurations and the script that pulls the numbers out
+of a session are in the repository, under
+[tools/](https://github.com/clubmatto/vetrina/tree/main/website/src/writing/how-coding-agents-work/tools).
+
+## What came out of it
+
+Every configuration answered both tasks correctly. The rename landed all eight
+occurrences and left `DB_HOST_OLD` alone, in all three modes, and the lookup
+named `HandleProfile` and `BuildReport` as the only callers of
+`users.Store.GetUserByID` while explicitly excluding the same-named method in
+`billing`. Two traps, six runs, nobody caught.
+
+So the surface did not change the answer at this size of task. It changed the
+shape of the work and the bill.
+
+| Configuration | Declared tools | Turns | Tool calls | Input tokens | Cached | Output | Wall clock |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Task A, shell only | 1 | 4 | 3 | 25,643 | 23,680 | 1,900 | 11.8s |
+| Task A, all declared | 28 | 9 | 26 | 227,537 | 222,720 | 6,129 | 32.8s |
+| Task A, on demand | 2 | 11 | 20 | 150,423 | 142,080 | 8,355 | 43.0s |
+| Task B, shell only | 1 | 4 | 3 | 24,739 | 22,528 | 1,170 | 8.4s |
+| Task B, all declared | 28 | 3 | 6 | 64,201 | 62,464 | 982 | 7.0s |
+| Task B, on demand | 2 | 4 | 6 | 31,508 | 27,904 | 931 | 7.2s |
+| Task B, all declared plus language server | 29 | 4 | 10 | 91,445 | 78,592 | 1,559 | 10.3s |
+
+Three things stand out.
+
+**The schema tax is bigger than we assumed.** The full catalogue serialises to
+about 62,000 characters of tool definitions, roughly 15,000 tokens, and it goes
+out on every single turn. Hidden behind the search bridge, the same harness
+declares two tools and about 600 tokens. That is the S from the arithmetic
+section below, and it is not a rounding error.
+
+**The shell wins on calls, and it is not close.** On the rename, one shell
+command found the occurrences, one rewrote them, one verified: three calls for
+eight edits across six files. With everything declared, the same job took
+twenty-six calls, mostly a `read_file` per file and an `edit` per change. Same
+outcome, different amount of work.
+
+**The language server did not pay for itself here.** With `gopls` available the
+model still started by reading files, seven of them, before it thought to call
+`findReferences` on the ninth of ten calls. It got the same answer as the
+configuration that only had search, and spent more tokens doing it. A precise
+tool is not a shortcut if the model's habit is to read first.
+
+One more number worth staring at: 92 to 98 percent of the input tokens in every
+run were cache reads. The schema tax is real, but on a warm session most of it is
+billed at the cached rate, which is the thing that makes the arithmetic in the
+next section less obvious than it looks.
+
+The honest caveat is that each configuration ran once. These are single
+observations, not averages, and a model is not a deterministic machine. The token
+differences are an order of magnitude and survive that. The wall clock numbers do
+not, so read them as illustration rather than measurement.
 
 ## Hiding tools is arithmetic
 
-Hiding tools behind a search sounds like a free win. It is not, and the reason is
-arithmetic rather than taste.
+Hiding tools behind a search looks like a free win. The arithmetic says it mostly
+is, and it is still not free.
 
-Hiding a set of tools saves some number of tokens of schema in the prefix, on
-every turn. We will call it S. Discovering a tool costs one extra turn, carrying
-its own request and response, which we will call D. So hiding pays off once a
-session runs longer than D/S turns.
+Hiding saves S tokens of schema in the prefix, on every turn. Discovering a tool
+costs one extra turn carrying D tokens. So the question is whether a session runs
+longer than D/S turns, and our own runs answer it better than a guess would.
 
-Both numbers are easy to obtain without running an agent at all, which is why we
-did not measure this part. You can count the schema tokens of a real catalogue,
-and you can read the size of a discovery call from any log. If hiding forty tools
-saves a few thousand tokens per turn and a discovery turn costs a few hundred, the
-trade pays off somewhere around the sixth turn. Short sessions lose, long ones
-win.
+Declared, the catalogue cost 20,528 input tokens on the first turn of the rename,
+with an empty conversation behind it. The same first turn, hidden, cost 6,519.
+That puts S at roughly 14,000 tokens, and it is the tool schemas, since nothing
+else differs.
 
-There is a second-order effect that flips part of this. If the prefix is cached,
-those S tokens are billed at the cached rate, which pushes the break-even further
-out. A long, warm, cached session is exactly the case where revealing tools late
-saves the least, because the thing you are saving was already cheap.
+The discovery turn cost 6,669 tokens. So D/S is about half a turn, and the trade
+pays off immediately rather than after some long session. The rest of the run
+agrees: 150,423 input tokens on demand against 227,537 declared, over eleven turns
+against nine.
+
+What hiding does not save is turns. The rename took two more turns and ten more
+seconds on demand, because a tool has to be fetched before it can be used. The
+window gets smaller and the session gets longer.
+
+Then caching takes a bite out of the money. Between 92 and 98 percent of the input
+tokens in our runs were cache reads, and a cached token costs a fraction of a
+fresh one, so a saving measured in input tokens is not the same as a saving in
+dollars. It is still a saving in window, which is the thing the model actually
+runs out of.
 
 That is why the harnesses carrying large MCP surfaces hide tools and the small
 ones do not. It is also why the all-or-nothing reveal exists in the harnesses that
-hide them: if you are going to break your cached prefix by adding schemas to it,
-you may as well add all of them at once, which is exactly how Qwen Code does it.
+do: if you are going to break your cached prefix by adding schemas to it, you may
+as well add all of them at once, which is how this harness does it.
 
 ## Can you get away from bash?
 
@@ -252,8 +308,8 @@ pipeline answers, in exchange for every step being visible and gated.
 
 Specialized search can also do what text search cannot. A language server or an
 index answers "who references this symbol" with types and scopes, which is a
-capability difference rather than a performance one, and the reason our lookup
-task has a correct answer at all.
+capability difference rather than a performance one. We expected that difference to
+carry the lookup task. It did not, and the results below show why.
 
 Policy follows the same split. A read-only search tool can be auto-approved,
 because the harness knows what it does. A shell search is indistinguishable from a
