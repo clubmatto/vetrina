@@ -23,8 +23,8 @@ Read it here: https://matto.club/writing/how-coding-agents-work/the-system-promp
 
 ## Twitter
 
-A system prompt is not magic text. It's a ranked instruction channel: root, system, developer, user. Lower ranks cannot override higher ones.
+A system prompt is not magic text. It's a ranked channel: root, system, developer, user. Lower ranks cannot override higher ones.
 
-Ten shapes for the same job: 8 chunks, 5 layers, a Go template, a server build.
+Ten shapes for the same job: 8 chunks, 5 layers, a Go template, server-side.
 
 https://matto.club/writing/how-coding-agents-work/the-system-prompt/
