@@ -1,5 +1,5 @@
 ---
-title: "Pinocchio v4: the one compaction strategy you actually need"
+title: "Pinocchio compacts too"
 platforms:
   - linkedin
   - twitter
@@ -13,18 +13,14 @@ image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing
 
 ## LinkedIn
 
-Pinocchio v4 has one compaction strategy: summarize the head, keep the recent tail. About 40 lines of Go.
+Pinocchio, our toy coding agent, comes with the simplest compaction
+algorithm possible. As you can see here in the snippet 👇.
 
-The deep dive confirms it: the algorithm is a commodity. The ten agents we read carry seven strategies, but the thresholds and budgets are settings. What differs is everything around the loop.
-
-Fine for a puppet. Your agent deserves the version that fits it.
-
-Read it here: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
+For a discussion on real world implementation, check out our deep dive on
+compaction: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
 
 ## Twitter
 
-Pinocchio v4 has one compaction strategy: summarize the head, keep the recent tail. About 40 lines of Go.
+Pinocchio, our toy coding agent, compacts with the simplest algorithm there is: summarize the head, keep the recent tail.
 
-The deep dive confirms it: the algorithm is a commodity. Fine for a puppet.
-
-https://matto.club/writing/how-coding-agents-work/how-compaction-works/
+The deep dive: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
