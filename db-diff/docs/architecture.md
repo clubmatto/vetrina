@@ -8,7 +8,7 @@ Read this as ground truth for a design discussion. Where the code imposes a cons
 constraint is stated, because most design questions about this tool are really questions about
 which of these constraints are worth relaxing.
 
-Path references are relative to the module root.
+Path references are relative to the module root. Written against `v0.0.3`.
 
 ---
 
@@ -28,6 +28,9 @@ alternative it replaces is a full dump-and-compare.
 **It is a data verification tool, so its one unacceptable failure is a false negative**: saying
 "the tables match" when they do not. A false positive (reporting a difference that is not there)
 is an annoyance. Every design decision below is downstream of that asymmetry.
+
+Released as `v0.0.3`: `go install matto.club/vetrina/db-diff@latest`, or Homebrew. CI runs lint,
+unit and integration on every push.
 
 ---
 
@@ -56,25 +59,27 @@ three engines only agree on spelling for a subset of types, comparing across eng
 nonetheless **refused** in the CLI today (see §9).
 
 **I6 — Same dialect on both sides.**
-Enforced in `main.go:186-198`, before any connection is opened.
+Enforced in `cli.resolveDialects`, before any connection is opened.
 
 ---
 
 ## 3. Architecture
 
 ```
-main.go                     CLI: flags, exit codes, dialect selection, wiring
-  └── internal/differ       THE ALGORITHM (segment walk + row comparison)
-        └── diff            engine-independent types, contracts, column selection
-              ├── internal/sqlbuild   identifier quoting, range predicate
-              └── pg | mysql | clickhouse
+main.go                       entry point; calls cli.RunFromArgs
+  └── cli                     flags, exit codes, dialect selection, wiring, output
+        └── differ            THE ALGORITHM (segment walk + row comparison)
+              └── diff        engine-independent types, contracts, column selection
+                    ├── sqlbuild      identifier quoting, range predicate
+                    └── pg | mysql | clickhouse
                                       one package per engine; SQL + result scanning only
 integration/                  tests that need containers (conformance, CLI end-to-end)
-internal/testutil             container fixtures
+testutil/                     container fixtures
 ```
 
 The dependency direction is strictly inward: dialects depend on `diff`; `diff` depends on
-nothing engine-specific; `differ` depends on `diff`. `main` depends on all of it.
+nothing engine-specific; `differ` depends on `diff`. `cli` depends on all of it, and `main`
+depends only on `cli`.
 
 ### 3.1 `diff` — the engine-independent core
 
@@ -203,7 +208,7 @@ Where each engine has to differ, and why:
 | Engine | Fold | Traps encoded in the SQL |
 |---|---|---|
 | PostgreSQL | `bit_xor` (needs **PG ≥ 14**) | No unsigned ints. `%` takes its sign from the dividend, so `(-2^63+k) % 2^63` **drops bit 63**; must use two-argument `mod(x, 2^64)`, then `::bigint` to keep the bit pattern. `bit_xor` over an empty range is NULL → `COALESCE(..., 0)` |
-| MySQL | `BIT_XOR` | `CONV()` returns a **decimal string**; without `CAST(... AS UNSIGNED)` `BIT_XOR`/`HEX` read its ASCII bytes. `COALESCE(BIT_XOR(...), 0)` coerces unsigned→signed and **clamps to `7FFF...FFFF`**; `BIT_XOR` already folds to 0 over no rows, so no COALESCE. `CONCAT` not `CONCAT_WS` (the latter skips NULL args). Identifiers need backticks, not double quotes |
+| MySQL | `BIT_XOR` | `CONV()` returns a **decimal string**; without `CAST(... AS UNSIGNED)` `BIT_XOR`/`HEX` read its ASCII bytes. `COALESCE(BIT_XOR(...), 0)` coerces unsigned→signed and **clamps to `7FFF...FFFF`**; `BIT_XOR` already folds to 0 over no rows, so no COALESCE. `CONCAT` not `CONCAT_WS` (the latter skips NULL args). Values are cast `AS BINARY`, not `AS CHAR`, so the stored bytes are hashed rather than a charset-dependent decoding. Identifiers need backticks, not double quotes |
 | ClickHouse | `groupBitXor` | `reinterpretAsUInt64` is **little-endian**, so `unhex` reads the bytes reversed; `reverse()` cancels it. `hex()` is uppercase → wrapped in `lower()` so the digest input matches the other engines. `toString` handles `Nullable` where `CAST(x AS String)` refuses NULL. Empty table → `MIN/MAX` return `0`, handled by `COUNT(*)` |
 
 The row-hash values and the chunk-hash values are therefore **the same strings in all three
@@ -236,11 +241,12 @@ Where the seams are, for anyone reasoning about adding capability.
 
 | If the change is about… | It belongs in… |
 |---|---|
-| Adding an engine | a new package with a `Dialect` implementation + a `Dialect` case in `dialectFor` |
+| Adding an engine | a new package with a `Dialect` implementation + a case in `defaultDialectFor` |
 | The checksum definition | the three `rowHashExpr` implementations, kept identical in *value* |
-| The comparison algorithm | `internal/differ` |
+| The comparison algorithm | `differ` |
 | Column selection / validation | `diff/diff.go` |
-| Flags, exit codes, output | `main.go` |
+| Flags, exit codes, output | `cli` |
+| Embedding the CLI in another binary | `cli.Options` (`DialectFor`, `AllowCrossEngine`) |
 | Cross-engine comparison | currently blocked by §9; see below |
 
 ### The checksum is the main architectural seam
@@ -261,8 +267,9 @@ shape must be made in three places and verified by the golden test.
 | Suite | Needs Docker | What it protects |
 |---|---|---|
 | `diff/diff_test.go` | no | column selection, layout validation, `CompareRows` union/symmetry, error propagation |
-| `internal/differ/differ_test.go` | no | the range union, symmetry, segment clamping, the int64 bound, the default segment size |
+| `differ/differ_test.go` | no | the range union, symmetry, segment clamping, the int64 bound, the default segment size |
 | `integration/conformance_test.go` | yes | the fold contract, diff semantics, NULL≠empty, empty sides, out-of-range rows, disjoint ranges, and **a golden checksum computed in Go** |
+| `integration/binary_test.go` | yes | binary values stay distinct on all three engines (the MySQL `AS CHAR` false negative) |
 | `integration/cli_test.go` | yes | the built binary: exit codes, flag validation, `--include`/`--exclude`, symmetry, cross-engine refusal, error messages |
 
 The conformance suite starts **two containers per engine** (a diff needs two databases).
@@ -301,8 +308,6 @@ Stated so it is not assumed:
   connections or identical data can hash differently.
 - The comparison is not streaming; a differing segment's rows are materialised in a Go map.
 - No progress output; no structured/JSON output; no output to a file.
-- Not published: `go install matto.club/db-diff@latest` 404s. It has never been released, has no
-  CI (the private monorepo is Jenkins-based and does not run Go), and no public repository.
 
 ---
 
@@ -312,16 +317,14 @@ Stated so it is not assumed:
   10⁻¹²; across 10,000 segments ~2.7 × 10⁻⁸. Accepted deliberately; widening it is a contained
   change (one expression per dialect).
 - **Session-dependent rendering** (§7) is the most likely source of false positives in the field.
-- **`CAST(col AS CHAR)` in MySQL** decodes through the connection charset, so non-decodable
-  BLOB/VARBINARY bytes can collapse (`0xFF` and `0xFE` both → `?`).
 - **Non-unique `id`** silently collapses rows in the `map[int64]string` keyed by id.
 - **The checksum is duplicated three times** (§4).
 
 ---
 
-## 9. The cross-engine question (context for a "pro" feature)
+## 9. The cross-engine question (an open extension point)
 
-**Status: refused, deliberately.** `main.go:186-198` errors before connecting if the two DSNs
+**Status: refused, deliberately.** `cli.resolveDialects` errors before connecting if the two DSNs
 resolve to different dialects.
 
 Two independent reasons it cannot work today:
@@ -363,8 +366,8 @@ decision, not an implementation detail.
 
 **Open design questions for that discussion** (not answered here):
 
-- Is the pro split a *capability* boundary (cross-engine) or a *packaging* boundary (same code,
-  different distribution), or both?
+- Is a cross-engine build a *capability* boundary (different dialects) or a *packaging* boundary
+  (same code, different distribution), or both?
 - Where does the *comparability* decision live (see above): a declared contract between two
   types, or validation at preflight time?
 - Where does a canonical codec live — in the dialect packages (SQL-side, keeps compute in the

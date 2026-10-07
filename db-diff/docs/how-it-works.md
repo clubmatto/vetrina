@@ -6,6 +6,9 @@
 `db-diff` compares one table in two databases. When the tables match, it answers with a handful
 of checksum queries. When they do not, it narrows down to the exact rows that differ.
 
+For how the packages fit together, see [architecture.md](architecture.md). For install and
+usage, see the [README](../README.md).
+
 ## Overview
 
 The table is cut into **segments** of `--segment-size` primary keys. Each segment is checksummed
@@ -123,6 +126,18 @@ Fixing all of that means defining a canonical text form per type and having each
 produce it, which is the type aware work behind cross engine support. Until then `db-diff`
 refuses a cross engine run rather than guess, and compares a database against a database of the
 same engine.
+
+## What this does not cover
+
+The algorithm compares one table, keyed by a single integer `id`, with the same name and column
+layout on both sides. Composite keys, mapping one table name to another, and a different column
+order are out of scope.
+
+Comparing across engines is refused rather than approximated, for the rendering reasons above.
+The checksum shape is engine agnostic and the fold property is all the algorithm needs, so the
+missing piece for a cross engine run is a canonical value codec, not a different algorithm.
+[architecture.md §9](architecture.md#9-the-cross-engine-question-an-open-extension-point)
+describes the seam and the open design questions.
 
 ## Glossary
 
