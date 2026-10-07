@@ -3,7 +3,10 @@ layout: page.liquid
 title: DB Diff
 permalink: /vetrina/db-diff/
 go_import: true
-description: Compare one table across two databases by checksumming. Blazing fast when tables match, pinpointing every difference when they don't.
+description: Compare one table across two databases by checksumming. Fast when the tables match, pinpointing the exact rows when they don't.
+image: /assets/vhs/db-diff/basic-postgres-light.png
+image_width: 1300
+image_height: 650
 ---
 <a
   href="https://github.com/clubmatto/vetrina/blob/main/db-diff/README.md"
@@ -19,31 +22,250 @@ description: Compare one table across two databases by checksumming. Blazing fas
   <p class="showcase-page-tagline">Know when your data drifts</p>
 </div>
 
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">demo</span>
+  </div>
+  <div class="ds-terminal__body ds-terminal__gif">
+    <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on Postgres (light theme)">
+      <source src="/assets/vhs/db-diff/basic-postgres-light.mp4" type="video/mp4">
+    </video>
+    <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on Postgres (dark theme)">
+      <source src="/assets/vhs/db-diff/basic-postgres-dark.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Supported engines</h2>
+
+<div class="ds-tabs" x-data="{ tab: 'postgres' }">
+  <div class="ds-tab-nav" role="tablist">
+    <button
+      role="tab"
+      :class="{ active: tab === 'postgres' }"
+      @click="tab = 'postgres'"
+      :aria-selected="tab === 'postgres'"
+    >
+      PostgreSQL
+    </button>
+    <button role="tab" :class="{ active: tab === 'mysql' }" @click="tab = 'mysql'" :aria-selected="tab === 'mysql'">
+      MySQL
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'clickhouse' }"
+      @click="tab = 'clickhouse'"
+      :aria-selected="tab === 'clickhouse'"
+    >
+      ClickHouse
+    </button>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'postgres'">
+    <div class="ds-tab-body-text">
+      <p>
+        Two Postgres databases are enough to see it work. The checksum is built in SQL, so only the digests and the rows
+        that differ leave the server.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">PostgreSQL</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on Postgres (light theme)">
+          <source src="/assets/vhs/db-diff/basic-postgres-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on Postgres (dark theme)">
+          <source src="/assets/vhs/db-diff/basic-postgres-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=bookmark
+    </div>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'mysql'">
+    <div class="ds-tab-body-text">
+      <p>
+        The MySQL dialect has to work around unsigned integers and charset decoding in SQL. The result is the same
+        checksum, byte for byte, as the other two.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">MySQL</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on MySQL (light theme)">
+          <source src="/assets/vhs/db-diff/basic-mysql-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on MySQL (dark theme)">
+          <source src="/assets/vhs/db-diff/basic-mysql-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$MYSQL_SRC" --target="$MYSQL_DST" --table=bookmark
+    </div>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'clickhouse'">
+    <div class="ds-tab-body-text">
+      <p>
+        ClickHouse folds with groupBitXor and has to reverse the byte order of the digest. It still lands on the same
+        value the golden test pins.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">ClickHouse</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on ClickHouse (light theme)">
+          <source src="/assets/vhs/db-diff/basic-clickhouse-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on ClickHouse (dark theme)">
+          <source src="/assets/vhs/db-diff/basic-clickhouse-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$CH_SRC" --target="$CH_DST" --table=bookmark
+    </div>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Use cases</h2>
+
+<div class="ds-tabs" x-data="{ tab: 'columns' }">
+  <div class="ds-tab-nav" role="tablist">
+    <button
+      role="tab"
+      :class="{ active: tab === 'columns' }"
+      @click="tab = 'columns'"
+      :aria-selected="tab === 'columns'"
+    >
+      Column control
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'boundary' }"
+      @click="tab = 'boundary'"
+      :aria-selected="tab === 'boundary'"
+    >
+      Engine boundary
+    </button>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'columns'">
+    <div class="ds-tab-body-text">
+      <p>
+        Compare the columns that matter. Excluding the noisy ones drops the rows whose only difference lives there, and
+        the checksum reads less data while it does it.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Column control</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="Column selection demo (light theme)">
+          <source src="/assets/vhs/db-diff/include-exclude-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="Column selection demo (dark theme)">
+          <source src="/assets/vhs/db-diff/include-exclude-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=bookmark
+      --exclude=title,unread,note
+    </div>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'boundary'">
+    <div class="ds-tab-body-text">
+      <p>
+        A cross engine pair is refused before it connects. Engines render values their own way, so guessing would report
+        every row as changed.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">Engine boundary</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video autoplay loop muted playsinline class="theme-light" aria-label="Cross engine refusal demo (light theme)">
+          <source src="/assets/vhs/db-diff/cross-engine-light.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline class="theme-dark" aria-label="Cross engine refusal demo (dark theme)">
+          <source src="/assets/vhs/db-diff/cross-engine-dark.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$PG_SRC" --target="$MYSQL_DST" --table=bookmark
+    </div>
+  </div>
+</div>
+
 <h2 class="ds-section-title">Get started</h2>
 
 <div class="ds-grid-2">
   <div class="ds-grid-content">
     <p class="ds-intro-text">
-      DB Diff compares one table across two databases and reports the primary keys of the rows that differ. It pushes
-      the comparison into the databases as checksum queries, so only checksums cross the wire when the tables match.
+      DB Diff is built for the case a dump and compare cannot handle: a table with millions of rows where you need to
+      know which rows drifted, without transferring the table.
     </p>
 
     <div class="ds-features-grid">
       <div class="ds-feature-card">
-        <h3>Multi-Engine</h3>
-        <p>PostgreSQL, MySQL, and ClickHouse</p>
+        <h3>Three engines</h3>
+        <p>PostgreSQL, MySQL and ClickHouse, with one checksum contract across all three</p>
       </div>
       <div class="ds-feature-card">
-        <h3>Blazing fast</h3>
-        <p>Server-side MD5 chunking, only hashes cross the wire</p>
+        <h3>Checksums only</h3>
+        <p>Server-side MD5 chunking, so only digests cross the wire when the tables match</p>
       </div>
       <div class="ds-feature-card">
-        <h3>Pinpoint precision</h3>
-        <p>Automatic drill-down to the exact differing rows</p>
+        <h3>Pinpoint drift</h3>
+        <p>A differing segment is read row by row and reported as primary keys</p>
       </div>
       <div class="ds-feature-card">
         <h3>Column control</h3>
-        <p>Include or exclude columns to skip noise</p>
+        <p>Include or exclude columns to leave the noisy ones out of the comparison</p>
+      </div>
+      <div class="ds-feature-card">
+        <h3>CI ready</h3>
+        <p>Exit 0 when the tables match, 1 when they differ, 2 when the run failed</p>
+      </div>
+      <div class="ds-feature-card">
+        <h3>Tunable segments</h3>
+        <p>Trade query count against how much is read when something differs</p>
       </div>
     </div>
   </div>
@@ -62,6 +284,32 @@ description: Compare one table across two databases by checksumming. Blazing fas
     <a href="https://github.com/clubmatto/vetrina/blob/main/db-diff/README.md" class="ds-btn-outline">Read the docs</a>
   </div>
 </div>
+
+<h2 class="ds-section-title">How it works</h2>
+
+<div class="ds-callout">
+  <p class="ds-intro-text">
+    DB Diff cuts the table into segments of primary keys and checksums each one on both sides. Equal checksums are
+    skipped. A differing segment is read row by row, so the cost follows the number of differing segments rather than
+    the size of the table.
+  </p>
+  <p class="ds-intro-text">
+    The comparison runs within one engine. Engines render values their own way, so a cross engine run is refused rather
+    than reported as every row changed.
+  </p>
+
+  <div class="ds-ctas">
+    <a
+      href="https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/how-it-works.md"
+      class="ds-btn ds-btn--primary"
+      >Read the algorithm notes</a
+    >
+  </div>
+</div>
+
+{%- comment -%}
+  The cross engine tier links here once the products page is reworked.
+{%- endcomment -%}
 
 <script>
   document.querySelectorAll('.ds-terminal__command').forEach((el) => {

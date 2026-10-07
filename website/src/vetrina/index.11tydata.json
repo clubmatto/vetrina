@@ -13,6 +13,12 @@
       "description": "Zero‑config test data for your stack. Generate realistic datasets on demand with 40+ built‑in generators."
     },
     {
+      "href": "/vetrina/db-diff/",
+      "icon": "database",
+      "title": "DB Diff",
+      "description": "Compare one table across two databases by checksumming. Fast when the tables match, and exact about which rows drifted when they don't."
+    },
+    {
       "href": "/vetrina/ai-kit/",
       "icon": "zap",
       "title": "AI Kit",
