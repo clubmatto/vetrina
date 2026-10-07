@@ -54,23 +54,58 @@ func (d *Dialect) GetMinMaxSQL(tableName string) string {
 }
 
 func (d *Dialect) GetChunkHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+	return ChunkHashSQL(tableName, NativeColumns(columns), idRange)
+}
+
+func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+	return RowsHashSQL(tableName, NativeColumns(columns), idRange)
+}
+
+// ChunkHashSQL builds the query that folds a range into one checksum, from
+// column expressions.
+func ChunkHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
 	return fmt.Sprintf(
 		// BIT_XOR already folds to 0 over no rows, and wrapping it in
 		// COALESCE(..., 0) makes MySQL coerce the unsigned result to signed,
 		// clamping every fold with the top bit set to 7FFFFFFFFFFFFFFF.
 		`SELECT LPAD(HEX(BIT_XOR(%s)), 16, '0')
 		 FROM %s WHERE %s`,
-		rowHashExpr(columns), sqlbuild.MySQLIdentifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+		RowHashExpr(columns), sqlbuild.MySQLIdentifier(tableName),
+		sqlbuild.RangePredicate(idRange.Min, idRange.Max))
 }
 
-func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+// RowsHashSQL builds the query that returns one checksum per row, from column
+// expressions.
+func RowsHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
 	return fmt.Sprintf(
 		`SELECT id, LPAD(HEX(%s), 16, '0')
 		 FROM %s WHERE %s`,
-		rowHashExpr(columns), sqlbuild.MySQLIdentifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+		RowHashExpr(columns), sqlbuild.MySQLIdentifier(tableName),
+		sqlbuild.RangePredicate(idRange.Min, idRange.Max))
 }
 
-// rowHashExpr hashes each column on its own and folds the digests together.
+// NativeExpr is the engine's own rendering of a column, which is what a same
+// engine comparison hashes.
+//
+// CAST AS BINARY, not AS CHAR: CAST(x AS CHAR) decodes through the connection
+// character set and bytes that cannot be decoded become the empty string, so
+// X'DEADBEEF' and X'DEADBEE0' both hash as MD5(”). AS BINARY takes the stored
+// bytes. For text the two are the same bytes.
+func NativeExpr(column string) string {
+	return fmt.Sprintf("CAST(%s AS BINARY)", sqlbuild.MySQLIdentifier(column))
+}
+
+// NativeColumns pairs each column with the engine's own rendering of it.
+func NativeColumns(columns []string) []diff.ColumnExpr {
+	exprs := make([]diff.ColumnExpr, len(columns))
+	for i, column := range columns {
+		exprs[i] = diff.ColumnExpr{Name: column, Value: NativeExpr(column)}
+	}
+
+	return exprs
+}
+
+// RowHashExpr hashes each column on its own and folds the digests together.
 //
 // Hashing each column separately removes the delimiter ambiguity of joining
 // values first: a digest is always 32 hex characters, so two different rows
@@ -82,19 +117,14 @@ func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange dif
 // which is one of the replication artifacts this tool exists to find. The bitmap
 // is one fixed width character per column, so it cannot collide with a digest.
 //
-// The column digest casts to BINARY, not CHAR. CAST(x AS CHAR) decodes the
-// value through the connection character set, and bytes that cannot be decoded
-// become the empty string: X'DEADBEEF' and X'DEADBEE0' both hash as MD5(”), so
-// two tables that differ in a BLOB, BINARY or VARBINARY column compare equal and
-// the diff reports no differences. CAST(x AS BINARY) takes the stored bytes
-// instead, which distinguishes them. For text the two are the same bytes, so
-// this changes nothing for VARCHAR and TEXT.
-func rowHashExpr(columns []string) string {
+// The bitmap is built from the column name rather than from Value, because a
+// rendering may map NULL to a value of its own.
+func RowHashExpr(columns []diff.ColumnExpr) string {
 	parts := make([]string, len(columns))
 	bitmap := make([]string, len(columns))
 	for i, column := range columns {
-		identifier := sqlbuild.MySQLIdentifier(column)
-		parts[i] = fmt.Sprintf("MD5(COALESCE(CAST(%s AS BINARY), ''))", identifier)
+		identifier := sqlbuild.MySQLIdentifier(column.Name)
+		parts[i] = fmt.Sprintf("MD5(COALESCE(%s, ''))", column.Value)
 		bitmap[i] = fmt.Sprintf("IF(%s IS NULL, '0', '1')", identifier)
 	}
 

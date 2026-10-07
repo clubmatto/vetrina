@@ -52,22 +52,50 @@ func (d *Dialect) GetMinMaxSQL(tableName string) string {
 }
 
 func (d *Dialect) GetChunkHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+	return ChunkHashSQL(tableName, NativeColumns(columns), idRange)
+}
+
+func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+	return RowsHashSQL(tableName, NativeColumns(columns), idRange)
+}
+
+// ChunkHashSQL builds the query that folds a range into one checksum, from
+// column expressions.
+func ChunkHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
 	// bit_xor returns bigint, so an all NULL segment folds to NULL, which the
 	// unsigned conversion turns into NULL as well. COALESCE brings it back to
 	// the zero fold an empty range compares equal to.
-	fold := fmt.Sprintf("COALESCE(bit_xor(%s), 0)", rowHashExpr(columns))
+	fold := fmt.Sprintf("COALESCE(bit_xor(%s), 0)", RowHashExpr(columns))
 
 	return fmt.Sprintf(
 		"SELECT lpad(%s, 16, '0') FROM %s WHERE %s",
 		unsignedHexExpr(fold), sqlbuild.Identifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
 }
 
-func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
+// RowsHashSQL builds the query that returns one checksum per row, from column
+// expressions.
+func RowsHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
 	return fmt.Sprintf(
 		"SELECT id, lpad(%s, 16, '0') FROM %s WHERE %s",
-		unsignedHexExpr(rowHashExpr(columns)),
+		unsignedHexExpr(RowHashExpr(columns)),
 		sqlbuild.Identifier(tableName),
 		sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+}
+
+// NativeExpr is the engine's own rendering of a column, which is what a same
+// engine comparison hashes.
+func NativeExpr(column string) string {
+	return fmt.Sprintf("%s::text", sqlbuild.Identifier(column))
+}
+
+// NativeColumns pairs each column with the engine's own rendering of it.
+func NativeColumns(columns []string) []diff.ColumnExpr {
+	exprs := make([]diff.ColumnExpr, len(columns))
+	for i, column := range columns {
+		exprs[i] = diff.ColumnExpr{Name: column, Value: NativeExpr(column)}
+	}
+
+	return exprs
 }
 
 // unsignedHexExpr renders a signed bigint as hex with the same bit pattern,
@@ -88,7 +116,7 @@ func unsignedHexExpr(signed string) string {
 		"to_hex(mod((%s)::numeric, 18446744073709551616)::bigint)", signed)
 }
 
-// rowHashExpr hashes each column on its own and folds the digests together.
+// RowHashExpr hashes each column on its own and folds the digests together.
 //
 // Hashing each column separately removes the delimiter ambiguity of joining
 // values first: a digest is always 32 hex characters, so two different rows
@@ -99,12 +127,15 @@ func unsignedHexExpr(signed string) string {
 // a column that is NULL on one side and empty on the other would look equal,
 // which is one of the replication artifacts this tool exists to find. The bitmap
 // is one fixed width character per column, so it cannot collide with a digest.
-func rowHashExpr(columns []string) string {
+//
+// The bitmap is built from the column name rather than from Value, because a
+// rendering may map NULL to a value of its own.
+func RowHashExpr(columns []diff.ColumnExpr) string {
 	parts := make([]string, len(columns))
 	bitmap := make([]string, len(columns))
 	for i, column := range columns {
-		identifier := sqlbuild.Identifier(column)
-		parts[i] = fmt.Sprintf("md5(COALESCE(%s::text, ''))", identifier)
+		identifier := sqlbuild.Identifier(column.Name)
+		parts[i] = fmt.Sprintf("md5(COALESCE(%s, ''))", column.Value)
 		bitmap[i] = fmt.Sprintf("CASE WHEN %s IS NULL THEN '0' ELSE '1' END", identifier)
 	}
 

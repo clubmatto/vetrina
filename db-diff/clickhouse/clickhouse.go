@@ -55,19 +55,48 @@ func (d *Dialect) GetMinMaxSQL(tableName string) string {
 }
 
 func (d *Dialect) GetChunkHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
-	return fmt.Sprintf(
-		`SELECT LPAD(lower(hex(ifNull(groupBitXor(%s), 0))), 16, '0')
-		 FROM %s WHERE %s`,
-		rowHashNumericExpr(columns), sqlbuild.Identifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+	return ChunkHashSQL(tableName, NativeColumns(columns), idRange)
 }
 
 func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange diff.IDRange) string {
-	return fmt.Sprintf(
-		`SELECT id, %s FROM %s WHERE %s`,
-		rowHashExpr(columns), sqlbuild.Identifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+	return RowsHashSQL(tableName, NativeColumns(columns), idRange)
 }
 
-// rowHashExpr hashes each column on its own and folds the digests together.
+// ChunkHashSQL builds the query that folds a range into one checksum, from
+// column expressions.
+func ChunkHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
+	return fmt.Sprintf(
+		`SELECT LPAD(lower(hex(ifNull(groupBitXor(%s), 0))), 16, '0')
+		 FROM %s WHERE %s`,
+		rowHashNumericExpr(columns), sqlbuild.Identifier(tableName),
+		sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+}
+
+// RowsHashSQL builds the query that returns one checksum per row, from column
+// expressions.
+func RowsHashSQL(tableName string, columns []diff.ColumnExpr, idRange diff.IDRange) string {
+	return fmt.Sprintf(
+		`SELECT id, %s FROM %s WHERE %s`,
+		RowHashExpr(columns), sqlbuild.Identifier(tableName), sqlbuild.RangePredicate(idRange.Min, idRange.Max))
+}
+
+// NativeExpr is the engine's own rendering of a column, which is what a same
+// engine comparison hashes.
+func NativeExpr(column string) string {
+	return fmt.Sprintf("toString(%s)", sqlbuild.Identifier(column))
+}
+
+// NativeColumns pairs each column with the engine's own rendering of it.
+func NativeColumns(columns []string) []diff.ColumnExpr {
+	exprs := make([]diff.ColumnExpr, len(columns))
+	for i, column := range columns {
+		exprs[i] = diff.ColumnExpr{Name: column, Value: NativeExpr(column)}
+	}
+
+	return exprs
+}
+
+// RowHashExpr hashes each column on its own and folds the digests together.
 //
 // Hashing each column separately removes the delimiter ambiguity of joining
 // values first: a digest is always 32 hex characters, so two different rows
@@ -84,31 +113,34 @@ func (d *Dialect) GetRowsHashSQL(tableName string, columns []string, idRange dif
 // bytes as an integer with reinterpretAsUInt64 would instead byte reverse them:
 // ClickHouse stores integers little endian, so the hex it prints back is the
 // reverse of what the other two dialects print.
-func rowHashExpr(columns []string) string {
+func RowHashExpr(columns []diff.ColumnExpr) string {
 	return fmt.Sprintf(
 		"lower(substring(hex(MD5(arrayStringConcat([%s], ''))), 1, 16))",
 		strings.Join(rowHashParts(columns), ","))
 }
 
-// rowHashNumericExpr is rowHashExpr as the integer the fold aggregates.
+// rowHashNumericExpr is RowHashExpr as the integer the fold aggregates.
 //
 // reverse() is what keeps the fold consistent with the row checksum. ClickHouse
 // stores integers little endian, so unhex reads the 8 digest bytes as a little
 // endian integer and the groupBitXor that aggregates it hands back a hex string
 // whose bytes are reversed relative to the digest. Reversing on the way in
 // cancels that out, so the fold of the row checksums is the row checksums.
-func rowHashNumericExpr(columns []string) string {
-	return fmt.Sprintf("reinterpretAsUInt64(reverse(unhex(%s)))", rowHashExpr(columns))
+func rowHashNumericExpr(columns []diff.ColumnExpr) string {
+	return fmt.Sprintf("reinterpretAsUInt64(reverse(unhex(%s)))", RowHashExpr(columns))
 }
 
 // rowHashParts renders the NULL bitmap followed by one digest per column, the
 // input every dialect hashes for a row.
-func rowHashParts(columns []string) []string {
+//
+// The bitmap is built from the column name rather than from Value, because a
+// rendering may map NULL to a value of its own.
+func rowHashParts(columns []diff.ColumnExpr) []string {
 	parts := make([]string, len(columns))
 	bitmap := make([]string, len(columns))
 	for i, column := range columns {
-		identifier := sqlbuild.Identifier(column)
-		parts[i] = fmt.Sprintf("lower(hex(MD5(ifNull(toString(%s), ''))))", identifier)
+		identifier := sqlbuild.Identifier(column.Name)
+		parts[i] = fmt.Sprintf("lower(hex(MD5(ifNull(%s, ''))))", column.Value)
 		bitmap[i] = fmt.Sprintf("if(isNull(%s), '0', '1')", identifier)
 	}
 

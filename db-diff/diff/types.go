@@ -36,6 +36,27 @@ type Table struct {
 	Columns []string
 }
 
+// ColumnExpr is one column's contribution to a row checksum.
+//
+// The name and the value are separate because they answer different questions.
+// Value is the SQL that produces what gets hashed; Name is the column itself,
+// and the checksum's NULL bitmap asks whether the column was NULL. A caller that
+// renders values some other way — a canonical form, for instance, so that two
+// engines agree — supplies its own Value and leaves the bitmapped nullability
+// alone.
+//
+// Keeping them apart is not cosmetic. A rendering may map NULL to a non-NULL
+// value: `CASE WHEN c THEN '1' ELSE '0' END` turns NULL into '0'. Had the bitmap
+// been computed from the rendering, that column would have lost the distinction
+// between NULL and a value, which is exactly the false negative the bitmap
+// exists to prevent.
+type ColumnExpr struct {
+	// Name is the column name, unquoted. The engine's dialect quotes it.
+	Name string
+	// Value is SQL producing the value to hash.
+	Value string
+}
+
 // MetadataReader reads the structural information needed to build diff queries.
 type MetadataReader interface {
 	// GetColumnNames returns the names of every column of the table, in the
