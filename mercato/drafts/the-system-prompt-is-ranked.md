@@ -13,7 +13,7 @@ topics:
 
 ## LinkedIn
 
-A system prompt is not magic text. On modern models it's a ranked instruction channel: root, system, developer, user. Lower ranks cannot override a contradicting statement in a higher rank.
+A system prompt is not magic text. Modern models process instructions in ranks: root, then system, then developer, then user. The harness writes the system prompt, and what it writes there outranks you.
 
 That rank is why your harness can configure the agent the same way for every user, and guard what you type. And the prompt carries three things in almost every harness: where it is, your rules, and what it learned.
 
@@ -23,8 +23,8 @@ Read it here: https://matto.club/writing/how-coding-agents-work/the-system-promp
 
 ## Twitter
 
-A system prompt is not magic text. It's a ranked channel: root, system, developer, user. Lower ranks cannot override higher ones.
+Instructions come in ranks: root, system, developer, user. What the harness writes in the system prompt outranks what you type.
 
-Ten shapes for the same job: 8 chunks, 5 layers, a Go template, server-side.
+Ten agents, ten shapes: 8 chunks, 5 layers, a Go template, server-side.
 
 https://matto.club/writing/how-coding-agents-work/the-system-prompt/
