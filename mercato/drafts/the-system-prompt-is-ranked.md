@@ -4,7 +4,7 @@ platforms:
   - linkedin
   - twitter
 publish_date: 2026-10-08
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt.png
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt-rank.png
 topics:
   - agents
   - ai
