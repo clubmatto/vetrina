@@ -3,19 +3,31 @@ Type "export PATH=/tmp/db-diff-demo/bin:$PATH && source /tmp/db-diff-demo/env.sh
 Enter
 Show
 
+Set TypingSpeed 20ms
+
 Sleep 500ms
 
-Type "# Compare the columns that matter, skip the noise"
+Type "# Three rows drifted in line_items"
 Enter
 
-Sleep 1s
+Sleep 500ms
 
-Type "db-diff --source=$PG_SRC --target=$PG_DST --table=bookmark --exclude=title,unread,note"
+Type "db-diff --source=$PG_SRC --target=$PG_DST --table=line_items"
 Enter
 
-Sleep 2s
+Sleep 1500ms
 
-Type "# ⚡ The changed row drops out, the missing one stays ⚡"
+Type "# Exclude the one column that changed"
+Enter
+
+Sleep 500ms
+
+Type "db-diff --source=$PG_SRC --target=$PG_DST --table=line_items --exclude=quantity"
+Enter
+
+Sleep 1500ms
+
+Type "# ✨ Skip the noise, keep the signal ✨"
 Enter
 
 Sleep 3s

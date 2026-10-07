@@ -56,23 +56,24 @@ wait_for() {
   return 1
 }
 
-# The drift is the same on every engine: one row changes, one disappears, one
-# exists only on the drifted side.
+# orders is identical on both sides, so the demos can show the matching path.
+# line_items drifts on dst: one row changes, one disappears, one exists only on
+# the drifted side.
 drift_postgres() {
   docker exec -i "$PG_CONTAINER" psql -q -U postgres -d dst -v ON_ERROR_STOP=1 <<'SQL'
-UPDATE bookmark SET title = 'Changed' WHERE id = 2;
-DELETE FROM bookmark WHERE id = 3;
-INSERT INTO bookmark (id, url, title, unread, note)
-  VALUES (4, 'https://example.com/4', 'Example 4', true, NULL);
+UPDATE line_items SET quantity = quantity + 5 WHERE id = 1042;
+DELETE FROM line_items WHERE id = 39999;
+INSERT INTO line_items (id, sku, quantity, unit_cents)
+  VALUES (100001, 'SKU-9999', 2, 1999);
 SQL
 }
 
 drift_mysql() {
-  docker exec -i "$MYSQL_CONTAINER" mysql -uroot -psecret dst <<'SQL'
-UPDATE bookmark SET title = 'Changed' WHERE id = 2;
-DELETE FROM bookmark WHERE id = 3;
-INSERT INTO bookmark (id, url, title, unread, note)
-  VALUES (4, 'https://example.com/4', 'Example 4', true, NULL);
+  docker exec -e MYSQL_PWD=secret -i "$MYSQL_CONTAINER" mysql -uroot dst <<'SQL'
+UPDATE line_items SET quantity = quantity + 5 WHERE id = 1042;
+DELETE FROM line_items WHERE id = 39999;
+INSERT INTO line_items (id, sku, quantity, unit_cents)
+  VALUES (100001, 'SKU-9999', 2, 1999);
 SQL
 }
 
@@ -80,10 +81,10 @@ SQL
 # each one land before the next statement runs.
 drift_clickhouse() {
   docker exec -i "$CH_CONTAINER" clickhouse-client --password secret --database dst --multiquery <<'SQL'
-ALTER TABLE bookmark UPDATE title = 'Changed' WHERE id = 2 SETTINGS mutations_sync = 2;
-ALTER TABLE bookmark DELETE WHERE id = 3 SETTINGS mutations_sync = 2;
-INSERT INTO bookmark (id, url, title, unread, note)
-  VALUES (4, 'https://example.com/4', 'Example 4', true, NULL);
+ALTER TABLE line_items UPDATE quantity = quantity + 5 WHERE id = 1042 SETTINGS mutations_sync = 2;
+ALTER TABLE line_items DELETE WHERE id = 39999 SETTINGS mutations_sync = 2;
+INSERT INTO line_items (id, sku, quantity, unit_cents)
+  VALUES (100001, 'SKU-9999', 2, 1999);
 SQL
 }
 
@@ -123,14 +124,14 @@ seed_mysql() {
 
   # mysqladmin ping answers as soon as the temporary init server is up, before
   # the root password exists, so poll an authenticated query instead.
-  wait_for "MySQL" docker exec "$MYSQL_CONTAINER" mysql -uroot -psecret -e "SELECT 1"
+  wait_for "MySQL" docker exec -e MYSQL_PWD=secret "$MYSQL_CONTAINER" mysql -uroot -e "SELECT 1"
 
-  docker exec "$MYSQL_CONTAINER" mysql -uroot -psecret \
+  docker exec -e MYSQL_PWD=secret "$MYSQL_CONTAINER" mysql -uroot \
     -e "CREATE DATABASE src; CREATE DATABASE dst;"
 
   local database
   for database in src dst; do
-    docker exec -i "$MYSQL_CONTAINER" mysql -uroot -psecret "$database" \
+    docker exec -e MYSQL_PWD=secret -i "$MYSQL_CONTAINER" mysql -uroot "$database" \
       < "$project_dir/seed-mysql.sql"
   done
 
@@ -167,6 +168,8 @@ seed_clickhouse() {
   echo "  -> ClickHouse ready on port $CH_PORT"
 }
 
+# env.sh carries the DSNs and a client per engine, so a tape can show the data
+# without spelling out a connection string on screen.
 write_env() {
   cat > "$DEMO_DIR/env.sh" <<EOF
 export PG_SRC="postgres://postgres:secret@127.0.0.1:$PG_PORT/src?sslmode=disable"
@@ -175,6 +178,10 @@ export MYSQL_SRC="root:secret@tcp(127.0.0.1:$MYSQL_PORT)/src?parseTime=true"
 export MYSQL_DST="root:secret@tcp(127.0.0.1:$MYSQL_PORT)/dst?parseTime=true"
 export CH_SRC="clickhouse://default:secret@127.0.0.1:$CH_PORT/src"
 export CH_DST="clickhouse://default:secret@127.0.0.1:$CH_PORT/dst"
+
+export PSQL="psql -X \$PG_SRC"
+export MYSQL="docker exec -e MYSQL_PWD=secret -i $MYSQL_CONTAINER mysql -uroot --table dst"
+export CH="clickhouse client --host 127.0.0.1 --port $CH_PORT --password secret --database src"
 EOF
 }
 

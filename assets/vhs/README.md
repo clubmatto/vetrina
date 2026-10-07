@@ -154,16 +154,23 @@ also receive the current `theme` as a third argument.
 
 | Demo | Description |
 |------|-------------|
-| `basic-postgres` | A drifted table compared across two Postgres databases |
+| `basic-postgres` | 100k rows, a matching table, and the rows that drifted |
 | `basic-mysql` | The same comparison against MySQL |
 | `basic-clickhouse` | The same comparison against ClickHouse |
-| `include-exclude` | Excluding the noisy columns narrows the result |
+| `include-exclude` | Excluding the changed column narrows the result |
 | `cross-engine` | A cross engine pair is refused before it connects |
 
-`requirements.sh` starts one container per engine, creates `src` and `dst` in each, seeds the
-same rows into both, then drifts `dst` (one row changed, one removed, one added). It builds the
-binary into `/tmp/db-diff-demo/bin` and writes the DSNs to `/tmp/db-diff-demo/env.sh`, which
-every tape sources. Each tape is short: one command and its answer.
+`requirements.sh` starts one container per engine, creates `src` and `dst` in each, and seeds
+both with 100,000 rows in `orders` and 100,000 in `line_items`. `orders` stays identical on both
+sides so a demo can show the matching path; `line_items` drifts on `dst` (one row changed, one
+removed, one added).
+
+Seeded timestamps are fixed literals rather than `now()`. The two databases are seeded by
+separate client runs, so a `now()` default differs between them and every row compares as
+drifted, which is exactly the false signal the demo is supposed to rule out.
+
+The build goes to `/tmp/db-diff-demo/bin`, and the DSNs plus a client per engine go to
+`/tmp/db-diff-demo/env.sh`, which every tape sources.
 
 ### AI Kit
 

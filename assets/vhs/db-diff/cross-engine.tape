@@ -3,19 +3,21 @@ Type "export PATH=/tmp/db-diff-demo/bin:$PATH && source /tmp/db-diff-demo/env.sh
 Enter
 Show
 
+Set TypingSpeed 20ms
+
 Sleep 500ms
 
-Type "# Engines render values their own way, so a cross engine diff is refused"
+Type "# Postgres and MySQL render values their own way"
 Enter
 
 Sleep 1s
 
-Type "db-diff --source=$PG_SRC --target=$MYSQL_DST --table=bookmark"
+Type "db-diff --source=$PG_SRC --target=$MYSQL_DST --table=orders"
 Enter
 
-Sleep 2s
+Sleep 1500ms
 
-Type "# ⚡ Refused, rather than reported as every row changed ⚡"
+Type "# 🔒 So a cross engine pair is refused before it connects 🔒"
 Enter
 
 Sleep 3s
