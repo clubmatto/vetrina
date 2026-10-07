@@ -11,6 +11,11 @@ you need to know *which* rows drifted, without transferring the table.
 
 Both databases must run the **same engine**. See [Current limitations](#current-limitations).
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../assets/vhs/db-diff/basic-postgres-dark.gif">
+  <img alt="DB Diff reporting the rows that drifted across two Postgres databases" src="../assets/vhs/db-diff/basic-postgres-light.gif">
+</picture>
+
 ## Table of Contents
 
 - [Install](#install)

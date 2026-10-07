@@ -121,18 +121,30 @@ The build process involves multiple steps:
 
 ## 🎬 VHS Demo Videos
 
-Terminal demo videos are generated with [VHS](https://github.com/charmbracelet/vhs) and stored in `../assets/vhs/fakedata/` as MP4 files. They're passthrough-copied during build and rendered as `<video autoplay loop muted playsinline>` in Liquid pages.
+Terminal demo videos are generated with [VHS](https://github.com/charmbracelet/vhs) and stored in `../assets/vhs/<project>/` as MP4 files. They're passthrough-copied during build and rendered as `<video autoplay loop muted playsinline>` in Liquid pages.
+
+Each project directory holds its own tapes, a `gifs.txt` for demos that also need a GIF, and a
+`requirements.sh` for setup and cleanup. See `../assets/vhs/README.md` for the generator, the
+lifecycle hooks, and the per-project demo list.
 
 ### OG Image / Link Previews
 
-`og:image` doesn't support MP4. For now, a static PNG thumbnail is extracted from the demo video for social previews:
+`og:image` doesn't support MP4, so a static PNG thumbnail is extracted from the demo video:
 
 ```bash
-ffmpeg -y -i basic-light.mp4 -vframes 1 -update 1 basic-light.png
+ffmpeg -y -i basic-postgres-light.mp4 -sseof -2 -vframes 1 -update 1 basic-postgres-light.png
 ```
 
-This is a manual step — the PNG lives alongside the MP4 in `../assets/vhs/fakedata/`.
+`-sseof -2` seeks two seconds from the end, because the first frame of a demo is a cleared
+terminal. The PNG lives alongside the MP4 and is passthrough-copied, so the page front matter
+can point at it with a site path:
 
-**Potential improvement**: Generate the PNG automatically in `generate.sh`, or use a GIF (which `og:image` supports with animation on some platforms). The trade-off is encoding time vs. preview quality.
+```yaml
+image: /assets/vhs/db-diff/basic-postgres-light.png
+image_width: 1300
+image_height: 650
+```
+
+This is a manual step after regenerating the recordings.
 
 _Last updated: 2026-06-22_

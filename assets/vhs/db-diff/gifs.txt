@@ -1,0 +1,2 @@
+# Demos that also produce GIFs (referenced by the README and the OG image).
+basic-postgres

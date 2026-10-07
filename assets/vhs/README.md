@@ -36,6 +36,12 @@ Output files (MP4s, GIFs) are written into the project directory alongside the t
 
 - [VHS](https://github.com/charmbracelet/vhs) — install via `brew install vhs`
 - SQLite (only needed for `pro-*` demos that use a database)
+- Docker (only needed for the `db-diff` demos, which start one container per engine)
+
+VHS checks the `ttyd` version before recording and rejects a version string it cannot parse.
+Homebrew's build currently reports `1.7.7-unknown`, which it reads as `<nil>`, so a wrapper that
+answers `ttyd --version` with a plain `1.7.x` and delegates everything else to the real binary is
+enough to get past it.
 
 ## How Tapes Work
 
@@ -65,6 +71,15 @@ assets/vhs/
 │   ├── requirements.sh          # Setup/cleanup lifecycle hooks
 │   ├── schema-pro.sql           # DB schema for pro demos
 │   └── *.tmpl                   # Template files used in demos
+├── db-diff/                     # DB Diff demos, one per engine
+│   ├── basic-postgres.tape      # Demo commands (theme-agnostic)
+│   ├── basic-mysql.tape
+│   ├── basic-clickhouse.tape
+│   ├── include-exclude.tape
+│   ├── cross-engine.tape
+│   ├── gifs.txt
+│   ├── requirements.sh          # Starts a container per engine, seeds src and dst
+│   └── seed-*.sql               # Schema and rows, one file per engine
 ├── ai-kit/                      # AI Kit CLI demos
 │   ├── basic.tape
 │   ├── ...
@@ -134,6 +149,21 @@ also receive the current `theme` as a third argument.
 | `pro-generate` | DB-native generation with FK resolution |
 | `pro-dry-run` | Preview generators and schema before insert |
 | `pro-override` | Column-level generator overrides with `-c` |
+
+### DB Diff
+
+| Demo | Description |
+|------|-------------|
+| `basic-postgres` | A drifted table compared across two Postgres databases |
+| `basic-mysql` | The same comparison against MySQL |
+| `basic-clickhouse` | The same comparison against ClickHouse |
+| `include-exclude` | Excluding the noisy columns narrows the result |
+| `cross-engine` | A cross engine pair is refused before it connects |
+
+`requirements.sh` starts one container per engine, creates `src` and `dst` in each, seeds the
+same rows into both, then drifts `dst` (one row changed, one removed, one added). It builds the
+binary into `/tmp/db-diff-demo/bin` and writes the DSNs to `/tmp/db-diff-demo/env.sh`, which
+every tape sources. Each tape is short: one command and its answer.
 
 ### AI Kit
 

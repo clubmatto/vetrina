@@ -138,6 +138,12 @@ export default function (eleventyConfig: EleventyConfig) {
     "../assets/vhs/fakedata/*.png": "assets/vhs/fakedata",
   });
   eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/db-diff/*.mp4": "assets/vhs/db-diff",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "../assets/vhs/db-diff/*.png": "assets/vhs/db-diff",
+  });
+  eleventyConfig.addPassthroughCopy({
     "../assets/vhs/ai-kit/*.mp4": "assets/vhs/ai-kit",
   });
   eleventyConfig.addPassthroughCopy({
