@@ -8,7 +8,7 @@ Read this as ground truth for a design discussion. Where the code imposes a cons
 constraint is stated, because most design questions about this tool are really questions about
 which of these constraints are worth relaxing.
 
-Path references are relative to the module root. Written against `v0.0.3`.
+Path references are relative to the module root. Written against `v0.0.4`.
 
 ---
 
@@ -29,7 +29,7 @@ alternative it replaces is a full dump-and-compare.
 "the tables match" when they do not. A false positive (reporting a difference that is not there)
 is an annoyance. Every design decision below is downstream of that asymmetry.
 
-Released as `v0.0.3`: `go install matto.club/vetrina/db-diff@latest`, or Homebrew. CI runs lint,
+Released as `v0.0.4`: `go install matto.club/vetrina/db-diff@latest`, or Homebrew. CI runs lint,
 unit and integration on every push.
 
 ---
@@ -106,6 +106,11 @@ type HashReader interface {
 }
 
 type Source interface { MetadataReader; HashReader }
+
+type ColumnExpr struct {                           // a column, and the SQL that renders its value
+    Name  string                                   // unquoted; the dialect quotes it
+    Value string                                   // SQL producing the value to hash
+}
 
 type Dialect interface {
     GetColumnNamesSQL(tableName string) string
@@ -354,6 +359,11 @@ instead of the engine's native text — compose it with `diff.BaseSource`, and h
 source := &diff.BaseSource{Conn: db, Dialect: canonicalDialect{}}
 ids, err := differ.Runner{Source: source, Target: target, Table: table}.Run(ctx)
 ```
+
+The rendering is a `diff.ColumnExpr`: a column name and a SQL expression producing the value to
+hash. Each dialect's `NativeExpr` is the same-engine case. A canonical codec is the same shape
+returning a canonical expression instead, which is why the `Dialect` methods still take column
+names and build the expressions themselves.
 
 That is why the cross-engine work is a codec problem rather than an algorithm problem.
 
