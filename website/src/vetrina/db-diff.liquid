@@ -294,8 +294,10 @@ image_height: 650
     the size of the table.
   </p>
   <p class="ds-intro-text">
-    The comparison runs within one engine. Engines render values their own way, so a cross engine run is refused rather
-    than reported as every row changed.
+    The comparison runs within one engine. Engines render values their own way — a boolean is
+    <code>true</code> in one and <code>1</code> in another — so a cross engine run is refused rather than reported as
+    every row changed. Making one possible means agreeing on how a value is spelled before it is hashed, which is what
+    DB Diff Pro does.
   </p>
 
   <div class="ds-ctas">
@@ -307,9 +309,20 @@ image_height: 650
   </div>
 </div>
 
-{%- comment -%}
-  The cross engine tier links here once the products page is reworked.
-{%- endcomment -%}
+<h2 class="ds-section-title">DB Diff Pro</h2>
+
+<div class="ds-callout">
+  <p class="ds-intro-text">
+    Need to compare across engines? <strong>DB Diff Pro</strong> reduces every value to a canonical form that
+    PostgreSQL, MySQL and ClickHouse all agree on, so a table can be compared between any two of them. A wall clock
+    reading is kept distinct from an instant, and floats are compared bit for bit rather than by how the engine happens
+    to print them.
+  </p>
+
+  <div class="ds-ctas">
+    <a href="/products/db-diff/" class="ds-btn ds-btn--primary">Learn more</a>
+  </div>
+</div>
 
 <script>
   document.querySelectorAll('.ds-terminal__command').forEach((el) => {

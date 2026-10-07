@@ -3,58 +3,334 @@ layout: page.liquid
 title: DB Diff
 description: Know when your data drifts. Compare rows across databases using hash-based checksums — blazing fast when tables match, pinpointing every difference when they don't.
 ---
-<div class="coming-soon-ribbon-container">
-  <span class="coming-soon-badge">Coming soon</span>
-</div>
 <div class="showcase-header">
   <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
   <h1 class="showcase-page-title">DB Diff</h1>
   <p class="showcase-page-tagline">Know when your data drifts</p>
+
+  <div class="showcase-db-badges">
+    <span class="showcase-db-icon" title="Postgres">{% svg 'icons/postgresql.svg' %}</span>
+    <span class="showcase-db-icon" title="MySQL">{% svg 'icons/mysql.svg' %}</span>
+    <span class="showcase-db-icon" title="ClickHouse">{% svg 'icons/clickhouse.svg' %}</span>
+  </div>
 </div>
 
-<div class="coming-soon-features">
-  <div class="ds-features-grid">
-    <div class="ds-feature-card">
-      <h3>Multi-Engine</h3>
-      <p>PostgreSQL, MySQL, and ClickHouse</p>
+<div class="ds-terminal">
+  <div class="ds-terminal__header">
+    <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+    <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+    <span class="ds-terminal__title">db-diff</span>
+  </div>
+  <div class="ds-terminal__body ds-terminal__gif">
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="theme-light"
+      aria-label="DB Diff comparing two PostgreSQL tables (light theme)"
+    >
+      <source src="/assets/vhs/db-diff/basic-postgres-light.mp4" type="video/mp4">
+    </video>
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="theme-dark"
+      aria-label="DB Diff comparing two PostgreSQL tables (dark theme)"
+    >
+      <source src="/assets/vhs/db-diff/basic-postgres-dark.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Use cases</h2>
+
+<div class="ds-tabs" x-data="{ tab: 'replication' }">
+  <div class="ds-tab-nav" role="tablist">
+    <button
+      role="tab"
+      :class="{ active: tab === 'replication' }"
+      @click="tab = 'replication'"
+      :aria-selected="tab === 'replication'"
+    >
+      Replication
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'migration' }"
+      @click="tab = 'migration'"
+      :aria-selected="tab === 'migration'"
+    >
+      Migration
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'columns' }"
+      @click="tab = 'columns'"
+      :aria-selected="tab === 'columns'"
+    >
+      Column control
+    </button>
+    <button
+      role="tab"
+      :class="{ active: tab === 'cross-engine' }"
+      @click="tab = 'cross-engine'"
+      :aria-selected="tab === 'cross-engine'"
+    >
+      Cross engine
+    </button>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'replication'">
+    <div class="ds-tab-body-text">
+      <p>
+        Check that a replica, a restored backup, or a logical replication target holds the same rows as its source.
+        Equal tables are answered by checksums alone, so nothing but a handful of hashes crosses the wire.
+      </p>
     </div>
-    <div class="ds-feature-card">
-      <h3>Blazing fast</h3>
-      <p>Server-side MD5 chunking, only hashes cross the wire</p>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$PRIMARY" --target="$REPLICA" --table=orders
     </div>
-    <div class="ds-feature-card">
-      <h3>Pinpoint precision</h3>
-      <p>Automatic drill-down to the exact differing rows</p>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'migration'">
+    <div class="ds-tab-body-text">
+      <p>
+        Prove a migration moved the data and not just the schema. When a table does not match, DB Diff reads only the
+        segments that differ and names the exact primary keys, so you get a list of rows rather than a yes or no.
+      </p>
     </div>
-    <div class="ds-feature-card">
-      <h3>Column control</h3>
-      <p>Include or exclude columns to skip noise</p>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$BEFORE" --target="$AFTER" --table=line_items
+    </div>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'columns'">
+    <div class="ds-tab-body-text">
+      <p>
+        Timestamps and counters change on every write and will always differ. Include the columns that carry meaning and
+        exclude the ones that only carry noise, and the comparison stays about the data you care about.
+      </p>
+    </div>
+    <p class="ds-try-text">Try it yourself:</p>
+    <div class="ds-terminal__command">
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=orders
+      --exclude=updated_at
+    </div>
+  </div>
+
+  <div class="ds-tab-body" x-show="tab === 'cross-engine'">
+    <div class="ds-tab-body-text">
+      <p>
+        Comparing a table between two engines is the one thing the open source tool will not do, and it refuses rather
+        than misleads: a boolean is <code>true</code> in PostgreSQL and <code>1</code> in MySQL, so hashing each
+        engine's own spelling would report every row as changed.
+      </p>
+      <p>
+        <strong>DB Diff Pro</strong> reduces each value to a canonical form that both engines agree on before it is
+        hashed, so the comparison means what it says.
+      </p>
+    </div>
+    <div class="ds-terminal">
+      <div class="ds-terminal__header">
+        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
+        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
+        <span class="ds-terminal__title">refused by the CLI</span>
+      </div>
+      <div class="ds-terminal__body ds-terminal__gif">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-light"
+          aria-label="The CLI refusing a cross engine comparison (light theme)"
+        >
+          <source src="/assets/vhs/db-diff/cross-engine-light.mp4" type="video/mp4">
+        </video>
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-dark"
+          aria-label="The CLI refusing a cross engine comparison (dark theme)"
+        >
+          <source src="/assets/vhs/db-diff/cross-engine-dark.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="coming-soon-waitlist" x-data="{ submitted: false }">
-  <p>Leave your email and we'll let you know when DB Diff is ready.</p>
-  <form
-    x-show="!submitted"
-    @submit.prevent="
-      fetch($el.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: $el.email.value,
-          product_id: $el.product_id.value
-        })
-      }).then(r => { if(r.ok) submitted = true })
-    "
-    action="{{ apiBaseUrl }}/waiting-list/signup"
-    method="POST"
-  >
-    <input type="email" name="email" required placeholder="your@email.com">
-    <input type="hidden" name="product_id" value="f88793dd-6627-4661-b786-d6e0c22ccc15">
-    <button type="submit" class="ds-btn ds-btn--primary">Join waitlist</button>
-  </form>
-  <div class="waiting-list-submitted" x-show="submitted">
-    <p>Thanks! We'll be in touch.</p>
+<h2 class="ds-section-title">Get started</h2>
+
+<div x-data="{ period: 'monthly', currency: 'eur' }">
+  <div class="fakedata-pricing-toggles">
+    <div class="fakedata-pricing-toggle-group">
+      <button :class="{ active: currency === 'eur' }" @click="currency = 'eur'">€</button>
+      <button :class="{ active: currency === 'usd' }" @click="currency = 'usd'">$</button>
+    </div>
+    <div class="fakedata-pricing-toggle-group">
+      <button :class="{ active: period === 'monthly' }" @click="period = 'monthly'">Monthly</button>
+      <button :class="{ active: period === 'annual' }" @click="period = 'annual'">Annual</button>
+    </div>
+  </div>
+
+  <div class="fakedata-pricing-grid">
+    <div class="fakedata-pricing-card">
+      <h3 class="fakedata-pricing-name">Free</h3>
+      <div class="fakedata-pricing-amount">
+        <span x-text="currency === 'eur' ? '€' : '$'"></span>0 <span class="fakedata-pricing-period">for ever</span>
+      </div>
+      <p class="fakedata-pricing-desc">
+        The command line tool, with every engine and every flag. Comparisons run within one engine.
+      </p>
+      <ul class="fakedata-pricing-features">
+        <li>PostgreSQL, MySQL and ClickHouse</li>
+        <li>Server side checksums, one pass per segment</li>
+        <li>Drill down to the differing rows</li>
+        <li>Include and exclude columns</li>
+        <li>Tunable segment size</li>
+        <li>Exit codes for CI</li>
+      </ul>
+      <a href="/vetrina/db-diff/" class="ds-btn ds-btn--secondary">Install it</a>
+    </div>
+    <div
+      class="fakedata-pricing-card fakedata-pricing-featured fakedata-flip-card"
+      x-data="{ flipped: false, submitted: false }"
+    >
+      <div class="fakedata-pricing-badge">Pro</div>
+      <div class="fakedata-flip-scene">
+        <div class="fakedata-flip-inner" :class="{ 'is-flipped': flipped }">
+          <div class="fakedata-flip-front">
+            <h3 class="fakedata-pricing-name">Pro</h3>
+            <div class="fakedata-pricing-amount">
+              <span x-text="currency === 'eur' ? '€' : '$'"></span
+              ><span
+                x-text="period === 'monthly' ? (currency === 'eur' ? '50' : '60') : (currency === 'eur' ? '500' : '600')"
+              ></span>
+              <span class="fakedata-pricing-period" x-text="period === 'monthly' ? '/month' : '/year'"></span>
+              <span class="fakedata-pricing-discount" x-show="period === 'annual'">Save 17%</span>
+            </div>
+            <p class="fakedata-pricing-desc">Everything in Free, plus comparing a table between any two engines.</p>
+            <ul class="fakedata-pricing-features">
+              <li>PostgreSQL, MySQL and ClickHouse, in any pairing</li>
+              <li>A canonical form every engine agrees on</li>
+              <li>Floats compared bit for bit</li>
+              <li>A wall clock kept distinct from an instant</li>
+              <li>Refuses a type that cannot be compared honestly</li>
+            </ul>
+            <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
+            <ul class="fakedata-pricing-features">
+              <li>Preflight sampling against your own rows</li>
+              <li>More engines</li>
+            </ul>
+            <button @click="flipped = true" class="ds-btn ds-btn--primary">Contact us</button>
+          </div>
+          <div class="fakedata-flip-back">
+            <div x-show="!submitted">
+              <h4 class="fakedata-flip-back-title">Get in touch</h4>
+              <p class="fakedata-flip-back-desc">Drop your email and we'll reach out about DB Diff Pro.</p>
+              <form
+                @submit.prevent="
+                  fetch($el.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      email: $el.email.value,
+                      product_id: $el.product_id.value
+                    })
+                  }).then(r => { if(r.ok) submitted = true })
+                "
+                action="{{ apiBaseUrl }}/waiting-list/signup"
+                method="POST"
+              >
+                <div class="fakedata-flip-form-group">
+                  <input type="email" name="email" required placeholder="your@email.com">
+                </div>
+                <input type="hidden" name="product_id" value="f88793dd-6627-4661-b786-d6e0c22ccc15">
+                <button type="submit" class="ds-btn ds-btn--primary">Send</button>
+              </form>
+            </div>
+            <div x-show="submitted">
+              <h4 class="fakedata-flip-back-title">Thanks!</h4>
+              <p class="fakedata-flip-back-desc">We'll be in touch soon.</p>
+            </div>
+            <button @click="flipped = false" class="fakedata-flip-back-link">← Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<h2 class="ds-section-title">How it works</h2>
+
+<div class="ds-callout">
+  <p class="ds-intro-text">
+    DB Diff cuts a table into segments of primary keys and checksums each one on both sides. Segments whose checksums
+    agree are skipped without reading a row. A segment that differs is read row by row, so the cost follows the number
+    of differing segments rather than the size of the table.
+  </p>
+  <p class="ds-intro-text">
+    Each column is hashed on its own and the digests are folded together, which is what removes the ambiguity of joining
+    values before hashing them. A NULL bitmap sits in front, because a NULL and an empty string render alike and a
+    column that is one on each side would otherwise look equal.
+  </p>
+  <p class="ds-intro-text">
+    Within one engine the checksum hashes the engine's own rendering of each value. Across engines that is not enough:
+    PostgreSQL writes a decimal as <code>1.50</code> and ClickHouse writes the same number as <code>1.5</code>, and a
+    difference in spelling would read as a difference in data. Pro reduces every value to a canonical form first, so
+    what gets hashed is the value rather than the notation.
+  </p>
+
+  <div class="ds-ctas">
+    <a
+      href="https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/how-it-works.md"
+      class="ds-btn ds-btn--primary"
+      >Read the algorithm notes</a
+    >
+  </div>
+</div>
+
+<h2 class="ds-section-title">DB Diff CLI</h2>
+
+<div class="ds-callout">
+  <p class="ds-intro-text">
+    Prefer working from the command line? <strong>DB Diff</strong> is a single binary with no server and no state. It
+    exits <code>0</code> when the tables match, <code>1</code> when they differ, and <code>2</code> when it could not
+    run, so a job can tell "the tables differ" apart from "the tool broke".
+  </p>
+
+  <div class="ds-ctas">
+    <a href="/vetrina/db-diff/" class="ds-btn ds-btn--primary">Try the CLI</a>
+  </div>
+</div>
+
+<div class="product-tos-link">
+  <a href="/products/db-diff/terms/">Terms of service</a>
+</div>
+
+<script>
+  document.querySelectorAll('.ds-terminal__command').forEach((el) => {
+    el.addEventListener('click', async () => {
+      const text = [...el.childNodes]
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.textContent)
+        .join('')
+        .trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 1500);
+      } catch {}
+    });
+  });
+</script>
