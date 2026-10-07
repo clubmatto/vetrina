@@ -21,6 +21,8 @@ compaction: https://matto.club/writing/how-coding-agents-work/how-compaction-wor
 
 ## Twitter
 
-Pinocchio, our toy coding agent, compacts with the simplest algorithm there is: summarize the head, keep the recent tail.
+Pinocchio, our toy coding agent, compacts with the simplest algorithm there is:
+summarize the head, keep the recent tail.
 
-The deep dive: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
+The deep
+dive: https://matto.club/writing/how-coding-agents-work/how-compaction-works/
