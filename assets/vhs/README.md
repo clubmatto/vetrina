@@ -290,17 +290,31 @@ Two directives do belong in a tape:
 ### The shell prompt is not pinned
 
 Recordings inherit whatever prompt the shell has when the generator runs. Nothing
-in this repository sets it, so a recording made from an interactive shell shows
-that shell's prompt, and one made from a script, a container or a sandbox shows
-the shell's default.
+in `config.tape` sets one, so a recording made from an interactive shell shows
+that shell's prompt and one made from a script, a container or a sandbox shows the
+shell's default.
 
 This is not hypothetical. The db-diff demos were once regenerated from a bare
 bash and shipped with `bash-5.3$` in every frame, while every other project showed
 the interactive prompt. It is visible in the first second of a recording and
 nowhere else, which is exactly the kind of difference that survives review.
 
-So run the generator from your interactive shell, and look at the first frame of
-a new recording before committing it.
+VHS can pin it, and it is worth knowing how because the obvious guess does not
+work:
+
+```
+Env PS1 "> "        # takes effect
+Env PROMPT "> "     # does nothing
+```
+
+`Env PS1` overrides the prompt the shell would have shown. Measured against bash,
+zsh, and the default shell, all three record the pinned prompt; `Env PROMPT` is
+overwritten by the shell's own startup, which is what zsh sets.
+
+Nothing in `config.tape` uses it yet, because pinning it fixes the prompt for
+every project at once and gives up the interactive prompt the current recordings
+show. Until that is a decision, run the generator from your interactive shell and
+check the first frame of a new recording.
 
 ## Adding a New Demo
 
