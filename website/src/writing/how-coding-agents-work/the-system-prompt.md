@@ -8,6 +8,9 @@ tags:
   - ai
   - agents
 series: how-coding-agents-work
+image: /assets/writing/the-system-prompt.png
+image_width: 2400
+image_height: 1260
 ---
 
 We started this series by shortlisting [ten open-source coding
