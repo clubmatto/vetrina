@@ -2,7 +2,7 @@
 title: "Meet Guido, the story"
 platforms:
   - instagram
-publish_date: 2026-10-10
+publish_date: 2026-10-09
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/logo-lockup.png
 topics:
   - guido
