@@ -132,12 +132,13 @@ lifecycle hooks, and the per-project demo list.
 `og:image` doesn't support MP4, so a static PNG thumbnail is extracted from the demo video:
 
 ```bash
-ffmpeg -y -i basic-postgres-light.mp4 -sseof -2 -vframes 1 -update 1 basic-postgres-light.png
+ffmpeg -y -sseof -2 -i basic-postgres-light.mp4 -vframes 1 -update 1 basic-postgres-light.png
 ```
 
 `-sseof -2` seeks two seconds from the end, because the first frame of a demo is a cleared
-terminal. The PNG lives alongside the MP4 and is passthrough-copied, so the page front matter
-can point at it with a site path:
+terminal. It is an input option, so it goes before `-i`; after `-i` ffmpeg reads it as an output
+option and refuses the command. The PNG lives alongside the MP4 and is passthrough-copied, so the
+page front matter can point at it with a site path:
 
 ```yaml
 image: /assets/vhs/db-diff/basic-postgres-light.png

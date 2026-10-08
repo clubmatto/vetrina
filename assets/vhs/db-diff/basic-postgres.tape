@@ -3,8 +3,6 @@ Type "export PATH=/tmp/db-diff-demo/bin:$PATH && source /tmp/db-diff-demo/env.sh
 Enter
 Show
 
-Set TypingSpeed 20ms
-
 Sleep 500ms
 
 Type "# 100,000 orders on each side"
@@ -12,30 +10,42 @@ Enter
 
 Sleep 500ms
 
+Set TypingSpeed 5ms
+
 Type "$PSQL -c 'SELECT id, customer, status, total_cents FROM orders ORDER BY id LIMIT 4'"
 Enter
 
 Sleep 1500ms
+
+Set TypingSpeed 50ms
 
 Type "# The tables match, so only checksums crossed the wire"
 Enter
 
 Sleep 500ms
 
+Set TypingSpeed 5ms
+
 Type "db-diff --source=$PG_SRC --target=$PG_DST --table=orders"
 Enter
 
-Sleep 1500ms
+Wait+Screen@60s /no differences/
+
+Set TypingSpeed 50ms
 
 Type "# Three rows drifted in line_items"
 Enter
 
 Sleep 500ms
 
+Set TypingSpeed 5ms
+
 Type "db-diff --source=$PG_SRC --target=$PG_DST --table=line_items"
 Enter
 
-Sleep 1500ms
+Wait+Screen@60s /differing rows/
+
+Set TypingSpeed 50ms
 
 Type "# ⚡ Know exactly which rows drifted ⚡"
 Enter

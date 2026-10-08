@@ -261,11 +261,54 @@ custom-output  # referenced in README
 Generated files live alongside the tapes in the project directory. The website
 serves them via Eleventy passthrough copy — no manual copying needed.
 
+## Writing a Demo
+
+A demo tape carries the story, not the settings. The generator concatenates
+`config.tape`, then `config-{theme}.tape`, then your `<demo>.tape`, so font, size,
+padding, theme and the 50ms base typing speed come from the shared files. A tape
+that repeats them goes stale the next time the shared files change.
+
+Two directives do belong in a tape:
+
+- **`Set TypingSpeed`** — pacing. Narration and short commands inherit the 50ms
+  default so they can be read; a long command that is unreadable while it types
+  drops to `5ms` and is restored to `50ms` immediately after. `fakedata/pro-generate.tape`
+  is the shape to copy.
+- **`Wait+Screen`** — prefer it to a fixed `Sleep` whenever the command prints
+  something you can wait for, so a slow run does not show a half-drawn result and
+  a fast one does not leave dead air:
+
+  ```
+  Type "db-diff --source=$PG_SRC --target=$PG_DST --table=orders"
+  Enter
+
+  Wait+Screen@60s /no differences/
+
+  Set TypingSpeed 50ms
+  ```
+
+### The shell prompt is not pinned
+
+Recordings inherit whatever prompt the shell has when the generator runs. Nothing
+in this repository sets it, so a recording made from an interactive shell shows
+that shell's prompt, and one made from a script, a container or a sandbox shows
+the shell's default.
+
+This is not hypothetical. The db-diff demos were once regenerated from a bare
+bash and shipped with `bash-5.3$` in every frame, while every other project showed
+the interactive prompt. It is visible in the first second of a recording and
+nowhere else, which is exactly the kind of difference that survives review.
+
+So run the generator from your interactive shell, and look at the first frame of
+a new recording before committing it.
+
 ## Adding a New Demo
 
-1. Create `<demo>.tape` in the project directory with demo commands only
+1. Create `<demo>.tape` in the project directory with demo commands only — see
+   Writing a Demo above for the two directives that are the exception
 2. If it should also produce GIFs, add its name to `gifs.txt`
 3. Run `./generate.sh <project> <demo>` (or `go run -C tools/vhs-generate . <project> <demo>`)
+4. Check the first frame for the prompt, and that the pacing reads well
 
 The script discovers all `.tape` files automatically (excluding `config*`).
 
