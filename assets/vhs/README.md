@@ -287,34 +287,27 @@ Two directives do belong in a tape:
   Set TypingSpeed 50ms
   ```
 
-### The shell prompt is not pinned
+### The prompt is pinned
 
-Recordings inherit whatever prompt the shell has when the generator runs. Nothing
-in `config.tape` sets one, so a recording made from an interactive shell shows
-that shell's prompt and one made from a script, a container or a sandbox shows the
-shell's default.
+Recordings inherit whatever prompt the shell has when the generator runs, so the
+same tape would record `bash-5.3$` from a script and the operator's own prompt
+from their terminal. That difference shipped once: the db-diff demos were
+regenerated from a bare bash and every frame showed `bash-5.3$` while every other
+project showed the interactive prompt. It is visible in the first second of a
+recording and nowhere else, which is exactly the kind of difference that survives
+review.
 
-This is not hypothetical. The db-diff demos were once regenerated from a bare
-bash and shipped with `bash-5.3$` in every frame, while every other project showed
-the interactive prompt. It is visible in the first second of a recording and
-nowhere else, which is exactly the kind of difference that survives review.
+The generator pins it instead, writing `Env PS1 "> "` into every assembled tape.
+It goes after the theme rather than in `config.tape`, because a setting has to
+come before any non-setting command: an `Env` line in the base config would make
+the `Set Theme` that follows it silently do nothing.
 
-VHS can pin it, and it is worth knowing how because the obvious guess does not
-work:
+`PS1` is the name that works. `Env PROMPT "> "` does nothing, because the shell's
+own startup overwrites it and `PROMPT` is the parameter zsh sets. Measured against
+bash, zsh and the default shell, `PS1` wins in all three.
 
-```
-Env PS1 "> "        # takes effect
-Env PROMPT "> "     # does nothing
-```
-
-`Env PS1` overrides the prompt the shell would have shown. Measured against bash,
-zsh, and the default shell, all three record the pinned prompt; `Env PROMPT` is
-overwritten by the shell's own startup, which is what zsh sets.
-
-Nothing in `config.tape` uses it yet, because pinning it fixes the prompt for
-every project at once and gives up the interactive prompt the current recordings
-show. Until that is a decision, run the generator from your interactive shell and
-check the first frame of a new recording.
+The pinned value is what an interactive shell already showed, so the recordings
+committed before this do not need re-recording.
 
 ## Adding a New Demo
 
@@ -322,7 +315,8 @@ check the first frame of a new recording.
    Writing a Demo above for the two directives that are the exception
 2. If it should also produce GIFs, add its name to `gifs.txt`
 3. Run `./generate.sh <project> <demo>` (or `go run -C tools/vhs-generate . <project> <demo>`)
-4. Check the first frame for the prompt, and that the pacing reads well
+4. Watch the first few seconds back: the prompt is pinned, so what you are
+   checking is that the pacing reads well
 
 The script discovers all `.tape` files automatically (excluding `config*`).
 

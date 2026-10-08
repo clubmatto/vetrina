@@ -22,6 +22,11 @@ type genTask struct {
 	gif   bool
 }
 
+// recordingPrompt is the prompt every recording is pinned to. It reproduces
+// what an interactive shell already shows, so pinning it changes nothing
+// visible and only removes the dependency on whose machine ran the generator.
+const recordingPrompt = "> "
+
 func main() {
 	repoRoot := getRepoRoot()
 
@@ -322,6 +327,14 @@ func generateTask(vhsDir, projectDir string, t genTask, hasHooks bool, reqFile s
 		return fmt.Errorf("%s: reading theme config: %w", outputFile, err)
 	}
 	buf.WriteString("\n")
+	// Pin the prompt, after the theme rather than in config.tape: a setting has
+	// to come before any non-setting command, so an Env line in the base config
+	// would make the Set Theme that follows it silently do nothing.
+	//
+	// Without this a recording inherits whatever prompt the shell happened to
+	// start with, so the same tape records `bash-5.3$` from a script and the
+	// operator's own prompt from their terminal. That shipped once.
+	fmt.Fprintf(&buf, "Env PS1 %q\n", recordingPrompt)
 	if err := appendFile(&buf, tapeFile); err != nil {
 		return fmt.Errorf("%s: reading tape file: %w", outputFile, err)
 	}
