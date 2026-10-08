@@ -1,8 +1,6 @@
 ---
 title: "The left dial"
-platforms:
-  - instagram
-publish_date: 2026-10-08
+platform: instagram
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/banner-left.png
 topics:
   - guido
