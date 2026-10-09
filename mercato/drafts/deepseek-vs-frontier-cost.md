@@ -11,18 +11,18 @@ topics:
 
 ## LinkedIn
 
-We ran a full month of coding-agent work on DeepSeek. The bill: €<SPEND> (input <IN>M, output <OUT>M tokens).
+At Club Matto, we practice agentic coding primarily on DeepSeek.
 
-Curiosity got us: what would the same tokens cost on the frontier models? We cannot test those directly, since we do not use them. So we priced our real usage at the published per-million rates.
+The bill: €<SPEND>(input <IN>M, output <OUT>M tokens).
 
-The multiple: <MULTIPLE>x.
+Curiosity got us: what would the same tokens cost on the frontier models?
+We cannot test those directly, since we do not use them. So we priced our real
+usage at the published per-million rates.
 
-Screenshot of the actual dashboard below. Numbers over vibes.
 
 ## Twitter
 
 A month of coding-agent work on DeepSeek cost us €<SPEND>.
 
-The same tokens on frontier models: <MULTIPLE>x. We cannot test those directly, so we priced our real usage at published rates.
-
-Numbers over vibes.
+The same tokens on frontier models: <MULTIPLE>x. We cannot test those directly,
+so we priced our real usage at published rates.
