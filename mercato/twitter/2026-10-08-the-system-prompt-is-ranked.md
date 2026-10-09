@@ -2,14 +2,9 @@
 title: "The system prompt is ranked"
 platform: twitter
 topics:
-    - agents
-    - ai
-    - open-source
-  ---
-  
-  ## LinkedIn
-  
-  Modern models process instructions in ranks:
+  - agents
+  - ai
+  - open-source
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt-rank.png
 ---
 

@@ -89,6 +89,12 @@ is the GitHub link to the image that ships with the post, the same form as the c
 Text-only posts omit the field, and published files keep it as the record of what
 shipped.
 
+## Post Images
+
+Articles ship with an OG image. The full style — layout, palette, fonts, the prompt
+that produces one, and every example shipped so far — lives in
+[`docs/STYLE.md`](docs/STYLE.md).
+
 Which slot a post filled, and the article it was harvested from, are tracked on the
 Marketing board rather than here. The scheduled date is the one exception, and only
 while a post is still a draft. Mercato is the published record, not the plan.
@@ -133,9 +139,9 @@ These are the mercato specifics:
 
 - **LinkedIn: 55 to 90 words.** Close with `Read it here: <url>`.
 - **Twitter: 280 characters at most, aim for 200.** Close with the bare URL.
-- **Instagram: 5 hashtags max.** The image is the post: a 1080x1350 board, caption
-  short. No inline links; the URL lives in the bio, so close with `link in bio`
-  instead.
+- **Instagram: 5 hashtags max.** The image is the post: a 1080x1440 (3:4) board —
+  anything else gets cropped by the feed — caption short. No inline links; the URL
+  lives in the bio, so close with `link in bio` instead.
 - **Twitter is LinkedIn trimmed.** Same announcement and hook, cut to essentials.
 - **Mention the topic, not the innards.** Leave out numbers, timings and implementation
   details unless they are the point of the post.

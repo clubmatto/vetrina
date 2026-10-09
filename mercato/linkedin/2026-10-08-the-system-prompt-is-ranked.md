@@ -2,14 +2,9 @@
 title: "The system prompt is ranked"
 platform: linkedin
 topics:
-    - agents
-    - ai
-    - open-source
-  ---
-  
-  ## LinkedIn
-  
-  Modern models process instructions in ranks:
+  - agents
+  - ai
+  - open-source
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt-rank.png
 ---
 
@@ -23,4 +18,3 @@ every harness: where it is, your rules, and what it learned.
 
 Learn more
 here: https://matto.club/writing/how-coding-agents-work/the-system-prompt/
-

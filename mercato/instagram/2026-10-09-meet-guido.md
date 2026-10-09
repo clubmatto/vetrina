@@ -4,7 +4,7 @@ platform: instagram
 topics:
   - guido
   - sim-racing
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/pitboard-intro.png
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/posts/pitboard-intro.png
 ---
 
 🚀 Meet Guido, your race engineer 🚀
