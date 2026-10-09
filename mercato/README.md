@@ -17,6 +17,7 @@ state**, not a backlog problem. It just means nothing is in flight.
 mercato/
 ├── README.md
 ├── drafts/         # In-progress drafts (legitimately empty sometimes)
+├── instagram/      # Instagram posts
 ├── linkedin/       # LinkedIn posts
 ├── twitter/        # Twitter/X threads and posts
 ├── producthunt/    # Product Hunt launch listings
@@ -132,6 +133,9 @@ These are the mercato specifics:
 
 - **LinkedIn: 55 to 90 words.** Close with `Read it here: <url>`.
 - **Twitter: 280 characters at most, aim for 200.** Close with the bare URL.
+- **Instagram: 5 hashtags max.** The image is the post: a 1080x1350 board, caption
+  short. No inline links; the URL lives in the bio, so close with `link in bio`
+  instead.
 - **Twitter is LinkedIn trimmed.** Same announcement and hook, cut to essentials.
 - **Mention the topic, not the innards.** Leave out numbers, timings and implementation
   details unless they are the point of the post.

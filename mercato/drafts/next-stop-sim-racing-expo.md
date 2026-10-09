@@ -15,5 +15,4 @@ The team that built Guido is going to the Sim Racing Expo. If you are going
 too: tell us! We'd love to meet you and talk about
 everything sim racing.
 
-#simracing #simracingexpo #simracingcommunity #granturismo7 #gt7
-#lemanultimate #assettocorsa #racingsimulator #simracer #simrig
+#simracing #simracingexpo #simracingcommunity #assettocorsa #lemansultimate
