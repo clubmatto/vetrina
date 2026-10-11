@@ -1,12 +1,16 @@
 ---
 title: "How coding agents work, deep dive: Tools"
-platform: linkedin
+platforms:
+  - linkedin
+  - twitter
+publish_date: 2026-10-13
 topics:
   - agents
   - ai
   - open-source
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools.png
 ---
+
+## LinkedIn
 
 📢 How coding agents work: tools 📢
 
@@ -19,3 +23,13 @@ do not just cost different amounts, they buy different things, and picking
 between them is a balance rather than a best practice.
 
 Read it here: https://matto.club/writing/how-coding-agents-work/tools/
+
+## Twitter
+
+📢 How coding agents work: tools 📢
+
+Ten open-source agents, and no two agree on how much tool surface to declare:
+the spread runs from a single shell to about thirty tools. Both ends buy
+something different.
+
+https://matto.club/writing/how-coding-agents-work/tools/
