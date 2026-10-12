@@ -1,0 +1,28 @@
+{
+  "sims": [
+    {
+      "id": "gt7",
+      "mark": "gt7",
+      "name": "Gran Turismo 7",
+      "relay": false
+    },
+    {
+      "id": "lmu",
+      "mark": "lmu",
+      "name": "Le Mans Ultimate",
+      "relay": true
+    },
+    {
+      "id": "ac",
+      "mark": "ac",
+      "name": "Assetto Corsa",
+      "relay": true
+    },
+    {
+      "id": "acc",
+      "mark": "ac",
+      "name": "Assetto Corsa Competizione",
+      "relay": true
+    }
+  ]
+}

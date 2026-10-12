@@ -1,20 +1,123 @@
 {%- comment -%}
-  Hardware and sim requirements, shared by the Guido product page and the
-  install landing page.
+  Get started: how to get each sim talking to Guido, one tab per sim.
 
-  Set guido_roadmap_href before including when the roadmap lives on another
-  page, e.g. '/products/guido/#roadmap' from the install page. Defaults to the
-  in-page anchor the product page uses.
+  The steps are imperatives, and they follow the same order and the same voice as
+  the setup wizard in the app, so a driver who reads this page and then opens
+  Guido meets the list they already read.
+
+  Tab state lives in Alpine because the marks at the top of the page link here by
+  hash, and a hash that lands on #sim-lmu has to open the Le Mans Ultimate tab
+  rather than leave Gran Turismo 7 showing. The tab buttons carry the ids those
+  marks point at, so the browser scrolls to the strip on its own and the script
+  only has to pick the tab.
+
+  Every panel is in the markup and all but the first arrive with `hidden`, so with
+  JavaScript off the section still reads: it shows GT7, the one sim that needs no
+  second app on a PC.
 {%- endcomment -%}
-{%- assign guido_roadmap_href = guido_roadmap_href | default: '#roadmap' -%}
-<section class="product-requirements">
-  <div class="product-requirements-card">
-    <h3>What you need</h3>
-    <ul>
-      <li>Gran Turismo 7 running on a PS5, with telemetry enabled in the game settings — the sim supported today</li>
-      <li>A device on the same home network, running Android 7.0 or newer or iOS 18.2 or newer — best mounted beside your wheel</li>
-      <li>That's it. No cables, no cloud, no account required for the Free tier</li>
-      <li>More sims are on the <a href="{{ guido_roadmap_href }}">roadmap</a> — Guido is built for multiple sims</li>
-    </ul>
+<section class="product-requirements" id="get-started">
+  {%- comment -%}
+    One anchor per sim, all of them parked on the section heading, so a mark at the
+    top of the page lands on "Get started" rather than halfway down the section on
+    the tab strip. The hash still names the sim, which is what the script below
+    picks the tab up from; only where it lands changed. The tab buttons carry
+    separate ids now, because an id is a single scroll target and these four have
+    to sit above them.
+  {%- endcomment -%}
+  {%- for sim in guidoSims.sims %}
+    <span class="product-sim-anchor" id="sim-{{ sim.id }}" aria-hidden="true"></span>
+  {%- endfor %}
+  <h2 class="product-section-title">Get started</h2>
+  <div
+    class="product-sim-tabs"
+    x-data="{
+      tabs: [{% for sim in guidoSims.sims %}'{{ sim.id }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      tab: '{{ guidoSims.sims.first.id }}',
+      select(id) {
+        this.tab = id;
+      },
+      move(step) {
+        const next = this.tabs[(this.tabs.indexOf(this.tab) + step + this.tabs.length) % this.tabs.length];
+        this.select(next);
+        this.$nextTick(() => this.$refs[next]?.focus());
+      },
+      init() {
+        const sync = () => {
+          const hash = (location.hash || '').slice(1);
+          if (!hash.startsWith('sim-')) return;
+          const id = hash.slice(4);
+          if (this.tabs.includes(id)) this.select(id);
+        };
+        sync();
+        window.addEventListener('hashchange', sync);
+      }
+    }"
+  >
+    <div class="product-sim-tabs__list" role="tablist" aria-label="Choose your sim">
+      {%- for sim in guidoSims.sims %}
+        <button
+          type="button"
+          role="tab"
+          id="sim-tab-{{ sim.id }}"
+          x-ref="{{ sim.id }}"
+          class="product-sim-tab"
+          :class="{ 'is-active': tab === '{{ sim.id }}' }"
+          :aria-selected="tab === '{{ sim.id }}'"
+          :tabindex="tab === '{{ sim.id }}' ? 0 : -1"
+          aria-controls="sim-panel-{{ sim.id }}"
+          @click="select('{{ sim.id }}')"
+          @keydown.arrow-right.prevent="move(1)"
+          @keydown.arrow-left.prevent="move(-1)"
+        >
+          <span class="sim-mark sim-mark--{{ sim.mark }}" aria-hidden="true"></span>
+          <span class="product-sim-tab__name">{{ sim.name }}</span>
+        </button>
+      {%- endfor %}
+    </div>
+    {%- for sim in guidoSims.sims %}
+      {%- comment -%}
+        The steps ask for a console or a PC, and which one is the sim's own fact.
+        Derived here rather than stored, so `relay` stays the single answer to
+        "does this sim need Muretto".
+      {%- endcomment -%}
+      {%- assign sim_host = 'console' -%}
+      {%- if sim.relay -%}
+        {%- assign sim_host = 'PC' -%}
+      {%- endif %}
+      <div
+        class="product-sim-panel"
+        id="sim-panel-{{ sim.id }}"
+        role="tabpanel"
+        aria-labelledby="sim-tab-{{ sim.id }}"
+        :hidden="tab !== '{{ sim.id }}'"
+        {% unless forloop.first %}
+          hidden
+        {% endunless %}
+      >
+        <ul>
+          {%- comment %}
+            This logic is bound to break very soon, as it's the wrong level of abstraction. Better have the list
+            stored in full in the data json, nevermind the duplication
+          {%- endcomment %}
+          {%- if sim.relay %}
+            <li>
+              Install and launch <a href="#muretto">Muretto</a> where {{ sim.name }} is installed.
+            </li>
+            <li>Start driving in {{ sim.name }}.</li>
+          {%- else %}
+            <li>Power on your PlayStation 5 and launch {{ sim.name }}.</li>
+          {%- endif %}
+          <li>Put your phone or tablet on the same home network as the {{ sim_host }}.</li>
+          <li>Open Guido. It finds the {{ sim_host }} on its own.</li>
+        </ul>
+      </div>
+    {%- endfor %}
+    {%- comment -%}
+      The one requirement that is the same whichever sim you picked, so it is said
+      once here rather than four times inside the tabs.
+    {%- endcomment %}
+    <p class="product-sim-tabs__note">
+      Guido runs on Android 7.0 or newer and on iOS 18.2 or newer.
+    </p>
   </div>
 </section>

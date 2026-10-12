@@ -51,6 +51,11 @@ export async function buildCss(): Promise<void> {
       minify: true,
       outdir: distCssDir,
       entryNames: "main.min.[hash]",
+      // Asset URLs are written as site paths ("/assets/...") because the images
+      // are passthrough-copied to the output, not bundled. esbuild would resolve
+      // them against the filesystem and fail, so leave them as they are. Dev mode
+      // never reaches this call: there the CSS is written out unprocessed.
+      external: ["/assets/*"],
     });
 
     fs.unlinkSync(tempFile);

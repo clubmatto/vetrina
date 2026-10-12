@@ -1,7 +1,7 @@
 ---
 layout: page.liquid
 title: Guido Install
-description: "Install Guido — your race engineer, on your phone. Guido is in closed beta on Android and on TestFlight for iOS: join the beta and we'll email your invite when there's room."
+description: "Install Guido — your race engineer, on your phone. Guido is in closed beta on Android and on TestFlight for iOS: join the beta and we'll email your invite when there's room. It reads Gran Turismo 7, Le Mans Ultimate and the Assetto Corsa games."
 image: /assets/products/guido/logo-wordmark.png
 image_width: 1200
 image_height: 1200
@@ -30,6 +30,7 @@ image_height: 1200
         >
       </h1>
       <p class="product-hero-tagline">Your personal race engineer for sim racing</p>
+      {% include 'guido-sims.liquid' %}
       {% assign waitlist_product_id = 'bed09cd5-2e0d-43b7-ace6-cdf9e8fc3dbc' %}
       {% assign waitlist_heading = null %}
       {% assign waitlist_note = 'Closed beta on Android, TestFlight on iOS. The full story lives on the <a href="/products/guido/">Guido page</a>.' %}
@@ -64,10 +65,11 @@ image_height: 1200
     </li>
     <li class="product-roadmap-item">
       <p class="product-roadmap-phase">Step 3</p>
-      <h3 class="product-roadmap-title">Turn on GT7 telemetry</h3>
+      <h3 class="product-roadmap-title">Connect your sim</h3>
       <p class="product-roadmap-desc">
-        In Gran Turismo 7 on your PS5, enable telemetry in the game settings. That's how Guido reads the car — no
-        cables, no extra hardware.
+        Gran Turismo 7 has a telemetry switch in the game settings, and that is the whole setup. Le
+        Mans Ultimate and the Assetto Corsa games go through Muretto instead, a small Windows tray
+        app that reads the sim for Guido. The Get started tabs below cover your sim.
       </p>
     </li>
     <li class="product-roadmap-item">
@@ -87,8 +89,9 @@ image_height: 1200
   {% include 'guido-beta-after.liquid' %}
 </section>
 
-{% assign guido_roadmap_href = '/products/guido/#roadmap' %}
 {% include 'guido-requirements.liquid' %}
+
+{% include 'guido-muretto.liquid' %}
 
 <section class="product-cta">
   <div class="product-cta-content">

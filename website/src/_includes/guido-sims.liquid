@@ -1,0 +1,29 @@
+{%- comment -%}
+  The sims Guido reads, as marks that jump to that sim's tab in "Get started".
+
+  One list for both Guido pages: they open on the same hero and carry the same
+  tabs, so the anchors resolve on either one. The marks are stencils painted as
+  masks in guido.css, so they take the colour of the label beside them in either
+  theme rather than shipping a black PNG that disappears on a dark background.
+
+  Assetto Corsa and Competizione share a mark, the same way the app's sim picker
+  shares it: there is no separate Competizione logo, and the label beside the
+  mark is what tells the two apart.
+
+  The heading is for screen readers only. The marks and their names say what they
+  are on sight, and a visible "Works with" above them was a caption for a picture
+  that already had one.
+{%- endcomment -%}
+<div class="product-sims">
+  <h2 class="ds-sr-only">Supported sims</h2>
+  <ul class="product-sims__list">
+    {%- for sim in guidoSims.sims %}
+      <li>
+        <a class="product-sim" href="#sim-{{ sim.id }}">
+          <span class="sim-mark sim-mark--{{ sim.mark }}" aria-hidden="true"></span>
+          <span class="product-sim__name">{{ sim.name }}</span>
+        </a>
+      </li>
+    {%- endfor %}
+  </ul>
+</div>

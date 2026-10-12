@@ -1,0 +1,38 @@
+{%- comment -%}
+  Muretto, introduced once at the foot of the page.
+
+  The "Get started" tabs for Le Mans Ultimate and the Assetto Corsa games link
+  down here, so this section is the only place the relay is explained and the only
+  place its download link lives.
+
+  TODO: the download URL is not final. Replace muretto_download_url below when it
+  is; nothing else on the page points at the installer.
+{%- endcomment -%}
+{%- assign muretto_download_url = '#' -%}
+<section class="product-muretto" id="muretto">
+  <h2 class="product-section-title">Muretto</h2>
+  <div class="product-muretto-body">
+    <p>
+      Muretto is a small Windows tray app that runs on the PC
+      alongside your sim titles, reads their telemetry and carries it to Guido over your home network.
+    </p>
+    <p>
+      It runs in the tray with no window, starts itself when you log on, and automatically streams telemetry from
+      any active session. No setup needed, no messing with your sim, no asking for admin rights.
+      It's built with minimal footprint, to make sure it doesn't interfere with your sim's performance.
+    </p>
+    <p>
+      It's a necessary Guido companion for Le Mans Ultimate, Assetto Corsa and Assetto Corsa Competizione. Gran
+      Turismo 7 talks to Guido directly instead, and does not need it.
+    </p>
+    <div class="product-muretto-download">
+      {%- comment -%}
+        The platform rides inside the button rather than on a line beside it, so
+        the label says what you get and where it runs in one read.
+      {%- endcomment -%}
+      <a class="ds-btn ds-btn--primary" href="{{ muretto_download_url }}">
+        {% svg 'icons/windows.svg' %} Download Muretto
+      </a>
+    </div>
+  </div>
+</section>

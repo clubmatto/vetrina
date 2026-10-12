@@ -23,7 +23,86 @@
 }
 
 .product-hero .product-hero-tagline {
-  margin: 0 0 3.5rem 0;
+  margin: 0 0 2rem 0;
+}
+
+/* The sims Guido reads, under the tagline and above the form: what the product
+   is, then what it works with, then the ask. Each one links to that sim's tab in
+   "Get started" further down.
+
+   Marks on top and names below, four to a row, because the names are nowhere
+   near the same length: as one row of chips the row wrapped three and one, which
+   reads as an accident. Equal columns take the longest name and the shortest
+   alike. */
+.product-sims {
+  margin: 0 auto 3rem auto;
+}
+
+.product-sims__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-sim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.4rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+/* Blue on hover, the token the tab strip already uses for the sim you picked and
+   the one the fakedata badges use for their marks, and no background: a filled
+   tile under one of four marks reads as a selection when all it means is that the
+   pointer is over a link. */
+.product-sim:hover {
+  color: var(--gradient-5);
+}
+
+/* The sim marks are black stencils on transparency, so they are painted as masks
+   and take the colour of whatever they sit in. A dark PNG would disappear on the
+   dark theme, and a second set of light assets would be one more thing to keep in
+   step with the app's.
+
+   40px in the hero strip, where a mark stands for a sim on its own. The tab strip
+   brings this back down, because there the name sits beside the mark and the pair
+   has to fit four across. */
+.sim-mark {
+  display: block;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.sim-mark--gt7 {
+  -webkit-mask-image: url("/assets/products/guido/sim-gt7.png");
+  mask-image: url("/assets/products/guido/sim-gt7.png");
+}
+
+.sim-mark--lmu {
+  -webkit-mask-image: url("/assets/products/guido/sim-le-mans-ultimate.png");
+  mask-image: url("/assets/products/guido/sim-le-mans-ultimate.png");
+}
+
+.sim-mark--ac {
+  -webkit-mask-image: url("/assets/products/guido/sim-assetto-corsa.png");
+  mask-image: url("/assets/products/guido/sim-assetto-corsa.png");
 }
 
 /* Launch-post notice above the hero. A corner ribbon clips anything longer
@@ -565,34 +644,94 @@
   margin-top: 3rem;
 }
 
+/* Get started: one tab per sim, with that sim's list below. No card around the
+   list, because the tab strip is already a bordered row and a box under it read
+   as a card inside a card. The marks at the top of the page link to the tab
+   buttons, so the section carries the anchor margin too. */
 .product-requirements {
-  padding: 0 0 5rem 0;
+  padding: 5rem 0;
+  scroll-margin-top: 5rem;
 }
 
-.product-requirements-card {
+.product-sim-tabs {
   max-width: var(--guido-column);
   margin: 0 auto;
+}
+
+/* Zero height and at the top of the section, so the four sim anchors are all the
+   heading's position. A mark at the top of the page lands on "Get started" and
+   the strip is a moment below it, rather than the heading scrolling past. */
+.product-sim-anchor {
+  display: block;
+  height: 0;
+  scroll-margin-top: 5rem;
+}
+
+.product-sim-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.product-sim-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
   border: 1px solid var(--border-color);
-  border-radius: 10px;
-  background-color: var(--card-bg);
-  box-shadow: 0 2px 8px var(--shadow-color-sm);
-  padding: 2rem 1.75rem;
-}
-
-.product-requirements-card h3 {
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
   font-family: var(--font-sans);
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  cursor: pointer;
+  /* Nothing scrolls to these by hash any more, but focus still does, and the
+     fixed nav would cover a tab that landed flush with the top. */
+  scroll-margin-top: 5rem;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
-.product-requirements-card ul {
+.product-sim-tab .sim-mark {
+  width: 20px;
+  height: 20px;
+}
+
+.product-sim-tab:hover {
+  border-color: color-mix(in srgb, var(--gradient-5), transparent 45%);
+  color: var(--text);
+}
+
+.product-sim-tab.is-active {
+  border-color: var(--gradient-5);
+  background-color: color-mix(in srgb, var(--gradient-5), transparent 92%);
+  color: var(--text);
+}
+
+.product-sim-panel {
+  max-width: var(--guido-column);
+  margin: 0 auto;
+}
+
+/* Panels are all in the markup and Alpine hides the ones that are not showing.
+   The rule is explicit because nothing else on the site styles `hidden`, and a
+   panel is a block-level element. */
+.product-sim-panel[hidden] {
+  display: none;
+}
+
+.product-sim-panel ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.product-requirements-card li {
+.product-sim-panel li {
   font-size: 0.95rem;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -600,7 +739,7 @@
   position: relative;
 }
 
-.product-requirements-card li::before {
+.product-sim-panel li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -609,6 +748,56 @@
   height: 0.75em;
   border-radius: 50%;
   border: 2px solid var(--gradient-5);
+}
+
+/* The one line under the lists that is not a step: what Guido itself needs. */
+.product-sim-tabs__note {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  opacity: 0.75;
+  margin: 1.5rem 0 0 0;
+}
+
+/* Muretto: what the Windows sims need before Guido can see them. A section like
+   the roadmap, not a boxed aside, so it sits in the page rather than on it. */
+.product-muretto {
+  padding: 0 0 5rem 0;
+  scroll-margin-top: 5rem;
+}
+
+.product-muretto-body {
+  max-width: var(--guido-column);
+  margin: 0 auto;
+}
+
+.product-muretto-body p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+/* Centred, because the download is the one thing the section asks for and the
+   prose above it is not what the reader came to do. */
+.product-muretto-download {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+/* Flex so the mark and the label share a baseline, which inline-block text and
+   an inline SVG do not do reliably at this size. */
+.product-muretto-download .ds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.product-muretto-download .ds-btn svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
 }
 
 .product-roadmap {
@@ -694,7 +883,34 @@
     padding: 3rem 0;
   }
 
+  .product-requirements {
+    padding: 3rem 0;
+  }
+
+  .product-muretto {
+    padding: 0 0 3rem 0;
+  }
+
   .product-roadmap {
     padding: 3rem 0;
+  }
+}
+
+/* The tab strip is the one place four sim names have to fit on a phone, and the
+   longest of them is not going to. Stacked rows read better than a strip that
+   scrolls sideways and hides half the sims. */
+@media (max-width: 640px) {
+  .product-sims__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+  }
+
+  .product-sim-tabs__list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .product-sim-tab {
+    justify-content: flex-start;
   }
 }
