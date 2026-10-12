@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects. This file is passthrough-copied to the build
+# output as `_redirects`, which is where Pages reads it from.
+#
+# 302 and not 301: this is a stand-in for a page that is coming, and a permanent
+# redirect is cached by browsers long after the destination stops being the right
+# one. Both spellings, because the app links without the trailing slash and a
+# reader who types it will add one.
+/muretto /products/guido/#muretto 302
+/muretto/ /products/guido/#muretto 302

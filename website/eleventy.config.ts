@@ -152,6 +152,11 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "src/assets/products": "assets/products",
   });
+  // Cloudflare Pages reads its redirect rules from `_redirects` in the build
+  // output, so the file is authored in src and copied out verbatim.
+  eleventyConfig.addPassthroughCopy({
+    "src/_redirects": "_redirects",
+  });
 
   eleventyConfig.addCollection("posts", posts);
   eleventyConfig.addCollection("postsByYear", postsByYear);
