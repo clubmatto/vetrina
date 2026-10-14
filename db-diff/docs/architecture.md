@@ -251,7 +251,7 @@ Where the seams are, for anyone reasoning about adding capability.
 | The comparison algorithm | `differ` |
 | Column selection / validation | `diff/diff.go` |
 | Flags, exit codes, output | `cli` |
-| Embedding the CLI in another binary | `cli.Options` (`DialectFor`, `AllowCrossEngine`) |
+| Embedding the CLI in another binary | `cli.Options` (`DialectFor`, `AllowCrossEngine`, `UsageHeader`, `UsageFooter`) |
 | Cross-engine comparison | currently blocked by §9; see below |
 
 ### The checksum is the main architectural seam

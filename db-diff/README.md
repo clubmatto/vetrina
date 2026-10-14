@@ -189,10 +189,15 @@ run a comparison with its own dialect:
 code := cli.RunFromArgs(version, cli.Options{})
 ```
 
-`cli.Options` carries two seams. `DialectFor` replaces how a DSN becomes a `Dialect`, and
-`AllowCrossEngine` permits a source and a target that resolve to different engines. The refusal
-lives in the CLI, not in the algorithm, because the algorithm compares whatever strings the
-dialects produce.
+`cli.Options` carries the seams a downstream layer needs. `DialectFor` replaces how a DSN
+becomes a `Dialect`, and `AllowCrossEngine` permits a source and a target that resolve to
+different engines. The refusal lives in the CLI, not in the algorithm, because the algorithm
+compares whatever strings the dialects produce.
+
+The help text follows those options rather than a fixed string, so a binary built with
+`AllowCrossEngine` cannot print a page that says cross engine comparisons are unsupported.
+`UsageHeader` and `UsageFooter` replace the prose outright, for a caller that needs to say
+something the built-in text cannot.
 
 A dialect is SQL strings plus result scanning. Implement `diff.Dialect`, wrap it with
 `diff.BaseSource`, and hand the result to `differ.Runner`. See

@@ -49,9 +49,9 @@ func newFlagSet(args []string, out io.Writer, opts Options, p *parsed) *flag.Fla
 	fs := flag.NewFlagSet("db-diff", flag.ContinueOnError)
 	fs.SetOutput(out)
 	fs.Usage = func() {
-		fmt.Fprint(out, usageHeader)
+		fmt.Fprint(out, usageHeader(opts))
 		fs.PrintDefaults()
-		fmt.Fprint(out, usageFooter)
+		fmt.Fprint(out, usageFooter(opts))
 	}
 
 	p.DialectFor = opts.DialectFor
@@ -102,7 +102,35 @@ func validate(p parsed) (resolved, error) {
 	return p.resolved, nil
 }
 
-const usageHeader = `db-diff compares the rows of one table across two databases.
+// usageHeader is the help prose above the flag list. It follows the options
+// rather than a fixed string, because resolveDialects reads the same
+// AllowCrossEngine field: help that cannot drift from the behaviour it
+// describes cannot lie about it.
+func usageHeader(opts Options) string {
+	if opts.UsageHeader != "" {
+		return opts.UsageHeader
+	}
+	if opts.AllowCrossEngine {
+		return crossEngineUsageHeader
+	}
+
+	return sameEngineUsageHeader
+}
+
+// usageFooter is the help prose below the flag list, and follows the header for
+// the same reason: the examples show what this binary will actually accept.
+func usageFooter(opts Options) string {
+	if opts.UsageFooter != "" {
+		return opts.UsageFooter
+	}
+	if opts.AllowCrossEngine {
+		return crossEngineUsageFooter
+	}
+
+	return sameEngineUsageFooter
+}
+
+const sameEngineUsageHeader = `db-diff compares the rows of one table across two databases.
 
 Usage:
   db-diff --source <dsn> --target <dsn> --table <name> [options]
@@ -118,7 +146,7 @@ DSN formats:
 Options:
 `
 
-const usageFooter = `
+const sameEngineUsageFooter = `
 Exit codes:
   0  the tables match
   1  the tables differ
@@ -127,4 +155,33 @@ Exit codes:
 Examples:
   db-diff --source "$SRC" --target "$DST" --table orders
   db-diff --source "$SRC" --target "$DST" --table orders --exclude updated_at,raw_payload
+`
+
+const crossEngineUsageHeader = `db-diff compares the rows of one table across two databases.
+
+Usage:
+  db-diff --source <dsn> --target <dsn> --table <name> [options]
+
+The source and the target may run different engines. Each value is reduced to a
+canonical form before it is hashed, so both engines compute the same bytes for
+the same data. A column whose two types cannot be compared honestly is refused
+rather than reported as changed.
+
+DSN formats:
+  postgres    postgres://user:pass@host:5432/db
+  mysql       user:pass@tcp(host:3306)/db
+  clickhouse  clickhouse://user:pass@host:9000/db
+
+Options:
+`
+
+const crossEngineUsageFooter = `
+Exit codes:
+  0  the tables match
+  1  the tables differ
+  2  db-diff could not complete the comparison
+
+Examples:
+  db-diff --source "$SRC" --target "$DST" --table orders
+  db-diff --source "$PG" --target "$MYSQL" --table orders --exclude updated_at,raw_payload
 `

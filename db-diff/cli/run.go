@@ -63,6 +63,14 @@ type Options struct {
 	// way, so the checksums only agree when both sides compute them the same
 	// way. A caller that supplies canonical dialects can allow it.
 	AllowCrossEngine bool
+
+	// UsageHeader and UsageFooter replace the help prose above and below the
+	// flag list. Empty means the built-in text, which already follows
+	// AllowCrossEngine: a binary that permits a cross engine comparison cannot
+	// print a page that says it refuses one. Set these only to say something
+	// the built-in text cannot, such as a product name.
+	UsageHeader string
+	UsageFooter string
 }
 
 // Dialect names an engine and opens a Source for it.

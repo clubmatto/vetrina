@@ -78,5 +78,9 @@ comparison with its own dialect. `cli.Options` exposes `DialectFor`, which repla
 becomes a `Dialect`, and `AllowCrossEngine`, which permits a source and a target that resolve to
 different engines.
 
+The built-in help follows `AllowCrossEngine`, so an embedding binary does not inherit a page
+that contradicts what it does. `UsageHeader` and `UsageFooter` override the prose when a caller
+has something of its own to say.
+
 [docs/architecture.md §4](docs/architecture.md#4-extension-point-map) maps the rest of the
 seams.
