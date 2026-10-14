@@ -3,11 +3,83 @@ layout: page.liquid
 title: DB Diff Terms of service
 description: Terms of service for DB Diff.
 display_title: DB Diff Terms of service
+last_updated: "2026-10-14"
 ---
 <div class="ds-prose">
-  <p>DB Diff is currently in development and not yet available for use.</p>
+  <p>Last updated: {{ last_updated | formatDate }}</p>
+
+  <h2>1. About DB Diff</h2>
   <p>
-    Terms of service will be published when the product launches. In the meantime, please refer to our general
-    <a href="/terms/">Terms of service</a> for website use.
+    DB Diff is a command-line tool that compares the rows of one table across two databases. It is provided by Club
+    Matto in two tiers: a free, open-source CLI and a paid Pro subscription.
+  </p>
+
+  <h2>2. Free tier</h2>
+  <p>
+    The free tier of DB Diff is available under the terms of its
+    <a href="https://github.com/clubmatto/vetrina/blob/main/db-diff/LICENSE">open-source license</a>. You may use it
+    without charge for any purpose, subject to that license. No account, registration, or payment is required.
+  </p>
+
+  <h2>3. Pro tier</h2>
+  <p>
+    The Pro tier adds cross engine comparison: a table can be compared between two different engines, because each value
+    is reduced to a canonical form before it is hashed. Pro is a paid subscription service.
+  </p>
+  <p>
+    <strong>Pro is in early access.</strong> While we build licensing, we provide Pro builds free of charge on request.
+    No key, account, or payment is required, and the tool does not transmit your data or your schema to us. The prices
+    on the <a href="/products/db-diff/">product page</a> apply when licensing becomes available, and we will tell you
+    before that changes for a build you already have.
+  </p>
+  <p>
+    Once Pro is generally available, subscribing means paying the fees listed on the product page at the time of
+    purchase. Fees may be monthly or annual and are billed in advance. All fees are non-refundable except where required
+    by law. You may cancel at any time, and cancellation takes effect at the end of the current billing period. No
+    partial refunds are provided.
+  </p>
+
+  <h2>4. Acceptable use</h2>
+  <p>You agree not to misuse DB Diff or its Pro service. In particular, you may not:</p>
+  <ul>
+    <li>Use DB Diff for illegal purposes.</li>
+    <li>Attempt to reverse-engineer, decompile, or extract the Pro binary.</li>
+    <li>Resell or redistribute a Pro build without written permission.</li>
+  </ul>
+
+  <h2>5. Intellectual property</h2>
+  <p>
+    The DB Diff software (both free and Pro) and its documentation are the intellectual property of Club Matto. A
+    subscription grants you a non-exclusive, non-transferable right to use the Pro binary.
+  </p>
+  <p>
+    The data in the databases you compare belongs to you. Club Matto claims no ownership over it, and the tool does not
+    send it to us.
+  </p>
+
+  <h2>6. Disclaimer of warranties</h2>
+  <p>
+    DB Diff is provided "as is," without warranty of any kind, express or implied. We do not guarantee that it will be
+    uninterrupted or error-free. A comparison tells you which rows differ; it does not tell you which of them is
+    correct, and it is not a backup.
+  </p>
+
+  <h2>7. Limitation of liability</h2>
+  <p>
+    To the fullest extent permitted by law, Club Matto shall not be liable for any indirect, incidental, special, or
+    consequential damages arising from your use of DB Diff or its Pro service. Our total liability is limited to the
+    amount you paid us in the twelve months preceding the claim.
+  </p>
+
+  <h2>8. Changes to these terms</h2>
+  <p>
+    We may update these terms from time to time. Material changes will be communicated on the product page or by email
+    for Pro subscribers. Continued use of the service after changes take effect constitutes acceptance of the new terms.
+  </p>
+
+  <h2>9. Contact</h2>
+  <p>
+    If you have questions about these terms, please
+    <a href="/contact/">contact us</a>.
   </p>
 </div>
