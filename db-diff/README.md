@@ -182,6 +182,7 @@ each range is checksummed on both sides, and only the ranges whose checksums dif
 by row. See [how-it-works.md](docs/how-it-works.md) for the algorithm, the checksum, the
 collision budget and the tuning notes, and
 [architecture.md](docs/architecture.md) for how the tool is built.
+[benchmark.md](docs/benchmark.md) has measured costs, and what `--segment-size` does to them.
 
 ## Embedding db-diff
 
