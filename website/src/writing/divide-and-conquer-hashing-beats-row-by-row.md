@@ -4,6 +4,7 @@ description: Comparing two tables row by row costs the size of the table every
   time. Hashing on the server costs the number of segments when the tables
   match, which is the case you run most often.
 date: 2026-10-20
+draft: true
 image: /assets/writing/divide-and-conquer-hashing-beats-row-by-row.png
 image_width: 2400
 image_height: 1260
