@@ -25,8 +25,8 @@ real agency (pun intended). Without tools, the LLM has no means to get the agent
 perform actions on its behalf, so all we're left with is a chat bot.
 
 Most of what we'll discuss below stems out of a fundamental tension: tools mean
-capability, but they also mean more tokens eaten up from the available context (and
-in turn a direct impact on the bill, see our [system prompt deep
+capability, but they also mean more tokens eaten up from the available context
+(and in turn a direct impact on the bill, see our [system prompt deep
 dive](/writing/how-coding-agents-work/the-system-prompt/) to understand why).
 Harnesses set each other apart in the way they navigate this tension.
 
@@ -46,9 +46,9 @@ Five parts can be used to describe what a tool is and how it behaves:
 
 - **declaration**: a name, a description and a parameter schema, sent in the
   prompt.
-- **call**: the model answers with a tool name and a JSON argument object.
-  Because replies arrive as typed parts rather than one block of text, an
-  agent can act in the middle of a reply instead of waiting for it to finish.
+- **call**: the model answers with a tool name and a JSON argument object, as
+  its own typed part of the reply rather than inside a block of text, so the
+  harness reads the call instead of parsing prose.
 - **dispatch**: the harness inspects the call before anything runs. Is this
   allowed? Does it need approval? Does it need a timeout? Does a guard deny it
   outright?
@@ -67,12 +67,12 @@ and a _prompt_. A rule in a system prompt is a preference, and the model may
 ignore it. A tool call is validated. If the model invents a tool name, or sends
 arguments that do not match the schema, the harness refuses to run it. The tool
 list is the one part of an agent where capability is enforced rather than
-requested, and it is also the reason a harness can promise things a prompt
-cannot.
+requested.
 
 ## How much surface do you declare?
 
-Harnesses take very different approaches, and the spread is wider than we expected.
+Harnesses take very different approaches, and the spread is wider than we
+expected.
 
 At one end, a single general tool. Some setups run with a shell and nothing
 else, and DeepSeek Harness takes the idea further with Code Mode: one code tool,
@@ -156,7 +156,7 @@ for itself, while a language server answers directly.
 We are not claiming the shell cannot do either task. It solved both in our runs,
 without falling for our tricks, and so did every other configuration. What this
 piece is about is the cost. What neither task can tell us is whether a harder
-one would significantly change the answers as well as the bill.
+challenge would significantly change the answers as well as the bill.
 
 ## How we measured it
 
@@ -340,17 +340,17 @@ illustration rather than measurement.
 
 The question comes up because the catalogue is not fixed at build time. MCP
 attaches tools at runtime, over a subprocess or an HTTP server, and they land in
-the same list as the built-ins. Declaring all of them would hand the prefix to
-whoever wrote the servers, so hiding is how a harness keeps a say in what goes
-into the request. It also means those descriptions are third-party text: an
-annotation like "read-only" or "destructive" is a claim by the server, not
-something the harness can verify, and it requires a permission scheme to
+the same list as the built-ins. Declaring all of them would abdicate control of
+the prefix to whoever wrote the servers, so hiding is how a harness keeps a say
+in what goes into the request. It also means those descriptions are third-party
+text: an annotation like "read-only" or "destructive" is a claim by the server,
+not something the harness can verify, and it requires a permission scheme to
 mitigate potential mistakes.
 
-Hiding tools behind a search looks like a free win. It is not free, and whether
-it is worth it comes down to two quantities pulling in opposite directions: the
-tokens you save at every turn by not declaring the catalogue, and the
-extra turn it costs to fetch a tool before you can use it.
+Note however that while hiding tools behind a search looks like a free win, it
+is not. Whether it is worth it comes down to two quantities pulling in opposite
+directions: the tokens you save at every turn by not declaring the catalogue,
+and the extra turn it costs to fetch a tool before you can use it.
 
 Our experiment puts a number on each. Declaring the catalogue made the first
 turn about three times larger, and that gap is paid again on every turn of the
@@ -387,13 +387,13 @@ So is a single shell tool the winner? Not necessarily. What a shell costs you is
 mostly qualitative rather than quantitative: an approval that covers a whole
 program instead of a readable action, no structured feedback between one step
 and the next, and a blast radius that can potentially be larger than what the
-task at hand would require. Our two toy tasks were short, and we ran them with
-approvals off, so none of that could surface in a turn count or a token total.
+task at hand would require. None of these aspect would surface in a turn count
+or a token total.
 
 But given this huge potential for mistakes, it's worth looking at the other side
-of the spectrum and ask ourselves: can we get away from bash? The answer is a
-resounding no. In fact, every harness ships a general tool, though its role is
-not the same everywhere.
+of the spectrum and ask ourselves: can we instead get away from bash? The answer
+is a resounding no. In fact, every harness ships a general tool, though its role
+is not the same everywhere.
 
 Most harnesses take the escape hatch route: specialized tools for the common
 cases, and a shell as a last resort when nothing else fits. Some harnesses seem
@@ -437,9 +437,6 @@ different combinations:
 - **Annotate for policy.** A tool that declares itself read-only can be approved
   automatically, while a destructive one gets a prompt, and a human never has to
   read thirty descriptions to decide.
-- **Keep the privileged tool out of the filter.** The one tool that can run code
-  tends to sit outside the layers the others are filtered by, because scoping it
-  the same way would be meaningless.
 
 None of these is a "solution" to the tradeoffs involved. They are ways of paying
 less for them, and they all come with the same string attached: the more the
