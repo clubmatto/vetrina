@@ -7,6 +7,7 @@
     waitlist_heading     optional line above the form
     waitlist_note        optional line below it (HTML allowed)
     waitlist_button      optional button label
+    waitlist_success     optional line shown once the email is accepted
 {%- endcomment -%}
 <div
   class="product-waitlist"
@@ -68,7 +69,9 @@
     </button>
   </form>
   <div class="product-waitlist-status" aria-live="polite">
-    <p class="form-success" x-show="submitted" x-cloak>You're on the list. We'll email you as soon as there's room.</p>
+    <p class="form-success" x-show="submitted" x-cloak>
+      {{ waitlist_success | default: "You're on the list. We'll email you as soon as there's room." }}
+    </p>
     <p class="form-error" x-show="error" x-cloak x-text="error"></p>
   </div>
   {%- if waitlist_note -%}

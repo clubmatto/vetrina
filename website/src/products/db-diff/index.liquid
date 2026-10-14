@@ -1,7 +1,10 @@
 ---
 layout: page.liquid
 title: DB Diff
-description: Know when your data drifts. Compare rows across databases using hash-based checksums — blazing fast when tables match, pinpointing every difference when they don't.
+description: Know when your data drifts. Compare rows across databases using hash-based checksums, blazing fast when tables match and pinpointing every difference when they don't.
+image: /assets/vhs/db-diff/basic-postgres-light.png
+image_width: 1300
+image_height: 650
 ---
 <div class="showcase-header">
   <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
@@ -119,8 +122,8 @@ description: Know when your data drifts. Compare rows across databases using has
     </div>
     <p class="ds-try-text">Try it yourself:</p>
     <div class="ds-terminal__command">
-      <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=orders
-      --exclude=updated_at
+      <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=line_items
+      --exclude=quantity
     </div>
   </div>
 
@@ -204,7 +207,7 @@ description: Know when your data drifts. Compare rows across databases using has
     </div>
     <div
       class="fakedata-pricing-card fakedata-pricing-featured fakedata-flip-card"
-      x-data="{ flipped: false, submitted: false }"
+      x-data="{ flipped: false }"
     >
       <div class="fakedata-pricing-badge">Pro</div>
       <div class="fakedata-flip-scene">
@@ -220,6 +223,9 @@ description: Know when your data drifts. Compare rows across databases using has
               <span class="fakedata-pricing-discount" x-show="period === 'annual'">Save 17%</span>
             </div>
             <p class="fakedata-pricing-desc">Everything in Free, plus comparing a table between any two engines.</p>
+            <p class="fakedata-pricing-desc">
+              <strong>Free during early access.</strong> Billing starts when licensing lands in November.
+            </p>
             <ul class="fakedata-pricing-features">
               <li>PostgreSQL, MySQL and ClickHouse, in any pairing</li>
               <li>A canonical form every engine agrees on</li>
@@ -227,42 +233,21 @@ description: Know when your data drifts. Compare rows across databases using has
               <li>A wall clock kept distinct from an instant</li>
               <li>Refuses a type that cannot be compared honestly</li>
             </ul>
-            <p class="fakedata-pricing-coming-soon-label">Coming soon</p>
+            <p class="fakedata-pricing-coming-soon-label">Coming soon to Pro</p>
             <ul class="fakedata-pricing-features">
               <li>Preflight sampling against your own rows</li>
               <li>More engines</li>
             </ul>
-            <button @click="flipped = true" class="ds-btn ds-btn--primary">Contact us</button>
+            <button @click="flipped = true" class="ds-btn ds-btn--primary">Request a build</button>
           </div>
           <div class="fakedata-flip-back">
-            <div x-show="!submitted">
-              <h4 class="fakedata-flip-back-title">Get in touch</h4>
-              <p class="fakedata-flip-back-desc">Drop your email and we'll reach out about DB Diff Pro.</p>
-              <form
-                @submit.prevent="
-                  fetch($el.action, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      email: $el.email.value,
-                      product_id: $el.product_id.value
-                    })
-                  }).then(r => { if(r.ok) submitted = true })
-                "
-                action="{{ apiBaseUrl }}/waiting-list/signup"
-                method="POST"
-              >
-                <div class="fakedata-flip-form-group">
-                  <input type="email" name="email" required placeholder="your@email.com">
-                </div>
-                <input type="hidden" name="product_id" value="f88793dd-6627-4661-b786-d6e0c22ccc15">
-                <button type="submit" class="ds-btn ds-btn--primary">Send</button>
-              </form>
-            </div>
-            <div x-show="submitted">
-              <h4 class="fakedata-flip-back-title">Thanks!</h4>
-              <p class="fakedata-flip-back-desc">We'll be in touch soon.</p>
-            </div>
+            <h4 class="fakedata-flip-back-title">Get a Pro build</h4>
+            {% assign waitlist_product_id = 'f88793dd-6627-4661-b786-d6e0c22ccc15' %}
+            {% assign waitlist_heading = null %}
+            {% assign waitlist_button = 'Request a build' %}
+            {% assign waitlist_success = "Thanks. We'll email you a build, usually within a day." %}
+            {% assign waitlist_note = 'Pro is in early access. No key or account is needed, and the tool never sends us your data.' %}
+            {% include 'waitlist-form.liquid' %}
             <button @click="flipped = false" class="fakedata-flip-back-link">← Back</button>
           </div>
         </div>
