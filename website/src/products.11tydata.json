@@ -22,7 +22,7 @@
       "href": "/products/db-diff/",
       "icon": "database",
       "title": "DB Diff",
-      "description": "Know when your data drifts. Compare rows across databases using hash-based checksums: blazing fast when tables match, pinpointing every difference when they don't."
+      "description": "Know when your data drifts. Compare one table across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the rows that changed."
     },
     {
       "href": "/products/bookmarks/",
