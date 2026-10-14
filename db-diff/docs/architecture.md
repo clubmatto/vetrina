@@ -8,7 +8,7 @@ Read this as ground truth for a design discussion. Where the code imposes a cons
 constraint is stated, because most design questions about this tool are really questions about
 which of these constraints are worth relaxing.
 
-Path references are relative to the module root. Written against `v0.0.4`.
+Path references are relative to the module root. Written against `v0.0.5`.
 
 ---
 
@@ -29,7 +29,7 @@ alternative it replaces is a full dump-and-compare.
 "the tables match" when they do not. A false positive (reporting a difference that is not there)
 is an annoyance. Every design decision below is downstream of that asymmetry.
 
-Released as `v0.0.4`: `go install matto.club/vetrina/db-diff@latest`, or Homebrew. CI runs lint,
+Released as `v0.0.5`: `go install matto.club/vetrina/db-diff@latest`, or Homebrew. CI runs lint,
 unit and integration on every push.
 
 ---
@@ -327,27 +327,30 @@ Stated so it is not assumed:
 
 ---
 
-## 9. The cross-engine question (an open extension point)
+## 9. The cross-engine question
 
-**Status: refused, deliberately.** `cli.resolveDialects` errors before connecting if the two DSNs
-resolve to different dialects.
+**Status in this tool: refused, deliberately.** `cli.resolveDialects` errors before connecting if
+the two DSNs resolve to different dialects. A private build over this module resolves it; the
+seam it uses and the decisions it made are below, so this document describes both the refusal and
+what a caller has to supply to lift it.
 
-Two independent reasons it cannot work today:
+Two independent reasons it cannot work with native rendering:
 
-1. **Value rendering differs per engine.** A boolean renders `t` in PostgreSQL, `1` in MySQL.
-   Timestamps carry different precision. A decimal pads differently. The bit-pattern case is a
-   separate, narrower problem.
+1. **Value rendering differs per engine.** A boolean renders `true` in PostgreSQL (the digest
+   casts `::text`; `t` is the `psql` display), `1` in MySQL. Timestamps carry different
+   precision. A decimal pads differently. The bit-pattern case is a separate, narrower problem.
 2. **Session settings leak into rendering.** PostgreSQL formats `timestamptz` in the session
    `TimeZone`; MySQL decodes text in the connection charset; ClickHouse formats `DateTime` in the
    column timezone.
 
 Without a canonical, type-aware text form per value, a cross-engine run hashes two different
-strings for the same logical value and reports **every row as changed** — which is why refusing
+strings for the same logical value and reports **every row as changed**, which is why refusing
 was chosen over producing that.
 
 What is already in place for it: I5 holds. For the types where the three engines agree on
 spelling (notably signed integers), the checksums are already identical, which the golden test
-proves. The missing piece is a canonical value codec per type, not a change to the algorithm.
+proves. The missing piece was a canonical value codec per type, not a change to the algorithm,
+and that codec now exists in the private build described below.
 
 **The seam is already the right shape.** `diff.BaseSource` implements every `Source` method
 generically over `*sql.DB` plus a `Dialect`, and `differ.Runner` takes a `diff.Source`. So a
@@ -374,15 +377,27 @@ an instant one, is a *contract* question. Answering it implicitly per type means
 surfaces as a difference on every row rather than as a refusal. It deserves to be a named
 decision, not an implementation detail.
 
-**Open design questions for that discussion** (not answered here):
+### How the private build answers them
 
-- Is a cross-engine build a *capability* boundary (different dialects) or a *packaging* boundary
-  (same code, different distribution), or both?
-- Where does the *comparability* decision live (see above): a declared contract between two
-  types, or validation at preflight time?
-- Where does a canonical codec live — in the dialect packages (SQL-side, keeps compute in the
-  database) or in Go (requires pulling typed values, which changes the performance story)?
-- Does a canonical form need to handle every type, or can it be scoped to a declared subset with
-  a loud error for the rest?
-- Does the same split need to support comparing *different* table names, or *different* key
-  columns, which are also currently unsupported?
+The decisions, so a reader of this document does not have to guess, or rediscover them:
+
+- **Capability and packaging, both.** The private module requires this one by version tag, sets
+  `cli.Options.AllowCrossEngine`, and supplies `DialectFor`. Nothing is forked, and the checksum
+  stays single-sourced here.
+- **Comparability is a contract, checked at the seam.** Both columns must resolve to the same
+  canonical type and that type must be one every compared engine can hold. The check runs once
+  per table, when the second side registers its types, before any checksum is computed, so an
+  incompatible pair fails the run rather than reporting every row.
+- **The codec is SQL-side.** Each engine gets an expression that renders the canonical form, so
+  the hashing stays in the database and the performance story does not change. The codec lives
+  with the dialect, as this document predicted.
+- **The canonical form is a declared subset.** Eleven types (bool, int, float, decimal, text,
+  bytes, date, time, timestamp, timestamptz, uuid). Anything outside it is refused by name rather
+  than approximated. Floats are encoded as their IEEE 754 bit pattern, because the engines agree
+  on the bits and disagree on the spelling.
+- **A wall clock reading stays distinct from an instant.** The two are separate canonical types,
+  so a `timestamp` compared against a `timestamptz` is refused rather than compared as digits.
+
+Still open, and unchanged by any of the above: comparing two different table names, or two
+different key columns, which this document listed here and the private build does not add either.
+

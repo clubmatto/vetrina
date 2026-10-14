@@ -86,11 +86,14 @@ data drifted" apart from "the tool could not run".
 | MySQL | supported | `user:pass@tcp(host:3306)/db` |
 | ClickHouse | supported | `clickhouse://user:pass@host:9000/db` |
 
-Cross engine comparisons, such as PostgreSQL against MySQL, are not supported yet. The
-checksum has to be computed the same way on both sides, and engines disagree on how they
-render values as text, so a cross engine diff needs a type aware canonical form first. The
-[dialect seam](docs/architecture.md#9-the-cross-engine-question-an-open-extension-point) is
-designed for it; the codec is the missing piece.
+Cross engine comparisons, such as PostgreSQL against MySQL, are not supported by this tool. The
+checksum has to be computed the same way on both sides, and engines disagree on how they render
+values as text, so a cross engine diff needs a type aware canonical form first. The
+[dialect seam](docs/architecture.md#9-the-cross-engine-question) is designed for it.
+
+A canonical form is what [DB Diff Pro](https://matto.club/products/db-diff/) provides: it reduces
+every value to a form the three engines agree on before it is hashed, so a table can be compared
+between any two of them. This tool keeps refusing rather than reporting every row as changed.
 
 ## Usage
 
@@ -201,8 +204,8 @@ something the built-in text cannot.
 
 A dialect is SQL strings plus result scanning. Implement `diff.Dialect`, wrap it with
 `diff.BaseSource`, and hand the result to `differ.Runner`. See
-[architecture.md §9](docs/architecture.md#9-the-cross-engine-question-an-open-extension-point)
-for the contracts and the open design questions.
+[architecture.md §9](docs/architecture.md#9-the-cross-engine-question)
+for the contracts and the decisions a canonical codec has to make.
 
 ## Development
 
@@ -227,8 +230,9 @@ values in the compared columns.
 
 These are known and deliberate for this version:
 
-- **Same engine only.** Cross engine diffs need a canonical, type aware value representation
-  first.
+- **Same engine only.** This tool compares a database against one of the same engine. Cross
+  engine diffs need a canonical, type aware value representation first, which
+  [DB Diff Pro](https://matto.club/products/db-diff/) provides.
 - **A single integer primary key named `id`.** Composite keys, and keys that are not integers
   (UUIDs, for example), are not supported.
 - **The table name is the same on both sides.** There is no flag to map one name to another.

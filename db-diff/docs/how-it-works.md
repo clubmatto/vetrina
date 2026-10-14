@@ -104,10 +104,10 @@ rows you do not need.
 
 ## Why the same engine only
 
-Each engine renders values as text its own way. A boolean is `t` in PostgreSQL and `1` in MySQL;
-a timestamp carries different precision; a decimal pads differently. Checking the same logical
-value across engines therefore hashes two different strings, and the diff reports every row as
-changed.
+Each engine renders values as text its own way. A boolean is `true` in PostgreSQL (the digest
+casts `::text`; `t` is how `psql` displays it) and `1` in MySQL; a timestamp carries different
+precision; a decimal pads differently. Checking the same logical value across engines therefore
+hashes two different strings, and the diff reports every row as changed.
 
 There is a second, sharper reason. Each engine renders some values using its session settings:
 PostgreSQL formats a `timestamptz` in the session `TimeZone`, MySQL converts a `TIMESTAMP` by
@@ -122,10 +122,10 @@ so two different `BLOB` values hashed alike, and the same text hashed differentl
 different connection charset. The digest now casts `AS BINARY` and takes the stored bytes, which
 removes both problems.
 
-Fixing all of that means defining a canonical text form per type and having each dialect
-produce it, which is the type aware work behind cross engine support. Until then `db-diff`
-refuses a cross engine run rather than guess, and compares a database against a database of the
-same engine.
+Fixing all of that means defining a canonical form per type and having each dialect produce it.
+[DB Diff Pro](https://matto.club/products/db-diff/) does exactly that, which is what lets it
+compare a table between two engines. This tool does not ship the codec, so it refuses a cross
+engine run rather than guess, and compares a database against a database of the same engine.
 
 ## What this does not cover
 
@@ -136,8 +136,8 @@ order are out of scope.
 Comparing across engines is refused rather than approximated, for the rendering reasons above.
 The checksum shape is engine agnostic and the fold property is all the algorithm needs, so the
 missing piece for a cross engine run is a canonical value codec, not a different algorithm.
-[architecture.md §9](architecture.md#9-the-cross-engine-question-an-open-extension-point)
-describes the seam and the open design questions.
+[architecture.md §9](architecture.md#9-the-cross-engine-question) describes the seam and the
+decisions a canonical codec has to make.
 
 ## Glossary
 
