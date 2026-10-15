@@ -4,8 +4,7 @@ description: A coding agent is only as capable as the tools it can call, and the
   tool list is the largest cost its author directly controls. We read ten
   open-source agents to see how much they declare, what it costs, and why there
   is no single right answer.
-date: 2026-10-13
-draft: true
+date: 2026-10-15
 tags:
   - ai
   - agents

@@ -6,7 +6,6 @@ topics:
   - ai
   - open-source
 images:
-  - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-spread.png
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-bill.png
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-calls.png
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-tokens.png
