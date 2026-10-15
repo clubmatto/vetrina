@@ -9,7 +9,7 @@ website/src/assets/writing/:
       rsvg-convert -w 2400 -h 1260 .og-drafts/$f.svg -o website/src/assets/writing/$f.png
     done
 
-Two text lines only: the title names the metric, the subtitle states the setup.
+One text line only: the title names the metric.
 House style: 1200x630 viewBox, rendered 2x by rsvg-convert, same palette and
 footer as tools/og/build-comparative-v2.py.
 """
@@ -76,14 +76,13 @@ FOOTER = f"""  <g transform="translate(64 578) scale(0.0300)">
   <text x="106" y="600" font-family="{MONO}" font-size="18" fill="#9aa6ba">matto.club</text>"""
 
 
-def svg(title, subtitle, body):
+def svg(title, body):
     return f"""<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 {DEFS}
 
   <rect width="1200" height="630" fill="url(#bgWash)"/>
 
   <text x="62" y="96" font-family="{SANS}" font-weight="700" font-size="58" fill="#eceff4">{title}</text>
-  <text x="64" y="140" font-family="{SANS}" font-size="24" fill="#aab4c4">{subtitle}</text>
 
 {body}
 
@@ -102,7 +101,7 @@ BAR_X, BAR_MAX, PITCH, BAR_H = 268, 700, 46, 28
 def bars(metric, sub_of):
     """Horizontal bars per task, one scale across both tasks."""
     peak = max(float(r[metric]) for r in rows)
-    out, y = [], 172
+    out, y = [], 144
     for name, labels in TASKS:
         out.append(f'  <text x="64" y="{y}" font-family="{MONO}" font-size="21" fill="#ffbe0b">{name}</text>')
         y += 26
@@ -120,17 +119,15 @@ def bars(metric, sub_of):
     return "\n".join(out)
 
 
-SETUP = "One coding agent, the same two tasks, with 1, 2 or 28 tools declared."
-
 CARDS = [
-    ("tools-tokens", "Input tokens per task", SETUP,
+    ("tools-tokens", "Input tokens per task",
      bars("input", lambda r: f'{r["calls"]} calls')),
-    ("tools-calls", "Tool calls per task", SETUP,
+    ("tools-calls", "Tool calls per task",
      bars("calls", lambda r: f'{thousands(r["input"])} tokens')),
-    ("tools-clock", "Wall clock per task", SETUP + " Each cell ran once.",
+    ("tools-clock", "Wall clock per task",
      bars("wall_s", lambda r: f'{r["calls"]} calls')),
 ]
 
-for name, title, subtitle, body in CARDS:
-    (OUT / f"{name}.svg").write_text(svg(title, subtitle, body))
+for name, title, body in CARDS:
+    (OUT / f"{name}.svg").write_text(svg(title, body))
     print("wrote", OUT / f"{name}.svg")
