@@ -24,25 +24,25 @@ It's now time we take a look at tools, the one component that gives an agent
 real agency (pun intended). Without tools, the LLM has no means to get the agent
 perform actions on its behalf, so all we're left with is a chat bot.
 
-Most of what we'll discuss below stems out of a fundamental tension: tools mean
+Most of what we discuss below stems out of a fundamental tension: tools mean
 capability, but they also mean more tokens eaten up from the available context
 (and in turn a direct impact on the bill, see our [system prompt deep
 dive](/writing/how-coding-agents-work/the-system-prompt/) to understand why).
 Harnesses set each other apart in the way they navigate this tension.
 
 :::note[TL;DR]
-Harnesses pretty much all disagree on how many tools to let the LLM choose from.
+Pretty much all harnesses disagree on how many tools to let the LLM choose from.
 The spread runs from a single general tool to roughly thirty. We ran two tasks
 through three configurations of one harness, and every one of them got the right
 answer, avoiding the traps we planted. What changed was the bill. A full
-catalogue costs around 15,000 tokens of schema on every turn, and the same
+catalogue costs around 15k tokens of schema on every turn, and the same
 rename task took three tool calls with just a shell available, and twenty-six
 with everything declared.
 :::
 
 ## What is a tool, anyway?
 
-Five parts can be used to describe what a tool is and how it behaves:
+You can describe a tool with five parts is:
 
 - **declaration**: a name, a description and a parameter schema, sent in the
   prompt.
@@ -75,7 +75,7 @@ Harnesses take very different approaches, and the spread is wider than we
 expected.
 
 At one end, a single general tool. Some setups run with a shell and nothing
-else, and DeepSeek Harness takes the idea further with Code Mode: one code tool,
+else. DeepSeek Harness takes the idea further with Code Mode: one code tool,
 plus a generated SDK document describing the operations the model can call, so
 the model composes the call it needs instead of picking one from a list.
 
@@ -144,8 +144,8 @@ looks.
 The second task is a reference lookup: work out which functions call
 `getUserById`, in a repository where that name exists in two modules and also
 shows up in comments and documentation. The trap punishes text search's false
-positives. `rg` returns every mention, real call site or not, and something has
-to disambiguate them.
+positives. `rg` returns every mention whether it's real call site or not so 
+something has to disambiguate them.
 
 The two tasks point in opposite directions on purpose. On the rename, using the
 shell is cheap but one careless pattern can make the model fall into the trap,
@@ -154,9 +154,9 @@ a time. On the reference lookup, the shell approach has to disambiguate the hits
 for itself, while a language server answers directly.
 
 We are not claiming the shell cannot do either task. It solved both in our runs,
-without falling for our tricks, and so did every other configuration. What this
-piece is about is the cost. What neither task can tell us is whether a harder
-challenge would significantly change the answers as well as the bill.
+without falling for our tricks, and so did every other configuration. The 
+point of the experiment is check cost. What neither task can tell us is 
+whether a harder challenge would significantly change the answers as well as the bill.
 
 ## How we measured it
 
@@ -178,9 +178,8 @@ That harness can be configured into the three surfaces we care about:
 The second and third configurations are the same catalogue with different
 visibility, which is what makes the pair worth running: same tools, same
 capability, different bill. For the reference lookup we also ran a fourth
-configuration with the harness's language server support switched on, which is
-behind an experimental flag, to see what the model does when a precise tool is
-available.
+configuration with the harness's language server support switched on to see 
+what the model does when a precise tool is available.
 
 For every run we recorded the turns spent on the problem, the tool calls, the
 input and cached tokens, the wall clock, and whether the agent fell into the
