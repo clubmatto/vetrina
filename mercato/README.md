@@ -87,7 +87,8 @@ is the GitHub link to the image that ships with the post, the same form as the c
 `Image:` line, for example
 `https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-coding-agents-work.png`.
 Text-only posts omit the field, and published files keep it as the record of what
-shipped.
+shipped. A post that ships with several images uses an `images:` list instead, same
+URL form, one entry per image in attach order.
 
 ## Post Images
 
