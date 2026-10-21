@@ -2,7 +2,7 @@
 title: "A context window is a budget, not a feature"
 platforms:
   - twitter
-publish_date: 2026-10-17
+publish_date: 2026-10-24
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-system-prompt-cache.png
 topics:
   - agents

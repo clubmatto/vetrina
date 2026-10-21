@@ -2,7 +2,7 @@
 title: "Reshare the Guido dashboard GIF: we're still looking for testers!"
 platforms:
   - twitter
-publish_date: 2026-10-18
+publish_date: 2026-10-25
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/screen-dashboard.png
 topics:
   - guido

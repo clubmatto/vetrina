@@ -3,7 +3,7 @@ title: DB Diff v0 is out
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-10-19
+publish_date: 2026-10-26
 image: https://github.com/clubmatto/vetrina/blob/main/assets/vhs/db-diff/basic-postgres-light.gif
 topics:
   - db-diff

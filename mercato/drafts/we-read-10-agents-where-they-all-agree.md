@@ -3,7 +3,7 @@ title: "\"We read 10 agents so you don't have to\" — where they all agree"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-10-15
+publish_date: 2026-10-22
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
