@@ -3,7 +3,7 @@ title: "Tool design: the difference between 3 tools and 30"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-10-22
+publish_date: 2026-10-23
 topics:
   - agents
   - from-the-series
