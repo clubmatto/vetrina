@@ -4,6 +4,10 @@ platforms:
   - linkedin
   - twitter
 publish_date: 2026-10-23
+images:
+  - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-clock.png
+  - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-calls.png
+  - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-tokens.png
 topics:
   - agents
   - from-the-series
