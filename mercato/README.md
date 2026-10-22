@@ -8,8 +8,9 @@ for anyone to read before it goes out, so nothing here needs to be kept private.
 
 `drafts/` corresponds to the `editing` column on the Marketing board in Lasagna. A post
 gets a file there when work starts on it, and the file moves to
-`<platform>/YYYY-MM-DD-<slug>.md` when it publishes. **An empty `drafts/` is a normal
-state**, not a backlog problem. It just means nothing is in flight.
+`posts/YYYY-MM-DD-<slug>.md` when it publishes — same file, same slug, date prefix
+added. **An empty `drafts/` is a normal state**, not a backlog problem. It just means
+nothing is in flight.
 
 ## Directory Structure
 
@@ -17,16 +18,14 @@ state**, not a backlog problem. It just means nothing is in flight.
 mercato/
 ├── README.md
 ├── drafts/         # In-progress drafts (legitimately empty sometimes)
-├── instagram/      # Instagram posts
-├── linkedin/       # LinkedIn posts
-├── twitter/        # Twitter/X threads and posts
-├── producthunt/    # Product Hunt launch listings
-├── reddit/         # Reddit posts and comments
-└── <platform>/     # future platforms
+├── posts/          # Published record: one file per post
+└── docs/           # Style guide and helpers
 ```
 
-Each platform directory contains flat markdown files, with no subdirectories per year or
-month. At our volume a flat list is more scannable.
+Both directories hold flat markdown files, one file per post, with no subdirectories
+per year, month, or platform. At our volume a flat list is more scannable. The
+platforms a post ran on live in its frontmatter and its `## <Platform>` sections, not
+in the directory tree — drafts and published posts have the exact same shape.
 
 ## File Naming
 
@@ -36,11 +35,13 @@ month. At our volume a flat list is more scannable.
 YYYY-MM-DD-descriptive-kebab-slug.md
 ```
 
-Examples: `2026-07-07-fakedata-pro-announcement.md`,
-`2026-07-04-club-matto-origin-story.md`
+Examples: `posts/2026-07-07-fakedata-pro-announcement.md`,
+`posts/2026-06-30-club-matto-origin-story.md`
 
-The date prefix keeps the list chronological. The slug makes each file identifiable at a
-glance.
+The date prefix is the day the post shipped, and it is the only difference between a
+published file and its draft: the slug carries over unchanged, so `grep`-ing a slug
+always finds both the draft and the record. The date prefix keeps the list
+chronological; the slug makes each file identifiable at a glance.
 
 ### Drafts
 
@@ -51,40 +52,44 @@ prefix:
 descriptive-kebab-slug.md
 ```
 
-One file per draft. The frontmatter carries a `platforms` list instead of the published
-singular `platform`, plus `publish_date` for the scheduled date from the board card. A
-batch leaves several posts in `drafts/` at once, so without a date in the file there is
-no telling Monday's post from Sunday's. The filename stays undated: the slug is the
-stable identity linking card to file, and a slipped slot becomes a one-line change
-instead of a rename. On publish the date moves into the filename and the field is
-dropped.
+One file per draft. The frontmatter carries a `platforms` list, plus `publish_date` for
+the scheduled date from the board card. A batch leaves several posts in `drafts/` at
+once, so without a date in the file there is no telling Monday's post from Sunday's.
+The filename stays undated: the slug is the stable identity linking card to file, and a
+slipped slot becomes a one-line change instead of a rename. On publish the date moves
+into the filename and the field is dropped.
 
 The body carries one `## <Platform>` section per entry in `platforms`, in the same
 order. Platform-specific titles and copy live inside their sections; the frontmatter
-`title` is the draft's working title.
+`title` is the post's working title. Published files keep the sections — they are the
+record of what actually ran on each platform.
 
 ## Frontmatter Schema
 
-Every file must start with YAML frontmatter:
+Every file must start with YAML frontmatter, and the schema is the same for drafts and
+published posts:
 
 ```yaml
 ---
-title: "Post title as it appears on the platform"
-platform: linkedin
+title: "Post working title"
+platforms:
+  - linkedin
+  - twitter
 topics:
   - fakedata
-  - fakedata-pro
   - announcement
+image: https://github.com/clubmatto/vetrina/blob/main/assets/image.png
 ---
 ```
 
 Use `topics` to tag projects, products and themes. This is the primary mechanism for
 cross-platform search, for example `grep "fakedata-pro" mercato/**/*.md`.
 
-A draft replaces `platform` with a `platforms` list and adds `publish_date: YYYY-MM-DD`,
-the scheduled date from the board card, which is dropped at publish. The `image:` field
-is the GitHub link to the image that ships with the post, the same form as the card's
-`Image:` line, for example
+The only field that distinguishes the two states is `publish_date: YYYY-MM-DD`, present
+in `drafts/` and dropped at publish, where the date prefix takes over.
+
+The `image:` field is the GitHub link to the image that ships with the post, the same
+form as the card's `Image:` line, for example
 `https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/how-coding-agents-work.png`.
 Text-only posts omit the field, and published files keep it as the record of what
 shipped. A post that ships with several images uses an `images:` list instead, same
@@ -105,8 +110,9 @@ while a post is still a draft. Mercato is the published record, not the plan.
 | Query | Command |
 |---|---|
 | All posts about a topic | `grep "fakedata-pro" mercato/**/*.md` |
-| All LinkedIn posts | `grep "platform: linkedin" mercato/**/*.md` |
-| Recent posts (last 10) | `ls -t mercato/linkedin/ \| head -10` |
+| All LinkedIn posts | `grep -l "## LinkedIn" mercato/posts/*.md` |
+| Recent posts (last 10) | `ls -t mercato/posts/ \| head -10` |
+| A post's draft and record | `ls mercato/{drafts,posts}/*the-slug*` |
 
 ## Adding a New Post
 
@@ -116,17 +122,17 @@ while a post is still a draft. Mercato is the published record, not the plan.
 2. List the target platforms in `platforms`, write one `## <Platform>` section per
    platform, and set `publish_date` to the card's due date.
 3. Link the file from the Marketing board card's description.
-4. When it publishes, drop `publish_date`, split the sections into one file per platform
-   at `mercato/<platform>/YYYY-MM-DD-<slug>.md` with singular `platform:` frontmatter,
-   and repoint the card's description link.
+4. When it publishes, drop `publish_date`, move the file into `posts/` with the date
+   prefix added — `git mv drafts/<slug>.md posts/YYYY-MM-DD-<slug>.md` — and repoint
+   the card's description link. Nothing gets split: the sections stay as they are.
 
 Moving the card on the Marketing board is part of the same step.
 
 ### Direct publish
 
-1. Create the file at `mercato/<platform>/YYYY-MM-DD-descriptive-slug.md`.
+1. Create the file at `mercato/posts/YYYY-MM-DD-descriptive-slug.md`.
 2. Add the frontmatter described above.
-3. Write the body in plain markdown.
+3. Write the body as one `## <Platform>` section per platform.
 
 For thread-based platforms such as Twitter and Reddit, use markdown headings or blockquotes
 to separate thread parts.
