@@ -4,6 +4,7 @@ platforms:
   - twitter
   - linkedin
 publish_date: 2026-10-22
+image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/demo-dark.gif
 topics:
   - whatsmylocalai
   - open-source
