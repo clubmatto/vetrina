@@ -1,24 +1,11 @@
 ---
 title: "Reshare: What's my local AI?"
-platforms:
-  - twitter
-  - linkedin
-publish_date: 2026-10-22
-image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/demo-dark.gif
+platform: linkedin
 topics:
   - whatsmylocalai
   - open-source
+image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/demo-dark.gif
 ---
-
-## Twitter
-
-Our tiny browser tool tells you which local models your machine can actually 
-run. It detects GPU/RAM/VRAM, shows what fits in Ollama and LM Studio, and 
-simulates a bigger rig before you buy one.
-
-https://whatsmylocal.ai
-
-## LinkedIn
 
 Four months ago we launched What's my local AI?, and it keeps doing one simple 
 thing: telling you which local models your machine can actually run.
