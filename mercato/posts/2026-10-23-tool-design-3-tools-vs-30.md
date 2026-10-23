@@ -3,7 +3,6 @@ title: "Tool design: the difference between 3 tools and 30"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-10-23
 images:
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-clock.png
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-calls.png
