@@ -2,7 +2,7 @@
 title: "Meet Guido, the story"
 platforms:
   - instagram
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/posts/pitboard-intro.png
+image: https://github.com/clubmatto/vetrina/blob/main/assets/posts/pitboard-intro.png
 topics:
   - guido
   - sim-racing
