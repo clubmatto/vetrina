@@ -85,20 +85,22 @@
       </script>
     {% endunless %}
   {% endif %}
-  {% if page.url contains '/products/' %}
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "{{ title }}",
-        "description": "{{ description }}",
-        "url": "{{ site.url }}{{ page.url }}",
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/{% if page.url contains 'kube-shield' or page.url contains 'db-diff' or page.url contains 'bookmarks' or page.url contains 'matto-bar' %}PreOrder{% else %}InStock{% endif %}"
+  {% if page.url contains '/products/' and page.url != '/products/' %}
+    {% unless page.url contains '/terms/' or page.url contains '/privacy/' or page.url contains '/account-deletion/' %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "{{ title }}",
+          "description": "{{ description }}",
+          "url": "{{ site.url }}{{ page.url }}",
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/{% if page.url contains 'kube-shield' or page.url contains 'bookmarks' or page.url contains 'matto-bar' %}PreOrder{% else %}InStock{% endif %}"
+          }
         }
-      }
-    </script>
+      </script>
+    {% endunless %}
   {% endif %}
   <script>
     (function () {

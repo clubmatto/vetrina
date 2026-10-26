@@ -16,13 +16,13 @@
       "href": "/products/fakedata/",
       "icon": "layers",
       "title": "FakeData",
-      "description": "Zero‑config test data for your stack. Generate realistic, output format‑ready datasets on demand with 40+ built‑in generators, piping to any destination: queues, streams, databases, or APIs."
+      "description": "Zero-config test data for your stack. Generate realistic datasets on demand with 80+ built-in generators, then pipe them to files, queues, or another process."
     },
     {
       "href": "/products/db-diff/",
       "icon": "database",
       "title": "DB Diff",
-      "description": "Know when your data drifts. Compare one table across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the rows that changed."
+      "description": "Know when your data drifts. Compare one table across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the primary keys that changed."
     },
     {
       "href": "/products/bookmarks/",

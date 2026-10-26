@@ -1,15 +1,15 @@
 ---
 layout: page.liquid
-title: DB Diff
-description: "Know when your data drifts. Compare one table across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the rows that changed."
+title: DB Diff Pro
+description: "Compare one table across PostgreSQL, MySQL and ClickHouse by reducing each value to a canonical form before it is hashed. Free during early access."
 image: /assets/vhs/db-diff/basic-postgres-light.png
 image_width: 1300
 image_height: 650
 ---
 <div class="showcase-header">
   <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
-  <h1 class="showcase-page-title">DB Diff</h1>
-  <p class="showcase-page-tagline">Know when your data drifts</p>
+  <h1 class="showcase-page-title">DB Diff Pro</h1>
+  <p class="showcase-page-tagline">Know when your data drifts, even across engines</p>
 
   <div class="showcase-db-badges">
     <span class="showcase-db-icon" title="Postgres">{% svg 'icons/postgresql.svg' %}</span>
@@ -104,7 +104,7 @@ image_height: 650
     <div class="ds-tab-body-text">
       <p>
         Prove a migration moved the data and not just the schema. When a table does not match, DB Diff reads only the
-        segments that differ and names the exact primary keys, so you get a list of rows rather than a yes or no.
+        segments that differ and names the exact primary keys, so you get the keys that moved rather than a yes or no.
       </p>
     </div>
     <p class="ds-try-text">Try it yourself:</p>
@@ -192,16 +192,13 @@ image_height: 650
       <div class="fakedata-pricing-amount">
         <span x-text="currency === 'eur' ? '€' : '$'"></span>0 <span class="fakedata-pricing-period">for ever</span>
       </div>
-      <p class="fakedata-pricing-desc">
-        The command line tool, with every engine and every flag. Comparisons run within one engine.
-      </p>
+      <p class="fakedata-pricing-desc">One binary, every engine and every flag. Comparisons run within one engine.</p>
       <ul class="fakedata-pricing-features">
         <li>PostgreSQL, MySQL and ClickHouse</li>
         <li>Server side checksums, one pass per segment</li>
-        <li>Drill down to the differing rows</li>
+        <li>Drill down to the differing primary keys</li>
         <li>Include and exclude columns</li>
-        <li>Tunable segment size</li>
-        <li>Exit codes for CI</li>
+        <li>Tunable segment size and CI exit codes</li>
       </ul>
       <a href="/vetrina/db-diff/" class="ds-btn ds-btn--secondary">Install it</a>
     </div>
@@ -211,8 +208,8 @@ image_height: 650
     >
       <div class="fakedata-pricing-badge">Pro</div>
       <div class="fakedata-flip-scene">
-        <div class="fakedata-flip-inner" :class="{ 'is-flipped': flipped }">
-          <div class="fakedata-flip-front">
+        <div id="db-diff-pro-card" class="fakedata-flip-inner" :class="{ 'is-flipped': flipped }">
+          <div class="fakedata-flip-front" :aria-hidden="flipped" :inert="flipped">
             <h3 class="fakedata-pricing-name">Pro</h3>
             <div class="fakedata-pricing-amount">
               <span x-text="currency === 'eur' ? '€' : '$'"></span
@@ -238,9 +235,19 @@ image_height: 650
               <li>Preflight sampling against your own rows</li>
               <li>More engines</li>
             </ul>
-            <button @click="flipped = true" class="ds-btn ds-btn--primary">Request a build</button>
+            <button
+              @click="
+                flipped = true;
+                $nextTick(() => $el.closest('.fakedata-flip-card').querySelector('input[type=email]').focus())
+              "
+              :aria-expanded="flipped"
+              aria-controls="db-diff-pro-card"
+              class="ds-btn ds-btn--primary"
+            >
+              Request a build
+            </button>
           </div>
-          <div class="fakedata-flip-back">
+          <div class="fakedata-flip-back" :aria-hidden="!flipped" :inert="!flipped">
             <h4 class="fakedata-flip-back-title">Get a Pro build</h4>
             {% assign waitlist_product_id = 'f88793dd-6627-4661-b786-d6e0c22ccc15' %}
             {% assign waitlist_heading = null %}
@@ -248,7 +255,15 @@ image_height: 650
             {% assign waitlist_success = "Thanks. We'll email you a build, usually within a day." %}
             {% assign waitlist_note = 'Pro is in early access. No key or account is needed, and the tool never sends us your data.' %}
             {% include 'waitlist-form.liquid' %}
-            <button @click="flipped = false" class="fakedata-flip-back-link">← Back</button>
+            <button
+              @click="
+                flipped = false;
+                $nextTick(() => $el.closest('.fakedata-flip-card').querySelector('.fakedata-flip-front .ds-btn').focus())
+              "
+              class="fakedata-flip-back-link"
+            >
+              ← Back
+            </button>
           </div>
         </div>
       </div>
@@ -256,46 +271,77 @@ image_height: 650
   </div>
 </div>
 
-<h2 class="ds-section-title">How it works</h2>
+<h2 class="ds-section-title">Requirements</h2>
 
 <div class="ds-callout">
-  <p class="ds-intro-text">
-    DB Diff cuts a table into segments of primary keys and checksums each one on both sides. Segments whose checksums
-    agree are skipped without reading a row. A segment that differs is read row by row, so the cost follows the number
-    of differing segments rather than the size of the table.
-  </p>
-  <p class="ds-intro-text">
-    Each column is hashed on its own and the digests are folded together, which is what removes the ambiguity of joining
-    values before hashing them. A NULL bitmap sits in front, because a NULL and an empty string render alike and a
-    column that is one on each side would otherwise look equal.
-  </p>
-  <p class="ds-intro-text">
-    Within one engine the checksum hashes the engine's own rendering of each value. Across engines that is not enough:
-    PostgreSQL writes a decimal as <code>1.50</code> and ClickHouse writes the same number as <code>1.5</code>, and a
-    difference in spelling would read as a difference in data. Pro reduces every value to a canonical form first, so
-    what gets hashed is the value rather than the notation.
-  </p>
-
-  <div class="ds-ctas">
-    <a
-      href="https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/how-it-works.md"
-      class="ds-btn ds-btn--primary"
-      >Read the algorithm notes</a
-    >
+  <div class="ds-limits">
+    <p class="ds-intro-text">
+      <strong>Engines:</strong> PostgreSQL 14 or newer, MySQL 5.7 or newer, ClickHouse 20.1 or newer. Pro accepts any
+      pairing of the three.
+    </p>
+    <p class="ds-intro-text">
+      <strong>Table:</strong> one integer primary key named <code>id</code>, with the same table name and column order
+      on both sides.
+    </p>
+    <p class="ds-intro-text">
+      <strong>Run:</strong> a differing segment is read whole, and the comparison is not a transaction. Pin the session
+      timezone and charset on both connections.
+    </p>
   </div>
 </div>
 
-<h2 class="ds-section-title">DB Diff CLI</h2>
+<h2 class="ds-section-title">Algorithm notes</h2>
 
-<div class="ds-callout">
-  <p class="ds-intro-text">
-    Prefer working from the command line? <strong>DB Diff</strong> is a single binary with no server and no state. It
-    exits <code>0</code> when the tables match, <code>1</code> when they differ, and <code>2</code> when it could not
-    run, so a job can tell "the tables differ" apart from "the tool broke".
+<div class="ds-algo-notes">
+  <p class="ds-algo-lede">
+    DB Diff does the comparison inside the database. The wire carries checksums when the tables match, and rows only
+    when they do not.
   </p>
 
-  <div class="ds-ctas">
-    <a href="/vetrina/db-diff/" class="ds-btn ds-btn--primary">Try the CLI</a>
+  <ol class="ds-algo-steps">
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">01</span>
+      <h3 class="ds-algo-step-title">Segment the table</h3>
+      <p class="ds-algo-step-text">
+        The table is cut into ranges of primary keys, 10,000 by default. Both sides can address the same range without
+        moving a row.
+      </p>
+    </li>
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">02</span>
+      <h3 class="ds-algo-step-title">Checksum each segment</h3>
+      <p class="ds-algo-step-text">
+        Each side hashes every compared column on its own, folds the digests with XOR, and returns one 64-bit checksum.
+        Equal checksums skip the segment.
+      </p>
+    </li>
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">03</span>
+      <h3 class="ds-algo-step-title">Read only what differs</h3>
+      <p class="ds-algo-step-text">
+        A differing segment is read row by row and compared column by column. The output is the primary keys that
+        changed.
+      </p>
+    </li>
+  </ol>
+
+  <div class="ds-algo-code">
+    <span class="ds-algo-code-label">Row checksum</span>
+    <pre><code>md5( null_bitmap || md5(COALESCE(col_a, '')) || md5(COALESCE(col_b, '')) || ... ) -> first 8 bytes
+segment = XOR(row checksums)</code></pre>
+  </div>
+
+  <div class="ds-algo-foot">
+    <p class="ds-algo-note">
+      Across engines, the checksum needs a canonical form: PostgreSQL writes a decimal as <code>1.50</code> and
+      ClickHouse writes it as <code>1.5</code>. Pro reduces every value to a form all three engines agree on before it
+      is hashed. A NULL bitmap sits in front of the column digests, so a NULL and an empty string cannot hash alike.
+    </p>
+    <a
+      href="https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/how-it-works.md"
+      class="ds-btn ds-btn--primary"
+      >Read the full algorithm notes</a
+    >
   </div>
 </div>
 

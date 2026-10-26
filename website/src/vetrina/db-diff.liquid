@@ -285,26 +285,80 @@ image_height: 650
   </div>
 </div>
 
-<h2 class="ds-section-title">How it works</h2>
+<h2 class="ds-section-title">Requirements and limits</h2>
 
 <div class="ds-callout">
-  <p class="ds-intro-text">
-    DB Diff cuts the table into segments of primary keys and checksums each one on both sides. Equal checksums are
-    skipped. A differing segment is read row by row, so the cost follows the number of differing segments rather than
-    the size of the table.
-  </p>
-  <p class="ds-intro-text">
-    The comparison runs within one engine. Engines render values their own way — a boolean is
-    <code>true</code> in one and <code>1</code> in another — so a cross engine run is refused rather than reported as
-    every row changed. Making one possible means agreeing on how a value is spelled before it is hashed, which is what
-    DB Diff Pro does.
+  <div class="ds-limits">
+    <p class="ds-intro-text">
+      <strong>Engines:</strong> PostgreSQL 14 or newer, MySQL and ClickHouse. Both databases must run the same engine;
+      cross engine comparison is DB Diff Pro.
+    </p>
+    <p class="ds-intro-text">
+      <strong>Table:</strong> one integer primary key named <code>id</code>, with the same table name and column order
+      on both sides.
+    </p>
+    <p class="ds-intro-text">
+      <strong>Run:</strong> a differing segment is read whole, and the comparison is not a transaction. Pin the session
+      timezone and charset on both connections.
+    </p>
+    <p class="ds-intro-text">
+      <strong>License:</strong> MIT. The <a href="https://github.com/clubmatto/vetrina/releases">releases page</a> has
+      the current version and checksums.
+    </p>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Algorithm notes</h2>
+
+<div class="ds-algo-notes">
+  <p class="ds-algo-lede">
+    DB Diff does the comparison inside the database. The wire carries checksums when the tables match, and rows only
+    when they do not.
   </p>
 
-  <div class="ds-ctas">
+  <ol class="ds-algo-steps">
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">01</span>
+      <h3 class="ds-algo-step-title">Segment the table</h3>
+      <p class="ds-algo-step-text">
+        The table is cut into ranges of primary keys, 10,000 by default. Both sides can address the same range without
+        moving a row.
+      </p>
+    </li>
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">02</span>
+      <h3 class="ds-algo-step-title">Checksum each segment</h3>
+      <p class="ds-algo-step-text">
+        Each side hashes every compared column on its own, folds the digests with XOR, and returns one 64-bit checksum.
+        Equal checksums skip the segment.
+      </p>
+    </li>
+    <li class="ds-algo-step">
+      <span class="ds-algo-step-number">03</span>
+      <h3 class="ds-algo-step-title">Read only what differs</h3>
+      <p class="ds-algo-step-text">
+        A differing segment is read row by row and compared column by column. The output is the primary keys that
+        changed.
+      </p>
+    </li>
+  </ol>
+
+  <div class="ds-algo-code">
+    <span class="ds-algo-code-label">Row checksum</span>
+    <pre><code>md5( null_bitmap || md5(COALESCE(col_a, '')) || md5(COALESCE(col_b, '')) || ... ) -> first 8 bytes
+segment = XOR(row checksums)</code></pre>
+  </div>
+
+  <div class="ds-algo-foot">
+    <p class="ds-algo-note">
+      The comparison runs within one engine. Engines render values their own way: a boolean is <code>true</code> in
+      PostgreSQL and <code>1</code> in MySQL, so a cross engine run is refused rather than reported as every row
+      changed. DB Diff Pro adds the canonical form that makes it possible.
+    </p>
     <a
       href="https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/how-it-works.md"
       class="ds-btn ds-btn--primary"
-      >Read the algorithm notes</a
+      >Read the full algorithm notes</a
     >
   </div>
 </div>

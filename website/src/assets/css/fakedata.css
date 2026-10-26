@@ -369,6 +369,7 @@
 .fakedata-flip-back {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -377,6 +378,10 @@
 
 .fakedata-flip-front {
   min-height: 100%;
+  /* Firefox only culls the backface of an element that takes part in the 3D
+     context. Without its own transform, the front stays painted over the
+     back for the whole flip and both faces show at once. */
+  transform: rotateY(0deg);
 }
 
 .fakedata-flip-back {
@@ -393,38 +398,6 @@
   font-size: 1.1rem;
   margin: 0 0 var(--ds-space-2) 0;
   color: var(--text);
-}
-
-.fakedata-flip-back-desc {
-  font-family: var(--font-sans);
-  font-size: var(--ds-text-sm);
-  line-height: 1.5;
-  color: var(--text-secondary);
-  margin: 0 0 var(--ds-space-5) 0;
-}
-
-.fakedata-flip-form-group {
-  margin-bottom: var(--ds-space-4);
-}
-
-.fakedata-flip-form-group input {
-  width: 100%;
-  padding: var(--ds-space-3) var(--ds-space-4);
-  border: 2px solid var(--border-color);
-  border-radius: var(--ds-space-2);
-  background: transparent;
-  color: var(--text);
-  font-family: inherit;
-  font-size: var(--ds-text-base);
-  transition:
-    border-color var(--ds-transition),
-    box-shadow var(--ds-transition);
-}
-
-.fakedata-flip-form-group input:focus-visible {
-  outline: none;
-  border-color: var(--gradient-1);
-  box-shadow: 0 0 0 3px var(--focus-ring-color);
 }
 
 .fakedata-flip-back-link {

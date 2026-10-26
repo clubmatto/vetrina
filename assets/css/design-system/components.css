@@ -260,6 +260,7 @@
 
 .ds-tab-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0;
   margin-bottom: var(--ds-space-6);
 }

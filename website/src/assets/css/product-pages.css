@@ -192,3 +192,150 @@
 .product-tos-link a:hover {
   color: var(--text);
 }
+
+/* Algorithm notes: a readable block for the "How it works" copy, which used
+   to sit inside .ds-callout and therefore laid its paragraphs out side by
+   side. */
+.ds-algo-notes {
+  margin: var(--ds-space-8) 0;
+  padding: var(--ds-space-8);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.ds-algo-lede {
+  max-width: 70ch;
+  margin: 0 0 var(--ds-space-6);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  line-height: 1.5;
+  color: var(--ds-text);
+}
+
+.ds-algo-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-algo-step {
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+}
+
+.ds-algo-step-number {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ds-gradient-1);
+}
+
+.ds-algo-step-title {
+  margin: 0 0 var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-base);
+  color: var(--ds-text);
+}
+
+.ds-algo-step-text {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+.ds-algo-code {
+  margin-top: var(--ds-space-6);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  background: var(--terminal-bg);
+  overflow-x: auto;
+}
+
+.ds-algo-code-label {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-text-muted);
+}
+
+.ds-algo-code pre {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--terminal-text);
+}
+
+.ds-algo-code code {
+  font-family: inherit;
+}
+
+.ds-algo-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-6);
+  margin-top: var(--ds-space-6);
+  padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--ds-border);
+}
+
+.ds-algo-note {
+  max-width: 70ch;
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+.ds-algo-foot .ds-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .ds-algo-notes {
+    padding: var(--ds-space-6);
+  }
+
+  .ds-algo-steps {
+    grid-template-columns: 1fr;
+    gap: var(--ds-space-4);
+  }
+
+  .ds-algo-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.ds-limits {
+  flex: 1;
+}
+
+.ds-limits p {
+  margin: 0 0 var(--ds-space-2);
+}
+
+.ds-limits p:last-child {
+  margin-bottom: 0;
+}
+
+.ds-limits a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

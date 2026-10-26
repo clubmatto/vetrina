@@ -69,12 +69,20 @@
   color: var(--text);
 }
 
+/* Visually hidden without an off-screen offset: the Pro card is rotated, so a
+   negative left would be laid out on the far right and widen the page. */
 .honeypot {
   position: absolute;
-  left: -9999px;
-  opacity: 0;
-  height: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
 }
 
 .submit-btn {
