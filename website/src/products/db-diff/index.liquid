@@ -1,15 +1,19 @@
 ---
 layout: page.liquid
 title: DB Diff Pro
-description: "Compare one table across PostgreSQL, MySQL and ClickHouse by reducing each value to a canonical form before it is hashed. Free during early access."
-image: /assets/vhs/db-diff/basic-postgres-light.png
+description: "Compare one table between PostgreSQL, MySQL and ClickHouse. DB Diff Pro reduces every value to a canonical form before hashing, so a cross-engine diff means what it says. Free during early access."
+image: /assets/vhs/db-diff/pro-cross-engine-light.png
 image_width: 1300
 image_height: 650
 ---
 <div class="showcase-header">
   <div class="showcase-page-icon">{{ 'database' | lucide }}</div>
   <h1 class="showcase-page-title">DB Diff Pro</h1>
-  <p class="showcase-page-tagline">Know when your data drifts, even across engines</p>
+  <p class="showcase-page-tagline">Cross-engine diff, without guessing</p>
+  <p class="showcase-page-lede">
+    Compare one table between PostgreSQL, MySQL and ClickHouse. Pro reduces every value to a canonical form before it is
+    hashed, so a boolean, a decimal or a timestamp means the same thing on both sides.
+  </p>
 
   <div class="showcase-db-badges">
     <span class="showcase-db-icon" title="Postgres">{% svg 'icons/postgresql.svg' %}</span>
@@ -23,7 +27,7 @@ image_height: 650
     <span class="ds-terminal__dot ds-terminal__dot--red"></span>
     <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
     <span class="ds-terminal__dot ds-terminal__dot--green"></span>
-    <span class="ds-terminal__title">db-diff</span>
+    <span class="ds-terminal__title">pro demo</span>
   </div>
   <div class="ds-terminal__body ds-terminal__gif">
     <video
@@ -32,9 +36,9 @@ image_height: 650
       muted
       playsinline
       class="theme-light"
-      aria-label="DB Diff comparing two PostgreSQL tables (light theme)"
+      aria-label="DB Diff Pro comparing PostgreSQL and ClickHouse (light theme)"
     >
-      <source src="/assets/vhs/db-diff/basic-postgres-light.mp4" type="video/mp4">
+      <source src="/assets/vhs/db-diff/pro-cross-engine-light.mp4" type="video/mp4">
     </video>
     <video
       autoplay
@@ -42,10 +46,25 @@ image_height: 650
       muted
       playsinline
       class="theme-dark"
-      aria-label="DB Diff comparing two PostgreSQL tables (dark theme)"
+      aria-label="DB Diff Pro comparing PostgreSQL and ClickHouse (dark theme)"
     >
-      <source src="/assets/vhs/db-diff/basic-postgres-dark.mp4" type="video/mp4">
+      <source src="/assets/vhs/db-diff/pro-cross-engine-dark.mp4" type="video/mp4">
     </video>
+  </div>
+</div>
+
+<div class="ds-pro-adds">
+  <div class="ds-pro-add">
+    <span class="ds-pro-add-label">Any pairing</span>
+    <p>PostgreSQL, MySQL and ClickHouse, compared in either direction.</p>
+  </div>
+  <div class="ds-pro-add">
+    <span class="ds-pro-add-label">Canonical values</span>
+    <p>Booleans, decimals, floats and timestamps hash the same on both sides.</p>
+  </div>
+  <div class="ds-pro-add">
+    <span class="ds-pro-add-label">Honest refusals</span>
+    <p>A type that cannot be compared is named, not approximated.</p>
   </div>
 </div>
 
@@ -76,14 +95,6 @@ image_height: 650
       :aria-selected="tab === 'columns'"
     >
       Column control
-    </button>
-    <button
-      role="tab"
-      :class="{ active: tab === 'cross-engine' }"
-      @click="tab = 'cross-engine'"
-      :aria-selected="tab === 'cross-engine'"
-    >
-      Cross engine
     </button>
   </div>
 
@@ -124,50 +135,6 @@ image_height: 650
     <div class="ds-terminal__command">
       <span class="ds-terminal__prompt">$</span> db-diff --source="$SRC" --target="$DST" --table=line_items
       --exclude=quantity
-    </div>
-  </div>
-
-  <div class="ds-tab-body" x-show="tab === 'cross-engine'">
-    <div class="ds-tab-body-text">
-      <p>
-        Comparing a table between two engines is the one thing the open source tool will not do, and it refuses rather
-        than misleads: a boolean is <code>true</code> in PostgreSQL and <code>1</code> in MySQL, so hashing each
-        engine's own spelling would report every row as changed.
-      </p>
-      <p>
-        <strong>DB Diff Pro</strong> reduces each value to a canonical form that both engines agree on before it is
-        hashed, so the comparison means what it says.
-      </p>
-    </div>
-    <div class="ds-terminal">
-      <div class="ds-terminal__header">
-        <span class="ds-terminal__dot ds-terminal__dot--red"></span>
-        <span class="ds-terminal__dot ds-terminal__dot--yellow"></span>
-        <span class="ds-terminal__dot ds-terminal__dot--green"></span>
-        <span class="ds-terminal__title">refused by the CLI</span>
-      </div>
-      <div class="ds-terminal__body ds-terminal__gif">
-        <video
-          autoplay
-          loop
-          muted
-          playsinline
-          class="theme-light"
-          aria-label="The CLI refusing a cross engine comparison (light theme)"
-        >
-          <source src="/assets/vhs/db-diff/cross-engine-light.mp4" type="video/mp4">
-        </video>
-        <video
-          autoplay
-          loop
-          muted
-          playsinline
-          class="theme-dark"
-          aria-label="The CLI refusing a cross engine comparison (dark theme)"
-        >
-          <source src="/assets/vhs/db-diff/cross-engine-dark.mp4" type="video/mp4">
-        </video>
-      </div>
     </div>
   </div>
 </div>

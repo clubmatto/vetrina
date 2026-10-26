@@ -159,6 +159,7 @@ also receive the current `theme` as a third argument.
 | `basic-clickhouse` | The same comparison against ClickHouse |
 | `include-exclude` | Excluding the changed column narrows the result |
 | `cross-engine` | A cross engine pair is refused before it connects |
+| `pro-cross-engine` | A Pro build compares PostgreSQL and ClickHouse, with three drifted keys |
 
 `requirements.sh` starts one container per engine, creates `src` and `dst` in each, and seeds
 both with 100,000 rows in `orders` and 100,000 in `line_items`. `orders` stays identical on both
@@ -171,6 +172,10 @@ drifted, which is exactly the false signal the demo is supposed to rule out.
 
 The build goes to `/tmp/db-diff-demo/bin`, and the DSNs plus a client per engine go to
 `/tmp/db-diff-demo/env.sh`, which every tape sources.
+
+The `pro-cross-engine` clip comes from a Pro build against local PostgreSQL and ClickHouse. Its
+tape is not in this project because `generate.sh db-diff` builds the OSS binary and would record
+the refusal instead.
 
 ### AI Kit
 

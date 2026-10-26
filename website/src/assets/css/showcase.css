@@ -37,6 +37,15 @@
   margin: 0 0 2rem 0;
 }
 
+.showcase-page-lede {
+  max-width: 720px;
+  margin: -1rem auto 2rem;
+  font-family: var(--font-sans);
+  font-size: var(--ds-text-base);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
 .showcase-db-badges {
   display: flex;
   align-items: center;

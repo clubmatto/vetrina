@@ -322,6 +322,47 @@
   }
 }
 
+/* The three things that separate Pro from the free tool, stated before the
+   use cases rather than buried inside one. */
+.ds-pro-adds {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+  margin: var(--ds-space-6) 0 var(--ds-space-8);
+}
+
+.ds-pro-add {
+  padding: var(--ds-space-5);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.ds-pro-add-label {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-gradient-1);
+}
+
+.ds-pro-add p {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .ds-pro-adds {
+    grid-template-columns: 1fr;
+  }
+}
+
 .ds-limits {
   flex: 1;
 }
