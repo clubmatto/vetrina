@@ -129,9 +129,9 @@ engine run rather than guess, and compares a database against a database of the 
 
 ## What this does not cover
 
-The algorithm compares one table, keyed by a single integer `id`, with the same name and column
-layout on both sides. Composite keys, mapping one table name to another, and a different column
-order are out of scope.
+The current algorithm compares a table at a time, keyed by a single integer `id`, with the same
+name and column layout on both sides. Composite keys, mapping one table name to another, and a
+different column order are out of scope.
 
 Comparing across engines is refused rather than approximated, for the rendering reasons above.
 The checksum shape is engine agnostic and the fold property is all the algorithm needs, so the
