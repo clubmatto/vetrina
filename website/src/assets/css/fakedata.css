@@ -333,7 +333,11 @@
   font-weight: 700;
 }
 
-.fakedata-pricing-card .ds-btn {
+/* Only the card's own call to action stretches. A plain descendant selector
+   also caught the submit button inside the flip card's waitlist form: at 100%
+   wide it squeezed the email field to its padding. */
+.fakedata-pricing-card > .ds-btn,
+.fakedata-flip-front > .ds-btn {
   margin-top: auto;
   width: 100%;
 }
