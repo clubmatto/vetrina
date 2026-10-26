@@ -1,5 +1,5 @@
 ---
-title: DB Diff v0 is out
+title: DB Diff and DB Diff Pro are out
 platforms:
   - twitter
   - linkedin
@@ -18,30 +18,43 @@ topics:
 🚀 DB Diff is out 🚀
 
 Compare one table across two databases by checksumming. Matching segments cost
-one query per side. Differing segments return the primary keys that drifted.
+one query per side; differing segments return the primary keys that drifted.
 
-PostgreSQL, MySQL, ClickHouse.
+Free and open source, or Pro for cross-engine diffs.
 https://matto.club/vetrina/db-diff/
 
 ### 2
 
-Need to compare across engines? DB Diff Pro reduces each value to a canonical
-form first, so PostgreSQL, MySQL and ClickHouse agree on the bytes.
+The free tool keeps the comparison in the database. It cuts the table into
+segments, checksums each one on both sides, and reads only the segments that
+differ. A matching table costs two aggregate queries per segment, not a full
+dump.
 
-Free during early access:
+### 3
+
+DB Diff Pro removes the engine boundary. PostgreSQL, MySQL and ClickHouse render
+values differently, so Pro reduces every value to a canonical form before
+hashing. A boolean, a decimal or a timestamp means the same on both sides.
+
+### 4
+
+Pro is free during early access: no key, no account, no checkout. Ask for a
+build and we will send one:
 https://matto.club/products/db-diff/
+
+The open source tool is MIT:
+https://github.com/clubmatto/vetrina
 
 ## LinkedIn
 
 🚀 DB Diff is out 🚀
 
-It compares one table across two databases by checksumming. Matching segments
-cost one query per side; only the segments that differ are read row by row. You
-get the primary keys that drifted, not a yes or no.
+Compare one table across two databases by checksumming. Matching segments cost
+one query per side; only the segments that differ are read row by row. You get
+the primary keys that drifted, not a yes or no.
 
-It is built for the case a dump and compare cannot handle: millions of rows,
-where you need to know which ones changed.
-
-A Pro build adds cross-engine comparison, free during early access.
+The free tool is open source and compares within one engine. DB Diff Pro adds
+cross-engine comparison for PostgreSQL, MySQL and ClickHouse, free during early
+access.
 
 Read it here: https://matto.club/products/db-diff/
