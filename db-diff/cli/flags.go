@@ -130,7 +130,7 @@ func usageFooter(opts Options) string {
 	return sameEngineUsageFooter
 }
 
-const sameEngineUsageHeader = `db-diff compares the rows of one table across two databases.
+const sameEngineUsageHeader = `db-diff compares tables across two databases.
 
 Usage:
   db-diff --source <dsn> --target <dsn> --table <name> [options]
@@ -157,7 +157,7 @@ Examples:
   db-diff --source "$SRC" --target "$DST" --table orders --exclude updated_at,raw_payload
 `
 
-const crossEngineUsageHeader = `db-diff compares the rows of one table across two databases.
+const crossEngineUsageHeader = `db-diff compares tables across two databases.
 
 Usage:
   db-diff --source <dsn> --target <dsn> --table <name> [options]

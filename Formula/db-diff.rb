@@ -1,5 +1,5 @@
 class DbDiff < Formula
-  desc "Compare one table across two databases by checksumming"
+  desc "Compare tables across two databases by checksumming"
   homepage "https://matto.club/vetrina/db-diff"
   license "MIT"
   version "0.0.5"

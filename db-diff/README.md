@@ -2,7 +2,7 @@
 
 [![Go](https://img.shields.io/badge/Go-1.24.0-00ADD8?logo=go)](https://go.dev) [![License](https://img.shields.io/github/license/clubmatto/vetrina)](../LICENSE)
 
-`db-diff` compares one table in two databases and reports the primary keys of the rows that
+`db-diff` compares tables across two databases and reports the primary keys of the rows that
 differ. It pushes the comparison into the databases as checksum queries, so only checksums
 cross the wire when the tables match, and only the differing segments are read row by row.
 

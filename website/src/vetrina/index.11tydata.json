@@ -16,7 +16,7 @@
       "href": "/vetrina/db-diff/",
       "icon": "database",
       "title": "DB Diff",
-      "description": "Compare one table across two databases by checksumming. Fast when the tables match, and exact about which primary keys drifted when they don't."
+      "description": "Compare tables across two databases by checksumming. Fast when the tables match, and exact about which primary keys drifted when they don't."
     },
     {
       "href": "/vetrina/ai-kit/",

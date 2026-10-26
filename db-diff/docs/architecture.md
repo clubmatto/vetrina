@@ -14,7 +14,7 @@ Path references are relative to the module root. Written against `v0.0.5`.
 
 ## 1. What it is
 
-A single-binary Go CLI. It compares **one table** in **two databases** and prints the **primary
+A single-binary Go CLI. It compares **tables** in **two databases** and prints the **primary
 keys of the rows that differ**.
 
 ```

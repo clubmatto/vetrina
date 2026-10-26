@@ -1,4 +1,4 @@
-// Command db-diff compares one table across two databases and reports the
+// Command db-diff compares tables across two databases and reports the
 // primary keys of the rows that differ.
 package main
 

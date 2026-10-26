@@ -22,7 +22,7 @@
       "href": "/products/db-diff/",
       "icon": "database",
       "title": "DB Diff",
-      "description": "Know when your data drifts. Compare one table across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the primary keys that changed."
+      "description": "Know when your data drifts. Compare tables across two databases by checksumming: only digests cross the wire when the tables match, and a mismatch comes back as the primary keys that changed."
     },
     {
       "href": "/products/bookmarks/",

@@ -420,7 +420,7 @@ func doRequest(req *http.Request) *http.Response {
 // class name, binary name and URLs are not.
 var formulaDescriptions = map[string]string{
 	"fakedata": "CLI tool to generate fake data rows for testing and development",
-	"db-diff":  "Compare one table across two databases by checksumming",
+	"db-diff":  "Compare tables across two databases by checksumming",
 }
 
 // formulaClassName turns a project directory into a Homebrew formula class.

@@ -18,7 +18,7 @@ import (
 // DefaultSegmentSize is how many primary keys one checksum query covers.
 const DefaultSegmentSize int64 = 10000
 
-// Runner compares one table between two databases.
+// Runner runs a table comparison between two databases.
 type Runner struct {
 	// Source and Target are the two databases. Both have to speak the same
 	// dialect: the checksum only agrees across sides when it is computed the

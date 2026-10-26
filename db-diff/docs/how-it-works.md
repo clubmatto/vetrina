@@ -3,7 +3,7 @@
 > `db-diff` is inspired by [data-diff](https://github.com/datafold/data-diff), a tool by
 > datafold (now archived), and by the divide and conquer approach it popularised.
 
-`db-diff` compares one table in two databases. When the tables match, it answers with a handful
+`db-diff` compares tables across two databases. When the tables match, it answers with a handful
 of checksum queries. When they do not, it narrows down to the exact rows that differ.
 
 For how the packages fit together, see [architecture.md](architecture.md). For install and
