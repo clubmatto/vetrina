@@ -107,12 +107,12 @@ while a post is still a draft. Mercato is the published record, not the plan.
 
 ## Searching and Filtering
 
-| Query | Command |
-|---|---|
-| All posts about a topic | `grep "fakedata-pro" mercato/**/*.md` |
-| All LinkedIn posts | `grep -l "## LinkedIn" mercato/posts/*.md` |
-| Recent posts (last 10) | `ls -t mercato/posts/ \| head -10` |
-| A post's draft and record | `ls mercato/{drafts,posts}/*the-slug*` |
+| Query                     | Command                                    |
+| ------------------------- | ------------------------------------------ |
+| All posts about a topic   | `grep "fakedata-pro" mercato/**/*.md`      |
+| All LinkedIn posts        | `grep -l "## LinkedIn" mercato/posts/*.md` |
+| Recent posts (last 10)    | `ls -t mercato/posts/ \| head -10`         |
+| A post's draft and record | `ls mercato/{drafts,posts}/*the-slug*`     |
 
 ## Adding a New Post
 
@@ -144,7 +144,8 @@ installs at `.agents/rules/writing.md`. Follow it, and do not restate it here.
 
 These are the mercato specifics:
 
-- **LinkedIn: 55 to 90 words.** Close with `Read it here: <url>`.
+- **LinkedIn: no hard limit.** Write what the post needs; 100 to 200 words is the usual
+  range. Close with `Read it here: <url>`.
 - **Twitter: 280 characters at most, aim for 200.** Close with the bare URL.
 - **Instagram: 5 hashtags max.** The image is the post: a 1080x1440 (3:4) board —
   anything else gets cropped by the feed — caption short. No inline links; the URL
