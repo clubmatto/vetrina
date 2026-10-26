@@ -78,7 +78,14 @@ image_height: 650
         <span class="ds-terminal__title">PostgreSQL</span>
       </div>
       <div class="ds-terminal__body ds-terminal__gif">
-        <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on Postgres (light theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-light"
+          aria-label="DB Diff on Postgres (light theme)"
+        >
           <source src="/assets/vhs/db-diff/basic-postgres-light.mp4" type="video/mp4">
         </video>
         <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on Postgres (dark theme)">
@@ -136,10 +143,24 @@ image_height: 650
         <span class="ds-terminal__title">ClickHouse</span>
       </div>
       <div class="ds-terminal__body ds-terminal__gif">
-        <video autoplay loop muted playsinline class="theme-light" aria-label="DB Diff on ClickHouse (light theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-light"
+          aria-label="DB Diff on ClickHouse (light theme)"
+        >
           <source src="/assets/vhs/db-diff/basic-clickhouse-light.mp4" type="video/mp4">
         </video>
-        <video autoplay loop muted playsinline class="theme-dark" aria-label="DB Diff on ClickHouse (dark theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-dark"
+          aria-label="DB Diff on ClickHouse (dark theme)"
+        >
           <source src="/assets/vhs/db-diff/basic-clickhouse-dark.mp4" type="video/mp4">
         </video>
       </div>
@@ -188,10 +209,24 @@ image_height: 650
         <span class="ds-terminal__title">Column control</span>
       </div>
       <div class="ds-terminal__body ds-terminal__gif">
-        <video autoplay loop muted playsinline class="theme-light" aria-label="Column selection demo (light theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-light"
+          aria-label="Column selection demo (light theme)"
+        >
           <source src="/assets/vhs/db-diff/include-exclude-light.mp4" type="video/mp4">
         </video>
-        <video autoplay loop muted playsinline class="theme-dark" aria-label="Column selection demo (dark theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-dark"
+          aria-label="Column selection demo (dark theme)"
+        >
           <source src="/assets/vhs/db-diff/include-exclude-dark.mp4" type="video/mp4">
         </video>
       </div>
@@ -218,10 +253,24 @@ image_height: 650
         <span class="ds-terminal__title">Engine boundary</span>
       </div>
       <div class="ds-terminal__body ds-terminal__gif">
-        <video autoplay loop muted playsinline class="theme-light" aria-label="Cross engine refusal demo (light theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-light"
+          aria-label="Cross engine refusal demo (light theme)"
+        >
           <source src="/assets/vhs/db-diff/cross-engine-light.mp4" type="video/mp4">
         </video>
-        <video autoplay loop muted playsinline class="theme-dark" aria-label="Cross engine refusal demo (dark theme)">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="theme-dark"
+          aria-label="Cross engine refusal demo (dark theme)"
+        >
           <source src="/assets/vhs/db-diff/cross-engine-dark.mp4" type="video/mp4">
         </video>
       </div>
@@ -302,8 +351,8 @@ image_height: 650
       timezone and charset on both connections.
     </p>
     <p class="ds-intro-text">
-      <strong>License:</strong> MIT. The <a href="https://github.com/clubmatto/vetrina/releases">releases page</a> has
-      the current version and checksums.
+      <strong>License:</strong> MIT. The <a href="https://github.com/clubmatto/vetrina/releases">releases page</a>
+      has the current version and checksums.
     </p>
   </div>
 </div>
@@ -367,8 +416,7 @@ segment = XOR(row checksums)</code></pre>
 
 <div class="ds-callout">
   <p class="ds-intro-text">
-    Need to compare across engines? <strong>DB Diff Pro</strong> reduces every value to a canonical form that
-    PostgreSQL, MySQL and ClickHouse all agree on, so a table can be compared between any two of them. A wall clock
+    Need to compare across engines? <strong>DB Diff Pro</strong> adds cross engine support to DB Diff. A wall clock
     reading is kept distinct from an instant, and floats are compared bit for bit rather than by how the engine happens
     to print them.
   </p>
