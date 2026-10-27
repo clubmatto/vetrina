@@ -503,10 +503,19 @@ article.post .post-content .analysis > .agent-table-wrapper:last-child {
 /* --- table of contents dot rail -------------------------------------------- */
 
 .post-toc {
+  /* Room reserved for a heading label between the dot and the post card.
+     Labels are capped to it, so a long heading truncates instead of running
+     under the article text. */
+  --toc-room: 15rem;
+  --toc-dot: 0.5rem;
+  --toc-dot-gap: var(--ds-space-2);
+  /* Clear space kept between a label and the article column. Matches the gap
+     between the page limit line and the dots on the left of the rail. */
+  --toc-label-gutter: var(--page-padding-inline);
   position: fixed;
   /* Half the 72ch content column plus room for the longest heading label, so
      labels end just left of the post card. */
-  left: calc(50% - 36ch - 15rem);
+  left: calc(50% - 36ch - var(--toc-room));
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -546,6 +555,15 @@ article.post .post-content .analysis > .agent-table-wrapper:last-child {
   color: var(--text-secondary);
   opacity: 0.55;
   white-space: nowrap;
+  /* Long headings get an ellipsis instead of growing into the article column:
+     the label gets what is left of the room once the dot, its gap and the
+     gutter back to the card are accounted for. */
+  max-width: calc(
+    var(--toc-room) - var(--toc-dot) - var(--toc-dot-gap) -
+      var(--toc-label-gutter)
+  );
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition:
     color var(--ds-transition-fast),
     opacity var(--ds-transition-fast);
