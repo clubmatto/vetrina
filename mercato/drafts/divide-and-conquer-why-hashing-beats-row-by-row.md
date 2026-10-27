@@ -13,14 +13,12 @@ topics:
 
 ## Twitter
 
-Row by row comparison costs the size of the table every time, even when the tables match.
-
-How db-diff makes matching tables cost segments instead of rows: https://matto.club/writing/divide-and-conquer-hashing-beats-row-by-row/
+Data migrations and large test environments ask one question: do these two tables match? Row by row reads both tables. DB Diff checksums segments on the server, so matching tables send only checksums: https://matto.club/writing/divide-and-conquer-hashing-beats-row-by-row/
 
 ## LinkedIn
 
-Every data comparison starts the same way: read both tables and compare in memory. That does not scale to a table with millions of rows.
+I wrote the first version of DB Diff to check a large migration between platforms. Both sides ran the same engine. The test infrastructure was rebuilt from production at the same time, and the only question that mattered was whether the two sides held the same rows.
 
-db-diff never moves a row that does not need moving. The table is cut into segments of primary keys, each database checksums a segment, and an equal checksum means the segment is skipped. Only the segments that differ are read row by row, so you get the primary keys that changed.
+Reading both tables and comparing them in memory does not scale to millions of rows. DB Diff cuts the table into segments of the integer id. Each database checksums a segment, and if the checksums match, the client pulls no rows. Only a differing segment has its rows hashed one by one, and the primary keys that differ come back.
 
-Why that checksum can be trusted: https://matto.club/writing/divide-and-conquer-hashing-beats-row-by-row/
+The checksum is the part that makes it work. Read it here: https://matto.club/writing/divide-and-conquer-hashing-beats-row-by-row/
