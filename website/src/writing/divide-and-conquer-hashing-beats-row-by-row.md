@@ -11,24 +11,26 @@ tags:
   - launch
 ---
 
-I wrote the first version of DB Diff to check a large migration between
-platforms. Both sides ran the same engine. The test infrastructure was rebuilt
-from production at the same time, and the only question that mattered was
-whether the two sides held the same rows. You can get away with an in-memory
-comparison on small tables, but at scale it stops working.
+We wrote the first version of [DB Diff](https://matto.club/vetrina/db-diff/) to
+check a large migration between platforms. Both sides ran the same engine. The
+test infrastructure was rebuilt from production at the same time, and the only
+question that mattered was whether the two sides held the same rows. You can get
+away with an in-memory comparison on small tables, but at scale it stops
+working.
 
-The problem DB Diff solves is conceptually simple: a table with millions of
-rows in two places that should hold the same thing. A replica that may have
-fallen behind. A migration that moved the data. A test environment that has to
-be proven faithful. An ingestion pipeline that was rewritten and has to be
-proven equivalent to the old one. In every one of those cases you want to verify
-that the tables match, and if they don't, you want to know what's wrong.
+The problem [DB Diff](https://matto.club/vetrina/db-diff/) solves is
+conceptually simple: a table with millions of rows in two places that should
+hold the same thing. A replica that may have fallen behind. A migration that
+moved the data. A test environment that has to be proven faithful. An ingestion
+pipeline that was rewritten and has to be proven equivalent to the old one. In
+every one of those cases you want to verify that the tables match, and if they
+don't, you want to know what's wrong.
 
-We've seen many ad-hoc solutions for this problem. DB Diff solves this with a
-simple CLI.
+We've seen many ad-hoc solutions for this problem.
+[DB Diff](https://matto.club/vetrina/db-diff/) solves this with a simple CLI.
 
-This article explains how DB Diff diffs tables across two databases of the same
-engine.
+This article explains how [DB Diff](https://matto.club/vetrina/db-diff/) diffs
+tables across two databases of the same engine.
 
 ## What row by row costs
 
@@ -45,9 +47,9 @@ We have to think about the problem differently to solve it.
 
 ## Make the databases do the work
 
-The idea behind [DB Diff](https://matto.club/vetrina/db-diff/) is to offload most
-of the comparison cost to the databases themselves. They are good at comparing
-values, after all.
+The idea behind [DB Diff](https://matto.club/vetrina/db-diff/) is to offload
+most of the comparison cost to the databases themselves. They are good at
+comparing values, after all.
 
 Here's the core idea:
 
@@ -55,7 +57,8 @@ Here's the core idea:
   by default.
 - For each segment, each database computes one 64-bit checksum over the rows it
   holds.
-- If the two checksums are equal, DB Diff pulls no rows and moves on.
+- If the two checksums are equal, [DB Diff](https://matto.club/vetrina/db-diff/)
+  pulls no rows and moves on.
 - The databases do scan the segment to compute the checksum, but no row is sent
   anywhere.
 - If the checksums differ, that segment's rows are hashed one by one, and the
@@ -77,18 +80,19 @@ checksums are related. Otherwise the tool would have to read the rows to check
 the checksum, and the whole thing gets slow again.
 
 The relation is a fold. Each row has a checksum. The segment checksum is the XOR
-of the row checksums it contains. That gives one property DB Diff leans on hard:
-if the segment checksums match, the row checksums fold to the same accumulator,
-and DB Diff can stop without pulling a row. Equal folds are not proof that the
-rows match. They are evidence strong enough to skip the row comparison, with the
-collision budget below.
+of the row checksums it contains. That gives one property
+[DB Diff](https://matto.club/vetrina/db-diff/) leans on hard: if the segment
+checksums match, the row checksums fold to the same accumulator, and
+[DB Diff](https://matto.club/vetrina/db-diff/) can stop without pulling a row.
+Equal folds are not proof that the rows match. They are evidence strong enough
+to skip the row comparison, with the collision budget below.
 
 XOR is also order-independent, which matters more than it might seem at first. A
 query plan can change; a physical layout can change. There are also
 engine-specific behaviors. For example, ClickHouse may merge parts in the
-background while you are reading. If the fold depended on the order in which rows
-came back, the checksums would disagree for reasons that have nothing to do with
-the data.
+background while you are reading. If the fold depended on the order in which
+rows came back, the checksums would disagree for reasons that have nothing to do
+with the data.
 
 ## Building a row checksum that cannot lie
 
@@ -114,7 +118,6 @@ Two decisions carry most of the weight:
   is `NULL` on one side and `''` on the other is a real difference, and treating
   the two as the same hides it.
 
-
 ## Why comparing across engines is its own problem
 
 Everything above compares a database with a database of the same engine. While
@@ -124,20 +127,20 @@ system. For example, a boolean is `true` in PostgreSQL and `1` in MySQL.
 
 To make this work, you need to reduce each value to a canonical form first, and
 then the question changes from "how do I encode this" to "are these two columns
-comparable at all". A wall-clock reading and an instant are different things even
-when the digits match. A type that one engine does not have cannot be compared
-honestly. Those are contract decisions, and getting them wrong looks exactly
-like a difference in the data.
+comparable at all". A wall-clock reading and an instant are different things
+even when the digits match. A type that one engine does not have cannot be
+compared honestly. Those are contract decisions, and getting them wrong looks
+exactly like a difference in the data.
 
-DB Diff Pro does that. It is a commercial product built on top of DB Diff, and it
-is free during early access. Check it out:
-[DB Diff Pro](https://matto.club/products/db-diff/).
+DB Diff Pro does that. It is a commercial product built on top of
+[DB Diff](https://matto.club/vetrina/db-diff/), and it is free during early
+access. Check it out: [DB Diff Pro](https://matto.club/products/db-diff/).
 
 ## The tool is out
 
-DB Diff v0 is out: PostgreSQL 14+, MySQL, and ClickHouse, one checksum contract
-across all three, only checksums crossing the wire when the tables match, and the
-differing primary keys when they do not.
+[DB Diff](https://matto.club/vetrina/db-diff/) v0 is out: PostgreSQL 14+, MySQL,
+and ClickHouse, one checksum contract across all three, only checksums crossing
+the wire when the tables match, and the differing primary keys when they do not.
 
 Install:
 
@@ -145,4 +148,5 @@ Install:
 go install matto.club/vetrina/db-diff@latest
 ```
 
-Or read the [source and the algorithm notes](https://github.com/clubmatto/vetrina/tree/main/db-diff).
+Or read the
+[source and the algorithm notes](https://github.com/clubmatto/vetrina/tree/main/db-diff).

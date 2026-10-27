@@ -17,7 +17,7 @@ Data migrations and large test environments ask one question: do these two table
 
 ## LinkedIn
 
-I wrote the first version of DB Diff to check a large migration between platforms. Both sides ran the same engine. The test infrastructure was rebuilt from production at the same time, and the only question that mattered was whether the two sides held the same rows.
+We wrote the first version of DB Diff to check a large migration between platforms. Both sides ran the same engine. The test infrastructure was rebuilt from production at the same time, and the only question that mattered was whether the two sides held the same rows.
 
 Reading both tables and comparing them in memory does not scale to millions of rows. DB Diff cuts the table into segments of the integer id. Each database checksums a segment, and if the checksums match, the client pulls no rows. Only a differing segment has its rows hashed one by one, and the primary keys that differ come back.
 
