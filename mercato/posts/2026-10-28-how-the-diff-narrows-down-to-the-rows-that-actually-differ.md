@@ -3,7 +3,6 @@ title: "How the diff narrows down to the rows that actually differ"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-10-28
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/divide-and-conquer-hashing-beats-row-by-row.png
 topics:
   - db-diff
@@ -22,8 +21,7 @@ https://matto.club/writing/divide-and-conquer-hashing-beats-row-by-row/
 
 ## LinkedIn
 
-Comparing two tables usually means reading both and comparing rows. At millions
-of rows the cost never goes away, even when the tables match.
+You can compare two tables row but row but the cost never adds up quickly!
 
 DB Diff cuts the table into segments and checksums each segment on the server.
 The checksum is the XOR of its row checksums, so an equal checksum is strong
