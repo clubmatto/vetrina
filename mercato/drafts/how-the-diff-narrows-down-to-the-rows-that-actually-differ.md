@@ -4,6 +4,7 @@ platforms:
   - twitter
   - linkedin
 publish_date: 2026-10-28
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/divide-and-conquer-hashing-beats-row-by-row.png
 topics:
   - db-diff
   - from-the-series
