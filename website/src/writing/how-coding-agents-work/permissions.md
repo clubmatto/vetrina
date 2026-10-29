@@ -1,8 +1,9 @@
 ---
 title: "How coding agents work, deep dive: Permissions"
-description: Every coding agent has to decide what it may do before it does it.
-  We read ten open-source agents to see how that decision is made, what each
-  approach costs, and why none of them can answer it by looking at the call.
+description:
+  A coding agent acts on your machine, so something has to decide what
+  it may do. We read ten open-source agents to see how that decision evolved from
+  asking about everything to bounding what is possible.
 date: 2026-11-03
 tags:
   - ai
@@ -18,303 +19,235 @@ Sandboxes, policy formats and model behaviour all move quickly, so read the
 specifics as of that date, and the reasoning as the part that is meant to last.
 :::
 
-Anthropic open-sourced its sandbox runtime: filesystem writes denied, network
-denied, and only the holes you explicitly poke. The mechanism is not new. It is
-`sandbox-exec` and Seatbelt profiles on macOS, `bubblewrap` on Linux.
-
-You find the same two elsewhere. Codex self-invokes a sandbox binary that builds
-a `bubblewrap` wrapper with a seccomp filter on Linux, and applies Seatbelt
-policies on macOS. DeepSeek Harness wraps every confined command in
-`bubblewrap` and Landlock on Linux and Seatbelt on macOS, and refuses to run at
-all when the sandbox is unavailable.
-
-Three harnesses, three codebases, one answer. That convergence is the
-interesting part, and it starts from a question: what is a permission actually
-approving?
-
-## Everything the model proposes, something has to allow
-
-We built [Pinocchio](/writing/how-coding-agents-work/building-pinocchio/) to
-watch the loop in the open, and the shape never changed: the model proposes a
-call, the harness decides what to do with it. In the [tools
-post](/writing/how-coding-agents-work/tools/) we split that call into five
-parts, and put one of them aside: dispatch, where the harness inspects a call
-before anything runs. Is this allowed? Does it need approval? Does a guard deny
-it outright?
-
-This article is about that inspection, and about why ten harnesses do it ten
-different ways.
-
-## The predicament
-
-Before any machinery, there is a judgement about people. A permission check
-exists to answer a question the user cannot answer for themselves, and it can be
-wrong in two directions.
-
-Ask too much and you bother the user. Every prompt interrupts, and attention is
-a budget that does not refill on demand. A person asked twenty times a day stops
-reading somewhere around the fifth, and every prompt after that is worth less
-than the one before it. The gate is still there. It just stops being a gate.
-
-Ask too little and the agent oversteps. Some of what it can do cannot be undone,
-and the damage lands on a codebase nobody was watching.
-
-Neither failure is hypothetical. Both poles ship as first-class settings. Qwen
-Code has a `YOLO` mode that approves everything except the tool that asks the
-user a question, and it has a `PLAN` mode that blocks every tool which is not
-read-only. Aider does the opposite and has no policy engine at all: its own
-design notes say safety is interaction, not isolation.
-
-The middle is not a technical question first. It is a judgement about what a
-person will tolerate, and every mechanism below is an attempt to move the
-decision away from that person without losing the judgement.
-
-## What a check is made of
-
-A permission is one decision about one call, taken before execution. It has
-three moving parts.
-
-The first is the evidence. Whatever a harness decides, it decides from
-something it can see, and the things it can see cost different amounts:
-
-- the tool name, which is free and means almost nothing on its own
-- the arguments, which are cheap when the tool is typed
-- the path, which is cheap when the call names one
-- the command line, which is expensive because it can contain anything
-
-The second is the answer, and there are only three: allow, deny, ask.
-
-The third is the record, which most harnesses keep and which almost nobody
-reads until something goes wrong. DeepSeek Harness logs an `approval/asked` and
-`approval/decided` pair inside every turn that asks.
-
-All five words worth knowing come out of those three parts. An **approval** is
-an ask that reaches a person. A **policy** is a rule that answers without one. A
-**sandbox** does not answer at all, it bounds what the process can do once it
-runs. An **annotation** is metadata a tool declares about itself. And **blast
-radius** is what one yes reaches.
-
-One case shapes everything that follows. With nobody at the keyboard, `ask` has
-nowhere to go, so it becomes one of the other two. Every harness that supports
-headless runs has already decided which, and it is usually deny.
-
-## Why the middle is hard to hit
-
-Here is the awkward part. What you care about is whether the action can be
-undone and how far it reaches. Neither is in the call.
-
-`bash("rm -rf build")` says nothing about whether `build` is a scratch directory
-or the only copy of something. `edit(path, content)` says nothing about whether
-the path is `src/` or `.git/`. A harness that only reads the call is guessing,
-and it is guessing about the two things that matter most.
-
-So every decision is made on a proxy for what the call will do, and the four
-strategies in this article are four different proxies. Each one is better at
-some of it and worse at the rest, which is why no harness uses only one.
-
-## You can only gate what you can see
-
-The quality of a proxy depends on how much the call tells you, and that is a
-property of the tool surface rather than the permission system. The
-[granularity trade](/writing/how-coding-agents-work/tools/) reappears one layer
-down.
-
-A typed call is legible. It has a name and arguments that fit a schema, which is
-why Qwen Code can keep a safe list of read-only tools and approve them silently.
-`Read`, `Grep`, `Glob` and the language server calls are not ambiguous.
-
-A shell command is not legible. It is a string that contains a program, and the
-program can do anything. Qwen Code tries anyway: it splits compound commands and
-maps each operation to a virtual tool, so `cat` becomes a virtual read and `sed
--i` becomes a virtual write. That analysis can escalate a decision but never
-downgrade one, which is an honest description of how much it is worth.
-
-Crush reaches the same conclusion from the other side. It bans around sixty
-commands outright and adds argument blockers for dangerous subcommands, and the
-banned list travels in the tool's own description rather than the system prompt.
-
-This is the ceiling. Gating precision stops where the call stops being
-legible, and everything after this section is what harnesses do about it.
-
-## The four proxies
-
-| Proxy        | Decides on                  | When   | Precision                              | Cost                    | Failure                |
-| ------------ | --------------------------- | ------ | -------------------------------------- | ----------------------- | ---------------------- |
-| a person     | judgement                   | before | high, variable                         | attention               | rubber-stamping        |
-| a rule       | tool, args, path, command   | before | high for typed tools, poor for a shell | parsing and maintenance | blind spots            |
-| capability   | what the OS allows          | during | strong guarantee, blunt                | setup, false denials    | blocks legitimate work |
-| a classifier | a model's reading of intent | before | flexible                               | a model call            | wrong both ways        |
-
-The table hides the two real axes. The first is what you constrain: intent or
-capability. A policy and a classifier try to read what the model means, while a
-sandbox ignores meaning and bounds what the process can do. The second is when
-you decide: policy and sandbox are deterministic and ahead of execution, while a
-classifier or a human bring context at the cost of determinism.
-
-## A person
-
-Asking is the oldest answer and still the default everywhere.
-
-Aider gives it the whole job. There is no sandbox and no policy file, only
-`confirm_ask` gates before edits and before commands, plus a confirmation for
-each file it is allowed to edit.
-
-Codex gives asking a hierarchy. A request goes through policy, then a reviewer,
-then a guardian, and only then reaches the user, and a request that has been
-approved once is memoised so an identical call does not prompt twice.
-
-OpenHands puts the same idea behind a confirmation policy: never confirm, always
-confirm, or confirm the risky ones. Goose asks by default and writes the answer
-back: `AlwaysAllow` goes into `permission.yaml` as an `always_allow` entry, so
-the next session does not ask again.
-
-The cost is attention, and every harness above pays part of it by trying not to
-ask twice. The failure is the one from the previous section: a person who is
-asked too often stops reading, and the approval becomes a keystroke.
-
-## A rule
-
-Rules are what you build when you decide the human should not see most of this.
-
-Goose reads `always_allow`, `ask_before` and `never_allow` from a
-`permission.yaml`. OpenCode carries `ask`, `allow` and `deny` rulesets per
-agent, and prompts separately when a path leaves the workspace. Qwen Code merges
-persistent and session rules and resolves conflicts by priority: deny, then ask,
-then the default, then allow.
-
-Kimi Code CLI gives every sub-agent its own permission manager with a parent
-reference, so rules inherit downwards, and it can drop a whole class of tools
-for a side-channel agent that has no business touching anything.
-
-Rules are cheap at runtime, deterministic, and precise exactly as far as the
-call is legible. Their blind spot is the same as their strength: a rule can only
-match what somebody thought of when they wrote it. Shell parsing is where that
-shows first, and the escalation-only virtual operations in Qwen Code are the
-most honest version of the compromise.
-
-## Capability
-
-Sandboxing stops trying to read the intent and bounds what the process can do
-instead. It is the only proxy that does not care whether the command was
-understood.
-
-DeepSeek Harness is the most thorough example. Every confined command is wrapped
-in a platform runner: `bubblewrap` plus Landlock on Linux, Seatbelt on macOS, a
-restricted token runner on Windows. Candidates are probed once at startup, and a
-runner that is missing or unusable fails closed with `SANDBOX_UNAVAILABLE`, so
-the command never runs.
-
-Codex picks a sandbox per execution from `None`, `MacosSeatbelt`,
-`LinuxSeccomp` and `WindowsRestrictedToken`, and routes network traffic through
-an in-process proxy that enforces a domain policy, which is what makes network
-access a decision rather than a side effect.
-
-Anthropic's runtime is the same idea packaged: writes denied outside what you
-allow, network denied, and the same two primitives underneath.
-
-Two costs come with it. The first is false denials: a sandbox cannot tell a
-legitimate build step from a malicious one, so some real work fails. The second
-is the escape hatch that follows from it. Codex retries without the sandbox when
-the sandbox denies a call. That is a reasonable way to keep working, and it is
-also the moment the guarantee evaporates.
-
-## A classifier
-
-If a rule is too brittle and a sandbox too blunt, the obvious remaining move is
-to ask a model.
-
-Goose's `SmartApprove` mode does exactly that. Unannotated tools go to a hidden
-model call that classifies them as read-only or not, read-only calls are allowed
-automatically, and everything else is cached as `AskBefore`.
-
-Qwen Code runs a chain. A fast path allows edits inside the workspace that are
-not on a protected list, a safe allowlist covers read-only tools, a
-deterministic guard blocks known destructive commands, and only then does an LLM
-classifier see the call. That classifier is two-stage and fails closed, so a
-timeout or an error means block rather than allow.
-
-OpenHands offers `ConfirmRisky`, which runs an LLM security analyzer and asks
-the user only above a high risk threshold.
-
-The costs here are the ones models always have: a call per decision, a latency
-floor, and answers that are not reproducible. Qwen Code's own design admits the
-last one: after three consecutive blocks, or twenty in a session, `AUTO` mode
-downgrades the next call to manual approval.
-
-## Trust is cheap, verification is not
-
-There is a quieter trade running through the two last proxies. An annotation is
-a claim, and a sandbox is a verification.
-
-Goose keys part of its permission layer off `ToolAnnotations`: a tool says
-whether it is read-only, destructive, idempotent or open-world, and the harness
-believes it. That is cheap, and it works right up until a tool lies.
-
-MCP makes lying easy, because the annotations now come from a server somebody
-else wrote. We covered that in the tools post, and it is the same trust
-boundary: permissions are only as good as the claims they are built on, unless
-the containment underneath makes the claims irrelevant.
-
-## The gate that stops being a gate
-
-Everything above assumes the decision is reached and then respected. The
-practical failure is that the decision stops being made.
-
-The evidence is in the settings. Qwen Code ships `YOLO` as a supported mode.
-Goose ships `Auto`, which allows everything, and `Chat`, which runs with no tool
-execution at all, so the agent cannot act but also cannot help. Codex memoises
-approvals. DeepSeek Harness accepts a mode that turns every ask into a
-deterministic rejection.
-
-None of these are mistakes. They are what happens when the friction is set
-wrong: people route around it. Which leads to the design conclusion repeated by
-almost every harness reviewed here. Push the routine decisions down into rules
-and sandboxes, and keep the human for the calls where the blast radius is large.
-A prompt is worth what the reading is worth.
-
-## Blast radius, ordered
-
-The last piece to make concrete. What one yes reaches, worst last.
-
-**A read of a named file.** Cheap to allow, and the basis of every read-only
-allowlist. Qwen Code approves these silently.
-
-**A write to a named file.** Still narrow: a tool that can only write one file
-cannot also delete your branch.
-
-**A path outside the workspace.** OpenCode stops assuming at this point and
-prompts, because the boundary it was using no longer applies.
-
-**A shell command.** Anything the binary can do, which is the whole problem.
-Crush spends a deny-list and an argument blocker on it, and Qwen Code spends a
-parser.
-
-**A network call.** Reach outside the machine, and the only harness in this
-group that treats it as a first-class decision is Codex, through a proxy that
-enforces a domain policy.
-
-**A sub-agent.** A second context with its own tool list, and a blast radius
-that compounds. Kimi Code CLI handles the cheap end of this by giving a
-side-channel agent no tools at all.
-
-Two harnesses opt out of the whole spectrum. Pi has no built-in permission
-system and delegates safety to extensions. Aider has no sandbox and no policy,
-and treats safety as a conversation.
-
-## What this means if you are picking an agent
-
-The differences that survive are not strict against permissive. Every harness
-can be configured to be permissive, and most can be made strict.
-
-What differs is where the decision is made and what evidence it is made from.
-Ask your harness two questions. Which proxy does it use for the calls that
-matter, and what does one yes cover. The documentation will tell you it asks
-before running. It will not tell you what the ask is attached to.
-
-That is the whole trade in one sentence: the closer the proxy gets to what the
-call will actually do, the more it costs to compute and the more it rejects
-legitimate work, and you can only compute it as far as the tool surface lets you
-see.
+Anthropic recently open-sourced its sandbox runtime
+([repository](https://github.com/anthropics/sandbox-runtime)), the one that runs
+behind Claude Code. It denies filesystem writes outside the paths you allow,
+denies network access, and runs the agent's commands inside an operating-system
+sandbox: `sandbox-exec` on macOS, `bubblewrap` on Linux.
+
+The first of those is Apple's own sandboxing facility, the second is a tool that
+puts a process in a restricted namespace. Both are old pieces of system
+software. What is new is a coding agent shipping with one.
+
+Why would an agent need that? Because a coding agent does not only answer
+questions. It runs commands, edits files, fetches pages and calls servers.
+Before any of that happens, something has to decide whether it is allowed. That
+decision is what this article is about.
+
+Nobody designed it in one go. In the ten harnesses we read, the same set of
+answers reappears, and each one arrives because the previous one stopped
+working. What they are all trading against is the same pair of failures: ask
+too much and the gate becomes a keystroke, ask too little and the machine does
+things nobody intended.
+
+## The decision, and why it is not a yes or no
+
+The model proposes a tool call, and the harness has three options: let it run,
+refuse it, or ask a person. Asking is the interesting one, because it turns a
+machine decision into a human one, and the human has a limited amount of
+patience.
+
+What makes the decision hard is that the person is shown a _proposal_, not a
+result. A tool call says `bash("rm -rf build")` or `bash("rm -rf ~")`, and the
+difference between those two is one character. An `edit` call names a path, and
+the path alone does not tell you whether that file is generated or hand-written.
+The call is a description of an action, not a statement of its consequences.
+And the decisions that most need a person are exactly the ones that cost a
+person the most to make: if the case were easy, you would not need the human in
+it.
+
+So every permission system works from a proxy: something it can see about the
+call, which it hopes correlates with what the call will do. The rest of this
+article is the set of techniques harnesses use to make that proxy good enough
+to keep the burden off a person, in roughly the order they were forced on
+them.
+
+## Step one: ask about everything
+
+The simplest answer is to ask before every action.
+
+Aider is the purest example. It has no sandbox and no policy file. Every edit
+goes through a confirmation, every command goes through one, and it also asks
+whether it may edit a given file at all. Its safety is interaction rather than
+isolation.
+
+It works, in the sense that nothing happens without a person seeing it. It does
+not work for long, because the requests arrive faster than the attention
+required to answer them. A session where the agent needs to run twenty commands
+in a row produces twenty prompts, and by the tenth the person is pressing yes
+without reading. The record then says every action was approved by a human,
+which is true and means nothing.
+
+This is the first thing to understand about permissions: a gate that relies on
+attention decays. Not because people are careless, but because attention does
+not refill on demand. Every step after this one exists to ask less.
+
+## Step two: stop asking the same question twice
+
+The first reduction is to remember an answer.
+
+Goose keeps a `permission.yaml` with three lists: `always_allow`, `ask_before`
+and `never_allow`. When a person answers a prompt with always-allow or
+always-deny, the answer is written into that file, so the next session starts
+from a slightly better position.
+
+Codex approaches the same goal from the runtime side. A request that has been
+approved once is memoised, so an identical call does not produce a second
+prompt. DeepSeek Harness goes further and records the decision in the session
+log, then reuses it when the session resumes.
+
+This cuts noise, and it runs into the shape of the problem. The next action is
+almost never identical to the last one. `npm test` and `npm test -- --watch`
+are different strings, and a rule that matches the first does not match the
+second. Models make that worse: they are not deterministic, so the same
+intention can arrive as a slightly different command every time. Remembering
+answers gets you from twenty prompts to fifteen, not to zero.
+
+## Step three: decide some of it in advance
+
+The next reduction is to stop asking about the actions that cannot hurt you.
+
+Qwen Code keeps a list of tools that are read-only by construction: reading a
+file, searching, globbing, asking the language server. Those are approved
+silently, without a person and without a model call. Goose does something
+similar, but lets the tool say so itself, through annotations such as read-only
+or destructive.
+
+This is the first step that is not just bookkeeping, and it is also the first
+one that depends on the tool surface. A typed tool is legible: `Read` reads, and
+`Grep` searches, and neither of them can delete a directory. A shell is not
+legible in that way. `bash` can do anything, so there is no read-only variant of
+it, and an annotation on a shell tool means whatever its author decided it
+means.
+
+Which is why the next two steps exist, and why both of them are about the shell.
+
+## Step four: try to read the command
+
+If the person cannot be asked about every command, and the tool cannot be
+trusted to describe itself, the harness can try to read the command string.
+
+Crush does this with a deny-list. Around sixty commands are banned outright, and
+a second layer of argument blockers catches dangerous subcommands. The list
+travels in the tool description itself, so the model can see what it must avoid.
+
+Qwen Code tries something harder. It splits compound shell commands and maps
+each part to a virtual tool, so `cat` becomes a virtual read and `sed -i`
+becomes a virtual write, and the permission rules run against those virtual
+operations instead of the raw string. The mapping can escalate a decision, so a
+command that looks like a read but writes still gets blocked, but it cannot
+downgrade one: once a rule says no, the analysis cannot say yes back.
+
+Both approaches are heuristics, and both are limited by what somebody thought
+of. A wrapper script, an alias, a command nobody has seen before, and the rule
+is silent. Reading a command is a cheap approximation of understanding it, and
+it stops working exactly where commands stop being simple.
+
+## Step five: stop reading, start bounding
+
+The next step gives up on understanding the action and makes it harmless
+instead.
+
+An operating-system sandbox does not decide whether a command is safe. It
+decides what the command can reach, and the kernel enforces the limit: the
+process runs, but opening a socket or writing outside an allowed directory
+returns an error. DeepSeek Harness is the clearest case: every
+confined command is wrapped in a platform runner, `bubblewrap` with Landlock on
+Linux, Seatbelt on macOS, and a restricted token runner on Windows. The runners
+are checked at startup, and if the right one is missing the command does not run
+at all. Codex does the same with a per-execution choice between no sandbox,
+Seatbelt, a Linux seccomp sandbox and a Windows restricted token, and it routes
+network traffic through a proxy that enforces a domain policy.
+
+The appeal is that a sandbox does not care what the model meant, what the tool
+annotation claims, or whether the command parses. It enforces a boundary the
+kernel can check.
+
+It also cannot tell a legitimate build from a malicious one. `make` that writes
+to a temp directory and `make` that writes to your home directory look the same
+to the sandbox, so the choice is between allowing both and blocking both. That
+is where the legitimate work starts failing, and where harnesses look for
+something in between. Codex turns a denial into a question. When a command fails
+because the sandbox blocked it, Codex can retry the same command without the
+sandbox, and that retry goes through approval with the denial reason attached,
+so the person sees why it was blocked before saying yes. Under an approval
+policy that never asks, it does not retry at all and reports the denial instead.
+The guarantee is not dropped quietly; it is traded for a prompt.
+
+## Step six: put a model in the gap
+
+The latest step, and one only a few of the ten have, is to ask a model whether
+the action is acceptable.
+
+Goose's `SmartApprove` sends tools it cannot infer anything about to a hidden
+model call that decides whether the request is read-only. Read-only requests are
+allowed, everything else asks, and the answer is cached so the same tool does
+not get re-judged forever. OpenHands runs an LLM security analyzer and only asks
+the person when the risk lands above a high threshold.
+
+Qwen Code stacks the previous steps and puts a classifier at the end. Its `AUTO`
+mode first allows edits inside the workspace, then the read-only tools, then
+blocks a set of known destructive commands with a deterministic pattern, and
+only then asks a model to judge the remainder. The judgement runs in two stages:
+a cheap first pass that answers only "block or not", and a second, slower pass
+that runs only when the first says block. The second pass can overturn the
+first, which makes the whole thing biased toward letting things through, and
+every failure of the judging call itself results in a block.
+
+There is a catch here, and it is about which model does the judging. Qwen Code's
+documentation is explicit: the classifier uses the configured fast model, and
+when none is configured it uses the session's main model. Goose resolves the
+judge through the session's own model configuration too. So in the common setup
+the model that proposed the action is the one asked whether the action is safe.
+It gets a different prompt, with instructions to judge rather than to act, which
+is a real difference. A separate judge would be a stronger arrangement, and most
+of the ten have no judge at all.
+
+The other cost is the usual one for model calls: it happens on every ambiguous
+action, it takes time, and it is not deterministic. Qwen Code admits as much in
+its own design: after three consecutive blocks, or twenty in a session, it stops
+trusting the classifier for a turn and asks a person instead.
+
+## Where this is going
+
+Put the steps side by side and a direction shows up. The harnesses that went
+furthest end in the same arrangement: rules for the routine, a sandbox under
+everything irreversible, a classifier for the ambiguous middle, and a person for
+the actions that would be expensive to get wrong.
+
+Two things point forward. The first is the convergence on operating-system
+primitives. Anthropic's runtime, Codex and DeepSeek Harness all build on
+`sandbox-exec` and `bubblewrap`, which suggests the industry has settled on
+where the last line of defence lives. The second is the slow movement of
+decisions out of the prompt and into the harness, which is the same movement the
+[tools post](/writing/how-coding-agents-work/tools/) described: the harness
+decides, the model proposes.
+
+What is still missing is the piece that would make the whole thing legible to a
+person. None of the ten shows what an action will do before you approve it. You
+get a command string or a path, and you are expected to reconstruct the
+consequences in your head. A plan, a diff, a list of the files that will change:
+any of those would be a better thing to approve than a string, and none of the
+harnesses reviewed here does it.
+
+## What this means for you
+
+The question is not which harness is most secure. It is which arrangement
+matches how you work, because your tolerance and your mode of interaction set
+what is affordable.
+
+If you work interactively, alongside the agent, prompts are cheap enough to be
+worth having, and asking about the big actions is the right trade. If you run
+agents unattended, in batches or overnight, prompts are not an option at all:
+nobody is there, and the harness will either deny or allow, so what matters is
+the sandbox and the rules behind it. If you are just trying to get a feature out
+of the door, you will end up in one of the looser modes, and the only thing
+protecting you is the boundary under it.
+
+Whichever you pick, ask two questions of your harness. What does it use for the
+actions that matter: a rule, a sandbox, a classifier, or you. And what does one
+yes cover. The documentation will tell you that it asks before running. It will
+not tell you whether that covers one file or the whole repository.
 
 Read the series from the start:
 [how coding agents work](/writing/how-coding-agents-work/).
