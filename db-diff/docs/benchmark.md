@@ -91,8 +91,3 @@ The product page said "blazing fast when tables match". These numbers do not sup
 a local baseline, so the claim is gone. What the tool offers is the property the
 [README](../README.md) states: only checksums cross the wire when the tables match, and a
 differing table comes back as the primary keys that drifted.
-
-The default `--segment-size` is worth revisiting, but not by raising it everywhere. The
-measurement says the default suits MySQL, costs PostgreSQL a factor of three, and is roughly
-neutral on ClickHouse. Anything that changes it has to be per engine, and probably measured
-rather than assumed.
