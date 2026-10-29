@@ -18,34 +18,36 @@ We measured DB Diff on one million rows: PostgreSQL, MySQL and ClickHouse, three
 drift patterns, two segment sizes. The identical case runs in 10.5s, 9.1s and
 4.4s.
 
-Numbers and method: https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/benchmark.md
+Numbers and
+method: https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/benchmark.md
 
 ### 2
 
-The finding that matters: the segment size that helps depends on the engine.
-Raising it to 100000 made the identical case 2.9x faster on PostgreSQL and 26%
-faster on ClickHouse — and 56% slower on MySQL. No single default can be right
-for all three.
+The finding is very interesting: no fixed segment size helps. It's too
+engine dependent. Raising it to 100000 made the identical case 2.9x faster on
+PostgreSQL and 26% faster on ClickHouse but 56% slower on MySQL.
 
 ### 3
 
-Two honest ones. Scattered drift is the worst case everywhere: a difference in
-every segment means every row is read. And on localhost, streaming both tables
-out raw is faster than diffing. The value is what crosses the wire — and the
-primary keys that come back.
+Scattered drift is bad everywhere though: a difference in
+every segment means every row is read. Locally streaming both tables
+out raw is actually faster than diffing.
 
 ## LinkedIn
 
-We measured DB Diff on one million rows: PostgreSQL, MySQL and ClickHouse,
-identical tables, clustered and scattered drift, two segment sizes.
+We measured DB Diff on one million rows: PostgreSQL, MySQL and ClickHouse, three
+drift patterns, two segment sizes. The identical case runs in 10.5s, 9.1s and
+4.4s.
 
-The finding that matters: the segment size that helps depends on the engine.
-Raising it to 100000 made the identical case 2.9x faster on PostgreSQL and 26%
-faster on ClickHouse — and 56% slower on MySQL. No single default is right for
-all three.
+The finding is very interesting: no fixed segment size helps. It's too engine
+dependent. Raising it to 100000 made the identical case 2.9x faster on
+PostgreSQL and 26% faster on ClickHouse but 56% slower on MySQL. No single
+default is right for all three.
 
-The honest part: on localhost, streaming both tables raw is faster than
-diffing. What DB Diff offers is what crosses the wire — checksums when the
-tables match, and the primary keys that drifted when they don't.
+Scattered drift is bad everywhere though: a difference in every segment means
+every row is read. And locally, streaming both tables out raw is actually
+faster than diffing. What DB Diff offers is what crosses the wire — checksums
+when the tables match, and the primary keys that drifted when they don't.
 
-Read it here: https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/benchmark.md
+Read it
+here: https://github.com/clubmatto/vetrina/blob/main/db-diff/docs/benchmark.md
