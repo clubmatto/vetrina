@@ -84,10 +84,3 @@ benchmark measured.
   rather than precise timings.
 - A million rows is small. The per-segment overheads that dominate here matter more as the table
   grows, which is worth remembering when a default is applied to ten million rows.
-
-## What this changed
-
-The product page said "blazing fast when tables match". These numbers do not support that against
-a local baseline, so the claim is gone. What the tool offers is the property the
-[README](../README.md) states: only checksums cross the wire when the tables match, and a
-differing table comes back as the primary keys that drifted.
