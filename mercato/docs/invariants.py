@@ -126,7 +126,7 @@ def main():
             viol.append(f"overdue in {s}: {c['title'][:55]} (due {d})")
         if d <= today and s in ("ideas", "drafting"):
             viol.append(f"due {d} but still in {s}: {c['title'][:55]}")
-        if d == today:
+        if d == today and s != "published":
             has_draft = any(d_.stem in (c.get("description") or "") for d_ in drafts)
             print(f"due today: [{s}] {c['title'][:55]}" + ("" if has_draft else " — NO DRAFT"))
 
