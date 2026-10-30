@@ -4,7 +4,6 @@ platforms:
   - twitter
   - linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/perffriday-docs-only-change.png
-publish_date: 2026-10-30
 topics:
   - ci
   - gradle
@@ -74,7 +73,4 @@ carried HEAD, not the project's last change.
 
 First installment next Friday: the tests were fine, the machine wasn't. Until
 then: run ./gradlew --profile on your build. Don't optimize anything yet.
-Find out where your seven minutes are.
-
-The setup story — why a two-person company self-hosts its CI at all:
-https://github.com/clubmatto/vetrina/blob/main/mercato/posts/2026-10-02-why-we-use-jenkins-instead-of-github-actions.md
+Find out where your build minutes go.
