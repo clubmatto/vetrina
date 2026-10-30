@@ -4,7 +4,6 @@ platforms:
   - twitter
   - linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/db-diff-one-million-rows.png
-publish_date: 2026-10-29
 topics:
   - db-diff
   - we-measured
