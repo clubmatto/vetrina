@@ -3,6 +3,7 @@ title: "perfFriday, part 1: a docs-only change and the 7m41s build"
 platforms:
   - twitter
   - linkedin
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/perffriday-docs-only-change.png
 publish_date: 2026-10-30
 topics:
   - ci
