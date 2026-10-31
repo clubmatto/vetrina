@@ -3,7 +3,7 @@ title: "Most \"agent frameworks\" are a loop and a for-loop"
 platforms:
   - twitter
   - linkedin
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/building-pinocchio.png
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 publish_date: 2026-10-31
 topics:
   - agents
@@ -23,7 +23,7 @@ https://matto.club/writing/how-coding-agents-work/a-comparative-analysis/
 
 ## LinkedIn
 
-Most "agent frameworks" are a loop and a for-loop.
+Most "agent frameworks" are a loop with a for-loop inside.
 
 We read ten open-source coding agents for a comparative analysis, and behind
 every framework sits the same few-dozen-line loop: model call, tool result,
