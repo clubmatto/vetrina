@@ -3,6 +3,7 @@ title: "Most \"agent frameworks\" are a loop and a for-loop"
 platforms:
   - twitter
   - linkedin
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/building-pinocchio.png
 publish_date: 2026-10-31
 topics:
   - agents

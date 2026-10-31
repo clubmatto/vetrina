@@ -3,6 +3,7 @@ title: "Reshare: tuning a slow Postgres query"
 platforms:
   - twitter
   - linkedin
+image: https://github.com/clubmatto/vetrina/blob/main/assets/vhs/fakedata/basic-dark.gif
 publish_date: 2026-11-01
 topics:
   - fakedata
