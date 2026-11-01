@@ -80,11 +80,13 @@ def main():
 
     posts = sorted(MERCATO.glob("posts/*.md"))
     drafts = sorted(MERCATO.glob("drafts/*.md"))
-    post_slug = lambda p: re.sub(r"^\d{4}-\d{2}-\d{2}-", "", p.stem)
-    draft_slug = lambda p: p.stem
+
+    def references(c, name):
+        """A card references a file when one of its URLs ends with that exact filename."""
+        return any(u.rstrip("/").split("/")[-1] == name for u in urls(c))
 
     matched = [p for p in posts if any(
-        stage(c) == "published" and any(post_slug(p) in u for u in urls(c))
+        stage(c) == "published" and references(c, p.name)
         for c in cards)]
     era = min(p.name[:10] for p in matched)
 
@@ -92,14 +94,14 @@ def main():
     print(f"today {today} | cards {len(cards)} | posts {len(posts)} | drafts {len(drafts)} | era {era}")
 
     for c in cards:
-        if stage(c) == "published" and not [p for p in posts if any(post_slug(p) in u for u in urls(c))]:
+        if stage(c) == "published" and not [p for p in posts if references(c, p.name)]:
             viol.append(f"published card without post file: {c['title'][:60]}")
     for p in posts:
-        if p.name >= era and not [c for c in cards if stage(c) == "published" and any(post_slug(p) in u for u in urls(c))]:
+        if p.name >= era and not [c for c in cards if stage(c) == "published" and references(c, p.name)]:
             viol.append(f"orphan post, no published card: {p.name}")
 
     for d in drafts:
-        ref = [c for c in cards if draft_slug(d) in (c.get("description") or "")]
+        ref = [c for c in cards if references(c, d.name)]
         if not ref:
             viol.append(f"orphan draft, no card references it: {d.name}")
         for c in ref:
