@@ -4,7 +4,6 @@ platforms:
   - twitter
   - linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
-publish_date: 2026-10-31
 topics:
   - agents
   - take
