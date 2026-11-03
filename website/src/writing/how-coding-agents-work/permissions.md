@@ -9,7 +9,9 @@ tags:
   - ai
   - agents
 series: how-coding-agents-work
-draft: true
+image: /assets/writing/permissions.png
+image_width: 2400
+image_height: 1260
 ---
 
 :::note[On timing]
