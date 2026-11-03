@@ -7,7 +7,7 @@ topics:
   - agents
   - from-the-series
   - open-source
-publish_date: 2026-11-03
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/permissions.png
 ---
 
 ## LinkedIn
