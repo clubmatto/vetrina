@@ -76,14 +76,18 @@ def main():
     today = datetime.now(ZoneInfo("Europe/Rome")).strftime("%Y-%m-%d")
     cards = fetch_board()
     stage = lambda c: STAGES.get(c.get("stage_id"), c.get("stage_id"))
-    urls = lambda c: re.findall(r"https?://[^\s\)\]]+", c.get("description") or "")
 
     posts = sorted(MERCATO.glob("posts/*.md"))
     drafts = sorted(MERCATO.glob("drafts/*.md"))
 
     def references(c, name):
-        """A card references a file when one of its URLs ends with that exact filename."""
-        return any(u.rstrip("/").split("/")[-1] == name for u in urls(c))
+        """A card references a file when a description token ends with that exact filename.
+        Matches full URLs and repo-relative paths alike (Draft:/Post:/Announcement: lines)."""
+        for tok in (c.get("description") or "").split():
+            tok = tok.strip("()<>,.;:\"'")
+            if tok == name or tok.endswith("/" + name):
+                return True
+        return False
 
     matched = [p for p in posts if any(
         stage(c) == "published" and references(c, p.name)
