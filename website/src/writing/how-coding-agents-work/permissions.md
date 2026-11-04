@@ -55,8 +55,8 @@ difference between those two might not even be that obvious. An `edit` call
 names a path, and the path alone does not immediately tell you whether that file
 is generated or hand-written. The call is a description of an action, not a
 statement of its consequences. And the decisions that most need a person are
-exactly the ones that will cost that person the most to evaluate: if the case were easy, you
-would not need the human in it.
+exactly the ones that will cost that person the most to evaluate: if the case
+were easy, you would not need the human in it.
 
 No permission system can see the consequences of an action before it runs. What
 it has instead is a stand-in for them, and the rest of this article is about
@@ -229,11 +229,12 @@ decisions out of the prompt and into the harness, which is the same movement the
 decides, the model proposes.
 
 What is still missing is the piece that would make the whole thing legible to a
-person. None of the ten shows what an action will do before you approve it. You
-get a command string or a path, and you are expected to reconstruct the
-consequences in your head. A plan, a diff, a list of the files that will change:
-any of those would be a better thing to approve than a string, and none of the
-harnesses reviewed here does it.
+person. Almost none of the ten even try to tell you what an action will do
+before you approve it, because a harness cannot infer the outcome of a command
+it has not run. What you get, mostly, is a command string or a path, and you are
+expected to reconstruct the consequences in your head. A plan, a diff, a list of
+the files that will change: any of those would be a better thing to approve than
+a string, and almost none of the ten offers it.
 
 ## What this means for you
 
