@@ -7,7 +7,6 @@ topics:
   - security
   - agents
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/security-with-ai-aint-easy.png
-publish_date: 2026-11-05
 ---
 
 ## LinkedIn

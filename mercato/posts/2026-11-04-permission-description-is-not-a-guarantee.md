@@ -8,7 +8,6 @@ topics:
   - from-the-series
 images:
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/permissions-approval-dialog.png
-publish_date: 2026-11-04
 ---
 
 ## LinkedIn

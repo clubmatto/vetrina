@@ -4,7 +4,6 @@ platforms:
   - linkedin
   - twitter
   - instagram
-publish_date: 2026-11-02
 images:
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/guido-beta-linkedin.png
   - https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/guido-beta-twitter.png
