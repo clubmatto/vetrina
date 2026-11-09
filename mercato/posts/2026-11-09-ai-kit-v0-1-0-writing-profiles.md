@@ -3,7 +3,6 @@ title: "ai-kit v0.1.0 — writing rules, one per job"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-09
 topics:
   - ai-kit
   - release
