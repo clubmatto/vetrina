@@ -8,7 +8,6 @@ topics:
   - gradle
   - how-we-work
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/perffriday-build-distribution.png
-publish_date: 2026-11-06
 ---
 
 ## Twitter
