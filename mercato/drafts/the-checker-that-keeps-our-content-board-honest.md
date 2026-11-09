@@ -12,19 +12,21 @@ topics:
 
 ## Twitter
 
+### 1
+
 We run our entire content plan on a kanban board. 131 cards, 52 published
 posts, drafts, dates. Two people, no content team: drift was constant.
 
 Shipped posts left sitting in drafts. Cards in the wrong column. Drafts
 nobody referenced anymore.
 
+### 2
+
 So we wrote a checker. It fetches the board, diffs it against the repo, and
-exits red when they disagree:
+exits red when they disagree. This week alone it caught three posts we
+shipped without moving their files.
 
 https://github.com/clubmatto/vetrina/blob/main/mercato/docs/invariants.py
-
-It runs in one command. This week alone it caught three posts we had shipped
-without moving their files.
 
 ## LinkedIn
 
