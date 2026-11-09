@@ -5,7 +5,7 @@
       "sourceHash": "4ca6cd3cf457526c2ee321c0b542b5ea4166f9b53c4ed52ca3f09be444462eba"
     },
     "AGENTS.md": {
-      "sourceHash": "56a7f7db634b777aad4d8880929280a699e0eb3bd3667719da08e31894c277be"
+      "sourceHash": "d43f7ea3f6fe6e67e18d75012f6ddabd2f3e4adfcb3a708be54ab8cc84385a2f"
     },
     ".agents/rules/go.md": {
       "sourceHash": "fc3c6a311a326fbf6d4a80ffe36ffaf331909326a9b624865f1a8113dd99e302"
@@ -19,8 +19,17 @@
     ".agents/rules/unsure.md": {
       "sourceHash": "0b156517b0776cb20d5b14a04efcace6d075c5593722e7ce21bc4c1b5b7627da"
     },
+    ".agents/rules/writing-editorial.md": {
+      "sourceHash": "7b9f709e5ed4b0d8429fdfe3f6839c007ba52a8c4ed650a9e6b0fdbe6d4f6fe9"
+    },
+    ".agents/rules/writing-marketing.md": {
+      "sourceHash": "b096ec45c0fd104c9d5c372879fc2cbdbfcd79e9cd6a0ca86a274453582b6691"
+    },
+    ".agents/rules/writing-technical.md": {
+      "sourceHash": "6b335758b5d1db10b474a07a3837e047407cf51d13ed68e990fa6a74f8431db8"
+    },
     ".agents/rules/writing.md": {
-      "sourceHash": "fbc49fd8df82948927b6180a5447cb9b842e2d1f1391f1c8669eb4089e258005"
+      "sourceHash": "38b75b62bb4f754b8ebe4822f2b7d93e9e544913ac19465413d16b261825d7c3"
     },
     ".agents/skills/playwright-cli/SKILL.md": {
       "sourceHash": "dfb5c48560bc58439168aa74ca6eab223023ffe369836a75a5c3eef483714fd9"
