@@ -5,12 +5,12 @@ Show
 
 Sleep 500ms
 
-Type "# Your agents write like senior engineers"
+Type "# Writing rules for every context"
 Enter
 
 Sleep 1s
 
-Type "# Active voice, progressive disclosure, no filler"
+Type "# General, technical, editorial, marketing"
 Enter
 
 Sleep 500ms
@@ -20,12 +20,12 @@ Enter
 
 Sleep 3s
 
-Type "head -5 .agents/rules/writing.md"
+Type "ls .agents/rules/writing*"
 Enter
 
 Sleep 2s
 
-Type "# ✍️ One rule, installed in every project ✍️"
+Type "# ✍️ One general rule, three profiles ✍️"
 Enter
 
 Sleep 2s

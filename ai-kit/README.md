@@ -121,6 +121,9 @@ mode).
 Each detected language gets its own rule file. Rules are self-contained
 markdown files under `.agents/rules/`.
 
+Writing rules are not language-specific. `writing.md` is installed in every
+project and routes to the profile that matches the task.
+
 ### Ordered Setup
 
 When multiple languages are detected, the setup follows a deterministic order:
@@ -131,7 +134,7 @@ AGENTS.md template adapts to monorepo or single-repo mode automatically.
 
 | Location          | Description                                 |
 | ----------------- | ------------------------------------------- |
-| `.agents/rules/`  | Language / framework rules (auto-detected)  |
+| `.agents/rules/`  | Language, framework, and writing rules      |
 | `.agents/skills/` | Reusable AI capabilities                    |
 | `opencode.json`   | Opencode configuration (optional)           |
 | `AGENTS.md`       | Agent instructions (monorepo / single-repo) |
@@ -147,13 +150,19 @@ AGENTS.md template adapts to monorepo or single-repo mode automatically.
 | `kotlin.md`      | Kotlin conventions, project structure      |
 | `spring-boot.md` | Spring Boot conventions, project structure |
 
-**General Rules** (always installed):
+**General And Writing Rules** (always installed):
 
-| Rule File      | Description                                      |
-| -------------- | ------------------------------------------------ |
-| `plan-mode.md` | Plan mode: concise plans, no time estimates      |
-| `unsure.md`    | When instructions are ambiguous, ask for clarity |
-| `writing.md`   | Writing style: progressive disclosure, no dashes |
+| Rule File              | Description                                             |
+| ---------------------- | ------------------------------------------------------- |
+| `plan-mode.md`         | Plan mode: concise plans, no time estimates             |
+| `unsure.md`            | When instructions are ambiguous, ask for clarity        |
+| `writing.md`           | General writing rules and the router to the profiles    |
+| `writing-technical.md` | READMEs, docs, code comments, commits, and changelogs   |
+| `writing-editorial.md` | Blog posts, essays, series, reviews, and narratives     |
+| `writing-marketing.md` | Launches, social posts, product pages, and landing copy |
+
+The writing rules share one general file and three profiles. `writing.md` is
+always installed; it routes to the profile that matches the task.
 
 New rules are added over time. Run `ai-kit sync --all-rules` to install
 everything available.
@@ -206,11 +215,14 @@ ai-kit/
 │   ├── detection/            # Language detection
 │   │   ├── detect.ts
 │   │   └── language-detectors.ts
-│   ├── rules/                # Language rule files
+│   ├── rules/                # Language and writing rule files
 │   │   ├── go.md
 │   │   ├── typescript.md
 │   │   ├── kotlin.md
-│   │   └── spring-boot.md
+│   │   ├── writing.md
+│   │   ├── writing-technical.md
+│   │   ├── writing-editorial.md
+│   │   └── writing-marketing.md
 │   ├── skills/               # Skill files
 │   │   └── playwright-cli/
 │   ├── agents/               # AGENTS.md templates

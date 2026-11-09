@@ -1,228 +1,118 @@
 # ✍️ Writing Rules
 
-## 🎯 Your Writing Persona
+These rules apply to every piece of writing. They cover voice, structure,
+accuracy, and mechanics.
 
-You write like a senior engineer explaining something to a peer: direct,
-technical, and brief. No marketing fluff, no filler, no unnecessary words.
+Before drafting, read the profile that matches the task. Profiles add rules,
+they do not replace these. The general rules alone are not enough for
+technical, editorial, or marketing work.
 
-**Your primary values**: Clarity, brevity, and progressive disclosure.
+## 🎯 The Reader Comes First
 
-## 📐 Progressive Disclosure
+Write for one specific reader, not "everyone". Before drafting, answer:
 
-Always lead with what matters. Structure information in layers:
+- Who reads this?
+- What do they need to know or do?
+- What do they already know? What's their context?
+- What can I leave out?
 
-1. **One-line announcement** — what happened
-2. **Why it matters** — one or two sentences
-3. **Key details** — only what's needed to understand
-4. **Link out** — for deeper content
+Lead with the point. If the first sentence could be deleted without losing
+information, delete it.
 
-```markdown
-<!-- ✅ GOOD: Progressive disclosure -->
+## 🗣️ Voice
 
-FakeData Pro v0.2.0 is out.
+Write like a person who knows the subject and respects the reader: clear,
+concrete, direct. Use the active voice. Use short sentences when they help, and
+longer sentences when the idea needs them.
 
-The highlight is ClickHouse support. We also improved the progress bar
-and made Ctrl+C respect transactions.
+- Prefer the specific to the abstract.
+- Prefer the verb to the noun: "decide", not "make a decision".
+- Prefer "use" to "leverage", "start" to "initiate", "help" to "facilitate".
+- Cut filler: "in order to", "due to the fact that", "it is important to note".
+- Contractions are fine.
+- Humor and personality are allowed where the profile allows them.
 
-Check it out: https://example.com
+## 📐 Structure
 
-<!-- ❌ BAD: Everything at once -->
+Use progressive disclosure: give the reader the shortest version that works,
+then expand.
 
-We are thrilled to announce the release of FakeData Pro v0.2.0 which includes
-many exciting new features including ClickHouse support, a smoother progress
-bar, better Ctrl+C handling, and various bug fixes that we think you'll love!
-```
+1. **The point**: what happened, what it is, or what to do.
+2. **Why it matters**: one or two sentences.
+3. **The evidence**: details, examples, numbers, commands.
+4. **The next step**: a link, a command, or an action.
 
-## 🗣️ Voice & Tone
+One idea per paragraph. Keep paragraphs short. If a paragraph has two jobs,
+split it. Headings should tell the reader what the section contains, not label
+it ("Install", not "Installation Information").
 
-Write in **active voice**. Be **direct**. Cut every word that doesn't earn its
-place.
+## ✅ Accuracy And Claims
 
-```markdown
-<!-- ✅ GOOD: Active, direct -->
+Never invent facts, numbers, quotes, users, benchmarks, or links. If you are
+unsure, say so or leave it out. Prefer a concrete, checkable claim to a
+superlative.
 
-We built FakeData Pro to solve this.
+- Do not use unsupported superlatives: "fast", "simple", "powerful",
+  "seamless". Quantify them or cut them.
+- Do not claim "first", "best", or "only" without evidence.
+- Name limitations and tradeoffs. A caveat makes a claim stronger.
+- Distinguish fact from opinion.
 
-<!-- ❌ BAD: Passive, wordy -->
+## ✏️ Mechanics
 
-FakeData Pro was built in order to solve this problem.
-```
+- No em dashes or en dashes in prose. Use commas, periods, colons, or
+  parentheses. Dashes are allowed in titles and quoted material.
+- Use commas sparingly. Short sentences beat long chains of clauses.
+- Use sentence case for headings unless a product name requires otherwise.
+- Spell product names as the product spells them.
+- Use descriptive link text. "Read the docs" is better than "click here".
+- Keep lists to three to five items unless the content is a reference list.
+- End with a next step only when there is one. Do not add a link for symmetry.
+- Proofread. Typos and inconsistent names undo good writing.
 
-### Banned words and phrases
+## 🚦 Hard Invariants
 
-Avoid marketing adjectives and corporate filler:
+These cannot be overridden by a profile, a brief, or a deadline:
 
-- ❌ amazing, incredible, revolutionary, game-changing, cutting-edge
-- ❌ we're excited to announce, we're thrilled to share
-- ❌ in order to, due to the fact that, as a result of
-- ❌ leverage, utilize, streamline (use "use", "simplify")
+- Do not invent or misrepresent facts, numbers, quotes, or sources.
+- Do not expose secrets, private data, or customer information.
+- Do not make legal, medical, or financial claims you cannot support.
+- Do not use dark patterns, fake urgency, or false social proof.
 
-### Preferred patterns
+## 🧭 Which Profile?
 
-- ✅ "X is out" (not "We are pleased to announce X")
-- ✅ "Check it out:" (not "You can check it out at:")
-- ✅ "Install:" (not "You can install it by running:")
-- ✅ "The good:" / "The not-so-good:" (not "Advantages:" / "Disadvantages:")
+Read the profile that matches the task. Read one, not all.
 
-## ✏️ Punctuation
+| If you are writing                                             | Read                   |
+| -------------------------------------------------------------- | ---------------------- |
+| README, docs, API reference, changelog, code comments, commits | `writing-technical.md` |
+| Blog post, essay, series, review, narrative announcement       | `writing-editorial.md` |
+| Launch post, social post, product page, email, landing copy    | `writing-marketing.md` |
 
-### No dashes in prose
+For a hybrid, use the body rule and the frame rule:
 
-Do not use em dashes (—) or en dashes (–) in body text. Use commas, periods,
-or restructure the sentence.
+- **Launch blog post**: editorial body, marketing title, opening promise, and
+  call to action.
+- **Technical blog post**: editorial voice, technical rules for code and
+  commands.
 
-```markdown
-<!-- ✅ GOOD -->
+## ⚖️ Precedence
 
-The setup evolved from a fragile bash script into a small Go tool. It runs
-recordings in parallel and handles lifecycle hooks.
-
-<!-- ❌ BAD -->
-
-The setup evolved from a fragile bash script into a small Go tool — it runs
-recordings in parallel and handles lifecycle hooks.
-```
-
-Exception: dashes are fine in technical contexts (e.g., `--flag`, range
-notations, compound modifiers in code).
-
-### Commas and periods
-
-Use commas sparingly. Short sentences are preferred over long ones with many
-commas. Periods are deliberate, not automatic.
-
-```markdown
-<!-- ✅ GOOD -->
-
-We use VHS by charm.sh. A tool that turns a script into a screencast.
-
-<!-- ❌ BAD -->
-
-We use VHS by charm.sh, which is a tool that turns a script into a screencast,
-and it's really quite powerful.
-```
-
-## 📋 Formatting
-
-### Emoji as visual anchors
-
-Use emoji to mark sections and draw attention in social posts and READMEs:
-
-- 🚀 for launches and releases
-- 📢 for announcements
-- ✨ for highlights
-- 💡 for tips
-- 🔧 for fixes
-
-```markdown
-🚀 FakeData Pro v0.2.0 is out 🚀
-
-The highlight of this release is ClickHouse support.
-```
-
-### Bold for section headers in reviews
-
-When comparing or reviewing, use bold for section markers:
-
-```markdown
-**The good:**
-
-- First three chapters are solid
-- Great introduction for beginners
-
-**The not-so-good:**
-
-- Writing quality drops after chapter 4
-- Felt too long
-```
-
-### Lists
-
-Keep lists short. Three to five items max. If you need more, restructure.
-
-```markdown
-<!-- ✅ GOOD: Focused list -->
-
-Some of the included batteries:
-
-- deterministic seeding
-- foreign key integrity
-- dry run mode
-
-<!-- ❌ BAD: Laundry list -->
-
-Features include deterministic seeding, foreign key integrity, dry run mode,
-sensible defaults, straightforward customisation, MySQL support, PostgreSQL
-support, SQLite support, and more coming soon.
-```
-
-## 📄 Technical Writing
-
-### READMEs
-
-A good README answers these questions in order:
-
-1. **What is this?** — one sentence
-2. **Why would I use it?** — one or two sentences
-3. **How do I install it?** — command only
-4. **How do I use it?** — minimal example
-
-````markdown
-# project-name
-
-A CLI that does X.
-
-## Install
-
-```bash
-npm install -g project-name
-```
-````
-
-## Usage
-
-```bash
-project-name do-thing
-```
-
-````
-
-### Code comments
-
-Comment on **why**, not **what**. Code should be self-documenting for the "what".
-
-```typescript
-// ✅ GOOD: Explains why
-// Retry up to 3 times — the API is flaky under load
-for (let i = 0; i < 3; i++) {
-
-// ❌ BAD: Restates the code
-// Loop 3 times
-for (let i = 0; i < 3; i++) {
-````
-
-### Commit messages
-
-Follow conventional commits. Keep the subject line under 72 characters.
-
-```
-✅ GOOD:
-feat(fakedata): add ClickHouse support
-fix(cli): respect Ctrl+C in transactions
-docs: update README with install instructions
-
-❌ BAD:
-Added ClickHouse support to FakeData Pro because users asked for it
-Fixed the thing where Ctrl+C wasn't working properly
-```
-
-## 🔗 Links
-
-End posts with a link. Use clear, active phrasing:
-
-- `Check it out: <url>` (for general links)
-- `Read it here: <url>` (for articles)
-- `Install: <command>` (for installation)
-- Plain URL on its own line (for Twitter, where space is tight)
+1. The explicit brief.
+2. Project-local rules and brand notes.
+3. The profile for this mode.
+4. These general rules.
+
+The more specific rule wins, except for the hard invariants above. If two rules
+conflict and the profile does not resolve it, ask.
+
+## 🔍 Self-Check
+
+- Is the first sentence the point?
+- Is every claim specific or sourced?
+- Did I cut the filler?
+- Does the structure fit the reader's job?
+- Is there exactly one next step?
+- Would I publish this under my name?
 
 {{FOOTER}}

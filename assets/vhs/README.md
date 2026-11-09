@@ -186,7 +186,7 @@ the refusal instead.
 | `use-case-skills` | Skills and commands installation |
 | `use-case-smart-updates` | Hash-based conflict detection |
 | `use-case-options` | Advanced CLI options (monorepo, skip-opencode) |
-| `use-case-writing` | Writing rule installed in every project |
+| `use-case-writing` | Writing profiles installed in every project |
 
 ## One-Off Recordings (`--tape`)
 

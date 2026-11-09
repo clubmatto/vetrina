@@ -68,6 +68,8 @@ website/
 - **Static assets**: Selective passthrough copy for images and specific SVG files.
 - **Icons**: Lucide icons via custom shortcode using `lucide-static`.
 - **Module system**: ES modules (`"type": "module"` in package.json).
+- **Copy and voice**: marketing and blog copy follows the writing profiles in
+  `.agents/rules/` and the Club Matto voice guide in `../mercato/docs/VOICE.md`.
 
 ### Useful Commands
 

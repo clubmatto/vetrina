@@ -19,7 +19,7 @@ mercato/
 ├── README.md
 ├── drafts/         # In-progress drafts (legitimately empty sometimes)
 ├── posts/          # Published record: one file per post
-└── docs/           # Style guide and helpers
+└── docs/           # Voice guide, OG style, and helpers
 ```
 
 Both directories hold flat markdown files, one file per post, with no subdirectories
@@ -139,30 +139,27 @@ to separate thread parts.
 
 ## Platform Rules
 
-Voice, tone, punctuation and structure come from the Writing & Docs rule that ai-kit
-installs at `.agents/rules/writing.md`. Follow it, and do not restate it here.
+Voice, tone, punctuation, and structure come from `.agents/rules/writing.md` and
+`.agents/rules/writing-marketing.md`. Club Matto specifics live in
+[`docs/VOICE.md`](docs/VOICE.md). Follow them; do not restate them here.
 
-These are the mercato specifics:
+Mercato adds these mechanics:
 
-- **LinkedIn: no hard limit.** Write what the post needs; 100 to 200 words is the usual
-  range. Close with `Read it here: <url>`.
-- **Twitter: 280 characters at most, aim for 200.** Close with the bare URL.
-- **Instagram: 5 hashtags max.** The image is the post: a 1080x1440 (3:4) board —
-  anything else gets cropped by the feed — caption short. No inline links; the URL
-  lives in the bio, so close with `link in bio` instead.
-- **Twitter is LinkedIn trimmed.** Same announcement and hook, cut to essentials.
-- **Mention the topic, not the innards.** Leave out numbers, timings and implementation
-  details unless they are the point of the post.
-- **If a terminal GIF is attached, omit the command from the text.** The GIF shows it.
+- **Instagram image:** 1080x1440 (3:4), because anything else gets cropped by the feed. No inline links; the URL lives in the bio, so close with `link in bio`.
+- **Attached terminal GIF:** omit the command from the text. The GIF shows it.
+- **Mention the topic, not the innards:** leave out numbers, timings, and implementation details unless they are the point of the post.
+
+The shared channel lengths, hooks, and CTA formats live in
+`.agents/rules/writing-marketing.md`.
 
 ### Example style anchors
 
 When editing a post, start from a real example from the same platform instead of rewriting
 from scratch:
 
-- LinkedIn: `linkedin/2026-07-13-ai-kit-announcement.md`,
-  `linkedin/2026-07-31-fakedata-v0-2-0-clickhouse.md`
-- Twitter: `twitter/2026-07-23-pro-custom-columns.md`
+- LinkedIn: `posts/2026-07-13-ai-kit-announcement.md`,
+  `posts/2026-07-31-fakedata-v0-2-0-clickhouse.md`
+- Twitter: `posts/2026-07-23-pro-custom-columns.md`
 
 ## Media Assets
 
@@ -184,7 +181,8 @@ See `assets/vhs/README.md` for the full VHS workflow.
 ## LLM Usage
 
 When asking an LLM to edit a specific post, provide that single file. When asking for help
-with style or tone, pass all files filtered by platform or topic.
+with style or tone, pass all files filtered by platform or topic, plus
+`.agents/rules/writing.md`, `.agents/rules/writing-marketing.md`, and `docs/VOICE.md`.
 
 Always pass at least one example post from the target platform alongside the request. The
 style is learned by example, not description. State the target length explicitly.

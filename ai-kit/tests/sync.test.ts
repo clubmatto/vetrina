@@ -151,6 +151,26 @@ describe("sync command", () => {
     expect(ruleFiles).toMatch(/\d{4}-\d{2}-\d{2}/);
   });
 
+  it("installs the writing router and profiles", async () => {
+    createProject(tempDir, { "package.json": "{}" });
+    await sync(tempDir, "0.0.1", {}, testLog, defaultSourceDirs);
+
+    const router = readFile(tempDir, ".agents/rules/writing.md")!;
+    const profiles = [
+      "writing-technical.md",
+      "writing-editorial.md",
+      "writing-marketing.md",
+    ];
+
+    for (const profile of profiles) {
+      expect(router).toContain(profile);
+      expect(fileExists(tempDir, `.agents/rules/${profile}`)).toBe(true);
+    }
+
+    const agentsMd = readFile(tempDir, "AGENTS.md")!;
+    expect(agentsMd).toContain("(.agents/rules/writing.md)");
+  });
+
   it("processes template variables in AGENTS.md", async () => {
     await sync(tempDir, "0.0.1", {}, testLog, testSourceDirs);
 

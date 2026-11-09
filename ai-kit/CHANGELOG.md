@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Writing profiles: general `writing.md` plus `writing-technical.md`,
+  `writing-editorial.md`, and `writing-marketing.md`
+
+### Changed
+
+- `writing.md` now holds only universal rules and routes to the profile that
+  matches the task
+- AGENTS.md templates point to the writing router instead of a single rule
+- Website copy and README describe the writing profiles
+
 ## [0.0.11] - 2026-09-01
 
 ### Added
