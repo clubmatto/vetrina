@@ -78,18 +78,18 @@ smallest useful form.
 
 The ten agents do not agree on whether any of this is worth having.
 
-| Harness          | Sub-agents                                                                         |
-| ---------------- | ---------------------------------------------------------------------------------- |
-| Aider            | None. The closest thing is a sequential architect/editor pipeline.                 |
-| Pi               | None. No task tool, no nested sessions.                                            |
-| OpenHands        | Off by default; enabled with a setting.                                            |
-| Goose            | One level, via the Summon extension: separate session, hard-linked to the parent.  |
-| OpenCode         | `task` tool, plus built-in `explore` and `general` sub-agents.                     |
-| Crush            | `agent` tool running a read-only `task` agent in parallel.                         |
-| Qwen Code        | Markdown-defined agents, managed by a sub-agent manager.                           |
-| Kimi CLI         | `Agent` and `AgentSwarm` tools, foreground or background.                          |
-| Codex            | `spawn_agent`, forked threads, a rollout budget.                                   |
-| DeepSeek Harness | A provider registry: spawn, fork, or out-of-process sub-agents, depth capped at 3. |
+| Harness          | Sub-agents                                                                        |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Aider            | None. The closest thing is a sequential architect/editor pipeline.                |
+| Pi               | None. No task tool, no nested sessions.                                           |
+| OpenHands        | Off by default; enabled with a setting.                                           |
+| Goose            | One level, via the Summon extension: separate session, hard-linked to the parent. |
+| OpenCode         | `task` tool, plus built-in `explore` and `general` sub-agents.                    |
+| Crush            | `agent` tool running a read-only `task` agent in parallel.                        |
+| Qwen Code        | Markdown-defined agents, managed by a sub-agent manager.                          |
+| Kimi CLI         | `Agent` and `AgentSwarm` tools, foreground or background.                         |
+| Codex            | `spawn_agent`, forked threads, a rollout budget.                                  |
+| DeepSeek Harness | A provider registry: spawn, fork, or external one-shot backends; depth default 1. |
 
 Aider and Pi are minimal by design, and their absence stems directly from
 their philosophy: if your loop is tight and your sessions are short, you may not
@@ -104,12 +104,14 @@ We found four core differences in how harnesses tune their sub-agents:
 - **Foreground or background.** Kimi CLI's sub-agents either block the parent's
   turn or detach and get polled later. Codex's `followup_task` is the same idea
   with a different name.
-- **Isolation.** Fresh or forked, as above. DeepSeek Harness makes this a
-  registry choice per spawn: in-process sub-agents, or out-of-process backends
-  including Claude Code and Codex itself.
+- **Isolation.** Fresh or forked, as above. DeepSeek Harness is a provider
+  registry: each delegation tool is bound to one backend, so a deployment can
+  expose spawn and fork in-process, or ACP, DSH SDK, Codex, and Claude Code as
+  external one-shot providers. Codex and Claude Code are optional bundles, and
+  each run gets a fresh process.
 - **Depth.** A sub-agent spawning another sub-agent, which spawns another,
-  is how a session eats a machine. DeepSeek Harness caps delegation depth at
-  three and persists the accounting in the session header.
+  is how a session eats a machine. DeepSeek Harness defaults to one level and
+  lets each tool raise the cap; external providers can manage their own budget.
 - **Permissions.** Here is our favorite detail in the research. Goose
   forces every sub-agent into its automatic mode regardless of the parent's
   setting, and the code explains why: an approval prompt with no human
