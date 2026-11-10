@@ -1,0 +1,4 @@
+label	children	children_source	span_children	turns	tool_calls	input	output	cached	span_input	span_output	span_cached	wall_s	duration_ms	renamed	left	decoy_kept	decoy_renamed	outcome_ok
+fanout-1-r1	1	calls	1	3	11	477782	14521	450944	393612	11246	375680	82.22	81427	32	0	32	0	yes
+fanout-2-r1	2	calls	2	5	10	671972	20004	638336	569241	15805	541568	75.897	75111	32	0	32	0	yes
+fanout-4-r1	4	calls	4	5	10	826825	24570	790400	799985	22709	765568	71.204	70397	32	0	32	0	yes

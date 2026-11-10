@@ -1,0 +1,13 @@
+services:
+  api:
+    image: example/api:1.4
+    environment:
+      DB_HOST: db.internal
+      DB_PORT: 5432
+      DB_HOST_OLD: legacy-db.internal
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: app
