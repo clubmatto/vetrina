@@ -4,6 +4,7 @@ platforms:
   - linkedin
   - twitter
 publish_date: 2026-11-10
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/sub-agents.png
 topics:
   - agents
   - from-the-series

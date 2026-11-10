@@ -12,7 +12,6 @@ series: how-coding-agents-work
 image: /assets/writing/sub-agents.png
 image_width: 2400
 image_height: 1260
-draft: true
 ---
 
 A sub-agent looks like delegation but it behaves like context management.
@@ -93,8 +92,6 @@ The ten agents do not agree on whether any of this is worth having.
 | Kimi CLI         | `Agent` and `AgentSwarm` tools, foreground or background.                         |
 | Codex            | `spawn_agent`, forked threads, a rollout budget.                                  |
 | DeepSeek Harness | A provider registry: spawn, fork, or external one-shot backends; depth default 1. |
-
-
 
 Aider and Pi are minimal by design, and their absence stems directly from
 their philosophy: if your loop is tight and your sessions are short, you may not
@@ -206,15 +203,14 @@ all three produced the correct rename.
   </table>
 </div>
 
-Four sub-agents cost 73% more input and 69% more output than one, and
-finished 13% sooner. The input bill is not 4x because 96% of it was cache
+Four sub-agents cost 73% more input and 69% more output than one, and saved
+13% of the wall clock. The input bill is not 4x because 96% of it was cache
 reads: each sub-agent pays the same system prompt and tool catalogue on every
 turn, and the provider caches that repeated prefix even though the parent's
 conversation does not follow it in. Uncached input grew 36%. That is the
 fan-out tax on a small task. One run per configuration, one harness, one task,
 so read the timings as a signpost, not a benchmark. The crossover for long
-work is still the open question but this gives a hint of the trend. 
-The harness is
+work is still the open question. The harness is
 [in the repository](https://github.com/clubmatto/vetrina/tree/main/website/src/writing/how-coding-agents-work/experiments/fanout).
 
 ## The turn
