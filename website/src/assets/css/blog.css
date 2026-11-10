@@ -300,6 +300,38 @@ article.post .post-content code:not([class*="language-"]) {
   font-size: 0.85em;
 }
 
+/* Plain Markdown tables are not wrapped like the hand-built .agent-table
+   blocks, so they get the same flow spacing and typography here. Without the
+   table margin, the paragraph after it sits directly against the last row. */
+article.post .post-content table:not(.agent-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+article.post .post-content table:not(.agent-table) th,
+article.post .post-content table:not(.agent-table) td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+article.post .post-content table:not(.agent-table) th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+article.post .post-content table:not(.agent-table) tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--text), transparent 96%);
+}
+
 .agent-table-wrapper {
   overflow-x: auto;
   margin: 0 0 1.5em;
