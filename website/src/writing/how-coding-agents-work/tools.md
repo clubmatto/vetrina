@@ -183,7 +183,7 @@ what the model does when a precise tool is available.
 For every run we recorded the turns spent on the problem, the tool calls, the
 input and cached tokens, the wall clock, and whether the agent fell into the
 trap. The complete experiment's harness is available [in the
-repository](https://github.com/clubmatto/vetrina/tree/main/website/src/writing/how-coding-agents-work/tools).
+repository](https://github.com/clubmatto/vetrina/tree/main/website/src/writing/how-coding-agents-work/experiments/tools).
 
 ## What came out of it
 
