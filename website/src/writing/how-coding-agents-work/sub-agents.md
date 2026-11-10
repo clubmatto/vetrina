@@ -9,6 +9,9 @@ tags:
   - ai
   - agents
 series: how-coding-agents-work
+image: /assets/writing/sub-agents.png
+image_width: 2400
+image_height: 1260
 draft: true
 ---
 
