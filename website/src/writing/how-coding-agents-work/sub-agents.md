@@ -78,18 +78,16 @@ smallest useful form.
 
 The ten agents do not agree on whether any of this is worth having.
 
-// TODO reorder this
-
 | Harness          | Sub-agents                                                                         |
 | ---------------- | ---------------------------------------------------------------------------------- |
 | Aider            | None. The closest thing is a sequential architect/editor pipeline.                 |
 | Pi               | None. No task tool, no nested sessions.                                            |
+| OpenHands        | Off by default; enabled with a setting.                                            |
 | Goose            | One level, via the Summon extension: separate session, hard-linked to the parent.  |
 | OpenCode         | `task` tool, plus built-in `explore` and `general` sub-agents.                     |
+| Crush            | `agent` tool running a read-only `task` agent in parallel.                         |
 | Qwen Code        | Markdown-defined agents, managed by a sub-agent manager.                           |
 | Kimi CLI         | `Agent` and `AgentSwarm` tools, foreground or background.                          |
-| Crush            | `agent` tool running a read-only `task` agent in parallel.                         |
-| OpenHands        | Off by default; enabled with a setting.                                            |
 | Codex            | `spawn_agent`, forked threads, a rollout budget.                                   |
 | DeepSeek Harness | A provider registry: spawn, fork, or out-of-process sub-agents, depth capped at 3. |
 
