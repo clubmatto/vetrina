@@ -21,9 +21,9 @@ closer to opening a clean editor buffer: the child is the same kind of loop as
 its parent, pointed at a narrower job, and the point is what never enters the
 parent's context window.
 
-We read ten open-source harnesses to see who spawns children and what the
-parent gets back. The answers surprised us. Nobody's sub-agent is smarter than
-its parent. Only the report travels home, never the transcript. Goose forces
+We read ten open-source harnesses to see who spawns sub-agents and how they
+handle sub-agent responses. The answers surprised us. Nobody's sub-agent is
+smarter than its parent. Only the report travels home, never the transcript. Goose forces
 every child into automatic mode, because an approval prompt with no human
 watching would hang forever. Kimi CLI enforces a 200-character minimum on
 reports, because a too-short summary usually skipped something.

@@ -9,6 +9,7 @@ tags:
   - ai
   - agents
 series: how-coding-agents-work
+draft: true
 ---
 
 A sub-agent looks like delegation. It behaves like context management.
