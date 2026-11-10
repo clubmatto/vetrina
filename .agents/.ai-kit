@@ -1,5 +1,5 @@
 {
-  "version": "0.0.11",
+  "version": "0.1.0",
   "files": {
     "opencode.json": {
       "sourceHash": "4ca6cd3cf457526c2ee321c0b542b5ea4166f9b53c4ed52ca3f09be444462eba"
@@ -20,7 +20,7 @@
       "sourceHash": "0b156517b0776cb20d5b14a04efcace6d075c5593722e7ce21bc4c1b5b7627da"
     },
     ".agents/rules/writing-editorial.md": {
-      "sourceHash": "7b9f709e5ed4b0d8429fdfe3f6839c007ba52a8c4ed650a9e6b0fdbe6d4f6fe9"
+      "sourceHash": "174ca2beb520ee7d30ed9b15db5cffd2c466d62a96ef539de946cf42fd6e2415"
     },
     ".agents/rules/writing-marketing.md": {
       "sourceHash": "b096ec45c0fd104c9d5c372879fc2cbdbfcd79e9cd6a0ca86a274453582b6691"
@@ -29,7 +29,7 @@
       "sourceHash": "6b335758b5d1db10b474a07a3837e047407cf51d13ed68e990fa6a74f8431db8"
     },
     ".agents/rules/writing.md": {
-      "sourceHash": "38b75b62bb4f754b8ebe4822f2b7d93e9e544913ac19465413d16b261825d7c3"
+      "sourceHash": "f55530a759beb19e59c1f5f35ba3a66009b7a5a2a8943cab63562627d12d9ce7"
     },
     ".agents/skills/playwright-cli/SKILL.md": {
       "sourceHash": "dfb5c48560bc58439168aa74ca6eab223023ffe369836a75a5c3eef483714fd9"

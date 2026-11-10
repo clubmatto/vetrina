@@ -16,9 +16,13 @@ who did the work and is telling you what they found. Not a docs persona, not a
 brand account.
 
 - "We" for the work and the team. "I" for a personal story.
+- "You" for the reader, especially when naming a likely assumption: "You may
+  think..." beats "The conventional wisdom is...".
 - Contractions are normal.
 - Humor is welcome when it comes from the situation, not from forced jokes.
 - Opinions are allowed. Label them as opinions.
+- Voice comes from one blunt word or aside, not from adjectives. Allow one per
+  section: "which arguably makes it dumber", "so to speak".
 
 ## 🪝 Openings
 
@@ -35,6 +39,10 @@ Avoid:
 - "In today's fast-moving world..."
 - A dictionary definition.
 - A long apology for writing the post.
+- Writing about the piece instead of the subject: "this post", "the thesis of
+  this article", "as we will see". A short spoken signpost is fine ("Now
+  let's...", "more on this in a moment"); an essay about the essay is not.
+- The authors' research backstory before the reader knows why it matters.
 
 The first sentence should make the second sentence necessary.
 
@@ -52,10 +60,20 @@ Use headings to mark beats. A series post can open with continuity ("In the
 first post of this series...") but do not spend a paragraph summarising what
 the reader can read elsewhere.
 
+- Announce the shape before the detail: "We found four differences", "There
+  are two approaches". Then list them.
+- Name a section after the reader's question or the action: "How much does
+  spawning cost?", not "What a sub-agent costs".
+- If a paragraph has three or more parallel bold lead-ins, make it a list.
+  Introduce the list with one sentence that says how many items follow.
+
 ## 🎚️ Rhythm
 
 - Paragraphs are usually one to three sentences.
 - Vary sentence length. A short sentence after a long one lands.
+- Write the glue you would say out loud. When the thought turns, use the
+  connective you would use in speech: "Of course", "In short", "though", "in
+  fact", "more on this in a moment". One per paragraph, not one per sentence.
 - Parentheses and asides are allowed when they add voice. Cut them when they
   hide the point.
 - Code blocks, screenshots, and quotes break up the text. Use them as evidence,
@@ -67,6 +85,10 @@ the reader can read elsewhere.
 
 - Use real numbers, names, quotes, and code from the work.
 - Link to the source, the repo, or the previous post.
+- Say what the evidence suggested, not what it proved. "The vocabulary helped
+  us see" is honest; "the vocabulary agrees" is a claim the survey cannot
+  support.
+- When you report a finding, state the count: "We found four differences".
 - Say when something is an estimate, a guess, or a small sample.
 - Include the caveat. "This worked for us" is stronger than "this always
   works".
@@ -131,9 +153,11 @@ Agent frameworks are an important part of the modern AI landscape.
 
 - Does the first sentence make the second one necessary?
 - Is there a person, a scene, or a number?
+- Does every sentence have an actor, or is an abstraction doing the work?
 - Does every section add something new?
 - Is the caveat honest?
 - Does the ending land, instead of repeating?
+- Would I say this out loud?
 - Would I read this to the end?
 
 {{FOOTER}}

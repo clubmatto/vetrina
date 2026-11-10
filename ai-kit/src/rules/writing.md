@@ -27,6 +27,9 @@ longer sentences when the idea needs them.
 
 - Prefer the specific to the abstract.
 - Prefer the verb to the noun: "decide", not "make a decision".
+- Put a person or thing in the sentence. If an abstraction is doing the work
+  ("the pitch suggests", "the vocabulary agrees"), rewrite it as actor + verb
+  ("you may think", "the vocabulary helped us see").
 - Prefer "use" to "leverage", "start" to "initiate", "help" to "facilitate".
 - Cut filler: "in order to", "due to the fact that", "it is important to note".
 - Contractions are fine.
