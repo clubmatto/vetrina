@@ -91,6 +91,8 @@ The ten agents do not agree on whether any of this is worth having.
 | Codex            | `spawn_agent`, forked threads, a rollout budget.                                  |
 | DeepSeek Harness | A provider registry: spawn, fork, or external one-shot backends; depth default 1. |
 
+
+
 Aider and Pi are minimal by design, and their absence stems directly from
 their philosophy: if your loop is tight and your sessions are short, you may not
 need sub-agents at all. Aider's substitute is telling. Its architect mode has a
@@ -131,10 +133,11 @@ The bill has more lines on it than you'd probably guess:
 - The output report
 - The verification its parent does, because a lossy report must be checked
 
-The sub-agent also starts a cold prefix. The parent's prompt cache, whatever it
-has accumulated over the session, does not follow it in. And fan-out
-multiplies the baseline per sub-agent, which is the main trap: five sub-agents
-on a one-line question, and you can see how quickly things add up.
+The sub-agent also starts without the parent's prefix. The parent's prompt
+cache, whatever it has accumulated over the session, does not follow it in.
+And fan-out multiplies the baseline per sub-agent, which is the main trap:
+five sub-agents on a one-line question, and you can see how quickly things add
+up.
 
 The harnesses know this and budget for it: Codex gives spawned agents a
 rollout budget. Kimi CLI enforces a 200-character minimum on sub-agent
@@ -142,9 +145,74 @@ summaries, and if the sub-agent turns in something shorter, it gets one more
 turn to expand it. Our reading of that rule: reports that are too short are
 usually reports that skipped something.
 
-These are mechanics, not measurements. We have not yet run the fan-out
-experiment (same task, one sub-agent versus two versus four, tokens and wall
-clock), and we would rather publish those numbers than estimate them.
+These are mechanics, so we ran a small experiment to get a sense of the bill.
+We reused the rename task from the
+[tools experiment](/writing/how-coding-agents-work/tools/), copied it across
+four identical services, and had Qwen Code delegate it to one, two, or four
+fresh sub-agents. Each configuration ran once on DeepSeek's `deepseek-flash`;
+all three produced the correct rename.
+
+<div class="agent-table-wrapper">
+  <table class="agent-table agent-table--rows">
+    <thead>
+      <tr>
+        <th></th>
+        <th>1 sub-agent</th>
+        <th>2 sub-agents</th>
+        <th>4 sub-agents</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="agent-name">Input tokens</td>
+        <td class="nw" data-label="1 sub-agent">477,782</td>
+        <td class="nw" data-label="2 sub-agents">671,972</td>
+        <td class="nw" data-label="4 sub-agents">826,825</td>
+      </tr>
+      <tr>
+        <td class="agent-name">Cache reads</td>
+        <td class="nw" data-label="1 sub-agent">94%</td>
+        <td class="nw" data-label="2 sub-agents">95%</td>
+        <td class="nw" data-label="4 sub-agents">96%</td>
+      </tr>
+      <tr>
+        <td class="agent-name">Uncached input</td>
+        <td class="nw" data-label="1 sub-agent">26,838</td>
+        <td class="nw" data-label="2 sub-agents">33,636</td>
+        <td class="nw" data-label="4 sub-agents">36,425</td>
+      </tr>
+      <tr>
+        <td class="agent-name">Output tokens</td>
+        <td class="nw" data-label="1 sub-agent">14,521</td>
+        <td class="nw" data-label="2 sub-agents">20,004</td>
+        <td class="nw" data-label="4 sub-agents">24,570</td>
+      </tr>
+      <tr>
+        <td class="agent-name">Wall clock</td>
+        <td class="nw" data-label="1 sub-agent">82.2s</td>
+        <td class="nw" data-label="2 sub-agents">75.9s</td>
+        <td class="nw" data-label="4 sub-agents">71.2s</td>
+      </tr>
+      <tr>
+        <td class="agent-name">Rename correct</td>
+        <td class="nw" data-label="1 sub-agent">yes</td>
+        <td class="nw" data-label="2 sub-agents">yes</td>
+        <td class="nw" data-label="4 sub-agents">yes</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Four sub-agents cost 73% more input and 69% more output than one, and
+finished 13% sooner. The input bill is not 4x because 96% of it was cache
+reads: each sub-agent pays the same system prompt and tool catalogue on every
+turn, and the provider caches that repeated prefix even though the parent's
+conversation does not follow it in. Uncached input grew 36%. That is the
+fan-out tax on a small task. One run per configuration, one harness, one task,
+so read the timings as a signpost, not a benchmark. The crossover for long
+work is still the open question but this gives a hint of the trend. 
+The harness is
+[in the repository](https://github.com/clubmatto/vetrina/tree/main/website/src/writing/how-coding-agents-work/experiments/fanout).
 
 ## The turn
 
