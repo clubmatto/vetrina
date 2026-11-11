@@ -13,18 +13,18 @@
     "prettier:write": "prettier --write ."
   },
   "devDependencies": {
-    "@11ty/eleventy": "3.1.6",
+    "@11ty/eleventy": "3.1.8",
     "@auxot/model-registry": "1.1.4",
-    "@opencode-ai/models": "0.0.39",
+    "@opencode-ai/models": "0.0.132",
     "@shopify/prettier-plugin-liquid": "^1.10.0",
-    "@types/node": "26.2.0",
+    "@types/node": "26.6.6",
     "@types/postcss-import": "14.0.3",
     "esbuild": "0.28.2",
-    "playwright": "1.62.1",
-    "postcss": "8.5.26",
+    "playwright": "1.65.0",
+    "postcss": "8.5.32",
     "postcss-import": "^16.1.1",
     "prettier": "^3.8.1",
-    "tsx": "4.23.12",
+    "tsx": "4.23.15",
     "typescript": "7.0.2"
   },
   "allowScripts": {
