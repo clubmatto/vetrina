@@ -3,7 +3,6 @@ title: "Sub-agents: a context window you rent"
 platforms:
   - linkedin
   - twitter
-publish_date: 2026-11-10
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/sub-agents-report-only.png
 topics:
   - agents
