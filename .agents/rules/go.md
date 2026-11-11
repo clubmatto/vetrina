@@ -13,29 +13,17 @@ You are a senior Go engineer with expertise in:
 
 ## 📁 Go Project Structure
 
-Follow this exact structure for all Go projects:
+**Default: flat domain packages named for what they do.** Small tools live in a single root package (`tools/go-release/`, `tools/vhs-generate/`). Larger CLIs and services split into top-level packages organized by domain concern, not architectural role — see `fakedata/` (`cli`, `core`, `data`, `output`, `testutil`) and `db-diff/` (`cli`, `clickhouse`, `diff`, `differ`, `mysql`, `pg`, `sqlbuild`, `testutil`).
 
-[service-or-lib-name]/
-├── cmd/ # Application entry points (one per binary)
-│ └── [app-name]/
-│ └── main.go # Minimal main - just parse flags and run
-├── internal/ # Private application code (cannot be imported outside)
-│ ├── handlers/ # HTTP/gRPC handlers
-│ ├── models/ # Domain models/structs
-│ ├── repository/ # Data access layer
-│ └── service/ # Business logic
-├── pkg/ # Public library code (can be imported by other projects)
-│ └── [package-name]/ # Well-documented, stable APIs
-├── api/ # Protocol definitions (gRPC)
-├── scripts/ # Build/deployment scripts
-├── configs/ # Configuration files
-├── deployments/ # Docker, k8s manifests
-├── go.mod # MODULE DECLARATION (must be present)
-├── go.sum # Dependency checksums
-├── Makefile # Common build commands
-└── README.md # Project documentation
+**Do NOT create `internal/`, `pkg/`, or `cmd/` by default.** Add them only when a concrete need appears:
 
-**Note:** The structure above is a recommendation, not a strict requirement. Many services in practice use flat packages (e.g., `server/`, `db/`, `storage/`, `core/`, `cli/`, `views/`) organized by domain concern rather than role. Choose the layout that best fits the project's complexity.
+- `cmd/<name>/` — the module builds more than one binary
+- `internal/` — parts of the module are importable from outside, but shared code must stay private to the module. Single-binary tools gain nothing from it; it only adds path noise.
+- `pkg/` — code that is deliberately a public, documented API for other modules. Almost never needed.
+
+Every project has `go.mod`/`go.sum` at the root. Multi-package projects also carry a `Makefile` and a `README.md`. Everything else grows out of need, not scaffolding.
+
+When joining an existing project, match its existing layout — do not restructure it to match this file.
 
 ## 🛠️ Development Commands
 
@@ -122,7 +110,7 @@ command. Add project extras (e.g. frontend typecheck, e2e) to `ci` as needed.
 ```go
 package myproject
 
-// ✅ GOOD: Two groups — external (stdlib + deps) first, then internal
+// ✅ GOOD: Three groups — stdlib, third-party, then same-module packages
 import (
     "context"
     "fmt"
@@ -130,7 +118,7 @@ import (
 
     "github.com/charmbracelet/log"
 
-    "myproject/internal/models"
+    "myproject/core"
 )
 
 // ❌ BAD: Mixed, ungrouped imports
@@ -393,4 +381,4 @@ Always pass context.Context as the first parameter to functions that:
 - Could be long-running
 - Should respect cancellation/timeout
 
-Last updated: 2026-09-23. This file extends the global rules in @AGENTS.md. Always check both files.
+Last updated: 2026-11-11. This file extends the global rules in @AGENTS.md. Always check both files.
