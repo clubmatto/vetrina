@@ -7,6 +7,7 @@ topics:
   - ci
   - gradle
   - how-we-work
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/perffriday-one-build.png
 publish_date: 2026-11-13
 ---
 
