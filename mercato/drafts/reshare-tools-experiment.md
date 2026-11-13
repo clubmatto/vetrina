@@ -3,6 +3,7 @@ title: "Reshare: the tools experiment"
 platforms:
   - twitter
   - linkedin
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-tokens.png
 publish_date: 2026-11-12
 topics:
   - agents
@@ -12,16 +13,18 @@ topics:
 
 ## Twitter
 
-Yesterday's sub-agent numbers reused a task we first ran in October. The
-original is worth a read: same task, same correct answer, and the tool
+Yesterday's we run an experiment based on one first ran in
+October. The original is worth a read!
+
+Same task, same correct answer, and the tool
 catalogue alone moved the bill from 25k to 227k input tokens.
 
 https://matto.club/writing/how-coding-agents-work/tools/
 
 ## LinkedIn
 
-Yesterday's experiment reused a task we first ran in October. The original is
-worth your time.
+Yesterday's experiment reused one we first ran in October. The original is
+worth your time!
 
 In the tools deep dive we ran two tasks, a rename and a reference lookup, each
 hiding a trap, through one harness with three tool surfaces: a single shell,
