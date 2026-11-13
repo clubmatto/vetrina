@@ -23,7 +23,8 @@ const MIME = {
 };
 
 const server = createServer((req, res) => {
-  let filePath = join(SITE_DIR, req.url === "/" ? "index.html" : req.url);
+  const { pathname } = new URL(req.url, "http://localhost");
+  let filePath = join(SITE_DIR, pathname === "/" ? "index.html" : pathname);
   if (!existsSync(filePath)) {
     res.writeHead(404);
     res.end();
@@ -56,13 +57,16 @@ async function captureDemo(browser, theme) {
     frames.push(path);
   };
 
-  await page.goto(`http://localhost:${PORT}`, {
+  // Headless Chromium has no real GPU, so the page would show "GPU not
+  // detected" and never render the speed terminal. A simulated M1 makes the
+  // recording deterministic and shows the recommendation at a watchable speed.
+  await page.goto(`http://localhost:${PORT}/?gpu=Apple%20M1&ram=16&vram=11`, {
     waitUntil: "domcontentloaded",
   });
 
   await page.waitForSelector(".probe-spinner", { timeout: 10000 });
 
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 12; i++) {
     await page.waitForTimeout(200);
     await capture();
   }
@@ -70,7 +74,24 @@ async function captureDemo(browser, theme) {
   await page
     .waitForSelector(".best-pick-card .model-name", { timeout: 20000 })
     .catch(() => {});
-  await page.waitForTimeout(500);
+  await page.evaluate(() => {
+    document
+      .querySelector(".best-pick-card")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  for (let i = 0; i < 18; i++) {
+    await page.waitForTimeout(200);
+    await capture();
+  }
+
+  // End on the full simulation instead of an empty terminal at the start of
+  // the next loop.
+  await page
+    .locator(".speed-demo-replay")
+    .click()
+    .catch(() => {});
+  await page.waitForTimeout(250);
   await capture();
 
   await context.close();

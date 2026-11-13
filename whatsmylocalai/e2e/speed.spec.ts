@@ -34,6 +34,36 @@ test("loops the simulation until stopped", async ({ page }) => {
   expect(await output.textContent()).toBe(stopped);
 });
 
+test("restarts the simulation when the machine changes", async ({ page }) => {
+  await skipReveal(page);
+  await page.goto("/?gpu=Apple%20M1&ram=16&vram=11");
+
+  const output = page.locator(".speed-demo-output");
+  await expect(output).toHaveClass(/typing/);
+  const before = await output.textContent();
+
+  await page.getByRole("button", { name: "increase VRAM" }).click();
+  await expect
+    .poll(() => output.textContent(), { timeout: 5000 })
+    .not.toBe(before);
+});
+
+test("stays stopped when the machine changes after stop", async ({ page }) => {
+  await skipReveal(page);
+  await page.goto("/?gpu=Apple%20M1&ram=16&vram=11");
+
+  const output = page.locator(".speed-demo-output");
+  await expect(page.locator(".speed-demo-replay")).toHaveText("stop");
+
+  await page.locator(".speed-demo-replay").click();
+  await expect(page.locator(".speed-demo-replay")).toHaveText("replay");
+
+  await page.getByRole("button", { name: "increase VRAM" }).click();
+  await page.waitForTimeout(800);
+
+  await expect(output).toHaveText("");
+});
+
 test("shows a band on Apple silicon from the chip bins", async ({ page }) => {
   await skipReveal(page);
   await page.goto("/?gpu=Apple%20M5%20Max&ram=128&vram=96");

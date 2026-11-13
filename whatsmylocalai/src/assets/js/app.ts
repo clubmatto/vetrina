@@ -137,6 +137,8 @@ document.addEventListener("alpine:init", () => {
       demoPlaying: false,
       demoRaf: null as number | null,
       demoLoopTimer: null as number | null,
+      demoRestartTimer: null as number | null,
+      demoEnabled: false,
       demoPlayed: false,
       perfBias: 1,
       modelRegistry: {
@@ -551,14 +553,36 @@ document.addEventListener("alpine:init", () => {
       maybeAutoplayDemo() {
         if (this.demoPlayed) return;
         this.demoPlayed = true;
-        this.playDemo();
+        this.demoEnabled = true;
+        this.stopDemo();
+        this.demoPlaying = true;
+        this.startDemoCycle();
       },
 
-      /** Stop and clear the terminal so it cannot contradict a new pick. */
-      resetDemo() {
+      /**
+       * A new machine or pick makes the running text stale. Restart after a
+       * short debounce so holding a stepper does not thrash the terminal.
+       */
+      restartDemo() {
+        if (this.demoRestartTimer !== null) {
+          window.clearTimeout(this.demoRestartTimer);
+        }
         this.stopDemo();
-        this.demoText = "";
-        this.demoFullText = "";
+
+        if (!this.demoEnabled) {
+          this.demoText = "";
+          this.demoFullText = "";
+          return;
+        }
+
+        // Keep the control labelled "stop" through the debounce.
+        this.demoPlaying = true;
+        this.demoRestartTimer = window.setTimeout(() => {
+          this.demoRestartTimer = null;
+          if (!this.demoEnabled) return;
+          this.demoPlaying = true;
+          this.startDemoCycle();
+        }, 300);
       },
 
       stopDemo() {
@@ -570,20 +594,27 @@ document.addEventListener("alpine:init", () => {
           window.clearTimeout(this.demoLoopTimer);
           this.demoLoopTimer = null;
         }
+        if (this.demoRestartTimer !== null) {
+          window.clearTimeout(this.demoRestartTimer);
+          this.demoRestartTimer = null;
+        }
         this.demoPlaying = false;
       },
 
       playDemo() {
-        const model = this.bestModel;
-        const estimate = model ? this.speedFor(model) : null;
-        if (!model || !estimate) return;
-
-        if (this.demoPlaying) {
+        if (this.demoEnabled) {
+          this.demoEnabled = false;
           this.stopDemo();
           this.demoText = this.demoFullText;
           return;
         }
 
+        const model = this.bestModel;
+        const estimate = model ? this.speedFor(model) : null;
+        if (!model || !estimate) return;
+
+        this.demoEnabled = true;
+        this.stopDemo();
         this.demoPlaying = true;
         this.startDemoCycle();
       },
@@ -641,7 +672,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       adjust(field: "vram" | "ram", step: number) {
-        this.resetDemo();
+        this.restartDemo();
         if (field === "vram") {
           this.vram = Math.min(128, Math.max(1, this.vram + step));
         } else {
@@ -735,7 +766,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       setGpu(value: string) {
-        this.resetDemo();
+        this.restartDemo();
         this.gpuSel = value;
         this.applyGpuName(value);
         this.deriveFromGpu();
@@ -775,7 +806,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       resetSpecs() {
-        this.resetDemo();
+        this.restartDemo();
         this.savedSpecs = null;
         try {
           localStorage.removeItem(SPECS_KEY);
@@ -957,7 +988,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       setPerfBias(value: number) {
-        this.resetDemo();
+        this.restartDemo();
         this.perfBias = value;
       },
 

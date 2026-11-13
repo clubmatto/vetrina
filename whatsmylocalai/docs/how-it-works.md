@@ -78,10 +78,13 @@ Sparse models take their active count from the name (`Qwen3-30B-A3B`) or from
 several sparse models as Dense, so the family field is not used.
 
 The best pick loops a short self-describing simulation at a random speed inside
-the band, from the first time results appear. Stop shows the full text and ends
-the loop; replay starts it again. With `prefers-reduced-motion` the text appears
-at once and never loops. The terminal is labelled simulated, and the animated
-text is hidden from screen readers; the band itself is the accessible number.
+the band, from the first time results appear. Changing the machine or the pick
+restarts it after a short debounce, so the text never describes a setup that is
+no longer on screen. Stop shows the full text and ends the loop; replay starts
+it again, and a machine change while stopped clears the terminal instead of
+restarting. With `prefers-reduced-motion` the text appears at once and never
+loops. The terminal is labelled simulated, and the animated text is hidden from
+screen readers; the band itself is the accessible number.
 
 The terminal keeps a dark palette in both themes, because a light panel read as
 another card rather than as a terminal.
