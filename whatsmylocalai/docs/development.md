@@ -94,4 +94,7 @@ node scripts/demo.mjs      # docs/assets/demo-light.gif and demo-dark.gif
 node scripts/og-image.mjs  # src/assets/og.png
 ```
 
-The demo script also needs ffmpeg to turn the recording into a GIF.
+The demo script also needs ffmpeg to turn the recording into a GIF. It records a
+simulated M1 with 16 GB, because headless Chromium has no GPU and the speed
+terminal would stay hidden otherwise. It scrolls to the best pick and stops the
+loop on the final frame so the GIF ends on the full simulation.
