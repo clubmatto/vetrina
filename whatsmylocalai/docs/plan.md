@@ -184,7 +184,7 @@ data was last checked.
 - Add a comment to the Product card with the engine decision and links to the
   Ollama and LM Studio MLX announcements.
 - Retitle and rewrite Marketing card `7e3b12a9` from "a third runtime" to
-  "MLX is already inside your runner." Keep the Nov 18 date if approved.
+  "MLX is already inside your runner." Keep its Nov 19 due date.
 - Keep the fit gap and catalog items as they are.
 
 ## Open questions
@@ -194,14 +194,15 @@ data was last checked.
 2. Marketing: approve the new title and angle? Recommendation: yes.
 3. Speed: is the GGUF label and caveat enough, or do we need separate MLX
    numbers? Recommendation: GGUF only.
-4. Dates: which deadline is binding, the card's week of Nov 16, the catalog
-   post's Nov 13, or the MLX post's Nov 18?
-5. Parked: do the two parked items stay parked?
-6. Model coverage: models.dev lists 320 open-weight models, the registry ships
+4. Model coverage: models.dev lists 320 open-weight models, the registry ships
    93 Q4 ones. Scope the "never stale" claim, ask Auxot to refresh, or vendor
    and extend the registry?
-7. Later, before workstreams 6 and 7: does the cost calculator include hardware
+5. Parked: do the two parked items stay parked?
+6. Later, before workstreams 6 and 7: does the cost calculator include hardware
    amortization? Is setups a page or a tab, and which vendors?
+
+Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
+2026-11-19.
 
 ## Final pass
 
