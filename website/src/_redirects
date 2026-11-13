@@ -5,5 +5,9 @@
 # redirect is cached by browsers long after the destination stops being the right
 # one. Both spellings, because the app links without the trailing slash and a
 # reader who types it will add one.
-/muretto /products/guido/#muretto 302
-/muretto/ /products/guido/#muretto 302
+/guido /products/guido/ 302
+/guido/ /products/guido/ 302
+# Kept while the published store listings still link the old name here. Remove
+# it once both listings point at /guido.
+/muretto /products/guido/#desktop 302
+/muretto/ /products/guido/#desktop 302

@@ -78,7 +78,7 @@
       {%- comment -%}
         The steps ask for a console or a PC, and which one is the sim's own fact.
         Derived here rather than stored, so `relay` stays the single answer to
-        "does this sim need Muretto".
+        "does Guido reach this sim through the PC app".
       {%- endcomment -%}
       {%- assign sim_host = 'console' -%}
       {%- if sim.relay -%}
@@ -101,7 +101,7 @@
           {%- endcomment %}
           {%- if sim.relay %}
             <li>
-              Install and launch <a href="#muretto">Muretto</a> on the PC that runs {{ sim.name }}, and allow it
+              Install and launch <a href="#desktop">Guido</a> on the PC that runs {{ sim.name }}, and allow it
               through Windows Firewall when it asks.
             </li>
             <li>Start driving in {{ sim.name }}.</li>

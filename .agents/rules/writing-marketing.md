@@ -28,7 +28,7 @@ section should support that sentence or be cut.
 
 The first line earns the second. Name the change, the problem, or the number.
 
-- "Muretto 1.0 is out."
+- "Guido 1.4 is out, and it is one app now."
 - "A month of coding-agent work on DeepSeek cost us $41.58."
 - "Gran Turismo 7 was the easy one."
 
@@ -139,12 +139,12 @@ Lead with the benefit. The feature is the proof, not the headline.
 ```markdown
 <!-- ✅ GOOD: concrete, short, one idea -->
 
-Muretto 1.0 is out. It reads sim telemetry from shared memory and relays it to
-Guido over your network.
+Guido 1.4 is out. It reads sim telemetry from shared memory on your PC and
+carries it to your phone over your network.
 
 <!-- ❌ BAD: hype, no information -->
 
-We are thrilled to announce the revolutionary launch of Muretto 1.0, a
+We are thrilled to announce the revolutionary launch of Guido 1.4, a
 game-changing solution for the modern sim racer.
 ```
 

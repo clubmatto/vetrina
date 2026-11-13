@@ -759,19 +759,20 @@
   margin: 1.5rem 0 0 0;
 }
 
-/* Muretto: what the Windows sims need before Guido can see them. A section like
-   the roadmap, not a boxed aside, so it sits in the page rather than on it. */
-.product-muretto {
+/* Guido on the PC: the same app on Windows, explained once at the foot of the
+   page. A section like the roadmap, not a boxed aside, so it sits in the page
+   rather than on it. */
+.product-desktop {
   padding: 0 0 5rem 0;
   scroll-margin-top: 5rem;
 }
 
-.product-muretto-body {
+.product-desktop-body {
   max-width: var(--guido-column);
   margin: 0 auto;
 }
 
-.product-muretto-body p {
+.product-desktop-body p {
   font-size: 1rem;
   line-height: 1.8;
   color: var(--text-secondary);
@@ -780,7 +781,7 @@
 
 /* Centred, because the download is the one thing the section asks for and the
    prose above it is not what the reader came to do. */
-.product-muretto-download {
+.product-desktop-download {
   display: flex;
   justify-content: center;
   margin-top: 1.75rem;
@@ -788,13 +789,13 @@
 
 /* Flex so the mark and the label share a baseline, which inline-block text and
    an inline SVG do not do reliably at this size. */
-.product-muretto-download .ds-btn {
+.product-desktop-download .ds-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
 }
 
-.product-muretto-download .ds-btn svg {
+.product-desktop-download .ds-btn svg {
   width: 1.15em;
   height: 1.15em;
   flex: none;
@@ -887,7 +888,7 @@
     padding: 3rem 0;
   }
 
-  .product-muretto {
+  .product-desktop {
     padding: 0 0 3rem 0;
   }
 

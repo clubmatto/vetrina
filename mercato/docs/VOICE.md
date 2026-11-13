@@ -62,7 +62,7 @@ Do not use emoji in every line. Do not use emoji to replace a claim.
 Use these spellings:
 
 Club Matto, Vetrina, FakeData, FakeData Pro, ai-kit, DB Diff, DB Diff Pro,
-Guido, Muretto, What's my local AI?
+Guido, What's my local AI?
 
 Do not invent short forms.
 
@@ -76,7 +76,7 @@ in [`mercato/README.md`](../README.md). The shared channel limits live in
 
 Good:
 
-- [Muretto launch](../posts/2026-10-12-muretto-launch.md): concrete problem,
+- [The October launch post](../posts/2026-10-12-muretto-launch.md): concrete problem,
   product proof, honest beta caveat, two clear links.
 - [The tool tradeoff](../posts/2026-10-13-the-tool-tradeoff.md): one idea, one
   number, one link.
