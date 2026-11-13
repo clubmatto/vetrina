@@ -121,6 +121,29 @@ export function shortfall(model: MergedModel, vram: number): number {
   return Math.max(0, model.vram_requirements_gb - vram);
 }
 
+/** One decimal below 10 GB, whole numbers above, so the chip stays short. */
+export function formatShortfall(model: MergedModel, vram: number): string {
+  const gap = shortfall(model, vram);
+  return String(gap < 10 ? Math.round(gap * 10) / 10 : Math.round(gap));
+}
+
+export type OptionsTab = "fits" | "beyond";
+
+/**
+ * Which options panel to show. A tab with nothing in it is never selected:
+ * if every model fits, out of reach is hidden; if none fit, it is the only
+ * useful panel.
+ */
+export function resolveOptionsTab(
+  active: OptionsTab,
+  fitCount: number,
+  beyondCount: number,
+): OptionsTab {
+  if (beyondCount === 0) return "fits";
+  if (fitCount === 0) return "beyond";
+  return active;
+}
+
 /**
  * Models that do not fit, closest first. Ties break by name so the order is
  * stable across renders.

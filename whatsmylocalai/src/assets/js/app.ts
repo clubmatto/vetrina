@@ -52,15 +52,17 @@ function canonicalGpuName(
 import {
   availableCaps,
   beyondModels as selectBeyondModels,
+  formatShortfall,
   isTight,
   matchesFilter,
   rankByTradeoff,
+  resolveOptionsTab,
   runCmd,
-  shortfall,
   sortModels,
   suggestMerged,
   type MergedModel,
   type MergedRegistry,
+  type OptionsTab,
   type Runner,
   type SortKey,
 } from "./models";
@@ -121,6 +123,9 @@ document.addEventListener("alpine:init", () => {
       filterSort: "size-desc" as SortKey,
       showAll: false,
       showBeyond: false,
+      activeTab: "fits" as OptionsTab,
+      announcement: "",
+      announceTimer: null as number | null,
       perfBias: 1,
       modelRegistry: {
         version: "0.0.0",
@@ -224,6 +229,7 @@ document.addEventListener("alpine:init", () => {
         } catch {}
 
         this.readSharedSpecs();
+        this.readSharedTab();
         // A shared spec wins over any locally saved machine for this visit, so
         // the link always replays the sharer's result rather than the viewer's.
         if (this.sharedSpecs) this.savedSpecs = null;
@@ -451,6 +457,14 @@ document.addEventListener("alpine:init", () => {
         return this.beyondModels.slice(0, 3);
       },
 
+      get effectiveTab(): OptionsTab {
+        return resolveOptionsTab(
+          this.activeTab,
+          this.alsoRuns.length,
+          this.beyondModels.length,
+        );
+      },
+
       get availableCaps(): string[] {
         return availableCaps(this.alsoRuns);
       },
@@ -639,6 +653,13 @@ document.addEventListener("alpine:init", () => {
         this.sharedSpecs = shared;
       },
 
+      readSharedTab() {
+        try {
+          const tab = new URLSearchParams(window.location.search).get("tab");
+          if (tab === "out-of-reach") this.activeTab = "beyond";
+        } catch {}
+      },
+
       applySharedSpecs() {
         const shared = this.sharedSpecs;
         if (!shared) return;
@@ -669,6 +690,7 @@ document.addEventListener("alpine:init", () => {
           params.set("os", this.osSel);
         if (this.cores) params.set("cores", String(this.cores));
         if (this.perfBias !== 1) params.set("perf", this.perfBias.toFixed(2));
+        if (this.effectiveTab === "beyond") params.set("tab", "out-of-reach");
         return `${location.origin}${location.pathname}?${params.toString()}`;
       },
 
@@ -709,13 +731,48 @@ document.addEventListener("alpine:init", () => {
         this.showBeyond = !this.showBeyond;
       },
 
-      gapFor(model: MergedModel): number {
-        return shortfall(model, this.vram);
+      /**
+       * Switch the options panel. Arrow keys move focus with the selection so
+       * the tablist behaves like a single control.
+       */
+      setTab(tab: OptionsTab, moveFocus = false) {
+        this.activeTab = tab;
+        if (!moveFocus) return;
+        // Wait for Alpine to flush :tabindex before moving focus.
+        setTimeout(() => {
+          document
+            .getElementById(tab === "fits" ? "tab-fits" : "tab-beyond")
+            ?.focus();
+        }, 0);
       },
 
       formatGap(model: MergedModel): string {
-        const gap = this.gapFor(model);
-        return String(gap < 10 ? Math.round(gap * 10) / 10 : Math.round(gap));
+        return formatShortfall(model, this.vram);
+      },
+
+      /**
+       * Announce result changes to screen readers. Debounced: holding a
+       * stepper button fires many updates and only the last one matters.
+       */
+      announceResults() {
+        const text = this.buildAnnouncement();
+        if (this.announceTimer !== null) {
+          window.clearTimeout(this.announceTimer);
+        }
+        this.announceTimer = window.setTimeout(() => {
+          this.announcement = text;
+        }, 400);
+      },
+
+      buildAnnouncement(): string {
+        if (!this.displayReady) return "";
+        const best = this.bestModel;
+        const head = best
+          ? `Best pick: ${best.model_name}, about ${best.vram_requirements_gb} GB at Q4.`
+          : `Nothing fits in ${this.vram} GB.`;
+        const fits = `${this.alsoRuns.length} more fit`;
+        const beyond = `${this.beyondModels.length} need more memory`;
+        return `${head} ${fits}, ${beyond}.`;
       },
 
       setRunner(value: Runner) {
@@ -731,6 +788,45 @@ document.addEventListener("alpine:init", () => {
 
       get displayReady() {
         return this.phase === "results";
+      },
+
+      openEmailForm() {
+        this.emailSubmitted = false;
+        this.emailError = false;
+        this.showEmailForm = true;
+        // The dialog mounts with x-show, so focus once it is in the DOM.
+        setTimeout(() => {
+          document
+            .querySelector<HTMLElement>(".email-modal")
+            ?.querySelector<HTMLElement>("button, input, a[href]")
+            ?.focus();
+        }, 0);
+      },
+
+      closeEmailForm() {
+        this.showEmailForm = false;
+        setTimeout(() => document.getElementById("emailTrigger")?.focus(), 0);
+      },
+
+      /** Keep Tab inside the open dialog. */
+      trapFocus(event: KeyboardEvent) {
+        const modal = event.currentTarget;
+        if (!(modal instanceof HTMLElement)) return;
+        const focusable = Array.from(
+          modal.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((el) => el.offsetParent !== null);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       },
 
       get runnerHint() {

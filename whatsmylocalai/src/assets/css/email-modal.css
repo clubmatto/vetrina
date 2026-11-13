@@ -117,6 +117,10 @@
   color: var(--ds-text);
 }
 
+.email-thanks:focus {
+  outline: none;
+}
+
 .email-thanks p {
   font-size: 0.95rem;
   opacity: 1;

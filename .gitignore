@@ -1,7 +1,8 @@
 # Dependencies
 node_modules/
 vendor/
-**/package-lock.json
+
+# Lockfiles are committed: npm ci depends on them for reproducible installs.
 
 # Build outputs
 dist/

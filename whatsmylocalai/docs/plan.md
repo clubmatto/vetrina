@@ -1,7 +1,7 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 and 1 are implemented. Local lint, test, and
-build pass; the new CI workflow has not run on GitHub yet. Last updated:
+Status: active. Workstreams 0, 1, and 2 are implemented. Local lint, test,
+build, and UI check pass; CI has not run on GitHub yet. Last updated:
 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
@@ -26,6 +26,11 @@ fit -> speed -> cost.
   Pages deploy.
 - **The parked items stay parked.** Side-by-side comparison and notify-me are
   not in v2.
+- **The options live in tabs.** Fits and out of reach are two panels under
+  Other options, so the primary result keeps the space it earns.
+- **e2e tests cover behaviour, not audits.** They assert user-visible
+  outcomes: a pick that fits, a command that changes, a share link that
+  replays, a gap that shrinks up the list.
 
 ## Workstreams
 
@@ -35,7 +40,8 @@ fit -> speed -> cost.
 - [x] Test the pure modules: detection, model sorting and filtering, ranking.
 - [x] Add tests for fit gap.
 - [ ] Add tests for speed and cost as those modules land.
-- [x] Add `.github/workflows/whatsmylocalai-ci.yml` with lint, test, and build.
+- [x] Add `.github/workflows/whatsmylocalai-ci.yml` with lint, test, build, and
+      the UI check.
 - [x] Add data sanity tests: model count, unique names, positive sizes.
 - [x] Document the test command in `README.md`.
 
@@ -55,7 +61,32 @@ Done when CI is green and the weekly catalog job can rely on it.
 Done when every non-fitting model can show `~X GB short`, the values update
 with the simulator, and the section is keyboard accessible.
 
-### 2. Weekly catalog rebuild
+### 2. UI review and guardrails
+
+Findings from the built page at 320 to 1440 px, in both themes. What holds:
+no horizontal overflow, AA contrast on the key text pairs, clean landmarks.
+What did not: the out-of-reach models competed with the primary list, two
+identical show-all buttons sat in one section, model names were not headings,
+result changes were silent for screen readers, and the email modal leaked
+focus.
+
+- [x] Put out-of-reach models behind tabs: "Fits" and "Out of reach".
+- [x] Render out-of-reach models as compact rows instead of cards.
+- [x] Make model names headings so heading navigation reaches them.
+- [x] Announce result changes with a polite live region.
+- [x] Trap focus in the email modal and return it to the trigger on close.
+- [x] Raise interactive targets to at least 24 px.
+- [x] Align ARIA on both show-all toggles.
+- [x] Add a functional e2e suite: recommendation, runner, share, gap, signup.
+- [ ] Review the speed, cost, and setups layouts before building them.
+
+Done when the e2e suite runs in CI and covers every flow above.
+
+The audit checks that came out of the review (contrast, targets, ids) are not
+a CI gate. They were one-off findings and belong in the final accessibility
+pass, not in a test that pretends to prove the product works.
+
+### 3. Weekly catalog rebuild
 
 - [ ] Add `.github/workflows/whatsmylocalai-catalog.yml` with a weekly schedule
       and `workflow_dispatch`.
@@ -69,7 +100,7 @@ with the simulator, and the section is keyboard accessible.
 Done when a manual run either produces a commit or a clean no-op, and Pages
 deploys the result.
 
-### 3. MLX engine note
+### 4. MLX engine note
 
 - [ ] Keep `Runner = "lmstudio" | "ollama"`.
 - [ ] Add a conditional note under the runner hint when `vendor === "apple"`:
@@ -83,7 +114,7 @@ deploys the result.
 Done when Apple users see the note, non-Apple users do not, and the wording
 does not claim the GGUF command uses MLX.
 
-### 4. Speed estimate
+### 5. Speed estimate
 
 - [ ] Add `src/_data/gpu_speed.json` with bandwidth and backend for every GPU
       in `gpu_database.json`.
@@ -102,7 +133,7 @@ does not claim the GGUF command uses MLX.
 Done when the badge updates with GPU and RAM changes, no network calls happen
 at runtime, and the estimate is labelled honestly.
 
-### 5. Cost calculator
+### 6. Cost calculator
 
 - [ ] Add three cloud price presets from models.dev: budget, mid, frontier.
 - [ ] Add `src/assets/js/cost.ts` with the local and cloud formulas.
@@ -116,7 +147,7 @@ at runtime, and the estimate is labelled honestly.
 Done when the calculator updates live, works on mobile, and does not imply
 more precision than the inputs allow.
 
-### 6. Recommended setups
+### 7. Recommended setups
 
 - [ ] Decide between a `/setups/` page and an in-page tab. The current
       recommendation is a separate page.
@@ -130,7 +161,7 @@ more precision than the inputs allow.
 Done when each rig shows what it runs, links to the vendor, and shows when the
 data was last checked.
 
-### 7. Parked
+### 8. Parked
 
 - [ ] Side-by-side rig comparison: refactor the machine state into a factory,
       run two instances, and share both through the URL.
@@ -157,8 +188,17 @@ data was last checked.
 4. Dates: which deadline is binding, the card's week of Nov 16, the catalog
    post's Nov 13, or the MLX post's Nov 18?
 5. Parked: do the two parked items stay parked?
-6. Later, before workstreams 5 and 6: does the cost calculator include hardware
+6. Later, before workstreams 6 and 7: does the cost calculator include hardware
    amortization? Is setups a page or a tab, and which vendors?
+
+## Final pass
+
+Accessibility is deferred, not dropped. Do this before calling v2 done.
+
+- [ ] Contrast and target-size pass in both themes.
+- [ ] Keyboard walkthrough of the machine panel, both option tabs, and the
+      email modal.
+- [ ] Re-check the ARIA on tabs, toggles, and the live region.
 
 ## References
 

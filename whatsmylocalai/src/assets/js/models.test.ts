@@ -4,9 +4,11 @@ import assert from "node:assert/strict";
 import {
   availableCaps,
   beyondModels,
+  formatShortfall,
   isTight,
   matchesFilter,
   rankByTradeoff,
+  resolveOptionsTab,
   runCmd,
   shortfall,
   sortModels,
@@ -263,5 +265,41 @@ describe("beyondModels", () => {
       beyondModels([far, justOver, fits], 1).map((model) => model.id),
       ["fits", "just", "far"],
     );
+  });
+});
+
+describe("formatShortfall", () => {
+  it("keeps one decimal below 10 GB and rounds above", () => {
+    assert.equal(
+      formatShortfall(makeModel({ vram_requirements_gb: 10.5 }), 8),
+      "2.5",
+    );
+    assert.equal(
+      formatShortfall(makeModel({ vram_requirements_gb: 12 }), 8),
+      "4",
+    );
+    assert.equal(
+      formatShortfall(makeModel({ vram_requirements_gb: 27.5 }), 8),
+      "20",
+    );
+    assert.equal(
+      formatShortfall(makeModel({ vram_requirements_gb: 8 }), 8),
+      "0",
+    );
+  });
+});
+
+describe("resolveOptionsTab", () => {
+  it("hides out of reach when every model fits", () => {
+    assert.equal(resolveOptionsTab("beyond", 3, 0), "fits");
+  });
+
+  it("lands on out of reach when nothing fits", () => {
+    assert.equal(resolveOptionsTab("fits", 0, 4), "beyond");
+  });
+
+  it("keeps the active tab when both panels have models", () => {
+    assert.equal(resolveOptionsTab("fits", 3, 4), "fits");
+    assert.equal(resolveOptionsTab("beyond", 3, 4), "beyond");
   });
 });

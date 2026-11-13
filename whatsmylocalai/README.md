@@ -121,16 +121,17 @@ The shared 3-state theme toggle (light/dark/system) lives in
 
 ## Development
 
-| Command                  | Description                                |
-| ------------------------ | ------------------------------------------ |
-| `npm install`            | Install dependencies                       |
-| `npm run dev`            | Start dev server with live reload          |
-| `npm run build`          | Build production site (clean + full build) |
-| `npm run clean`          | Remove `_site` directory                   |
-| `npm run lint`           | Typecheck + prettier check                 |
-| `npm run typecheck`      | `tsc --noEmit`                             |
-| `npm test`               | Run unit tests with Node's test runner     |
-| `npm run prettier:write` | Format all files                           |
+| Command                  | Description                                                   |
+| ------------------------ | ------------------------------------------------------------- |
+| `npm install`            | Install dependencies                                          |
+| `npm run dev`            | Start dev server with live reload                             |
+| `npm run build`          | Build production site (clean + full build)                    |
+| `npm run clean`          | Remove `_site` directory                                      |
+| `npm run lint`           | Typecheck + prettier check                                    |
+| `npm run typecheck`      | `tsc --noEmit`                                                |
+| `npm test`               | Run unit tests with Node's test runner                        |
+| `npm run e2e`            | Run the browser flows against `_site` (after `npm run build`) |
+| `npm run prettier:write` | Format all files                                              |
 
 ### Regenerating the Demo GIF
 

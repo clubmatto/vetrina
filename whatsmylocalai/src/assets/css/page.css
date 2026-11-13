@@ -135,6 +135,7 @@ code {
   position: relative;
   display: flex;
   align-items: center;
+  min-height: 1.5rem;
   gap: var(--ds-space-2);
   padding: var(--ds-space-1) 0;
   border: none;
@@ -324,6 +325,9 @@ code {
 }
 
 .credits-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   color: var(--ds-text-secondary);
   text-decoration: none;
   font-size: 0.85rem;
@@ -344,6 +348,8 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   color: var(--ds-text);
   transition: opacity var(--ds-transition);
   opacity: 0.7;

@@ -44,7 +44,7 @@
           </svg>
         </span>
       </button>
-      <button class="email-trigger" type="button" @click="showEmailForm = true" aria-label="Get updates">
+      <button class="email-trigger" id="emailTrigger" type="button" @click="openEmailForm()" aria-label="Get updates">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -66,18 +66,19 @@
   x-show="showEmailForm"
   x-cloak
   x-transition.opacity
-  @keydown.escape.window="showEmailForm = false"
+  @keydown.escape.window="showEmailForm && closeEmailForm()"
 >
   <div
     class="email-modal"
-    @click.outside="showEmailForm = false"
+    @click.outside="closeEmailForm()"
+    @keydown.tab="trapFocus($event)"
     role="dialog"
     aria-modal="true"
     aria-labelledby="email-modal-title"
   >
     <div class="email-modal-header">
       <h2 id="email-modal-title">Get updates</h2>
-      <button class="email-modal-close" type="button" @click="showEmailForm = false" aria-label="Close">&times;</button>
+      <button class="email-modal-close" type="button" @click="closeEmailForm()" aria-label="Close">&times;</button>
     </div>
     <p class="email-modal-intro">We'll let you know when new models or features land. No spam, unsubscribe anytime.</p>
 
@@ -93,7 +94,7 @@
               product_id: $el.product_id.value
             })
           })
-            .then(r => { if (r.ok) { emailSubmitted = true } else { emailError = true } })
+            .then(r => { if (r.ok) { emailSubmitted = true; setTimeout(() => document.getElementById('emailThanks')?.focus(), 0) } else { emailError = true } })
             .catch(() => { emailError = true })
         "
         action="{{ apiBaseUrl }}/waiting-list/signup"
@@ -112,10 +113,12 @@
         <button type="submit" class="email-submit">Subscribe</button>
       </form>
     </template>
-    <p class="email-error" x-show="emailError" x-cloak>Couldn't subscribe you right now — please try again.</p>
+    <p class="email-error" x-show="emailError" x-cloak role="alert">
+      Couldn't subscribe you right now — please try again.
+    </p>
 
     <template x-if="emailSubmitted">
-      <div class="email-thanks">
+      <div class="email-thanks" id="emailThanks" tabindex="-1">
         <p>Thanks! We'll be in touch.</p>
       </div>
     </template>
