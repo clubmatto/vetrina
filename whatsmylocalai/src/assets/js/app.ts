@@ -136,6 +136,7 @@ document.addEventListener("alpine:init", () => {
       demoFullText: "",
       demoPlaying: false,
       demoRaf: null as number | null,
+      demoLoopTimer: null as number | null,
       demoPlayed: false,
       perfBias: 1,
       modelRegistry: {
@@ -565,6 +566,10 @@ document.addEventListener("alpine:init", () => {
           window.cancelAnimationFrame(this.demoRaf);
           this.demoRaf = null;
         }
+        if (this.demoLoopTimer !== null) {
+          window.clearTimeout(this.demoLoopTimer);
+          this.demoLoopTimer = null;
+        }
         this.demoPlaying = false;
       },
 
@@ -579,6 +584,16 @@ document.addEventListener("alpine:init", () => {
           return;
         }
 
+        this.demoPlaying = true;
+        this.startDemoCycle();
+      },
+
+      /** One pass of the loop. The pause keeps it from feeling frantic. */
+      startDemoCycle() {
+        const model = this.bestModel;
+        const estimate = model ? this.speedFor(model) : null;
+        if (!model || !estimate) return;
+
         const rate = Math.round(
           estimate.low + Math.random() * (estimate.high - estimate.low),
         );
@@ -588,11 +603,9 @@ document.addEventListener("alpine:init", () => {
 
         if (this.reducedMotion) {
           this.demoText = text;
+          this.demoPlaying = false;
           return;
         }
-
-        this.stopDemo();
-        this.demoPlaying = true;
 
         // Tokens are about four characters. Stream characters at that rate and
         // let the browser batch the DOM writes per frame.
@@ -605,8 +618,13 @@ document.addEventListener("alpine:init", () => {
           );
           this.demoText = text.slice(0, shown);
           if (shown >= text.length) {
-            this.demoPlaying = false;
             this.demoRaf = null;
+            if (this.demoPlaying) {
+              this.demoLoopTimer = window.setTimeout(() => {
+                this.demoLoopTimer = null;
+                if (this.demoPlaying) this.startDemoCycle();
+              }, 1200);
+            }
             return;
           }
           this.demoRaf = window.requestAnimationFrame(tick);

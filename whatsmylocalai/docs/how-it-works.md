@@ -77,11 +77,14 @@ Sparse models take their active count from the name (`Qwen3-30B-A3B`) or from
 `model_speed.json` when the name does not encode it. The registry labels
 several sparse models as Dense, so the family field is not used.
 
-The best pick streams a short self-describing simulation at a random speed
-inside the band, once when results appear. Replay restarts it, and stop shows
-the full text. With `prefers-reduced-motion` the text appears at once. The
-terminal is labelled simulated, and the animated text is hidden from screen
-readers; the band itself is the accessible number.
+The best pick loops a short self-describing simulation at a random speed inside
+the band, from the first time results appear. Stop shows the full text and ends
+the loop; replay starts it again. With `prefers-reduced-motion` the text appears
+at once and never loops. The terminal is labelled simulated, and the animated
+text is hidden from screen readers; the band itself is the accessible number.
+
+The terminal keeps a dark palette in both themes, because a light panel read as
+another card rather than as a terminal.
 
 There is no chip for a model that does not fit, and no separate MLX number: the
 estimate is for the GGUF command shown on the card.

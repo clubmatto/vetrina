@@ -15,6 +15,25 @@ test("shows a prominent speed band and streams a simulation", async ({
   );
 });
 
+test("loops the simulation until stopped", async ({ page }) => {
+  await skipReveal(page);
+  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+
+  const output = page.locator(".speed-demo-output");
+  await expect(output).toContainText("Simulation at");
+  const first = await output.textContent();
+
+  await expect
+    .poll(() => output.textContent(), { timeout: 6000 })
+    .not.toBe(first);
+
+  await page.locator(".speed-demo-replay").click();
+  const stopped = await output.textContent();
+  await page.waitForTimeout(1800);
+
+  expect(await output.textContent()).toBe(stopped);
+});
+
 test("shows a band on Apple silicon from the chip bins", async ({ page }) => {
   await skipReveal(page);
   await page.goto("/?gpu=Apple%20M5%20Max&ram=128&vram=96");

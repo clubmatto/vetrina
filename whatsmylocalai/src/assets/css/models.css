@@ -430,14 +430,24 @@
 /* --- simulated terminal --------------------------------------------------- */
 
 .speed-demo {
+  /* The terminal keeps its own dark palette in both themes: a light panel
+     looked like another card, not like a terminal. */
+  --demo-bg: light-dark(#15171f, #0b0d12);
+  --demo-text: #e6edf3;
+  --demo-muted: #9aa4b2;
+  --demo-accent: #7ee787;
+  --demo-border: light-dark(rgba(20, 22, 28, 0.9), rgba(255, 255, 255, 0.14));
+  --demo-hairline: rgba(255, 255, 255, 0.1);
+
   display: flex;
   flex-direction: column;
   min-height: 9rem;
   overflow: hidden;
-  background: var(--terminal-bg);
-  border: 1px solid var(--terminal-border);
+  background: var(--demo-bg);
+  border: 1px solid var(--demo-border);
   border-radius: var(--ds-radius-lg);
-  box-shadow: var(--ds-shadow-sm);
+  box-shadow: 0 14px 30px
+    light-dark(rgba(20, 22, 28, 0.18), rgba(0, 0, 0, 0.45));
 }
 
 .speed-demo-head {
@@ -445,11 +455,10 @@
   align-items: center;
   gap: var(--ds-space-2);
   padding: var(--ds-space-2) var(--ds-space-3);
-  border-bottom: 1px solid var(--terminal-border);
+  border-bottom: 1px solid var(--demo-hairline);
   font-family: var(--ds-font-mono);
   font-size: 0.7rem;
-  color: var(--terminal-text);
-  opacity: 0.75;
+  color: var(--demo-muted);
 }
 
 .speed-demo-dots {
@@ -461,8 +470,19 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: currentColor;
-  opacity: 0.5;
+  background: var(--demo-muted);
+}
+
+.speed-demo-dots i:nth-child(1) {
+  background: #ff6b6b;
+}
+
+.speed-demo-dots i:nth-child(2) {
+  background: #f5c26b;
+}
+
+.speed-demo-dots i:nth-child(3) {
+  background: var(--demo-accent);
 }
 
 .speed-demo-title {
@@ -475,16 +495,16 @@
   padding: 0.1em 0.5em;
   font-family: var(--ds-font-mono);
   font-size: 0.7rem;
-  color: inherit;
+  color: var(--demo-text);
   background: transparent;
-  border: 1px solid var(--terminal-border);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--ds-radius-full);
   cursor: pointer;
 }
 
 .speed-demo-replay:hover {
-  color: var(--ds-text-inverse);
-  background: var(--ds-gradient-4);
+  color: #0b0d12;
+  background: var(--demo-accent);
   border-color: transparent;
 }
 
@@ -498,9 +518,7 @@
   padding: var(--ds-space-3);
   overflow: hidden;
   font-family: var(--ds-font-mono);
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--terminal-text);
+  color: var(--demo-text);
 }
 
 .speed-demo-prompt,
@@ -511,12 +529,11 @@
 
 .speed-demo-prompt {
   margin: 0 0 var(--ds-space-2);
-  color: var(--terminal-text);
-  opacity: 0.7;
+  color: rgba(230, 237, 243, 0.72);
 }
 
 .speed-demo-sigil {
-  color: var(--ds-gradient-4);
+  color: var(--demo-accent);
 }
 
 .speed-demo-output {
@@ -528,6 +545,7 @@
 
 .speed-demo-output.typing::after {
   content: "▌";
+  color: var(--demo-accent);
   animation: speed-demo-blink 1s steps(1) infinite;
 }
 

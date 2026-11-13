@@ -147,8 +147,8 @@ does not claim the GGUF command uses MLX.
 - [x] Add llmspeed credits.
 - [x] Test the estimator: known values, monotonicity, sparse versus dense, and
       unknown hardware.
-- [x] Promote the band to a stat and add the simulated terminal (autoplay once,
-      replay, reduced-motion aware, stacked on mobile).
+- [x] Promote the band to a stat and add the simulated terminal (autoplay, loop,
+      stop and replay, reduced-motion aware, stacked on mobile).
 - [x] Skip llmspeed's measured combos: too few model and hardware matches to
       matter.
 
