@@ -286,6 +286,11 @@
   border-color: currentColor;
 }
 
+.chip-speed {
+  border-color: var(--ds-gradient-4);
+  color: var(--ds-text);
+}
+
 .run-cmd {
   display: flex;
   align-items: center;

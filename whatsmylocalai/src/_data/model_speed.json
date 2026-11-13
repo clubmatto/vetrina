@@ -1,0 +1,18 @@
+{
+  "notes": "Active parameters for sparse models whose name does not encode them as A#B. Sources: model cards. The registry labels several sparse models as Dense, so this table is the authority.",
+  "active_params_b": {
+    "Kimi-K2": 32,
+    "Kimi-K2.5": 32,
+    "MiniMax-M2.1": 10,
+    "DeepSeek-R1-0528": 37,
+    "DeepSeek-V3.1": 37,
+    "DeepSeek-V3.1-Terminus": 37,
+    "Llama-4-Scout-17B-16E": 17,
+    "Llama-4-Maverick-17B-128E": 17,
+    "gpt-oss-20b": 3.6,
+    "gpt-oss-safeguard-20b": 3.6,
+    "gpt-oss-120b": 5.1,
+    "gpt-oss-safeguard-120b": 5.1,
+    "Qwen3-Coder-Next": 3
+  }
+}

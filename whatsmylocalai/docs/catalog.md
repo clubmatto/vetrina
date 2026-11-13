@@ -126,6 +126,18 @@ Two corrections landed with the first pass: `M4 Ultra` was removed because
 Apple never shipped it (the Mac Studio paired M4 Max with M3 Ultra), and
 `M5 Ultra` was added with 96, 256, and 512 GB configurations at 1.2 TB/s.
 
+## Sparse models
+
+Sparse models read a fraction of their parameters per token, and the speed
+estimate depends on that fraction. The merge takes it from the model name when
+the name encodes it (`Qwen3-30B-A3B` means 3B active), and from
+`src/_data/model_speed.json` otherwise.
+
+That table exists because the registry's `family` field labels several sparse
+models as `Dense`: DeepSeek V3 and R1, the Llama 4 pair, gpt-oss, and
+Qwen3-Coder-Next. Do not use `family` to decide sparsity. Add an override when a
+new sparse model's name does not include the active count.
+
 ## Enrichment
 
 `src/_data/enrichment.json` adds what the packages do not carry: an Ollama tag

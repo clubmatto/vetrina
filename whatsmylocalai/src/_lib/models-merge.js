@@ -4,6 +4,7 @@ import {
 } from "@opencode-ai/models/snapshot";
 import registry from "@auxot/model-registry/registry.json" with { type: "json" };
 import enrichment from "../_data/enrichment.json" with { type: "json" };
+import modelSpeed from "../_data/model_speed.json" with { type: "json" };
 
 export function normalize(s) {
   return s.toLowerCase().replace(/[\s-]/g, "");
@@ -44,6 +45,18 @@ export function matchRegistryToModeldev(regEntry, mdMap) {
   return null;
 }
 
+/**
+ * Parameters read per token. Sparse model names usually encode the active
+ * count (Qwen3-30B-A3B); the rest come from model_speed.json. The registry's
+ * family field labels several sparse models as Dense, so it is not used here.
+ */
+export function activeParamsB(modelName, paramsB) {
+  const encoded = modelName.match(/-A(\d+(?:\.\d+)?)B/i);
+  if (encoded) return parseFloat(encoded[1]);
+  const override = modelSpeed.active_params_b[modelName];
+  return typeof override === "number" ? override : paramsB;
+}
+
 export function buildModels() {
   // Performance proxy note: the trade-off slider in the UI ranks models by
   // `params_b` (parameter count) as its "performance" axis — same signal the
@@ -82,6 +95,7 @@ export function buildModels() {
       family: m.family,
       parameters: m.parameters,
       params_b: parseParams(m.parameters),
+      active_params_b: activeParamsB(m.model_name, parseParams(m.parameters)),
       default_context_size: m.default_context_size,
       max_context_size: m.max_context_size,
       vram_requirements_gb: m.vram_requirements_gb,

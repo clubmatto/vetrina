@@ -53,6 +53,33 @@ Everything that does not fit is listed in the "Out of reach" tab with the gap
 in gigabytes, closest first. The gap is the model's requirement minus the
 budget, so it shrinks as the simulated machine grows.
 
+## Speed estimate
+
+The tokens-per-second chip is an estimate, not a measurement.
+
+`src/assets/js/speed.ts` ports the decode model from
+[llmspeed](https://github.com/nicorobinreal/llmspeed) (MIT). Decode at batch
+size 1 is bandwidth-bound:
+
+```
+tok/s = bandwidth × backend efficiency ÷ active weight GB
+```
+
+- Bandwidth comes from `gpu_speed.json` for GPUs, and from the
+  `[max memory, GB/s]` bins in `apple_speed.json` for Apple chips.
+- Weights come from the catalog's Q4 figure. Sparse models only read their
+  active parameters per token, so the active share scales the traffic down.
+- Backend efficiency depends on the vendor: CUDA, Metal, ROCm, Vulkan.
+- The result is a rounded ±15% band, for one device, a short prompt, and an 8k
+  context.
+
+Sparse models take their active count from the name (`Qwen3-30B-A3B`) or from
+`model_speed.json` when the name does not encode it. The registry labels
+several sparse models as Dense, so the family field is not used.
+
+There is no chip for a model that does not fit, and no separate MLX number: the
+estimate is for the GGUF command shown on the card.
+
 ## Run commands
 
 Two flavors, switchable in the UI and persisted in `localStorage`:

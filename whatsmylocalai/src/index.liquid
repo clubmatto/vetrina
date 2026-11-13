@@ -318,6 +318,12 @@
       <script id="apple-chips" type="application/json">
         {{ apple_chips | json }}
       </script>
+      <script id="gpu-speed" type="application/json">
+        {{ gpu_speed | json }}
+      </script>
+      <script id="apple-speed" type="application/json">
+        {{ apple_speed | json }}
+      </script>
 
       <section class="best-pick-row" id="best-pick-row">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
@@ -400,6 +406,12 @@
               <div class="model-meta">
                 <span class="chip" x-text="bestModel.parameters"></span>
                 <span class="chip" x-text="'~' + bestModel.vram_requirements_gb + ' GB Q4'"></span>
+                <span
+                  class="chip chip-speed"
+                  x-show="speedLabel(bestModel)"
+                  :title="speedHint"
+                  x-text="speedLabel(bestModel)"
+                ></span>
                 <template x-for="cap in bestModel.capabilities" :key="cap">
                   <span class="chip" x-text="cap"></span>
                 </template>
@@ -529,6 +541,12 @@
                     <div class="model-meta">
                       <span class="chip" x-text="model.parameters"></span>
                       <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                      <span
+                        class="chip chip-speed"
+                        x-show="speedLabel(model)"
+                        :title="speedHint"
+                        x-text="speedLabel(model)"
+                      ></span>
                       <template x-for="cap in model.capabilities" :key="cap">
                         <span class="chip" x-text="cap"></span>
                       </template>
@@ -586,7 +604,8 @@
 
         <p class="catalog-note">
           Model data: models.dev snapshot {{ models.sources.models_dev }}, model registry {{ models.sources.registry }}.
-          Sizes are Q4, refreshed weekly from the upstream catalogs.
+          Sizes are Q4. Speeds are estimates for GGUF via llama.cpp or Metal, single device, 8k context. Refreshed
+          weekly from the upstream catalogs.
         </p>
       </section>
 

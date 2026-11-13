@@ -1,8 +1,8 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 4 are shipped. Workstream 5 has its data
-tables in place; the estimator, badge, and UI remain. Workstreams 6 and 7 and
-the final accessibility pass are still open. Last updated: 2026-11-13.
+Status: active. Workstreams 0 to 4 are shipped. Workstream 5 is implemented
+and waiting to ship. Workstreams 6 and 7 and the final accessibility pass are
+still open. Last updated: 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -134,15 +134,19 @@ does not claim the GGUF command uses MLX.
       (CC BY 4.0), like the package bumps: regenerate, verify, commit.
 - [x] Add `src/_data/apple_speed.json` with per-chip bandwidth bins for every
       chip in `apple_chips.json`, curated from Apple's spec pages.
-- [ ] Add `src/_data/model_speed.json` with active parameters for MoE models
-      and measured overrides where they exist.
-- [ ] Add `src/_lib/speed.js` with the bandwidth model, coefficients, and
-      confidence labels.
-- [ ] Show a `~A-B tok/s` chip on the best pick and model cards.
-- [ ] Label the estimate as GGUF; tooltip: "GGUF via llama.cpp/Metal. MLX
-      variants may differ."
-- [ ] Add llmspeed and vendor spec credits.
-- [ ] Test known combinations within a tolerance and assert monotonicity.
+- [x] Add `src/_data/model_speed.json` with active parameters for sparse
+      models whose name does not encode them.
+- [x] Add `src/assets/js/speed.ts` with the bandwidth model, coefficients, and
+      the band.
+- [x] Show a `~A-B tok/s` chip on the best pick and model cards, including
+      tight fits.
+- [x] Label the estimate as GGUF; tooltip: "GGUF via llama.cpp or Metal, MLX
+      builds can differ."
+- [x] Add llmspeed credits.
+- [x] Test the estimator: known values, monotonicity, sparse versus dense, and
+      unknown hardware.
+- [x] Skip llmspeed's measured combos: too few model and hardware matches to
+      matter.
 
 The GPU table is generated, not hand-entered: `scripts/catalog-gpu.mjs`
 downloads GPU Ark, matches each card by name and VRAM, drops laptop rows, and

@@ -10,6 +10,7 @@ import { suggestModelsForVRAM } from "@auxot/model-registry";
 export interface MergedModel extends ModelRegistryEntry {
   family_label: string;
   params_b: number;
+  active_params_b: number;
   description: string;
   ollama_tag: string;
   blurb: string;

@@ -61,7 +61,8 @@ the package index re-exports Node-only code.
 
 Unit tests use `node:test` through `tsx` and sit next to the code.
 
-- `src/assets/js/*.test.ts`: detection, ranking, filtering, the fit gap.
+- `src/assets/js/*.test.ts`: detection, ranking, filtering, the fit gap, speed
+  estimates.
 - `src/_lib/models-merge.test.ts`: catalog shape, uniqueness, Q4 only.
 - `src/_lib/gpu-speed.test.ts`: every GPU covered, plausible values, known
   specs.

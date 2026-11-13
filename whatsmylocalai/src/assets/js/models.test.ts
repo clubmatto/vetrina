@@ -25,6 +25,7 @@ function makeModel(overrides: Partial<MergedModel> = {}): MergedModel {
     family: "Dense",
     parameters: "8B",
     params_b: 8,
+    active_params_b: 8,
     default_context_size: 32768,
     max_context_size: 32768,
     vram_requirements_gb: 4,

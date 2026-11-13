@@ -9,6 +9,7 @@ interface BuiltModel {
   huggingface_id: string;
   quantization: string;
   params_b: number;
+  active_params_b: number;
   vram_requirements_gb: number;
 }
 
@@ -53,6 +54,32 @@ describe("buildModels", () => {
       assert.ok(model.quantization.startsWith("Q4"), model.model_name);
       assert.ok(model.params_b > 0, model.model_name);
       assert.ok(model.vram_requirements_gb > 0, model.model_name);
+    }
+  });
+});
+
+describe("active parameters", () => {
+  it("reads sparse models from the name or the override table", () => {
+    const byName = (name: string) =>
+      registry.models.find((model) => model.model_name === name);
+
+    const sparse = byName("Qwen3-30B-A3B");
+    const override = byName("gpt-oss-20b");
+    const dense = byName("Qwen3-8B");
+
+    assert.ok(sparse && override && dense);
+    assert.equal(sparse.active_params_b, 3);
+    assert.equal(override.active_params_b, 3.6);
+    assert.equal(dense.active_params_b, dense.params_b);
+  });
+
+  it("keeps every active count positive and within the total", () => {
+    for (const model of registry.models) {
+      assert.ok(model.active_params_b > 0, model.model_name);
+      assert.ok(
+        model.active_params_b <= model.params_b + 0.01,
+        `${model.model_name}: ${model.active_params_b} of ${model.params_b}`,
+      );
     }
   });
 });

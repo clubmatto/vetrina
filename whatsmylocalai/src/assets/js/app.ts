@@ -66,6 +66,12 @@ import {
   type Runner,
   type SortKey,
 } from "./models";
+import {
+  backendForVendor,
+  estimateSpeed,
+  formatSpeed,
+  type SpeedEstimate,
+} from "./speed";
 import { initThemeToggle } from "../../../../assets/js/theme";
 
 type ProbeKey = "gpu" | "ram" | "cpu" | "os" | "webgpu" | "vram";
@@ -134,6 +140,12 @@ document.addEventListener("alpine:init", () => {
       } as MergedRegistry,
       gpuDatabase: [] as GpuDatabase,
       appleChips: [] as AppleChipDatabase,
+      gpuSpeed: { bandwidth_gbs: {} } as {
+        bandwidth_gbs: Record<string, number>;
+      },
+      appleSpeed: { bins: {} } as {
+        bins: Record<string, [number, number][]>;
+      },
       savedSpecs: null as {
         ram: number;
         vram: number;
@@ -193,6 +205,14 @@ document.addEventListener("alpine:init", () => {
           (loadJSON("gpu-database") as GpuDatabase | null) ?? [];
         this.appleChips =
           (loadJSON("apple-chips") as AppleChipDatabase | null) ?? [];
+        this.gpuSpeed = (loadJSON("gpu-speed") as {
+          bandwidth_gbs: Record<string, number>;
+        } | null) ?? {
+          bandwidth_gbs: {},
+        };
+        this.appleSpeed = (loadJSON("apple-speed") as {
+          bins: Record<string, [number, number][]>;
+        } | null) ?? { bins: {} };
 
         try {
           const raw = localStorage.getItem(SPECS_KEY);
@@ -463,6 +483,44 @@ document.addEventListener("alpine:init", () => {
           this.alsoRuns.length,
           this.beyondModels.length,
         );
+      },
+
+      get bandwidthGbS(): number | null {
+        if (this.vendor === "apple" && this.chip) {
+          const chip = this.chip;
+          const key = Object.keys(this.appleSpeed.bins).find(
+            (name) => name.toLowerCase() === chip.toLowerCase(),
+          );
+          const bins = key ? this.appleSpeed.bins[key] : null;
+          if (bins) {
+            for (const [maxRam, value] of bins) {
+              if (this.ram <= maxRam) return value;
+            }
+          }
+          return null;
+        }
+        return this.gpuSpeed.bandwidth_gbs[this.gpuSel] ?? null;
+      },
+
+      speedFor(model: MergedModel): SpeedEstimate | null {
+        if (!this.displayReady) return null;
+        if (model.vram_requirements_gb > this.vram) return null;
+        return estimateSpeed({
+          bandwidthGbS: this.bandwidthGbS,
+          backend: backendForVendor(this.vendor),
+          vramGb: model.vram_requirements_gb,
+          paramsB: model.params_b,
+          activeParamsB: model.active_params_b,
+        });
+      },
+
+      speedLabel(model: MergedModel): string {
+        const estimate = this.speedFor(model);
+        return estimate ? formatSpeed(estimate) : "";
+      },
+
+      get speedHint(): string {
+        return "Estimated decode speed for GGUF via llama.cpp or Metal, single device, 8k context. MLX builds can differ.";
       },
 
       get availableCaps(): string[] {
