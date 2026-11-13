@@ -51,10 +51,12 @@ function canonicalGpuName(
 }
 import {
   availableCaps,
+  beyondModels as selectBeyondModels,
   isTight,
   matchesFilter,
   rankByTradeoff,
   runCmd,
+  shortfall,
   sortModels,
   suggestMerged,
   type MergedModel,
@@ -77,6 +79,8 @@ const PROBE_KEYS: readonly ProbeKey[] = [
 
 /** How many "other options" to show by default before the "show all" toggle. */
 const TOP_RUNS = 3;
+/** How many out-of-reach models to show before the "show all" toggle. */
+const TOP_BEYOND = 6;
 
 const PROBE_SEEN_KEY = "wmla-probe-seen";
 const SPECS_KEY = "wmla-specs";
@@ -116,6 +120,7 @@ document.addEventListener("alpine:init", () => {
       filterCaps: [] as string[],
       filterSort: "size-desc" as SortKey,
       showAll: false,
+      showBeyond: false,
       perfBias: 1,
       modelRegistry: {
         version: "0.0.0",
@@ -433,6 +438,19 @@ document.addEventListener("alpine:init", () => {
         return this.visibleAlsoRuns.slice(0, TOP_RUNS);
       },
 
+      get beyondModels(): MergedModel[] {
+        return selectBeyondModels(this.modelRegistry.models, this.vram);
+      },
+
+      get visibleBeyond(): MergedModel[] {
+        const models = this.beyondModels;
+        return this.showBeyond ? models : models.slice(0, TOP_BEYOND);
+      },
+
+      get closestBeyond(): MergedModel[] {
+        return this.beyondModels.slice(0, 3);
+      },
+
       get availableCaps(): string[] {
         return availableCaps(this.alsoRuns);
       },
@@ -685,6 +703,19 @@ document.addEventListener("alpine:init", () => {
 
       toggleShowAll() {
         this.showAll = !this.showAll;
+      },
+
+      toggleBeyond() {
+        this.showBeyond = !this.showBeyond;
+      },
+
+      gapFor(model: MergedModel): number {
+        return shortfall(model, this.vram);
+      },
+
+      formatGap(model: MergedModel): string {
+        const gap = this.gapFor(model);
+        return String(gap < 10 ? Math.round(gap * 10) / 10 : Math.round(gap));
       },
 
       setRunner(value: Runner) {

@@ -129,6 +129,7 @@ The shared 3-state theme toggle (light/dark/system) lives in
 | `npm run clean`          | Remove `_site` directory                   |
 | `npm run lint`           | Typecheck + prettier check                 |
 | `npm run typecheck`      | `tsc --noEmit`                             |
+| `npm test`               | Run unit tests with Node's test runner     |
 | `npm run prettier:write` | Format all files                           |
 
 ### Regenerating the Demo GIF

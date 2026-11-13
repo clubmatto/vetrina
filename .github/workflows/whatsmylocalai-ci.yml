@@ -1,0 +1,38 @@
+name: whatsmylocalai CI
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "whatsmylocalai/**"
+      - "assets/**"
+      - ".github/workflows/whatsmylocalai-*.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "whatsmylocalai/**"
+      - "assets/**"
+      - ".github/workflows/whatsmylocalai-*.yml"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: whatsmylocalai
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: whatsmylocalai/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm test
+
+      - run: npm run build

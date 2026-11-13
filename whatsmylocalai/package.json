@@ -8,6 +8,7 @@
     "dev": "npm run clean && NODE_ENV=development tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts --serve",
     "build": "npm run clean && NODE_ENV=production tsx ./node_modules/.bin/eleventy --config=eleventy.config.ts",
     "typecheck": "tsc --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\"",
     "lint": "npm run typecheck && prettier --check .",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write ."

@@ -323,6 +323,62 @@
   color: var(--ds-ok);
 }
 
+/* --- how far off you are -------------------------------------------------- */
+
+.beyond {
+  margin-top: var(--ds-space-8);
+}
+
+.beyond-title {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.beyond-intro {
+  margin: var(--ds-space-2) 0 var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.9rem;
+  color: var(--ds-text-secondary);
+  opacity: 1;
+}
+
+.beyond-card {
+  box-shadow: none;
+  border-style: dashed;
+}
+
+.chip-gap {
+  color: var(--ds-warn);
+  border-color: currentColor;
+}
+
+.beyond-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  margin: 0;
+  padding-left: var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.9rem;
+  color: var(--ds-text-secondary);
+}
+
+.beyond-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+}
+
+.beyond-list-name {
+  color: var(--ds-text);
+}
+
+.beyond-list-gap {
+  color: var(--ds-warn);
+}
+
 @media (max-width: 640px) {
   .models-toolbar {
     flex-direction: column;

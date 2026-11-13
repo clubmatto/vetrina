@@ -1,0 +1,50 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+
+import { buildModels } from "./models-merge.js";
+
+interface BuiltModel {
+  id: string;
+  model_name: string;
+  huggingface_id: string;
+  quantization: string;
+  params_b: number;
+  vram_requirements_gb: number;
+}
+
+interface BuiltRegistry {
+  generated_at: string;
+  models: BuiltModel[];
+}
+
+// buildModels is plain JavaScript; this is the shape _data/models.js consumes.
+const registry = buildModels() as BuiltRegistry;
+
+describe("buildModels", () => {
+  it("builds a catalog big enough to recommend from", () => {
+    assert.ok(
+      registry.models.length >= 50,
+      `expected at least 50 models, got ${registry.models.length}`,
+    );
+    assert.ok(!Number.isNaN(Date.parse(registry.generated_at)));
+  });
+
+  it("has unique model names and ids", () => {
+    const ids = new Set(registry.models.map((model) => model.id));
+    const names = new Set(registry.models.map((model) => model.model_name));
+
+    assert.equal(ids.size, registry.models.length);
+    assert.equal(names.size, registry.models.length);
+  });
+
+  it("only ships Q4 entries with positive sizes", () => {
+    for (const model of registry.models) {
+      assert.ok(model.id.trim().length > 0, "empty id");
+      assert.ok(model.model_name.trim().length > 0, "empty model name");
+      assert.ok(model.huggingface_id.includes("/"), model.model_name);
+      assert.ok(model.quantization.startsWith("Q4"), model.model_name);
+      assert.ok(model.params_b > 0, model.model_name);
+      assert.ok(model.vram_requirements_gb > 0, model.model_name);
+    }
+  });
+});

@@ -400,7 +400,16 @@
           <template x-if="displayReady && !bestModel">
             <div class="best-pick-body">
               <div class="model-name" x-text="'nothing fits in ' + vram + ' GB'"></div>
-              <p class="best-pick-why">even the tiniest model here wants ~2 GB. double-check your numbers above?</p>
+              <p class="best-pick-why" x-show="closestBeyond.length > 0">The closest options:</p>
+              <ul class="beyond-list" x-show="closestBeyond.length > 0">
+                <template x-for="model in closestBeyond" :key="model.id">
+                  <li>
+                    <span class="beyond-list-name" x-text="model.model_name"></span>
+                    <span class="beyond-list-gap" x-text="'~' + formatGap(model) + ' GB short'"></span>
+                  </li>
+                </template>
+              </ul>
+              <p class="best-pick-why">Tweak your specs above to see what changes.</p>
             </div>
           </template>
         </article>
@@ -480,6 +489,34 @@
             ></button>
           </div>
         </template>
+
+        <div class="beyond" x-show="displayReady && beyondModels.length > 0" x-cloak>
+          <h3 class="beyond-title">How far off you are</h3>
+          <p class="beyond-intro">
+            These models need more memory than you have. The gap is the extra VRAM they want, at Q4.
+          </p>
+          <div class="model-grid" id="beyond-grid">
+            <template x-for="model in visibleBeyond" :key="model.id">
+              <article class="model-card beyond-card">
+                <div class="model-name" x-text="model.model_name"></div>
+                <div class="model-meta">
+                  <span class="chip" x-text="model.parameters"></span>
+                  <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                  <span class="chip chip-gap" x-text="'~' + formatGap(model) + ' GB short'"></span>
+                </div>
+              </article>
+            </template>
+          </div>
+          <button
+            type="button"
+            class="show-all-toggle"
+            x-show="beyondModels.length > 6"
+            @click="toggleBeyond"
+            :aria-expanded="showBeyond"
+            aria-controls="beyond-grid"
+            x-text="showBeyond ? 'show fewer' : 'show all ' + beyondModels.length + ' models'"
+          ></button>
+        </div>
       </section>
 
       <section class="use-cases" id="use-cases">

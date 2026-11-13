@@ -116,6 +116,28 @@ export function isTight(model: MergedModel, vram: number): boolean {
   );
 }
 
+/** Extra memory a model needs beyond `vram`. Zero when it fits. */
+export function shortfall(model: MergedModel, vram: number): number {
+  return Math.max(0, model.vram_requirements_gb - vram);
+}
+
+/**
+ * Models that do not fit, closest first. Ties break by name so the order is
+ * stable across renders.
+ */
+export function beyondModels(
+  models: readonly MergedModel[],
+  vram: number,
+): MergedModel[] {
+  return models
+    .filter((model) => model.vram_requirements_gb > vram)
+    .sort(
+      (a, b) =>
+        shortfall(a, vram) - shortfall(b, vram) ||
+        a.model_name.localeCompare(b.model_name),
+    );
+}
+
 export function runCmd(model: MergedModel, runner: Runner): string {
   if (runner === "lmstudio") {
     return `lms get https://huggingface.co/${model.huggingface_id}@${model.quantization.toLowerCase()}`;
