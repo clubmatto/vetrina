@@ -132,6 +132,11 @@ document.addEventListener("alpine:init", () => {
       activeTab: "fits" as OptionsTab,
       announcement: "",
       announceTimer: null as number | null,
+      demoText: "",
+      demoFullText: "",
+      demoPlaying: false,
+      demoRaf: null as number | null,
+      demoPlayed: false,
       perfBias: 1,
       modelRegistry: {
         version: "0.0.0",
@@ -374,6 +379,7 @@ document.addEventListener("alpine:init", () => {
         if (this.reducedMotion || seen) {
           for (const key of PROBE_KEYS) this.probeDone[key] = true;
           this.phase = "results";
+          this.maybeAutoplayDemo();
           return;
         }
 
@@ -387,6 +393,7 @@ document.addEventListener("alpine:init", () => {
                   try {
                     localStorage.setItem(PROBE_SEEN_KEY, "1");
                   } catch {}
+                  this.maybeAutoplayDemo();
                 }, REVEAL_DELAY_MS);
               }
             },
@@ -519,6 +526,94 @@ document.addEventListener("alpine:init", () => {
         return estimate ? formatSpeed(estimate) : "";
       },
 
+      speedValue(model: MergedModel): string {
+        const estimate = this.speedFor(model);
+        return estimate ? `~${estimate.low}-${estimate.high}` : "";
+      },
+
+      buildDemoText(
+        model: MergedModel,
+        estimate: SpeedEstimate,
+        rate: number,
+      ): string {
+        const machine =
+          this.vendor === "apple" && this.chip
+            ? `this ${this.chip}`
+            : this.gpuSel || "this machine";
+        return (
+          `Simulation at ${rate} tok/s. ` +
+          `A Q4 build of ${model.model_name} runs at ${estimate.low}-${estimate.high} tok/s on ${machine}. ` +
+          `Real numbers vary with engine, prompt, and context.`
+        );
+      },
+
+      maybeAutoplayDemo() {
+        if (this.demoPlayed) return;
+        this.demoPlayed = true;
+        this.playDemo();
+      },
+
+      /** Stop and clear the terminal so it cannot contradict a new pick. */
+      resetDemo() {
+        this.stopDemo();
+        this.demoText = "";
+        this.demoFullText = "";
+      },
+
+      stopDemo() {
+        if (this.demoRaf !== null) {
+          window.cancelAnimationFrame(this.demoRaf);
+          this.demoRaf = null;
+        }
+        this.demoPlaying = false;
+      },
+
+      playDemo() {
+        const model = this.bestModel;
+        const estimate = model ? this.speedFor(model) : null;
+        if (!model || !estimate) return;
+
+        if (this.demoPlaying) {
+          this.stopDemo();
+          this.demoText = this.demoFullText;
+          return;
+        }
+
+        const rate = Math.round(
+          estimate.low + Math.random() * (estimate.high - estimate.low),
+        );
+        const text = this.buildDemoText(model, estimate, rate);
+        this.demoFullText = text;
+        this.demoText = "";
+
+        if (this.reducedMotion) {
+          this.demoText = text;
+          return;
+        }
+
+        this.stopDemo();
+        this.demoPlaying = true;
+
+        // Tokens are about four characters. Stream characters at that rate and
+        // let the browser batch the DOM writes per frame.
+        const charactersPerSecond = rate * 4;
+        const started = performance.now();
+        const tick = (now: number) => {
+          const shown = Math.min(
+            text.length,
+            Math.floor(((now - started) / 1000) * charactersPerSecond),
+          );
+          this.demoText = text.slice(0, shown);
+          if (shown >= text.length) {
+            this.demoPlaying = false;
+            this.demoRaf = null;
+            return;
+          }
+          this.demoRaf = window.requestAnimationFrame(tick);
+        };
+        this.demoRaf = window.requestAnimationFrame(tick);
+      },
+
       get speedHint(): string {
         return "Estimated decode speed for GGUF via llama.cpp or Metal, single device, 8k context. MLX builds can differ.";
       },
@@ -528,6 +623,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       adjust(field: "vram" | "ram", step: number) {
+        this.resetDemo();
         if (field === "vram") {
           this.vram = Math.min(128, Math.max(1, this.vram + step));
         } else {
@@ -621,6 +717,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       setGpu(value: string) {
+        this.resetDemo();
         this.gpuSel = value;
         this.applyGpuName(value);
         this.deriveFromGpu();
@@ -660,6 +757,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       resetSpecs() {
+        this.resetDemo();
         this.savedSpecs = null;
         try {
           localStorage.removeItem(SPECS_KEY);
@@ -841,6 +939,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       setPerfBias(value: number) {
+        this.resetDemo();
         this.perfBias = value;
       },
 

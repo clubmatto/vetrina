@@ -387,6 +387,172 @@
   box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
 }
 
+/* --- best pick layout ----------------------------------------------------- */
+
+.best-pick-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+  gap: var(--ds-space-4);
+  align-items: stretch;
+}
+
+.speed-stat {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1) var(--ds-space-2);
+  margin: var(--ds-space-1) 0 var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  color: var(--ds-text);
+}
+
+.speed-stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.speed-stat-unit {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ds-text-secondary);
+}
+
+.speed-stat-note {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-text-secondary);
+}
+
+/* --- simulated terminal --------------------------------------------------- */
+
+.speed-demo {
+  display: flex;
+  flex-direction: column;
+  min-height: 9rem;
+  overflow: hidden;
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.speed-demo-head {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-bottom: 1px solid var(--terminal-border);
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  color: var(--terminal-text);
+  opacity: 0.75;
+}
+
+.speed-demo-dots {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.speed-demo-dots i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.speed-demo-title {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.speed-demo-replay {
+  margin-left: auto;
+  padding: 0.1em 0.5em;
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--terminal-border);
+  border-radius: var(--ds-radius-full);
+  cursor: pointer;
+}
+
+.speed-demo-replay:hover {
+  color: var(--ds-text-inverse);
+  background: var(--ds-gradient-4);
+  border-color: transparent;
+}
+
+.speed-demo-replay:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+.speed-demo-body {
+  flex: 1;
+  padding: var(--ds-space-3);
+  overflow: hidden;
+  font-family: var(--ds-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--terminal-text);
+}
+
+.speed-demo-prompt,
+.speed-demo-output {
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.speed-demo-prompt {
+  margin: 0 0 var(--ds-space-2);
+  color: var(--terminal-text);
+  opacity: 0.7;
+}
+
+.speed-demo-sigil {
+  color: var(--ds-gradient-4);
+}
+
+.speed-demo-output {
+  min-height: 4.5rem;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.speed-demo-output.typing::after {
+  content: "▌";
+  animation: speed-demo-blink 1s steps(1) infinite;
+}
+
+@keyframes speed-demo-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .best-pick-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .speed-demo {
+    min-height: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .speed-demo-output.typing::after {
+    animation: none;
+  }
+}
+
 /* --- how far off you are -------------------------------------------------- */
 
 .beyond-title {

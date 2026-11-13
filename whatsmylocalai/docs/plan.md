@@ -78,7 +78,9 @@ focus.
 - [x] Raise interactive targets to at least 24 px.
 - [x] Align ARIA on both show-all toggles.
 - [x] Add a functional e2e suite: recommendation, runner, share, gap, signup.
-- [ ] Review the speed, cost, and setups layouts before building them.
+- [x] Review the speed layout: the band becomes a stat, with a simulated
+      terminal beside the card on desktop and stacked on mobile.
+- [ ] Review the cost and setups layouts before building them.
 
 Done when the e2e suite runs in CI and covers every flow above.
 
@@ -145,6 +147,8 @@ does not claim the GGUF command uses MLX.
 - [x] Add llmspeed credits.
 - [x] Test the estimator: known values, monotonicity, sparse versus dense, and
       unknown hardware.
+- [x] Promote the band to a stat and add the simulated terminal (autoplay once,
+      replay, reduced-motion aware, stacked on mobile).
 - [x] Skip llmspeed's measured combos: too few model and hardware matches to
       matter.
 
