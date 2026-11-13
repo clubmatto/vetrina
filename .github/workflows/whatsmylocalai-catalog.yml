@@ -1,6 +1,12 @@
 name: whatsmylocalai catalog
 
 on:
+  # TEMPORARY: lets a push exercise this job while we verify it end to end.
+  # Removed in the commit that follows the test runs.
+  push:
+    paths:
+      - "whatsmylocalai/**"
+      - ".github/catalog-trigger"
   schedule:
     # Monday morning. Both packages move during the week, and the marketing
     # board depends on the page not aging out.
