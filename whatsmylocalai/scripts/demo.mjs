@@ -7,7 +7,7 @@ import { rmSync } from "node:fs";
 
 const PORT = 4173;
 const SITE_DIR = new URL("../_site", import.meta.url).pathname;
-const DOCS_DIR = new URL("../docs", import.meta.url).pathname;
+const DOCS_DIR = new URL("../docs/assets", import.meta.url).pathname;
 const THEMES = ["light", "dark"];
 
 mkdirSync(DOCS_DIR, { recursive: true });

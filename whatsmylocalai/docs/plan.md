@@ -1,8 +1,8 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 3 are shipped and verified. Workstream 4 is
-implemented. Workstreams 5 to 7 and the final accessibility pass remain. Last
-updated: 2026-11-13.
+Status: active. Workstreams 0 to 4 are shipped. Workstream 5 has its data
+tables in place; the estimator, badge, and UI remain. Workstreams 6 and 7 and
+the final accessibility pass are still open. Last updated: 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -127,10 +127,13 @@ does not claim the GGUF command uses MLX.
 
 ### 5. Speed estimate
 
-- [ ] Add `src/_data/gpu_speed.json` with bandwidth and backend for every GPU
-      in `gpu_database.json`.
-- [ ] Add `src/_data/apple_speed.json` with bandwidth for every Apple chip in
-      `apple_chips.json`.
+- [x] Add `src/_data/gpu_speed.json` with bandwidth for every GPU in
+      `gpu_database.json`. Backend comes from the vendor at runtime.
+- [x] Generate it in the weekly job from
+      [GPU Ark](https://huggingface.co/datasets/Intelion/gpuark-gpu-dataset)
+      (CC BY 4.0), like the package bumps: regenerate, verify, commit.
+- [x] Add `src/_data/apple_speed.json` with per-chip bandwidth bins for every
+      chip in `apple_chips.json`, curated from Apple's spec pages.
 - [ ] Add `src/_data/model_speed.json` with active parameters for MoE models
       and measured overrides where they exist.
 - [ ] Add `src/_lib/speed.js` with the bandwidth model, coefficients, and
@@ -140,6 +143,18 @@ does not claim the GGUF command uses MLX.
       variants may differ."
 - [ ] Add llmspeed and vendor spec credits.
 - [ ] Test known combinations within a tolerance and assert monotonicity.
+
+The GPU table is generated, not hand-entered: `scripts/catalog-gpu.mjs`
+downloads GPU Ark, matches each card by name and VRAM, drops laptop rows, and
+fails the job when a card has no bandwidth or a spot check drifts. Overrides
+live in `scripts/gpu-speed-overrides.json`.
+
+Apple silicon has no data in GPU Ark, so its table is curated from Apple's spec
+pages (Wikipedia for chips Apple no longer lists). Bandwidth is stored as
+`[max memory GB, GB/s]` bins because it varies by configuration, for example
+M5 at 153 GB/s with 16 GB and 170 GB/s with 24 or 32 GB. The first pass also
+added M5 Ultra at 1.2 TB/s and removed M4 Ultra, which Apple never shipped. The
+update procedure is in [catalog.md](catalog.md#apple-silicon-bandwidth).
 
 Done when the badge updates with GPU and RAM changes, no network calls happen
 at runtime, and the estimate is labelled honestly.
@@ -178,6 +193,16 @@ data was last checked.
       run two instances, and share both through the URL.
 - [ ] Notify-me-when-it-fits: needs hub schema, API, and an email template.
       No code until the hub work is scoped.
+
+### 9. Docs
+
+- [x] Rewrite the README as a short product page that links into `docs/`.
+- [x] Move detection, ranking, and sharing to `docs/how-it-works.md`.
+- [x] Move sourcing and refresh to `docs/catalog.md`, including the manual
+      Apple bandwidth update.
+- [x] Move commands, tests, CI, and asset regeneration to
+      `docs/development.md`, and deployment to `docs/deploy.md`.
+- [x] Move the demo GIFs to `docs/assets/` and update the demo script.
 
 ## Board changes
 

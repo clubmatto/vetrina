@@ -1,0 +1,37 @@
+{
+  "source": "Apple tech specs, with Wikipedia per-chip pages for chips Apple no longer lists",
+  "notes": "Memory bandwidth varies by configuration. Each chip maps to [max unified memory GB, GB/s] bins, first match wins.",
+  "bins": {
+    "M1": [[999, 68.25]],
+    "M1 Pro": [[999, 200]],
+    "M1 Max": [[999, 400]],
+    "M1 Ultra": [[999, 800]],
+    "M2": [[999, 100]],
+    "M2 Pro": [[999, 200]],
+    "M2 Max": [[999, 400]],
+    "M2 Ultra": [[999, 800]],
+    "M3": [[999, 100]],
+    "M3 Pro": [[999, 150]],
+    "M3 Max": [
+      [36, 300],
+      [999, 400]
+    ],
+    "M3 Ultra": [[999, 800]],
+    "M4": [[999, 120]],
+    "M4 Pro": [[999, 273]],
+    "M4 Max": [
+      [36, 410],
+      [999, 546]
+    ],
+    "M5": [
+      [16, 153],
+      [999, 170]
+    ],
+    "M5 Pro": [[999, 307]],
+    "M5 Max": [
+      [36, 460],
+      [999, 614]
+    ],
+    "M5 Ultra": [[999, 1200]]
+  }
+}

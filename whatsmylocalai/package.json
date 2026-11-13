@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"src/**/*.test.ts\"",
     "e2e": "playwright test",
+    "catalog:gpu": "node scripts/catalog-gpu.mjs",
     "lint": "npm run typecheck && prettier --check .",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write ."
