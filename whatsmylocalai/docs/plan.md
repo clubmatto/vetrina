@@ -1,8 +1,7 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0, 1, and 2 are shipped in `75db3b6`. Workstream
-3 is implemented and waiting for its first automated run. Workstreams 4 to 7
-and the final accessibility pass remain. Last updated: 2026-11-13.
+Status: active. Workstreams 0 to 3 are shipped and verified. Workstreams 4 to
+7 and the final accessibility pass remain. Last updated: 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -94,14 +93,18 @@ pass, not in a test that pretends to prove the product works.
 - [x] Run lint, test, and build. Fail before committing on error.
 - [x] Commit `package.json` and `package-lock.json` when they change, then push.
 - [x] Verify the Cloudflare Pages project watches `whatsmylocalai/*`.
-- [ ] Confirm a real run pushes the commit, or exits as a clean no-op.
+- [x] Confirm a real run pushes the commit, or exits as a clean no-op.
 - [x] Show the catalog source dates on the page.
 
-The first refresh lands with this work: `@opencode-ai/models` moves from 0.0.39
-(snapshot 2026-08-10) to 0.0.134 (snapshot 2026-11-13). The registry is already
-on its latest release, 1.1.4, and it is what limits the model list. Branch
-protection on `main` has enforcement off, so the bot push is allowed; the first
-scheduled run is the remaining proof.
+Both paths are verified. A push-triggered run took `@opencode-ai/models` from
+0.0.133 to 0.0.134 and pushed `chore(whatsmylocalai): refresh the model
+catalog`. A manual dispatch on the latest version skipped verification and the
+commit: a clean no-op. The temporary push trigger is gone, leaving the Monday
+schedule and `workflow_dispatch`.
+
+The registry is already on its latest release, 1.1.4, and it is what limits the
+model list: models.dev has 320 open-weight entries, the registry 93 Q4 ones. See
+the coverage question in the plan's open questions.
 
 Done when a manual run either produces a commit or a clean no-op, and Pages
 deploys the result.
@@ -194,7 +197,10 @@ data was last checked.
 4. Dates: which deadline is binding, the card's week of Nov 16, the catalog
    post's Nov 13, or the MLX post's Nov 18?
 5. Parked: do the two parked items stay parked?
-6. Later, before workstreams 6 and 7: does the cost calculator include hardware
+6. Model coverage: models.dev lists 320 open-weight models, the registry ships
+   93 Q4 ones. Scope the "never stale" claim, ask Auxot to refresh, or vendor
+   and extend the registry?
+7. Later, before workstreams 6 and 7: does the cost calculator include hardware
    amortization? Is setups a page or a tab, and which vendors?
 
 ## Final pass
