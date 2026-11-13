@@ -101,7 +101,8 @@
           {%- endcomment %}
           {%- if sim.relay %}
             <li>
-              Install and launch <a href="#muretto">Muretto</a> where {{ sim.name }} is installed.
+              Install and launch <a href="#muretto">Muretto</a> on the PC that runs {{ sim.name }}, and allow it
+              through Windows Firewall when it asks.
             </li>
             <li>Start driving in {{ sim.name }}.</li>
           {%- else %}
@@ -114,7 +115,7 @@
     {%- endfor %}
     {%- comment -%}
       The one requirement that is the same whichever sim you picked, so it is said
-      once here rather than four times inside the tabs.
+      once here rather than once per sim inside the tabs.
     {%- endcomment %}
     <p class="product-sim-tabs__note">
       Guido runs on Android 7.0 or newer and on iOS 18.2 or newer.

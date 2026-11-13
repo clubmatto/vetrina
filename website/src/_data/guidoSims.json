@@ -23,6 +23,12 @@
       "mark": "ac",
       "name": "Assetto Corsa Competizione",
       "relay": true
+    },
+    {
+      "id": "acevo",
+      "mark": "ac",
+      "name": "Assetto Corsa EVO",
+      "relay": true
     }
   ]
 }

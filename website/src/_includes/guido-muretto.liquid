@@ -5,7 +5,12 @@
   down here, so this section is the only place the relay is explained and the only
   place its download link lives.
 {%- endcomment -%}
-{%- assign muretto_download_url = 'https://releases.matto.club/muretto/v1.0.0/muretto-1.0.0.msi' -%}
+{%- comment -%}
+  Pinned to the release that carries Assetto Corsa EVO. Do not deploy this page before that MSI exists at the
+  URL: the download button is the only way most people get Muretto, and a 404 here reads as "the product is
+  broken" rather than "the release slipped".
+{%- endcomment -%}
+{%- assign muretto_download_url = 'https://releases.matto.club/muretto/v1.1.0/muretto-1.1.0.msi' -%}
 <section class="product-muretto" id="muretto">
   <h2 class="product-section-title">Muretto</h2>
   <div class="product-muretto-body">
@@ -19,8 +24,9 @@
       It's built with minimal footprint, to make sure it doesn't interfere with your sim's performance.
     </p>
     <p>
-      It's a necessary Guido companion for Le Mans Ultimate, Assetto Corsa and Assetto Corsa Competizione. Gran
-      Turismo 7 talks to Guido directly instead, and does not need it.
+      It's a necessary Guido companion for Le Mans Ultimate and the Assetto Corsa games: Assetto Corsa, Assetto
+      Corsa Competizione and Assetto Corsa EVO. Gran Turismo 7 talks to Guido directly instead, and does not need
+      it.
     </p>
     <div class="product-muretto-download">
       {%- comment -%}
