@@ -1,8 +1,8 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0, 1, and 2 are implemented. Local lint, test,
-build, and UI check pass; CI has not run on GitHub yet. Last updated:
-2026-11-13.
+Status: active. Workstreams 0, 1, and 2 are shipped in `75db3b6`. Workstream
+3 is implemented and waiting for its first automated run. Workstreams 4 to 7
+and the final accessibility pass remain. Last updated: 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -41,7 +41,7 @@ fit -> speed -> cost.
 - [x] Add tests for fit gap.
 - [ ] Add tests for speed and cost as those modules land.
 - [x] Add `.github/workflows/whatsmylocalai-ci.yml` with lint, test, build, and
-      the UI check.
+      the e2e suite.
 - [x] Add data sanity tests: model count, unique names, positive sizes.
 - [x] Document the test command in `README.md`.
 
@@ -52,8 +52,8 @@ Done when CI is green and the weekly catalog job can rely on it.
 - [x] Add `shortfall` and `beyondModels` to `src/assets/js/models.ts`.
 - [x] Add the `beyondModels`, `visibleBeyond`, and `closestBeyond` getters to
       `src/assets/js/app.ts`, plus the `showBeyond` state.
-- [x] Add "How far off you are" under Other options in `src/index.liquid`.
-      Show the closest six, with a show-all toggle.
+- [x] Add "How far off you are" in the Out of reach panel of
+      `src/index.liquid`. Show the closest six, with a show-all toggle.
 - [x] Use the closest three in the no-fit empty state.
 - [x] Add the gap chip and list styles to `src/assets/css/models.css`.
 - [x] Test shortfall, ordering, the exact-fit boundary, and the no-fit case.
@@ -88,14 +88,20 @@ pass, not in a test that pretends to prove the product works.
 
 ### 3. Weekly catalog rebuild
 
-- [ ] Add `.github/workflows/whatsmylocalai-catalog.yml` with a weekly schedule
+- [x] Add `.github/workflows/whatsmylocalai-catalog.yml` with a weekly schedule
       and `workflow_dispatch`.
-- [ ] Install the latest `@opencode-ai/models` and `@auxot/model-registry`.
-- [ ] Run lint, test, and build. Fail before committing on error.
-- [ ] Commit `package.json` and `package-lock.json` when they change, then push.
-- [ ] Verify the Cloudflare Pages project watches `whatsmylocalai/*` and that
-      branch protection allows the bot commit.
-- [ ] Show the catalog `generated_at` date on the page.
+- [x] Install the latest `@opencode-ai/models` and `@auxot/model-registry`.
+- [x] Run lint, test, and build. Fail before committing on error.
+- [x] Commit `package.json` and `package-lock.json` when they change, then push.
+- [x] Verify the Cloudflare Pages project watches `whatsmylocalai/*`.
+- [ ] Confirm a real run pushes the commit, or exits as a clean no-op.
+- [x] Show the catalog source dates on the page.
+
+The first refresh lands with this work: `@opencode-ai/models` moves from 0.0.39
+(snapshot 2026-08-10) to 0.0.134 (snapshot 2026-11-13). The registry is already
+on its latest release, 1.1.4, and it is what limits the model list. Branch
+protection on `main` has enforcement off, so the bot push is allowed; the first
+scheduled run is the remaining proof.
 
 Done when a manual run either produces a commit or a clean no-op, and Pages
 deploys the result.

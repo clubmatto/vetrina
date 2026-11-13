@@ -572,6 +572,11 @@
             x-text="showBeyond ? 'show fewer' : 'show all ' + beyondModels.length + ' models'"
           ></button>
         </div>
+
+        <p class="catalog-note">
+          Model data: models.dev snapshot {{ models.sources.models_dev }}, model registry {{ models.sources.registry }}.
+          Sizes are Q4, refreshed weekly from the upstream catalogs.
+        </p>
       </section>
 
       <section class="use-cases" id="use-cases">

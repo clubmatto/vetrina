@@ -1,0 +1,68 @@
+name: whatsmylocalai catalog
+
+on:
+  schedule:
+    # Monday morning. Both packages move during the week, and the marketing
+    # board depends on the page not aging out.
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: whatsmylocalai-catalog
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: whatsmylocalai/package-lock.json
+
+      - name: Install
+        working-directory: whatsmylocalai
+        run: npm ci
+
+      - name: Bump the catalog packages
+        working-directory: whatsmylocalai
+        run: >-
+          npm install --save-dev --save-exact
+          @opencode-ai/models@latest
+          @auxot/model-registry@latest
+
+      - name: Check for new data
+        id: diff
+        run: |
+          if git diff --quiet -- whatsmylocalai/package.json whatsmylocalai/package-lock.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify the refreshed catalog
+        if: steps.diff.outputs.changed == 'true'
+        working-directory: whatsmylocalai
+        run: |
+          npm run lint
+          npm test
+          npm run build
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add whatsmylocalai/package.json whatsmylocalai/package-lock.json
+          git commit -m "chore(whatsmylocalai): refresh the model catalog" \
+            -m "Automated weekly rebuild from models.dev and the model registry."
+          git pull --rebase origin main
+          git push

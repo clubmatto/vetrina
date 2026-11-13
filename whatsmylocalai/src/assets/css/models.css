@@ -449,6 +449,14 @@
   color: var(--ds-warn);
 }
 
+.catalog-note {
+  margin-top: var(--ds-space-6);
+  font-family: var(--ds-font-sans);
+  font-size: 0.75rem;
+  color: var(--ds-text-secondary);
+  opacity: 1;
+}
+
 @media (max-width: 640px) {
   .beyond-row {
     grid-template-columns: minmax(0, 1fr) auto;

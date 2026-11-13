@@ -14,6 +14,7 @@ interface BuiltModel {
 
 interface BuiltRegistry {
   generated_at: string;
+  sources: { models_dev: string; registry: string };
   models: BuiltModel[];
 }
 
@@ -27,6 +28,13 @@ describe("buildModels", () => {
       `expected at least 50 models, got ${registry.models.length}`,
     );
     assert.ok(!Number.isNaN(Date.parse(registry.generated_at)));
+  });
+
+  it("reports when each upstream catalog was published", () => {
+    const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+
+    assert.match(registry.sources.models_dev, isoDate);
+    assert.match(registry.sources.registry, isoDate);
   });
 
   it("has unique model names and ids", () => {

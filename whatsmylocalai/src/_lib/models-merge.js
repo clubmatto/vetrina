@@ -1,4 +1,7 @@
-import { models as modeldevModels } from "@opencode-ai/models/snapshot";
+import {
+  generatedAt as modelsDevGeneratedAt,
+  models as modeldevModels,
+} from "@opencode-ai/models/snapshot";
 import registry from "@auxot/model-registry/registry.json" with { type: "json" };
 import enrichment from "../_data/enrichment.json" with { type: "json" };
 
@@ -95,6 +98,12 @@ export function buildModels() {
   return {
     version: "1.0.0",
     generated_at: new Date().toISOString(),
+    // When each upstream package was published, so the page can show how old
+    // the catalog is instead of only when this build ran.
+    sources: {
+      models_dev: String(modelsDevGeneratedAt).slice(0, 10),
+      registry: String(registry.generated_at).slice(0, 10),
+    },
     models: merged,
   };
 }

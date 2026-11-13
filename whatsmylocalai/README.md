@@ -17,7 +17,7 @@ recommends models to run with [Ollama](https://ollama.com) or
 - [How It Works](#how-it-works)
 - [File Structure](#file-structure)
 - [Development](#development)
-- [Getting New Models](#getting-new-models)
+- [Refreshing the Catalog](#refreshing-the-catalog)
 - [Deploy](#deploy)
 - [License](#license)
 
@@ -164,16 +164,22 @@ The build is configured in `eleventy.config.ts`:
 - Registers `json` (HTML-safe JSON) and `asset` (manifest lookup) filters
 - Exposes `apiBaseUrl` (`API_URL` env, defaults to `https://api.matto.club`)
 
-## Getting New Models
+## Refreshing the Catalog
 
-When a new open-weights model is released:
+The catalog refreshes every Monday through
+`.github/workflows/whatsmylocalai-catalog.yml`. The job bumps
+`@opencode-ai/models` and `@auxot/model-registry`, runs lint, tests, and the
+build, then commits `package.json` and `package-lock.json`. Cloudflare Pages
+deploys that commit. Run the workflow manually from the Actions tab when a
+release lands mid-week.
 
-1. Update the registry: `npm update @auxot/model-registry`
-2. Update models.dev: `npm update @opencode-ai/models`
-3. If it needs an ollama tag or blurb, add it to `src/_data/enrichment.json`
-4. `npm run build`
+New models appear only after `@auxot/model-registry` ships them: the page
+builds its list from the registry's Q4 entries, and models.dev adds
+descriptions and capabilities on top. The page shows both source dates under
+Other options.
 
-Steps 1—2 are automatic — the data comes from community-maintained packages.
+To add an Ollama tag or a blurb, edit `src/_data/enrichment.json` and run
+`npm run build`.
 
 ## Deploy
 
