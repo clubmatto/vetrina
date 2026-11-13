@@ -201,6 +201,19 @@
   box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
 }
 
+.mlx-note {
+  margin-top: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+  opacity: 1;
+}
+
+.mlx-note code {
+  font-size: 0.75rem;
+}
+
 .best-pick-why {
   margin-top: var(--ds-space-2);
   font-family: var(--ds-font-sans);

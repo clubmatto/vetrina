@@ -37,6 +37,9 @@ npm run build   # production build → _site/
 | Will it run?         | [`@auxot/model-registry`](https://www.npmjs.com/package/@auxot/model-registry) | Q4 VRAM estimates per model, parameter counts                 |
 | Ollama tags + blurbs | `src/_data/enrichment.json` (curated by us, ~20 entries)                       | `ollama run` tags, human-readable blurbs                      |
 
+On Apple Silicon the page also notes that both runners ship MLX engines; the
+generated commands stay on GGUF.
+
 Run commands come in two flavors, switchable in the UI (default: LM Studio,
 persisted in localStorage):
 `lms get https://huggingface.co/<huggingface_id>@<quant>`

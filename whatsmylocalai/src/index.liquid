@@ -323,6 +323,17 @@
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
         <p class="specs-intro" x-text="runnerHint"></p>
 
+        <p class="mlx-note" x-show="vendor === 'apple'" x-cloak>
+          <strong>Apple Silicon:</strong>
+          <span x-show="runner === 'lmstudio'">
+            LM Studio also runs MLX models. Filter the catalog with <code>lms get --mlx</code>.
+          </span>
+          <span x-show="runner === 'ollama'">
+            Ollama also runs MLX models. Look for tags ending in <code>-mlx</code>.
+          </span>
+          The commands on this page use GGUF via llama.cpp and Metal.
+        </p>
+
         <div class="best-pick-controls">
           <div class="tradeoff" role="group" aria-label="choose a performance vs. resource trade-off">
             <span class="tradeoff-end">lean</span>

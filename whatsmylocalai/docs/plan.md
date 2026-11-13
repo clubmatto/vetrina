@@ -1,7 +1,8 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 3 are shipped and verified. Workstreams 4 to
-7 and the final accessibility pass remain. Last updated: 2026-11-13.
+Status: active. Workstreams 0 to 3 are shipped and verified. Workstream 4 is
+implemented. Workstreams 5 to 7 and the final accessibility pass remain. Last
+updated: 2026-11-13.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -111,14 +112,15 @@ deploys the result.
 
 ### 4. MLX engine note
 
-- [ ] Keep `Runner = "lmstudio" | "ollama"`.
-- [ ] Add a conditional note under the runner hint when `vendor === "apple"`:
-      "On Apple Silicon, Ollama and LM Studio also ship MLX engines. MLX applies to
-      MLX models/tags; the commands above use GGUF via llama.cpp/Metal."
-- [ ] Add the one-line hint: `lms get --mlx`, or an Ollama `-mlx` tag.
-- [ ] Add the `mlxNote` getter and the note markup. Style it in `models.css`.
-- [ ] Update `src/llms.txt.liquid` to mention the MLX engines.
-- [ ] Do not add `mlx.json`, a third command, or an MLX catalog.
+- [x] Keep `Runner = "lmstudio" | "ollama"`.
+- [x] Add a conditional note under the runner hint when `vendor === "apple"`:
+      both runners ship MLX engines, and the commands on the page use GGUF.
+- [x] Make the note actionable: `lms get --mlx` for LM Studio, `-mlx` tags for
+      Ollama. The hint follows the runner toggle.
+- [x] Add the note markup and style it in `models.css`.
+- [x] Update `src/llms.txt.liquid` to mention the MLX engines.
+- [x] Do not add `mlx.json`, a third command, or an MLX catalog.
+- [x] Test it: Apple Silicon shows the note, other hardware does not.
 
 Done when Apple users see the note, non-Apple users do not, and the wording
 does not claim the GGUF command uses MLX.
@@ -189,16 +191,14 @@ data was last checked.
 
 ## Open questions
 
-1. MLX note: include the `lms get --mlx` and `-mlx` hint, or explain the stack
-   only? Recommendation: include the hint.
-2. Marketing: approve the new title and angle? Recommendation: yes.
-3. Speed: is the GGUF label and caveat enough, or do we need separate MLX
+1. Marketing: approve the new title and angle? Recommendation: yes.
+2. Speed: is the GGUF label and caveat enough, or do we need separate MLX
    numbers? Recommendation: GGUF only.
-4. Model coverage: models.dev lists 320 open-weight models, the registry ships
+3. Model coverage: models.dev lists 320 open-weight models, the registry ships
    93 Q4 ones. Scope the "never stale" claim, ask Auxot to refresh, or vendor
    and extend the registry?
-5. Parked: do the two parked items stay parked?
-6. Later, before workstreams 6 and 7: does the cost calculator include hardware
+4. Parked: do the two parked items stay parked?
+5. Later, before workstreams 6 and 7: does the cost calculator include hardware
    amortization? Is setups a page or a tab, and which vendors?
 
 Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
