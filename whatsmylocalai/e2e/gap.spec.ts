@@ -37,3 +37,17 @@ test("arrow keys move between the options tabs", async ({ page }) => {
   await expect(page.locator("#panel-fits")).toBeVisible();
   await expect(page.locator("#panel-beyond")).toBeHidden();
 });
+
+test("keeps the gap rows inside the panel on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await openMachine(page, 8, 8);
+
+  await page.getByRole("tab", { name: /^Out of reach/ }).click();
+  await expect(page.locator("#panel-beyond")).toBeVisible();
+  await expect(page.locator(".beyond-row-bar").first()).toBeVisible();
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - window.innerWidth,
+  );
+  expect(overflow).toBe(0);
+});

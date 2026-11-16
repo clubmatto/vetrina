@@ -95,7 +95,7 @@
   border: 1px solid var(--ds-border);
   background: transparent;
   padding: var(--ds-space-1) var(--ds-space-3);
-  border-radius: var(--ds-radius-full);
+  border-radius: var(--ds-radius-md);
   cursor: pointer;
   opacity: 0.8;
   transition: opacity var(--ds-transition);

@@ -608,18 +608,25 @@
           tabindex="0"
         >
           <h3 class="beyond-title">How far off you are</h3>
-          <p class="beyond-intro">
-            These models need more memory than you have. The gap is the extra VRAM they want, at Q4.
-          </p>
+          <p class="beyond-intro">Sorted by the smallest gap. Raise your VRAM above to pull the closest ones in.</p>
           <ul class="beyond-rows" id="beyond-rows" role="list">
             <template x-for="model in visibleBeyond" :key="model.id">
               <li class="beyond-row">
-                <span class="beyond-row-name" x-text="model.model_name"></span>
-                <span
-                  class="beyond-row-specs"
-                  x-text="model.parameters + ' · ~' + model.vram_requirements_gb + ' GB Q4'"
-                ></span>
-                <span class="beyond-row-gap" x-text="'~' + formatGap(model) + ' GB short'"></span>
+                <div class="beyond-row-main">
+                  <span class="beyond-row-name" x-text="model.model_name"></span>
+                  <span
+                    class="beyond-row-specs"
+                    x-text="model.parameters + ' · needs ~' + model.vram_requirements_gb + ' GB Q4'"
+                  ></span>
+                </div>
+                <div class="beyond-row-gap">
+                  <span class="beyond-row-gap-value" x-text="'~' + formatGap(model) + ' GB'"></span>
+                  <span class="beyond-row-gap-label">short</span>
+                </div>
+                <div class="beyond-row-bar" aria-hidden="true">
+                  <span class="beyond-row-bar-have" :style="'width:' + beyondShare(model) + '%'"></span>
+                  <span class="beyond-row-bar-missing"></span>
+                </div>
               </li>
             </template>
           </ul>

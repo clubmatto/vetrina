@@ -955,6 +955,15 @@ document.addEventListener("alpine:init", () => {
         return formatShortfall(model, this.vram);
       },
 
+      /** Share of a model's memory you already have, for the row bar. */
+      beyondShare(model: MergedModel): number {
+        if (!model.vram_requirements_gb) return 0;
+        return Math.max(
+          0,
+          Math.min(100, (this.vram / model.vram_requirements_gb) * 100),
+        );
+      },
+
       /**
        * Announce result changes to screen readers. Debounced: holding a
        * stepper button fires many updates and only the last one matters.
