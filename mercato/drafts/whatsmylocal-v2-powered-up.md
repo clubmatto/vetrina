@@ -16,7 +16,7 @@ topics:
 v1 told you which local models fit your machine. v2 answers how far off you
 are, how fast it runs, what it costs, and what to run it on.
 
-It starts with speed: a tok/s estimate for every model.
+First up: a tok/s estimate for every model.
 
 https://whatsmylocal.ai
 
