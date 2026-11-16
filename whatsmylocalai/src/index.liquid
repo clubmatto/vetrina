@@ -525,58 +525,42 @@
                   >Electricity <input type="number" min="0" step="0.01" x-model.number="costElectricity"> $/kWh</label
                 >
               </div>
+            </div>
 
-              <div class="cost-field">
-                <span class="cost-label">Cloud comparison</span>
-                <div class="cost-presets" role="group" aria-label="cloud preset">
-                  <template x-for="preset in cloudPresets" :key="preset.key">
-                    <button
-                      type="button"
-                      :aria-pressed="cloudPreset === preset.key"
-                      :title="preset.name"
-                      @click="cloudPreset = preset.key"
+            <div class="cost-compare">
+              <div class="cost-option">
+                <div class="cost-option-head">
+                  <span class="cost-option-name">Local</span>
+                  <span class="cost-option-value"
+                    ><strong x-text="costLocal"></strong><span class="cost-option-unit">/mo</span></span
+                  >
+                </div>
+                <div class="cost-option-meta">
+                  <span x-text="costLocalPerMillion + ' per 1M'"></span>
+                  <span x-text="costMode === 'buy' ? 'includes hardware' : 'electricity only'"></span>
+                </div>
+              </div>
+
+              <template x-for="row in costRows" :key="row.preset.key">
+                <div class="cost-option">
+                  <div class="cost-option-head">
+                    <span class="cost-option-name" :title="row.preset.name" x-text="row.preset.label"></span>
+                    <span class="cost-option-value"
+                      ><strong x-text="formatMoney(row.estimate.cloudMonthly)"></strong
+                      ><span class="cost-option-unit">/mo</span></span
                     >
-                      <span x-text="preset.label"></span>
-                      <span x-text="'$' + preset.perMillion + '/M'"></span>
-                    </button>
-                  </template>
+                  </div>
+                  <div class="cost-option-meta">
+                    <span x-text="formatMoney(row.preset.perMillion) + ' per 1M'"></span>
+                    <span x-text="paybackLabel(row.estimate)"></span>
+                  </div>
                 </div>
-              </div>
+              </template>
+
+              <p class="cost-option-tokens" x-text="costTokens"></p>
             </div>
 
-            <div class="cost-results">
-              <div class="cost-result">
-                <span class="cost-result-label">Local</span>
-                <strong class="cost-result-value" x-text="costLocal"></strong>
-                <span class="cost-result-unit">per month</span>
-              </div>
-              <div class="cost-result">
-                <span
-                  class="cost-result-label"
-                  x-text="'Cloud · ' + (selectedCloudPreset ? selectedCloudPreset.name : '')"
-                ></span>
-                <strong class="cost-result-value" x-text="costCloud"></strong>
-                <span class="cost-result-unit">per month</span>
-              </div>
-
-              <dl class="cost-details">
-                <div>
-                  <dt>Local per 1M tokens</dt>
-                  <dd x-text="costLocalPerMillion"></dd>
-                </div>
-                <div>
-                  <dt>Cloud per 1M tokens</dt>
-                  <dd x-text="costCloudPerMillion"></dd>
-                </div>
-                <div>
-                  <dt>Output tokens</dt>
-                  <dd x-text="costTokens"></dd>
-                </div>
-              </dl>
-
-              <p class="cost-verdict" x-text="costPayback"></p>
-              <p class="cost-verdict" x-text="costCrossover"></p>
-            </div>
+            <p class="cost-verdict" x-text="costCrossoverSummary"></p>
           </div>
 
           <figure class="cost-chart" x-show="costMode === 'buy'">
@@ -584,18 +568,27 @@
               <span class="cost-chart-title">Total spend over 12 months</span>
               <div class="cost-legend" aria-hidden="true">
                 <span class="cost-legend-item cost-legend-item--local">Local</span>
-                <span class="cost-legend-item cost-legend-item--cloud">Cloud</span>
+                <span class="cost-legend-item cost-legend-item--frontier">Frontier</span>
+                <span class="cost-legend-item cost-legend-item--deepseek">DeepSeek</span>
               </div>
             </div>
             <svg viewBox="0 0 320 160" role="img" :aria-label="costChart.caption">
               <line class="cost-axis-line" x1="8" y1="138" x2="312" y2="138"></line>
-              <path class="cost-line cost-line-cloud" :d="costChart.cloudPath"></path>
-              <path class="cost-line cost-line-local" :d="costChart.localPath"></path>
+              <path class="cost-line cost-line--frontier" :d="costChart.frontierPath"></path>
+              <path class="cost-line cost-line--deepseek" :d="costChart.deepseekPath"></path>
+              <path class="cost-line cost-line--local" :d="costChart.localPath"></path>
               <circle
-                class="cost-dot"
-                x-show="costChart.dot"
-                :cx="costChart.dot ? costChart.dot.x : 0"
-                :cy="costChart.dot ? costChart.dot.y : 0"
+                class="cost-dot cost-dot--frontier"
+                x-show="costChart.frontierDot"
+                :cx="costChart.frontierDot ? costChart.frontierDot.x : 0"
+                :cy="costChart.frontierDot ? costChart.frontierDot.y : 0"
+                r="4"
+              ></circle>
+              <circle
+                class="cost-dot cost-dot--deepseek"
+                x-show="costChart.deepseekDot"
+                :cx="costChart.deepseekDot ? costChart.deepseekDot.x : 0"
+                :cy="costChart.deepseekDot ? costChart.deepseekDot.y : 0"
                 r="4"
               ></circle>
               <text class="cost-axis-label" x="8" y="154">0</text>
@@ -606,9 +599,9 @@
           </figure>
 
           <p class="cost-note">
-            Local uses the speed estimate for the best model, one device, 8k context. Cloud prices come from models.dev,
-            with four input tokens per output token. Hardware is amortized over its life; electricity is the only
-            running cost. Speeds are estimates, not benchmarks.
+            Local uses the speed estimate for the best model, one device, 8k context. Cloud prices come from models.dev
+            for GPT-5.5 and DeepSeek V4 Pro, with four input tokens per output token. Hardware is amortized over its
+            life; electricity is the only running cost. Speeds are estimates, not benchmarks.
           </p>
         </div>
       </section>

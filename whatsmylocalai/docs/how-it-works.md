@@ -109,14 +109,17 @@ The inputs are usage, power draw, electricity price, hardware price and life,
 and a cloud preset. Defaults are 2 hours a day, 350 W, $0.25/kWh, a $2,000 rig
 with a three-year life, and the mid preset.
 
-Cloud presets are read from models.dev at build time: frontier, mid, and
-budget. The comparison is per million output tokens, assuming four input tokens
-for every output token. Prices and the speed band move with the weekly catalog
-refresh, so the calculator does not age independently of the rest of the page.
+Two cloud baselines are read from models.dev at build time: a frontier model
+(GPT-5.5) and DeepSeek V4 Pro. They are there to show the fork in public API
+prices, not to pick a winner. The comparison is per million output tokens,
+assuming four input tokens for every output token. Prices and the speed band
+move with the weekly catalog refresh, so the calculator does not age
+independently of the rest of the page.
 
-The chart is cumulative spend over 12 months, with the payback marked. The
-monthly-cost-by-usage chart put the local line on the axis, because cloud
-dominates at high usage; cumulative spend makes the decision visible.
+The chart is cumulative spend over 12 months, with the payback against each
+cloud price marked. The monthly-cost-by-usage chart put the local line on the
+axis, because cloud dominates at high usage; cumulative spend makes the
+decision visible, and the two cloud lines show the price fork.
 
 ## Run commands
 

@@ -170,7 +170,8 @@ at runtime, and the estimate is labelled honestly.
 
 ### 6. Cost calculator
 
-- [x] Add three cloud price presets from models.dev: budget, mid, frontier.
+- [x] Add two cloud baselines from models.dev: frontier and DeepSeek, to show
+      the fork in public prices.
 - [x] Add `src/assets/js/cost.ts` with the local and cloud formulas.
 - [x] Add the calculator section with usage, watts, electricity price,
       hardware cost, hardware life, and cloud preset inputs.
@@ -241,8 +242,9 @@ data was last checked.
 4. Parked: do the two parked items stay parked?
 5. Cost: hardware amortization is on by default with an "I own it" mode that
    drops it. Everything is in USD and the cloud comparison uses four input
-   tokens per output token. Still open: setups as a page or a tab, and the
-   vendor list.
+   tokens per output token. Frontier and DeepSeek are shown side by side to
+   make the public-price fork visible. Still open: setups as a page or a tab,
+   and the vendor list.
 
 Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
 2026-11-19.

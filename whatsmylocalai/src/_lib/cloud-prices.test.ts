@@ -6,10 +6,10 @@ import cloudPrices from "../_data/cloud_prices.js";
 describe("cloud price presets", () => {
   const presets = cloudPrices();
 
-  it("ships a frontier, mid, and budget tier", () => {
+  it("ships frontier and DeepSeek baselines", () => {
     assert.deepEqual(
       presets.map((preset) => preset.key),
-      ["frontier", "mid", "budget"],
+      ["frontier", "deepseek"],
     );
   });
 

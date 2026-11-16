@@ -9,14 +9,20 @@ test("costs the best model against a cloud preset", async ({ page }) => {
   await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
 
   await expect(page.locator("#cost")).toBeVisible();
-  const values = page.locator(".cost-result-value");
+  await expect(page.locator(".cost-option-name")).toHaveText([
+    "Local",
+    "Frontier",
+    "DeepSeek",
+  ]);
+  const values = page.locator(".cost-option-value strong");
   await expect(values.nth(0)).toHaveText(/^\$/);
   await expect(values.nth(1)).toHaveText(/^\$/);
+  await expect(values.nth(2)).toHaveText(/^\$/);
   await expect(page.locator(".cost-chart figcaption")).toContainText(
-    "pays back",
+    "Pays back",
   );
-  await expect(page.locator(".cost-line-local")).toHaveAttribute("d", /^M/);
-  await expect(page.locator(".cost-dot")).toBeVisible();
+  await expect(page.locator(".cost-line--local")).toHaveAttribute("d", /^M/);
+  await expect(page.locator(".cost-dot")).toHaveCount(2);
 });
 
 test("owning the machine drops the hardware and hides the chart", async ({
@@ -25,7 +31,7 @@ test("owning the machine drops the hardware and hides the chart", async ({
   await skipReveal(page);
   await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
 
-  const local = page.locator(".cost-result-value").first();
+  const local = page.locator(".cost-option-value strong").first();
   const before = money(await local.innerText());
 
   await page.getByRole("button", { name: "I own it" }).click();
@@ -38,17 +44,16 @@ test("owning the machine drops the hardware and hides the chart", async ({
   );
 });
 
-test("switching the cloud preset changes the cloud bill", async ({ page }) => {
+test("shows the frontier and DeepSeek bills side by side", async ({ page }) => {
   await skipReveal(page);
   await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
 
-  const cloud = page.locator(".cost-result-value").nth(1);
-  const mid = money(await cloud.innerText());
+  const values = page.locator(".cost-option-value strong");
+  const frontier = money(await values.nth(1).innerText());
+  const deepseek = money(await values.nth(2).innerText());
 
-  await page.getByRole("button", { name: /Budget/ }).click();
-
-  const budget = money(await cloud.innerText());
-  expect(budget).toBeLessThan(mid);
+  expect(deepseek).toBeGreaterThan(0);
+  expect(deepseek).toBeLessThan(frontier);
 });
 
 test("more usage raises the cloud bill faster than the local one", async ({
@@ -57,8 +62,8 @@ test("more usage raises the cloud bill faster than the local one", async ({
   await skipReveal(page);
   await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
 
-  const cloud = page.locator(".cost-result-value").nth(1);
-  const local = page.locator(".cost-result-value").first();
+  const cloud = page.locator(".cost-option-value strong").nth(1);
+  const local = page.locator(".cost-option-value strong").first();
   const cloudAtTwo = money(await cloud.innerText());
 
   await page.locator("#cost-hours").fill("6");

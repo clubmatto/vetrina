@@ -140,15 +140,15 @@ new sparse model's name does not include the active count.
 
 ## Cloud prices
 
-The cost calculator reads three cloud presets from the models.dev snapshot at
-build time: frontier, mid, and budget. They are compared per million output
-tokens with four input tokens per output token, which is the ratio the
-calculator uses everywhere.
+The cost calculator reads two public price baselines from the models.dev
+snapshot at build time: a frontier model (GPT-5.5) and DeepSeek V4 Pro. The pair
+shows the fork in API prices; a mid tier did not add much on top of it.
 
-The weekly job bumps the models.dev package, so the presets move with the rest
-of the catalog. If one of the three model ids disappears upstream, the build
-fails rather than silently dropping a tier. Update `src/_data/cloud_prices.js`
-when that happens.
+They are compared per million output tokens with four input tokens per output
+token, which is the ratio the calculator uses everywhere. The weekly job bumps
+the models.dev package, so both move with the rest of the catalog. If either
+model id disappears upstream, the build fails rather than silently dropping a
+baseline. Update `src/_data/cloud_prices.js` when that happens.
 
 ## Enrichment
 

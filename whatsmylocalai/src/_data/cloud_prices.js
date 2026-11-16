@@ -1,26 +1,20 @@
 import snapshot from "@opencode-ai/models/snapshot";
 
 /**
- * Three cloud tiers for the cost calculator. Prices come from the models.dev
- * snapshot at build time, so the weekly catalog job moves them too.
+ * Two public price baselines for the cost calculator: a frontier model and
+ * DeepSeek. They show the fork in API prices better than a mid tier does.
  *
- * The calculator compares one million output tokens and assumes four input
- * tokens for each output token. That makes the per-million price the effective
- * cost of a million output tokens, not a blend of two different meters.
+ * Prices come from the models.dev snapshot at build time, so the weekly
+ * catalog job moves them too. The calculator compares one million output
+ * tokens and assumes four input tokens for each output token.
  */
 const PICKS = [
   { key: "frontier", label: "Frontier", provider: "openai", model: "gpt-5.5" },
   {
-    key: "mid",
-    label: "Mid",
-    provider: "anthropic",
-    model: "claude-sonnet-5",
-  },
-  {
-    key: "budget",
-    label: "Budget",
-    provider: "google",
-    model: "gemini-3-flash-preview",
+    key: "deepseek",
+    label: "DeepSeek",
+    provider: "deepseek",
+    model: "deepseek-v4-pro",
   },
 ];
 

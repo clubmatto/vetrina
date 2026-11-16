@@ -100,10 +100,17 @@ interface CloudPreset {
   perMillion: number;
 }
 
+interface CostRow {
+  preset: CloudPreset;
+  estimate: CostEstimate;
+}
+
 interface CostChart {
   localPath: string;
-  cloudPath: string;
-  dot: { x: number; y: number } | null;
+  frontierPath: string;
+  deepseekPath: string;
+  frontierDot: { x: number; y: number } | null;
+  deepseekDot: { x: number; y: number } | null;
   caption: string;
   maxLabel: string;
 }
@@ -179,7 +186,6 @@ document.addEventListener("alpine:init", () => {
       costYears: 3,
       costWatts: 350,
       costElectricity: 0.25,
-      cloudPreset: "mid",
       savedSpecs: null as {
         ram: number;
         vram: number;
@@ -696,22 +702,13 @@ document.addEventListener("alpine:init", () => {
         return "Estimated decode speed for GGUF via llama.cpp or Metal, single device, 8k context. MLX builds can differ.";
       },
 
-      get selectedCloudPreset(): CloudPreset | null {
-        return (
-          this.cloudPresets.find((preset) => preset.key === this.cloudPreset) ??
-          this.cloudPresets[1] ??
-          null
-        );
-      },
-
       costSpeed(): SpeedEstimate | null {
         return this.bestModel ? this.speedFor(this.bestModel) : null;
       },
 
-      get costEstimate(): CostEstimate | null {
+      costFor(preset: CloudPreset): CostEstimate | null {
         const speed = this.costSpeed();
-        const preset = this.selectedCloudPreset;
-        if (!speed || !preset) return null;
+        if (!speed) return null;
         return estimateCosts({
           hoursPerDay: this.costHours,
           tokensPerSecond: (speed.low + speed.high) / 2,
@@ -724,8 +721,18 @@ document.addEventListener("alpine:init", () => {
         });
       },
 
+      get costRows(): CostRow[] {
+        return this.cloudPresets
+          .map((preset) => ({ preset, estimate: this.costFor(preset) }))
+          .filter((row): row is CostRow => row.estimate !== null);
+      },
+
+      get costLocalEstimate(): CostEstimate | null {
+        return this.costRows[0]?.estimate ?? null;
+      },
+
       get costReady(): boolean {
-        return this.costEstimate !== null;
+        return this.costRows.length > 0;
       },
 
       formatMoney(value: number): string {
@@ -761,17 +768,12 @@ document.addEventListener("alpine:init", () => {
       },
 
       get costLocal(): string {
-        const estimate = this.costEstimate;
+        const estimate = this.costLocalEstimate;
         return estimate ? this.formatMoney(estimate.localMonthly) : "";
       },
 
-      get costCloud(): string {
-        const estimate = this.costEstimate;
-        return estimate ? this.formatMoney(estimate.cloudMonthly) : "";
-      },
-
       get costLocalPerMillion(): string {
-        const estimate = this.costEstimate;
+        const estimate = this.costLocalEstimate;
         const speed = this.costSpeed();
         if (!estimate || !speed) return "";
         const atLow =
@@ -783,57 +785,68 @@ document.addEventListener("alpine:init", () => {
         return `${this.formatMoney(Math.min(atLow, atHigh))}–${this.formatMoney(Math.max(atLow, atHigh))}`;
       },
 
-      get costCloudPerMillion(): string {
-        const preset = this.selectedCloudPreset;
-        return preset ? this.formatMoney(preset.perMillion) : "";
-      },
-
       get costTokens(): string {
-        const estimate = this.costEstimate;
+        const estimate = this.costLocalEstimate;
         if (!estimate) return "";
         return `${Math.round(estimate.tokensPerMonth / 1_000_000)}M output tokens a month`;
       },
 
-      get costPayback(): string {
+      paybackLabel(estimate: CostEstimate): string {
+        if (this.costMode === "own") return "—";
+        if (estimate.paybackMonths === null) return "does not pay back";
+        return `pays back in ${this.formatMonths(estimate.paybackMonths)}`;
+      },
+
+      get costCrossoverSummary(): string {
         if (this.costMode === "own") {
           return "You already own the machine, so local costs electricity only.";
         }
-        const estimate = this.costEstimate;
-        if (!estimate) return "";
-        if (estimate.paybackMonths === null) {
-          return "At this usage the hardware does not pay back against cloud.";
-        }
-        if (estimate.paybackMonths < 1) {
-          return "The hardware pays back in under a month at this usage.";
-        }
-        return `The hardware pays back in about ${Math.round(estimate.paybackMonths)} months at this usage.`;
+        const rows = this.costRows;
+        if (!rows.length) return "";
+        const parts = rows.map(({ preset, estimate }) => {
+          const crossover = estimate.crossoverHoursPerDay;
+          if (crossover === null) return `never against ${preset.label}`;
+          if (crossover > 12) {
+            return `not below 12 h/day against ${preset.label}`;
+          }
+          return `above ${this.formatHours(crossover)} a day against ${preset.label}`;
+        });
+        return `Local is cheaper ${parts.join(" and ")}.`;
       },
 
-      get costCrossover(): string {
-        if (this.costMode === "own") return "";
-        const estimate = this.costEstimate;
-        if (!estimate) return "";
-        if (estimate.crossoverHoursPerDay === null) {
-          return "Local does not catch up at this cloud price.";
+      costPaybackCaption(rows: CostRow[]): string {
+        const parts = rows.map(({ preset, estimate }) => {
+          if (estimate.paybackMonths === null) {
+            return `never against ${preset.label}`;
+          }
+          if (estimate.paybackMonths > 12) {
+            return `not within 12 months against ${preset.label}`;
+          }
+          return `${this.formatMonths(estimate.paybackMonths)} against ${preset.label}`;
+        });
+        if (
+          parts.every(
+            (part) => part.startsWith("never") || part.startsWith("not"),
+          )
+        ) {
+          return "The hardware does not pay back against either cloud price within 12 months.";
         }
-        if (estimate.crossoverHoursPerDay > 12) {
-          return "Local does not catch up below 12 hours a day.";
-        }
-        return `Local is cheaper above ${this.formatHours(estimate.crossoverHoursPerDay)} a day.`;
+        return `Pays back in ${parts.join(", and ")}.`;
       },
 
       get costChart(): CostChart {
         const empty: CostChart = {
           localPath: "",
-          cloudPath: "",
-          dot: null,
+          frontierPath: "",
+          deepseekPath: "",
+          frontierDot: null,
+          deepseekDot: null,
           caption: "",
           maxLabel: "",
         };
-        const estimate = this.costEstimate;
-        const preset = this.selectedCloudPreset;
-        const speed = this.costSpeed();
-        if (!estimate || !preset || !speed || this.costMode !== "buy") {
+        const rows = this.costRows;
+        const estimate = this.costLocalEstimate;
+        if (!estimate || rows.length === 0 || this.costMode !== "buy") {
           return empty;
         }
 
@@ -847,27 +860,44 @@ document.addEventListener("alpine:init", () => {
 
         const local = (months: number) =>
           this.costHardware + estimate.electricityMonthly * months;
-        const cloud = (months: number) => estimate.cloudMonthly * months;
-        const maxCost = Math.max(local(maxMonths), cloud(maxMonths), 1);
+        const maxCost = Math.max(
+          local(maxMonths),
+          ...rows.map((row) => row.estimate.cloudMonthly * maxMonths),
+          1,
+        );
 
         const x = (months: number) =>
           padLeft + (months / maxMonths) * (width - padLeft - padRight);
         const y = (cost: number) =>
           padTop + (1 - cost / maxCost) * (height - padTop - padBottom);
+        const path = (costAt: (months: number) => number) =>
+          `M${x(0)},${y(costAt(0))} L${x(maxMonths)},${y(costAt(maxMonths))}`;
 
-        const payback = estimate.paybackMonths;
-        const dot =
-          payback !== null && payback > 0 && payback <= maxMonths
-            ? { x: x(payback), y: y(cloud(payback)) }
-            : null;
+        const frontier =
+          rows.find((row) => row.preset.key === "frontier") ?? null;
+        const deepseek =
+          rows.find((row) => row.preset.key === "deepseek") ?? null;
+
+        const dot = (row: CostRow | null) => {
+          if (!row) return null;
+          const payback = row.estimate.paybackMonths;
+          if (payback === null || payback <= 0 || payback > maxMonths) {
+            return null;
+          }
+          return { x: x(payback), y: y(row.estimate.cloudMonthly * payback) };
+        };
 
         return {
-          localPath: `M${x(0)},${y(local(0))} L${x(maxMonths)},${y(local(maxMonths))}`,
-          cloudPath: `M${x(0)},${y(cloud(0))} L${x(maxMonths)},${y(cloud(maxMonths))}`,
-          dot,
-          caption: dot
-            ? `The hardware pays back after about ${this.formatMonths(payback!)}.`
-            : "Cloud stays cheaper than the hardware over 12 months.",
+          localPath: path(local),
+          frontierPath: frontier
+            ? path((months) => frontier.estimate.cloudMonthly * months)
+            : "",
+          deepseekPath: deepseek
+            ? path((months) => deepseek.estimate.cloudMonthly * months)
+            : "",
+          frontierDot: dot(frontier),
+          deepseekDot: dot(deepseek),
+          caption: this.costPaybackCaption(rows),
           maxLabel: this.formatMoney(maxCost),
         };
       },
