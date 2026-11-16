@@ -751,6 +751,7 @@
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
 }
 
 .cost-grid {
@@ -794,9 +795,11 @@
 .cost-seg,
 .cost-presets {
   display: flex;
-  overflow: hidden;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-1);
+  background: var(--ds-bg);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--ds-radius-full);
 }
 
 .cost-seg button,
@@ -810,18 +813,14 @@
   color: var(--ds-text-secondary);
   background: transparent;
   border: 0;
+  border-radius: var(--ds-radius-full);
   cursor: pointer;
-}
-
-.cost-seg button + button,
-.cost-presets button + button {
-  border-left: 1px solid var(--ds-border);
 }
 
 .cost-seg button[aria-pressed="true"],
 .cost-presets button[aria-pressed="true"] {
-  color: var(--ds-bg);
-  background: var(--ds-text);
+  color: var(--ds-text-inverse);
+  background: var(--ds-gradient-text);
 }
 
 .cost-seg button:focus-visible,
@@ -833,9 +832,10 @@
 .cost-presets button {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 2px;
-  text-align: left;
+  min-height: 2.75rem;
+  text-align: center;
 }
 
 .cost-presets button span:last-child {
@@ -988,8 +988,12 @@
   background: currentColor;
 }
 
+.cost-legend-item--local {
+  color: var(--ds-gradient-4);
+}
+
 .cost-legend-item--cloud {
-  color: var(--ds-warn);
+  color: var(--ds-gradient-5);
 }
 
 .cost-chart svg {
@@ -1009,13 +1013,13 @@
 }
 
 .cost-line-cloud {
-  stroke: var(--ds-warn);
+  stroke: var(--ds-gradient-5);
   stroke-dasharray: 5 4;
 }
 
 .cost-dot {
-  fill: var(--ds-warn);
-  stroke: var(--ds-bg);
+  fill: var(--ds-gradient-1);
+  stroke: var(--ds-surface);
   stroke-width: 2;
 }
 
