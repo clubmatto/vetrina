@@ -41,8 +41,11 @@ async function captureDemo(browser, theme) {
   const framesDir = join(DOCS_DIR, `frames-${theme}`);
   mkdirSync(framesDir, { recursive: true });
 
+  // Tall enough to hold the machine panel, the best pick, and the terminal
+  // in one frame. The previous recording scrolled to the result, which read
+  // like a page tour rather than a demo.
   const context = await browser.newContext({
-    viewport: { width: 1280, height: 900 },
+    viewport: { width: 1280, height: 1000 },
     deviceScaleFactor: 2,
     colorScheme: theme,
   });
@@ -74,11 +77,6 @@ async function captureDemo(browser, theme) {
   await page
     .waitForSelector(".best-pick-card .model-name", { timeout: 20000 })
     .catch(() => {});
-  await page.evaluate(() => {
-    document
-      .querySelector(".best-pick-card")
-      ?.scrollIntoView({ behavior: "smooth", block: "center" });
-  });
 
   for (let i = 0; i < 18; i++) {
     await page.waitForTimeout(200);
