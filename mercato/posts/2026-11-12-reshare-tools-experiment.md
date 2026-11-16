@@ -4,7 +4,6 @@ platforms:
   - twitter
   - linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/tools-tokens.png
-publish_date: 2026-11-18
 topics:
   - agents
   - reshare
