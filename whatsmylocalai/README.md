@@ -23,6 +23,7 @@ runs client-side; nothing leaves the browser.
 - The best model that fits your GPU or Mac, with the command to run it.
 - The gap, in gigabytes, for every model that does not fit.
 - An estimated tokens-per-second band for each model that fits.
+- A cost calculator that compares your machine with current cloud prices.
 - A simulated terminal that streams at that speed, so the number is something
   you feel.
 - A lean-to-performance slider, so a small model can win over a large one that

@@ -324,6 +324,9 @@
       <script id="apple-speed" type="application/json">
         {{ apple_speed | json }}
       </script>
+      <script id="cloud-prices" type="application/json">
+        {{ cloud_prices | json }}
+      </script>
 
       <section class="best-pick-row" id="best-pick-row">
         <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
@@ -467,6 +470,146 @@
               <p class="ds-sr-only" x-text="demoFullText"></p>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section class="cost" id="cost" x-show="displayReady && bestModel && speedFor(bestModel)" x-cloak>
+        <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">What it costs</h2>
+        <p class="cost-intro">
+          Local AI is a fixed cost with a low marginal cost. These numbers use your machine, your usage, and current
+          cloud prices.
+        </p>
+
+        <div class="cost-panel">
+          <div class="cost-grid">
+            <div class="cost-controls">
+              <label class="cost-field" for="cost-hours">
+                <span class="cost-label">Usage <strong x-text="costHoursLabel"></strong></span>
+                <input
+                  id="cost-hours"
+                  class="cost-range"
+                  type="range"
+                  min="0.25"
+                  max="12"
+                  step="0.25"
+                  x-model.number="costHours"
+                >
+              </label>
+
+              <div class="cost-field">
+                <span class="cost-label">Machine</span>
+                <div class="cost-seg" role="group" aria-label="machine cost">
+                  <button type="button" :aria-pressed="costMode === 'own'" @click="costMode = 'own'">I own it</button>
+                  <button type="button" :aria-pressed="costMode === 'buy'" @click="costMode = 'buy'">
+                    I'm buying it
+                  </button>
+                </div>
+              </div>
+
+              <template x-if="costMode === 'buy'">
+                <div class="cost-numbers">
+                  <label class="cost-number"
+                    >Hardware <input type="number" min="0" step="100" x-model.number="costHardware"> USD</label
+                  >
+                  <label class="cost-number"
+                    >Life <input type="number" min="1" max="10" step="1" x-model.number="costYears"> years</label
+                  >
+                </div>
+              </template>
+
+              <div class="cost-numbers">
+                <label class="cost-number"
+                  >Power <input type="number" min="0" step="10" x-model.number="costWatts"> W</label
+                >
+                <label class="cost-number"
+                  >Electricity <input type="number" min="0" step="0.01" x-model.number="costElectricity"> $/kWh</label
+                >
+              </div>
+
+              <div class="cost-field">
+                <span class="cost-label">Cloud comparison</span>
+                <div class="cost-presets" role="group" aria-label="cloud preset">
+                  <template x-for="preset in cloudPresets" :key="preset.key">
+                    <button
+                      type="button"
+                      :aria-pressed="cloudPreset === preset.key"
+                      :title="preset.name"
+                      @click="cloudPreset = preset.key"
+                    >
+                      <span x-text="preset.label"></span>
+                      <span x-text="'$' + preset.perMillion + '/M'"></span>
+                    </button>
+                  </template>
+                </div>
+              </div>
+            </div>
+
+            <div class="cost-results">
+              <div class="cost-result">
+                <span class="cost-result-label">Local</span>
+                <strong class="cost-result-value" x-text="costLocal"></strong>
+                <span class="cost-result-unit">per month</span>
+              </div>
+              <div class="cost-result">
+                <span
+                  class="cost-result-label"
+                  x-text="'Cloud · ' + (selectedCloudPreset ? selectedCloudPreset.name : '')"
+                ></span>
+                <strong class="cost-result-value" x-text="costCloud"></strong>
+                <span class="cost-result-unit">per month</span>
+              </div>
+
+              <dl class="cost-details">
+                <div>
+                  <dt>Local per 1M tokens</dt>
+                  <dd x-text="costLocalPerMillion"></dd>
+                </div>
+                <div>
+                  <dt>Cloud per 1M tokens</dt>
+                  <dd x-text="costCloudPerMillion"></dd>
+                </div>
+                <div>
+                  <dt>Output tokens</dt>
+                  <dd x-text="costTokens"></dd>
+                </div>
+              </dl>
+
+              <p class="cost-verdict" x-text="costPayback"></p>
+              <p class="cost-verdict" x-text="costCrossover"></p>
+            </div>
+          </div>
+
+          <figure class="cost-chart" x-show="costMode === 'buy'">
+            <div class="cost-chart-head">
+              <span class="cost-chart-title">Total spend over 12 months</span>
+              <div class="cost-legend" aria-hidden="true">
+                <span class="cost-legend-item cost-legend-item--local">Local</span>
+                <span class="cost-legend-item cost-legend-item--cloud">Cloud</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 320 160" role="img" :aria-label="costChart.caption">
+              <line class="cost-axis-line" x1="8" y1="138" x2="312" y2="138"></line>
+              <path class="cost-line cost-line-cloud" :d="costChart.cloudPath"></path>
+              <path class="cost-line cost-line-local" :d="costChart.localPath"></path>
+              <circle
+                class="cost-dot"
+                x-show="costChart.dot"
+                :cx="costChart.dot ? costChart.dot.x : 0"
+                :cy="costChart.dot ? costChart.dot.y : 0"
+                r="4"
+              ></circle>
+              <text class="cost-axis-label" x="8" y="154">0</text>
+              <text class="cost-axis-label" x="312" y="154" text-anchor="end">12 months</text>
+              <text class="cost-axis-label" x="8" y="10" x-text="costChart.maxLabel"></text>
+            </svg>
+            <figcaption x-text="costChart.caption"></figcaption>
+          </figure>
+
+          <p class="cost-note">
+            Local uses the speed estimate for the best model, one device, 8k context. Cloud prices come from models.dev,
+            with four input tokens per output token. Hardware is amortized over its life; electricity is the only
+            running cost. Speeds are estimates, not benchmarks.
+          </p>
         </div>
       </section>
 

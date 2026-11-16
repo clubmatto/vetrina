@@ -1,8 +1,9 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 4 are shipped. Workstream 5 is implemented
-and waiting to ship. Workstreams 6 and 7 and the final accessibility pass are
-still open. Last updated: 2026-11-13.
+Status: active. Workstreams 0 to 5 are shipped. Workstream 6 is built and
+waiting to ship. Recommended setups and the final accessibility pass are the
+remaining product work, ahead of the Product Hunt launch on 2026-11-23. Last
+updated: 2026-11-16.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -39,7 +40,7 @@ fit -> speed -> cost.
 - [x] Add `npm test` using `tsx --test`.
 - [x] Test the pure modules: detection, model sorting and filtering, ranking.
 - [x] Add tests for fit gap.
-- [ ] Add tests for speed and cost as those modules land.
+- [x] Add tests for speed and cost as those modules land.
 - [x] Add `.github/workflows/whatsmylocalai-ci.yml` with lint, test, build, and
       the e2e suite.
 - [x] Add data sanity tests: model count, unique names, positive sizes.
@@ -169,14 +170,21 @@ at runtime, and the estimate is labelled honestly.
 
 ### 6. Cost calculator
 
-- [ ] Add three cloud price presets from models.dev: budget, mid, frontier.
-- [ ] Add `src/assets/js/cost.ts` with the local and cloud formulas.
-- [ ] Add the calculator section with usage, watts, electricity price,
+- [x] Add three cloud price presets from models.dev: budget, mid, frontier.
+- [x] Add `src/assets/js/cost.ts` with the local and cloud formulas.
+- [x] Add the calculator section with usage, watts, electricity price,
       hardware cost, hardware life, and cloud preset inputs.
-- [ ] Show local cost per month, cloud cost per month, cost per million
+- [x] Show local cost per month, cloud cost per month, cost per million
       tokens, and break-even months.
-- [ ] Keep the assumptions visible.
-- [ ] Test the formulas and the empty and zero cases.
+- [x] Keep the assumptions visible.
+- [x] Test the formulas and the empty and zero cases.
+- [x] Add the two modes: "I own it" (electricity only) and "I'm buying it"
+      (hardware amortized, payback, crossover).
+- [x] Chart the cumulative spend over 12 months with the payback marked. The
+      usage chart collapsed the local line onto the axis because cloud
+      dominates at high usage.
+- [x] Price everything in USD, matching models.dev, with four input tokens per
+      output token.
 
 Done when the calculator updates live, works on mobile, and does not imply
 more precision than the inputs allow.
@@ -231,8 +239,10 @@ data was last checked.
    93 Q4 ones. Scope the "never stale" claim, ask Auxot to refresh, or vendor
    and extend the registry?
 4. Parked: do the two parked items stay parked?
-5. Later, before workstreams 6 and 7: does the cost calculator include hardware
-   amortization? Is setups a page or a tab, and which vendors?
+5. Cost: hardware amortization is on by default with an "I own it" mode that
+   drops it. Everything is in USD and the cloud comparison uses four input
+   tokens per output token. Still open: setups as a page or a tab, and the
+   vendor list.
 
 Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
 2026-11-19.

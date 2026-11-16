@@ -92,6 +92,32 @@ another card rather than as a terminal.
 There is no chip for a model that does not fit, and no separate MLX number: the
 estimate is for the GGUF command shown on the card.
 
+## Cost estimate
+
+The cost section compares the machine you have with the cloud. Local is a
+fixed cost plus electricity; cloud is a marginal price per token. That is why
+the two lines cross, and why the crossing point matters more than the headline
+number.
+
+Two modes answer two different questions:
+
+- **I own it** drops the hardware and shows the marginal cost, electricity only.
+- **I'm buying it** amortizes the hardware over its life, then shows the payback
+  months and the usage level where local starts winning.
+
+The inputs are usage, power draw, electricity price, hardware price and life,
+and a cloud preset. Defaults are 2 hours a day, 350 W, $0.25/kWh, a $2,000 rig
+with a three-year life, and the mid preset.
+
+Cloud presets are read from models.dev at build time: frontier, mid, and
+budget. The comparison is per million output tokens, assuming four input tokens
+for every output token. Prices and the speed band move with the weekly catalog
+refresh, so the calculator does not age independently of the rest of the page.
+
+The chart is cumulative spend over 12 months, with the payback marked. The
+monthly-cost-by-usage chart put the local line on the axis, because cloud
+dominates at high usage; cumulative spend makes the decision visible.
+
 ## Run commands
 
 Two flavors, switchable in the UI and persisted in `localStorage`:

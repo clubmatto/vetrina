@@ -729,3 +729,339 @@
     flex: 1 1 100%;
   }
 }
+
+/* --- cost calculator ------------------------------------------------------ */
+
+.cost {
+  padding-top: var(--ds-space-16);
+}
+
+.cost-intro {
+  max-width: 34rem;
+  margin: var(--ds-space-2) 0 0;
+  font-family: var(--ds-font-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+.cost-panel {
+  margin-top: var(--ds-space-6);
+  padding: var(--ds-space-6);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+}
+
+.cost-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--ds-space-8);
+}
+
+.cost-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  min-width: 0;
+}
+
+.cost-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+}
+
+.cost-label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+}
+
+.cost-label strong {
+  color: var(--ds-text);
+}
+
+.cost-range {
+  width: 100%;
+  accent-color: var(--ds-gradient-4);
+}
+
+.cost-seg,
+.cost-presets {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+}
+
+.cost-seg button,
+.cost-presets button {
+  flex: 1;
+  min-height: 2.25rem;
+  padding: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.cost-seg button + button,
+.cost-presets button + button {
+  border-left: 1px solid var(--ds-border);
+}
+
+.cost-seg button[aria-pressed="true"],
+.cost-presets button[aria-pressed="true"] {
+  color: var(--ds-bg);
+  background: var(--ds-text);
+}
+
+.cost-seg button:focus-visible,
+.cost-presets button:focus-visible {
+  outline: 2px solid var(--ds-focus-ring-strong);
+  outline-offset: -2px;
+}
+
+.cost-presets button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+}
+
+.cost-presets button span:last-child {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.cost-numbers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-3);
+}
+
+.cost-number {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: 0.75rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-number input {
+  width: 5.5rem;
+  padding: var(--ds-space-1) var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: 0.78rem;
+  color: var(--ds-text);
+  background: var(--ds-bg);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+}
+
+.cost-number input:focus-visible {
+  outline: none;
+  border-color: var(--ds-gradient-4);
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+.cost-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  min-width: 0;
+}
+
+.cost-result {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--ds-space-3);
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.cost-result-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-text-secondary);
+}
+
+.cost-result-value {
+  font-family: var(--ds-font-mono);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ds-text);
+}
+
+.cost-result-unit {
+  font-family: var(--ds-font-sans);
+  font-size: 0.72rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ds-space-1);
+  margin: 0;
+}
+
+.cost-details div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  font-family: var(--ds-font-sans);
+  font-size: 0.78rem;
+}
+
+.cost-details dt {
+  color: var(--ds-text-secondary);
+}
+
+.cost-details dd {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-weight: 600;
+  color: var(--ds-text);
+}
+
+.cost-verdict {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ds-text);
+}
+
+.cost-verdict + .cost-verdict {
+  font-weight: 400;
+  color: var(--ds-text-secondary);
+}
+
+.cost-chart {
+  margin: var(--ds-space-6) 0 0;
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+}
+
+.cost-chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  font-family: var(--ds-font-sans);
+  font-size: 0.75rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-legend {
+  display: flex;
+  gap: var(--ds-space-3);
+}
+
+.cost-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cost-legend-item::before {
+  content: "";
+  width: 0.7rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.cost-legend-item--cloud {
+  color: var(--ds-warn);
+}
+
+.cost-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: var(--ds-space-2);
+}
+
+.cost-line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.cost-line-local {
+  stroke: var(--ds-gradient-4);
+}
+
+.cost-line-cloud {
+  stroke: var(--ds-warn);
+  stroke-dasharray: 5 4;
+}
+
+.cost-dot {
+  fill: var(--ds-warn);
+  stroke: var(--ds-bg);
+  stroke-width: 2;
+}
+
+.cost-axis-line {
+  stroke: var(--ds-border);
+  stroke-width: 1;
+}
+
+.cost-axis-label {
+  font-family: var(--ds-font-mono);
+  font-size: 10px;
+  fill: var(--ds-text-secondary);
+}
+
+.cost-chart figcaption {
+  margin-top: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: 0.78rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-note {
+  margin: var(--ds-space-6) 0 0;
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+  font-family: var(--ds-font-sans);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+@media (max-width: 760px) {
+  .cost-panel {
+    padding: var(--ds-space-4);
+  }
+
+  .cost-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ds-space-6);
+  }
+
+  .cost-numbers {
+    grid-template-columns: 1fr;
+  }
+
+  .cost-result-value {
+    font-size: 1.8rem;
+  }
+}

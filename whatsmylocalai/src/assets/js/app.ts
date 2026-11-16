@@ -72,6 +72,7 @@ import {
   formatSpeed,
   type SpeedEstimate,
 } from "./speed";
+import { estimateCosts, type CostEstimate } from "./cost";
 import { initThemeToggle } from "../../../../assets/js/theme";
 
 type ProbeKey = "gpu" | "ram" | "cpu" | "os" | "webgpu" | "vram";
@@ -89,6 +90,23 @@ const PROBE_KEYS: readonly ProbeKey[] = [
 const TOP_RUNS = 3;
 /** How many out-of-reach models to show before the "show all" toggle. */
 const TOP_BEYOND = 6;
+
+interface CloudPreset {
+  key: string;
+  label: string;
+  name: string;
+  input: number;
+  output: number;
+  perMillion: number;
+}
+
+interface CostChart {
+  localPath: string;
+  cloudPath: string;
+  dot: { x: number; y: number } | null;
+  caption: string;
+  maxLabel: string;
+}
 
 const PROBE_SEEN_KEY = "wmla-probe-seen";
 const SPECS_KEY = "wmla-specs";
@@ -154,6 +172,14 @@ document.addEventListener("alpine:init", () => {
       appleSpeed: { bins: {} } as {
         bins: Record<string, [number, number][]>;
       },
+      cloudPresets: [] as CloudPreset[],
+      costMode: "buy" as "own" | "buy",
+      costHours: 2,
+      costHardware: 2000,
+      costYears: 3,
+      costWatts: 350,
+      costElectricity: 0.25,
+      cloudPreset: "mid",
       savedSpecs: null as {
         ram: number;
         vram: number;
@@ -189,6 +215,7 @@ document.addEventListener("alpine:init", () => {
       spyItems: [
         { id: "detect-panel", label: "Your machine" },
         { id: "best-pick-row", label: "Your local model" },
+        { id: "cost", label: "What it costs" },
         { id: "models", label: "Other options" },
         { id: "use-cases", label: "What can you do with it?" },
         { id: "detection-credit", label: "How detection works" },
@@ -221,6 +248,8 @@ document.addEventListener("alpine:init", () => {
         this.appleSpeed = (loadJSON("apple-speed") as {
           bins: Record<string, [number, number][]>;
         } | null) ?? { bins: {} };
+        this.cloudPresets =
+          (loadJSON("cloud-prices") as CloudPreset[] | null) ?? [];
 
         try {
           const raw = localStorage.getItem(SPECS_KEY);
@@ -665,6 +694,182 @@ document.addEventListener("alpine:init", () => {
 
       get speedHint(): string {
         return "Estimated decode speed for GGUF via llama.cpp or Metal, single device, 8k context. MLX builds can differ.";
+      },
+
+      get selectedCloudPreset(): CloudPreset | null {
+        return (
+          this.cloudPresets.find((preset) => preset.key === this.cloudPreset) ??
+          this.cloudPresets[1] ??
+          null
+        );
+      },
+
+      costSpeed(): SpeedEstimate | null {
+        return this.bestModel ? this.speedFor(this.bestModel) : null;
+      },
+
+      get costEstimate(): CostEstimate | null {
+        const speed = this.costSpeed();
+        const preset = this.selectedCloudPreset;
+        if (!speed || !preset) return null;
+        return estimateCosts({
+          hoursPerDay: this.costHours,
+          tokensPerSecond: (speed.low + speed.high) / 2,
+          watts: this.costWatts,
+          electricityPrice: this.costElectricity,
+          hardwareCost: this.costHardware,
+          hardwareYears: this.costYears,
+          cloudPerMillion: preset.perMillion,
+          includeHardware: this.costMode === "buy",
+        });
+      },
+
+      get costReady(): boolean {
+        return this.costEstimate !== null;
+      },
+
+      formatMoney(value: number): string {
+        const digits = Number.isInteger(value)
+          ? 0
+          : value >= 100
+            ? 0
+            : value >= 10
+              ? 1
+              : 2;
+        return (
+          "$" +
+          value.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: digits,
+          })
+        );
+      },
+
+      formatHours(hours: number): string {
+        if (hours < 1) return `${Math.round(hours * 60)} min`;
+        return `${hours % 1 === 0 ? hours : hours.toFixed(1)} h`;
+      },
+
+      formatMonths(months: number): string {
+        if (months < 1) return "under a month";
+        const rounded = Math.round(months);
+        return `${rounded} ${rounded === 1 ? "month" : "months"}`;
+      },
+
+      get costHoursLabel(): string {
+        return `${this.formatHours(this.costHours)}/day`;
+      },
+
+      get costLocal(): string {
+        const estimate = this.costEstimate;
+        return estimate ? this.formatMoney(estimate.localMonthly) : "";
+      },
+
+      get costCloud(): string {
+        const estimate = this.costEstimate;
+        return estimate ? this.formatMoney(estimate.cloudMonthly) : "";
+      },
+
+      get costLocalPerMillion(): string {
+        const estimate = this.costEstimate;
+        const speed = this.costSpeed();
+        if (!estimate || !speed) return "";
+        const atLow =
+          estimate.localMonthly /
+          ((speed.low * 3600 * this.costHours * 30) / 1_000_000);
+        const atHigh =
+          estimate.localMonthly /
+          ((speed.high * 3600 * this.costHours * 30) / 1_000_000);
+        return `${this.formatMoney(Math.min(atLow, atHigh))}–${this.formatMoney(Math.max(atLow, atHigh))}`;
+      },
+
+      get costCloudPerMillion(): string {
+        const preset = this.selectedCloudPreset;
+        return preset ? this.formatMoney(preset.perMillion) : "";
+      },
+
+      get costTokens(): string {
+        const estimate = this.costEstimate;
+        if (!estimate) return "";
+        return `${Math.round(estimate.tokensPerMonth / 1_000_000)}M output tokens a month`;
+      },
+
+      get costPayback(): string {
+        if (this.costMode === "own") {
+          return "You already own the machine, so local costs electricity only.";
+        }
+        const estimate = this.costEstimate;
+        if (!estimate) return "";
+        if (estimate.paybackMonths === null) {
+          return "At this usage the hardware does not pay back against cloud.";
+        }
+        if (estimate.paybackMonths < 1) {
+          return "The hardware pays back in under a month at this usage.";
+        }
+        return `The hardware pays back in about ${Math.round(estimate.paybackMonths)} months at this usage.`;
+      },
+
+      get costCrossover(): string {
+        if (this.costMode === "own") return "";
+        const estimate = this.costEstimate;
+        if (!estimate) return "";
+        if (estimate.crossoverHoursPerDay === null) {
+          return "Local does not catch up at this cloud price.";
+        }
+        if (estimate.crossoverHoursPerDay > 12) {
+          return "Local does not catch up below 12 hours a day.";
+        }
+        return `Local is cheaper above ${this.formatHours(estimate.crossoverHoursPerDay)} a day.`;
+      },
+
+      get costChart(): CostChart {
+        const empty: CostChart = {
+          localPath: "",
+          cloudPath: "",
+          dot: null,
+          caption: "",
+          maxLabel: "",
+        };
+        const estimate = this.costEstimate;
+        const preset = this.selectedCloudPreset;
+        const speed = this.costSpeed();
+        if (!estimate || !preset || !speed || this.costMode !== "buy") {
+          return empty;
+        }
+
+        const maxMonths = 12;
+        const width = 320;
+        const height = 160;
+        const padLeft = 8;
+        const padRight = 8;
+        const padTop = 12;
+        const padBottom = 22;
+
+        const local = (months: number) =>
+          this.costHardware + estimate.electricityMonthly * months;
+        const cloud = (months: number) => estimate.cloudMonthly * months;
+        const maxCost = Math.max(local(maxMonths), cloud(maxMonths), 1);
+
+        const x = (months: number) =>
+          padLeft + (months / maxMonths) * (width - padLeft - padRight);
+        const y = (cost: number) =>
+          padTop + (1 - cost / maxCost) * (height - padTop - padBottom);
+
+        const payback = estimate.paybackMonths;
+        const dot =
+          payback !== null && payback > 0 && payback <= maxMonths
+            ? { x: x(payback), y: y(cloud(payback)) }
+            : null;
+
+        return {
+          localPath: `M${x(0)},${y(local(0))} L${x(maxMonths)},${y(local(maxMonths))}`,
+          cloudPath: `M${x(0)},${y(cloud(0))} L${x(maxMonths)},${y(cloud(maxMonths))}`,
+          dot,
+          caption: dot
+            ? `The hardware pays back after about ${this.formatMonths(payback!)}.`
+            : "Cloud stays cheaper than the hardware over 12 months.",
+          maxLabel: this.formatMoney(maxCost),
+        };
       },
 
       get availableCaps(): string[] {
