@@ -3,7 +3,7 @@ title: "Reshare: What's my local AI?"
 platforms:
   - twitter
   - linkedin
-image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/demo-dark.gif
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/demo-dark.gif
 topics:
   - whatsmylocalai
   - open-source
