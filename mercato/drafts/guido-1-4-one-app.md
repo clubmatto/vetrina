@@ -4,7 +4,7 @@ platforms:
   - twitter
   - linkedin
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/screen-dashboard.png
-publish_date: 2026-11-15
+publish_date: 2026-11-19
 topics:
   - guido
   - sim-racing
