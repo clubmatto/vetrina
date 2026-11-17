@@ -51,11 +51,12 @@ whatsmylocalai/
 ```
 
 Inner pages render inside `base.liquid`'s `.page-shell`. On desktop the content
-takes the available width left of the rail, and `spec-rail.liquid` is fixed to
-the right edge below the header, filling the viewport height. Below 1080px the
-rail becomes a collapsible summary above the content. The home page keeps its
-full-width machine form and has no rail. `--wmla-radius` in `page.css` is the
-single UI radius (8px).
+takes the available width left of the rail, and `spec-rail.liquid` is sticky on
+the right edge below the header, filling the available height above the footer.
+The footer spans the full page under both columns and sits at the bottom of
+short pages. Below 1080px the rail becomes a collapsible
+summary above the content. The home page keeps its full-width machine form and
+has no rail. `--wmla-radius` in `page.css` is the single UI radius (8px).
 
 ## Build
 

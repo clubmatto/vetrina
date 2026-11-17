@@ -62,19 +62,40 @@ test("the mobile menu opens and navigates", async ({ page }) => {
   await expect(page.locator(".spec-rail")).toBeVisible();
 });
 
-test("the desktop rail fills the right side of the viewport", async ({
+test("the desktop rail fills the right side and the footer spans the page", async ({
   page,
 }) => {
   await openModels(page, 16, 11);
 
   const viewport = page.viewportSize();
   const rail = await page.locator(".spec-rail").boundingBox();
+  const footer = await page.locator(".footer").boundingBox();
 
   expect(viewport).not.toBeNull();
   expect(rail).not.toBeNull();
+  expect(footer).not.toBeNull();
   expect(Math.round(rail!.x + rail!.width)).toBe(viewport!.width);
-  expect(Math.round(rail!.y)).toBe(44);
-  expect(Math.round(rail!.height)).toBe(viewport!.height - 44);
+  expect(Math.round(footer!.width)).toBe(viewport!.width);
+  expect(Math.round(footer!.y + footer!.height)).toBe(viewport!.height);
+  expect(Math.round(rail!.y + rail!.height)).toBeLessThan(
+    Math.round(footer!.y),
+  );
+});
+
+test("the rail sticks while a long page scrolls", async ({ page }) => {
+  await skipReveal(page);
+  await page.goto("/cost/?gpu=Apple%20M1&ram=16&vram=11");
+  await expect(page.locator(".cost-panel")).toBeVisible();
+
+  const viewport = page.viewportSize();
+  const rail = page.locator(".spec-rail");
+  expect(viewport).not.toBeNull();
+  await expect(rail).toHaveCSS("position", "sticky");
+
+  await page.evaluate(() => window.scrollTo(0, 120));
+  await expect
+    .poll(async () => Math.round((await rail.boundingBox())!.y))
+    .toBe(44);
 });
 
 test("the mobile rail expands to the machine form", async ({ page }) => {

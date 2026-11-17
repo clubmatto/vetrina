@@ -346,26 +346,32 @@
 
 @media (min-width: 1081px) {
   body.has-spec-rail .page-shell {
-    align-self: flex-start;
-    width: calc(100% - var(--rail-width));
+    flex: 1 0 auto;
+    width: 100%;
     max-width: none;
     margin: 0;
-    padding: 0 var(--ds-space-8) var(--ds-space-16);
-    display: block;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--rail-width);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
   }
 
   body.has-spec-rail .page-main {
+    width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
   }
 
   body.has-spec-rail .spec-rail {
-    position: fixed;
+    position: sticky;
     top: var(--nav-height);
-    right: 0;
+    align-self: stretch;
+    order: 0;
     width: var(--rail-width);
-    height: calc(100dvh - var(--nav-height));
-    max-height: none;
+    height: 100%;
+    max-height: calc(100dvh - var(--nav-height));
     padding: var(--ds-space-6);
     overflow-y: auto;
     display: flex;
@@ -391,10 +397,5 @@
 
   body.has-spec-rail .spec-rail-actions {
     margin-top: var(--ds-space-4);
-  }
-
-  body.has-spec-rail .footer {
-    align-self: flex-start;
-    width: calc(100% - var(--rail-width));
   }
 }
