@@ -1,101 +1,59 @@
 ---
 layout: base
 title: "Setups — What's my local AI?"
-description: "Four machines that run local models well, what they run, and roughly what they cost."
+description: "Four machines that clear 20 tok/s, what they run, and roughly what they cost."
 specRail: true
 ---
 <main id="main" class="page">
   <header class="page-head">
     <h1 class="page-title ds-text-gradient ds-text-gradient--animated">Recommended setups</h1>
     <p class="page-sub">
-      Four machines that run local models well. Speeds are estimates for Q4 GGUF builds, single device, 8k context.
+      Four machines that clear 20 tok/s on our estimate. Each card shows the largest Q4 model that fits without dropping
+      below that floor.
     </p>
   </header>
 
   <div class="setups-grid">
-    <article class="setup-card">
-      <h2>MacBook Air M1</h2>
-      <p class="setup-specs">M1, 16 GB unified memory</p>
-      <dl class="setup-list">
-        <div>
-          <dt>Runs</dt>
-          <dd>gpt-oss-20b</dd>
+    {% for card in setup_cards %}
+      <article class="setup-card">
+        <div class="setup-card-head">
+          <h2>{{ card.name }}</h2>
+          <span class="setup-kind">{{ card.kind }}</span>
         </div>
-        <div>
-          <dt>Speed</dt>
-          <dd>~14-19 tok/s</dd>
+        <p class="setup-specs">{{ card.specs }}</p>
+        <dl class="setup-list">
+          <div>
+            <dt>Runs</dt>
+            <dd>
+              {{ card.model }}
+              <span class="setup-model-meta">{{ card.model_vram_gb }} GB Q4</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Speed</dt>
+            <dd>{{ card.speed_label }}</dd>
+          </div>
+          <div>
+            <dt>Price</dt>
+            <dd>
+              {{ card.price_label }}
+              <span class="setup-price-note">{{ card.price_note }}</span>
+            </dd>
+          </div>
+        </dl>
+        <p class="setup-note">{{ card.note }}</p>
+        <div class="setup-card-foot">
+          <a class="setup-link" href="{{ card.vendor_url }}" target="_blank" rel="noopener">
+            See at {{ card.vendor_label }}
+          </a>
+          <span class="setup-checked">checked {{ card.last_checked_label }}</span>
         </div>
-        <div>
-          <dt>Price</dt>
-          <dd>~$600-800 used</dd>
-        </div>
-      </dl>
-      <p class="setup-note">The cheapest way in. Fanless, quiet, fine for smaller models.</p>
-    </article>
-
-    <article class="setup-card">
-      <h2>MacBook Pro M4 Pro</h2>
-      <p class="setup-specs">M4 Pro, 24 GB unified memory</p>
-      <dl class="setup-list">
-        <div>
-          <dt>Runs</dt>
-          <dd>Qwen3-30B-A3B</dd>
-        </div>
-        <div>
-          <dt>Speed</dt>
-          <dd>~75-90 tok/s</dd>
-        </div>
-        <div>
-          <dt>Price</dt>
-          <dd>~$1,600-1,900</dd>
-        </div>
-      </dl>
-      <p class="setup-note">More memory and much more bandwidth. A good daily driver.</p>
-    </article>
-
-    <article class="setup-card">
-      <h2>RTX 4060 Ti 16 GB</h2>
-      <p class="setup-specs">Desktop, 16 GB VRAM</p>
-      <dl class="setup-list">
-        <div>
-          <dt>Runs</dt>
-          <dd>Qwen3-30B-A3B</dd>
-        </div>
-        <div>
-          <dt>Speed</dt>
-          <dd>~60-80 tok/s</dd>
-        </div>
-        <div>
-          <dt>Price</dt>
-          <dd>~$1,200 build</dd>
-        </div>
-      </dl>
-      <p class="setup-note">The value desktop if you want CUDA and a small footprint.</p>
-    </article>
-
-    <article class="setup-card">
-      <h2>RTX 4090 24 GB</h2>
-      <p class="setup-specs">Desktop, 24 GB VRAM</p>
-      <dl class="setup-list">
-        <div>
-          <dt>Runs</dt>
-          <dd>Qwen3.5-35B-A3B</dd>
-        </div>
-        <div>
-          <dt>Speed</dt>
-          <dd>~210-285 tok/s</dd>
-        </div>
-        <div>
-          <dt>Price</dt>
-          <dd>~$2,000+ build</dd>
-        </div>
-      </dl>
-      <p class="setup-note">The fast option. Also the one that needs the most power and space.</p>
-    </article>
+      </article>
+    {% endfor %}
   </div>
 
   <p class="setups-note">
-    Prices checked November 2026 and meant as a starting point, not a quote. We do not take affiliate money for these.
+    Prices are starting points, not quotes. We do not take affiliate money for these.
     <a href="/">Check what your machine runs</a>.
   </p>
 </main>

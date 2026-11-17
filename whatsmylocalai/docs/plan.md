@@ -1,9 +1,8 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 6 and the site structure workstream are
-shipped. Recommended setups and the final accessibility pass are the remaining
-product work, ahead of the Product Hunt launch on 2026-11-23. Last updated:
-2026-11-17.
+Status: active. Workstreams 0 to 7 and the site structure workstream are
+shipped. The final accessibility pass is the remaining product work, ahead of
+the Product Hunt launch on 2026-11-23. Last updated: 2026-11-17.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -29,6 +28,13 @@ fit -> speed -> cost.
   not in v2.
 - **The options live in tabs.** Fits and out of reach are two panels under
   Other options, so the primary result keeps the space it earns.
+- **Setups clear 20 tok/s.** Every recommended rig shows the largest Q4 model
+  whose estimated low end is at least 20 tok/s. The M1 Air is out; the Mac mini
+  M4 16GB is the entry rig.
+- **The floor is setups-only.** The app best pick stays largest-fit. Applying
+  the 20 tok/s floor there would return a 1.7B model on an M1.
+- **Tight fits stay.** The 4060 Ti runs Qwen3-30B-A3B at 15.5 of 16GB. The
+  card says context is tight; gpt-oss-20b is the comfortable alternative.
 - **e2e tests cover behaviour, not audits.** They assert user-visible
   outcomes: a pick that fits, a command that changes, a share link that
   replays, a gap that shrinks up the list.
@@ -81,7 +87,7 @@ focus.
 - [x] Add a functional e2e suite: recommendation, runner, share, gap, signup.
 - [x] Review the speed layout: the band becomes a stat, with a simulated
       terminal beside the card on desktop and stacked on mobile.
-- [ ] Review the cost and setups layouts before building them.
+- [x] Review the cost and setups layouts before building them.
 
 Done when the e2e suite runs in CI and covers every flow above.
 
@@ -192,17 +198,23 @@ more precision than the inputs allow.
 
 ### 7. Recommended setups
 
-- [ ] Decide between a `/setups/` page and an in-page tab. The current
+- [x] Decide between a `/setups/` page and an in-page tab. The current
       recommendation is a separate page.
-- [ ] Add `src/_data/setups.json` with four rigs: specs, price, vendor link,
+- [x] Add `src/_data/setups.json` with four rigs: specs, price, vendor link,
       and `last_checked`.
-- [ ] Compute the best model and speed for each rig at build time.
-- [ ] Keep vendor outreach as a separate board todo. Use public links until
+- [x] Compute the best model and speed for each rig at build time.
+- [x] Keep vendor outreach as a separate board todo. Use public links until
       there are deals.
-- [ ] Update `src/sitemap.xml.liquid` and `src/llms.txt.liquid`.
+- [x] Update `src/sitemap.xml.liquid` and `src/llms.txt.liquid`.
+
+The raw rigs live in `src/_data/setups.json`, the selection and speed estimate
+in `src/_lib/setups.js`, and the computed cards in
+`src/_data/setup_cards.js`. The build fails if a rig cannot clear the floor.
+Vendor links are public manufacturer pages; prices are starting points checked
+per card. `gpt-oss-20b` is the comfortable 4060 Ti alternative.
 
 Done when each rig shows what it runs, links to the vendor, and shows when the
-data was last checked.
+data was last checked. Every pick clears 20 tok/s at the low end.
 
 ### 8. Parked
 
@@ -243,8 +255,8 @@ data was last checked.
 5. Cost: hardware amortization is on by default with an "I own it" mode that
    drops it. Everything is in USD and the cloud comparison uses four input
    tokens per output token. Frontier and DeepSeek are shown side by side to
-   make the public-price fork visible. Still open: setups as a page or a tab,
-   and the vendor list.
+   make the public-price fork visible. Setups are settled: a page, a 20 tok/s
+   floor, and public manufacturer links with no affiliate money.
 
 Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
 2026-11-19.

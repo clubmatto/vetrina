@@ -81,11 +81,13 @@ Unit tests use `node:test` through `tsx` and sit next to the code.
   specs.
 - `src/_lib/apple-speed.test.ts`: every chip covered, bins reach every memory
   configuration, known specs.
+- `src/_lib/setups.test.ts`: the 20 tok/s floor, one pick per rig, vendor
+  links and checked dates.
 
 The e2e suite is behaviour, not markup. It covers a recommendation that fits
 the budget, a VRAM change that moves the pick, the out-of-reach ordering, the
-runner toggle and clipboard, the share round trip, the MLX note, and the email
-form success and failure.
+runner toggle and clipboard, the share round trip, the MLX note, the computed
+setups, and the email form success and failure.
 
 ## CI
 
