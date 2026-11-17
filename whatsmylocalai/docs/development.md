@@ -50,11 +50,12 @@ whatsmylocalai/
 └── eleventy.config.ts
 ```
 
-Inner pages render inside `base.liquid`'s `.page-shell`: a two-column grid
-with the page content at 2fr and `spec-rail.liquid` at 1fr. The rail is sticky
-under the header; below 1080px it becomes a collapsible summary above the
-content. The home page keeps its full-width machine form and has no rail.
-`--wmla-radius` in `page.css` is the single UI radius (8px).
+Inner pages render inside `base.liquid`'s `.page-shell`. On desktop the content
+takes the available width left of the rail, and `spec-rail.liquid` is fixed to
+the right edge below the header, filling the viewport height. Below 1080px the
+rail becomes a collapsible summary above the content. The home page keeps its
+full-width machine form and has no rail. `--wmla-radius` in `page.css` is the
+single UI radius (8px).
 
 ## Build
 

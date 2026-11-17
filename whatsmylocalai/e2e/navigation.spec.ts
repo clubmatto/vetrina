@@ -62,6 +62,21 @@ test("the mobile menu opens and navigates", async ({ page }) => {
   await expect(page.locator(".spec-rail")).toBeVisible();
 });
 
+test("the desktop rail fills the right side of the viewport", async ({
+  page,
+}) => {
+  await openModels(page, 16, 11);
+
+  const viewport = page.viewportSize();
+  const rail = await page.locator(".spec-rail").boundingBox();
+
+  expect(viewport).not.toBeNull();
+  expect(rail).not.toBeNull();
+  expect(Math.round(rail!.x + rail!.width)).toBe(viewport!.width);
+  expect(Math.round(rail!.y)).toBe(44);
+  expect(Math.round(rail!.height)).toBe(viewport!.height - 44);
+});
+
 test("the mobile rail expands to the machine form", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openModels(page, 16, 11);

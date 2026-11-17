@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="en">
   {% include 'head' %}
-  <body x-data="app()" @keydown.escape.window="navOpen = false">
+  <body
+    x-data="app()"
+    class="{% if specRail %}has-spec-rail{% endif %}"
+    @keydown.escape.window="navOpen = false"
+  >
     <a class="skip-link" href="#main">skip to content</a>
     {% include 'data' %}
     {% include 'header' %}

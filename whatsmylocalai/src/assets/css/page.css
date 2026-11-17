@@ -5,6 +5,7 @@
   --layout-max: 1280px;
   --wmla-radius: 8px;
   --nav-height: 2.75rem;
+  --rail-width: clamp(360px, 30vw, 440px);
 }
 
 body::before {
