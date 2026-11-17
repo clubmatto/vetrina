@@ -1,0 +1,140 @@
+<section class="best-pick-row" id="best-pick-row">
+  <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">Your local model</h2>
+  <p class="specs-intro" x-text="runnerHint"></p>
+
+  <p class="mlx-note" x-show="vendor === 'apple'" x-cloak>
+    <strong>Apple Silicon:</strong>
+    <span x-show="runner === 'lmstudio'">
+      LM Studio also runs MLX models. Filter the catalog with <code>lms get --mlx</code>.
+    </span>
+    <span x-show="runner === 'ollama'"> Ollama also runs MLX models. Look for tags ending in <code>-mlx</code>. </span>
+    The commands on this page use GGUF via llama.cpp and Metal.
+  </p>
+
+  <div class="best-pick-controls">
+    <div class="tradeoff" role="group" aria-label="choose a performance vs. resource trade-off">
+      <span class="tradeoff-end">lean</span>
+      <input
+        id="perf-slider"
+        class="tradeoff-range"
+        type="range"
+        aria-label="performance: lean vs max performance"
+        min="0"
+        max="100"
+        step="1"
+        :value="Math.round(perfBias * 100)"
+        @input="setPerfBias($event.target.value / 100)"
+      >
+      <span class="tradeoff-end">max performance</span>
+    </div>
+    <div class="runner-toggle" role="group" aria-label="choose how to run models">
+      <button type="button" @click="setRunner('lmstudio')" :aria-pressed="runner === 'lmstudio'">LM Studio</button>
+      <button type="button" @click="setRunner('ollama')" :aria-pressed="runner === 'ollama'">Ollama</button>
+    </div>
+    <button
+      type="button"
+      class="share-btn"
+      @click="shareResult()"
+      :class="{ copied: shareCopied }"
+      aria-label="share your result"
+    >
+      <svg
+        class="share-btn-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
+        <path d="M16 6l-4-4-4 4"/>
+        <path d="M12 2v13"/>
+      </svg>
+      <span class="share-btn-label" x-text="shareCopied ? 'link copied!' : 'share'"></span>
+    </button>
+  </div>
+
+  <div class="best-pick-grid">
+    <article class="model-card best-pick-card" :class="{ tight: bestModel ? isTight(bestModel) : false }">
+      <div x-show="!displayReady" class="probe-overlay"><span class="probe-spinner"></span></div>
+
+      <template x-if="displayReady && bestModel">
+        <div class="best-pick-body">
+          <h3 class="model-name" x-text="bestModel.model_name"></h3>
+          <div class="speed-stat" x-show="speedValue(bestModel)" :title="speedHint">
+            <span class="speed-stat-value" x-text="speedValue(bestModel)"></span>
+            <span class="speed-stat-unit">tok/s</span>
+            <span class="speed-stat-note">estimated</span>
+          </div>
+          <button
+            type="button"
+            class="run-cmd"
+            @click="copyCmd(bestModel)"
+            :class="{ copied: copiedId === bestModel.id }"
+            :aria-label="'copy command: ' + runCmd(bestModel)"
+          >
+            <code x-text="runCmd(bestModel)"></code>
+            <span class="run-cmd-hint" x-text="copiedId === bestModel.id ? 'copied!' : 'copy'"></span>
+          </button>
+          <p class="model-blurb" x-show="bestModel.blurb" x-text="bestModel.blurb"></p>
+          <div class="model-meta">
+            <span class="chip" x-text="bestModel.parameters"></span>
+            <span class="chip" x-text="'~' + bestModel.vram_requirements_gb + ' GB Q4'"></span>
+            <template x-for="cap in bestModel.capabilities" :key="cap">
+              <span class="chip" x-text="cap"></span>
+            </template>
+            <span class="chip chip-tight" x-show="isTight(bestModel)">tight fit</span>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="displayReady && !bestModel">
+        <div class="best-pick-body">
+          <h3 class="model-name" x-text="'nothing fits in ' + vram + ' GB'"></h3>
+          <p class="best-pick-why" x-show="closestBeyond.length > 0">The closest options:</p>
+          <ul class="beyond-list" x-show="closestBeyond.length > 0">
+            <template x-for="model in closestBeyond" :key="model.id">
+              <li>
+                <span class="beyond-list-name" x-text="model.model_name"></span>
+                <span class="beyond-list-gap" x-text="'~' + formatGap(model) + ' GB short'"></span>
+              </li>
+            </template>
+          </ul>
+          <p class="best-pick-why">Tweak your specs above to see what changes.</p>
+        </div>
+      </template>
+    </article>
+
+    <aside
+      class="speed-demo"
+      x-show="displayReady && bestModel && speedLabel(bestModel)"
+      x-cloak
+      aria-label="simulated token output"
+    >
+      <div class="speed-demo-head">
+        <span class="speed-demo-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="speed-demo-title">simulated</span>
+        <button
+          type="button"
+          class="speed-demo-replay"
+          @click="playDemo()"
+          x-text="demoPlaying ? 'stop' : 'replay'"
+        ></button>
+      </div>
+      <div class="speed-demo-body">
+        <p class="speed-demo-prompt" aria-hidden="true">
+          <span class="speed-demo-sigil">&gt;</span>
+          <span x-text="bestModel ? bestModel.model_name : ''"></span>
+        </p>
+        <p
+          class="speed-demo-output"
+          :class="{ typing: demoPlaying }"
+          aria-hidden="true"
+          x-text="demoText"
+        ></p>
+        <p class="ds-sr-only" x-text="demoFullText"></p>
+      </div>
+    </aside>
+  </div>
+</section>

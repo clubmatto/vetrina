@@ -22,21 +22,27 @@ test("recommends a model that fits the vram budget", async ({ page }) => {
   expect(gigabytes).toBeLessThanOrEqual(24);
 });
 
-test("raising vram changes the pick and widens the fitting list", async ({
-  page,
-}) => {
+test("raising vram changes the pick", async ({ page }) => {
   await openMachine(page, 32, 4);
 
   const bestName = page.locator(".best-pick-card h3");
-  const fitsTab = page.getByRole("tab", { name: /^Fits/ });
   const before = await bestName.innerText();
-  const beforeFits = countFromLabel(await fitsTab.innerText());
-
   const increase = page.getByRole("button", { name: "increase VRAM" });
   for (let step = 0; step < 8; step++) {
     await increase.click();
   }
 
   await expect(bestName).not.toHaveText(before);
-  expect(countFromLabel(await fitsTab.innerText())).toBeGreaterThan(beforeFits);
+});
+
+test("widening vram widens the fitting list", async ({ page }) => {
+  await skipReveal(page);
+  await page.goto("/models/?ram=32&vram=4");
+  const fitsTab = page.getByRole("tab", { name: /^Fits/ });
+  const before = countFromLabel(await fitsTab.innerText());
+
+  await page.goto("/models/?ram=32&vram=24");
+  const after = countFromLabel(await fitsTab.innerText());
+
+  expect(after).toBeGreaterThan(before);
 });

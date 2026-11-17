@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-import { countFromLabel, openMachine } from "./helpers";
+import { countFromLabel, openModels } from "./helpers";
 
 test("lists the closest gaps first and matches the tab count", async ({
   page,
 }) => {
-  await openMachine(page, 8, 8);
+  await openModels(page, 8, 8);
 
   const beyondTab = page.getByRole("tab", { name: /^Out of reach/ });
   const total = countFromLabel(await beyondTab.innerText());
@@ -24,7 +24,7 @@ test("lists the closest gaps first and matches the tab count", async ({
 });
 
 test("arrow keys move between the options tabs", async ({ page }) => {
-  await openMachine(page, 8, 8);
+  await openModels(page, 8, 8);
 
   const beyondTab = page.getByRole("tab", { name: /^Out of reach/ });
   await beyondTab.click();
@@ -40,7 +40,7 @@ test("arrow keys move between the options tabs", async ({ page }) => {
 
 test("keeps the gap rows inside the panel on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
-  await openMachine(page, 8, 8);
+  await openModels(page, 8, 8);
 
   await page.getByRole("tab", { name: /^Out of reach/ }).click();
   await expect(page.locator("#panel-beyond")).toBeVisible();

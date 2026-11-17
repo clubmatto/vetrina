@@ -25,12 +25,17 @@ stale `_site`.
 ```
 whatsmylocalai/
 ├── src/
-│   ├── index.liquid            # the page
+│   ├── index.liquid            # home: detection, best pick, next steps
+│   ├── models.liquid           # models page
+│   ├── cost.liquid             # cost page
+│   ├── setups.liquid           # recommended setups
+│   ├── how-it-works.liquid     # detection, ranking, estimates
+│   ├── use-cases.liquid        # use cases
 │   ├── credits.liquid          # credits and attributions
 │   ├── robots.txt.liquid
 │   ├── sitemap.xml.liquid
 │   ├── llms.txt.liquid
-│   ├── _includes/              # head, header, footer
+│   ├── _includes/              # base layout, head, header, footer, sections
 │   ├── _lib/                   # merge, data tests
 │   ├── _data/                  # models, GPU, Apple, enrichment
 │   └── assets/

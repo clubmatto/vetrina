@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  {% include 'head' %}
+  <body
+    x-data="app()"
+    class="{% if machineBar %}has-machine-bar{% endif %}"
+    @keydown.escape.window="navOpen = false"
+  >
+    <a class="skip-link" href="#main">skip to content</a>
+    {% include 'data' %}
+    {% include 'header' %}
+    {{ content }}
+    {% include 'footer' %}
+    {% if machineBar %}{% include 'machine-bar' %}{% endif %}
+    <script type="module" src="{{ "js/app.js" | asset }}"></script>
+    <script defer src="/assets/js/alpine.3.15.12.min.js"></script>
+  </body>
+</html>

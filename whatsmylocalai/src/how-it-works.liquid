@@ -1,0 +1,52 @@
+---
+layout: base
+title: "How it works — What's my local AI?"
+description: "How whatsmylocal.ai detects your hardware, ranks models, estimates speed, and compares cost."
+machineBar: true
+---
+<main id="main" class="page">
+  <header class="page-head">
+    <h1 class="page-title ds-text-gradient ds-text-gradient--animated">How it works</h1>
+    <p class="page-sub">Everything runs in your browser. Nothing about your machine is uploaded.</p>
+  </header>
+
+  <section class="how-section">
+    <h2>Detection</h2>
+    <p>
+      We read the WebGL renderer string, <code>navigator.deviceMemory</code>,
+      <code>navigator.hardwareConcurrency</code>, and the user agent. VRAM comes from a GPU database, unified memory on
+      Apple Silicon, or an estimate from RAM. Chromium caps <code>deviceMemory</code> at 8 GB, so the chip is
+      cross-checked on Apple machines.
+    </p>
+
+    <h2>Ranking</h2>
+    <p>
+      Models are filtered to those that fit in your VRAM at Q4, then ranked by capability against the resource cost. The
+      trade-off slider leans the ranking toward speed or toward capability. Tight fits are marked because a model that
+      barely fits has less room for context.
+    </p>
+
+    <h2>Speed</h2>
+    <p>
+      Speed is an estimate, not a benchmark. Decode is bandwidth-bound, so the estimate uses your GPU or chip memory
+      bandwidth, a backend efficiency coefficient, and the active weights of the model. Sparse models only read their
+      active parameters per token. The result is shown as a band, and the terminal is a simulation at that speed.
+    </p>
+
+    <h2>Cost</h2>
+    <p>
+      Local is a fixed cost plus electricity. Cloud is a marginal price per token. The calculator shows a frontier model
+      and DeepSeek side by side because the gap between public prices is the useful part. Cloud prices come from
+      models.dev, with four input tokens per output token.
+    </p>
+
+    <h2>Data</h2>
+    <p>
+      Model data comes from models.dev and the Auxot model registry, refreshed by a weekly job. GPU bandwidth comes from
+      GPU Ark. Apple bandwidth is curated from Apple's spec pages. The <a href="/credits/">credits</a> page lists the
+      sources.
+    </p>
+  </section>
+
+  {% include 'sections/detection-credit' %}
+</main>

@@ -25,3 +25,14 @@ export async function openMachine(
 export function countFromLabel(label: string): number {
   return Number(label.replace(/[^0-9]/g, ""));
 }
+
+/** Open the models page with a known machine. */
+export async function openModels(
+  page: Page,
+  ram: number,
+  vram: number,
+): Promise<void> {
+  await skipReveal(page);
+  await page.goto(`/models/?ram=${ram}&vram=${vram}`);
+  await expect(page.locator(".options-tabs")).toBeVisible();
+}

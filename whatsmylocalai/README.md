@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/github/license/clubmatto/vetrina)](../LICENSE)
 
-Which local model can your machine actually run? This page answers that, and
+Which local model can your machine actually run? The site answers that, and
 shows how far off the models that do not fit are.
 
 Detects your hardware in the browser and recommends models to run with
@@ -29,6 +29,8 @@ runs client-side; nothing leaves the browser.
 - A lean-to-performance slider, so a small model can win over a large one that
   barely fits.
 - A simulated machine: change GPU, RAM, VRAM, or OS and the picks update.
+- Separate pages for models, cost, setups, and how it works, with a sticky
+  machine bar so the context follows you.
 
 No account and no upload: detection never leaves the browser.
 

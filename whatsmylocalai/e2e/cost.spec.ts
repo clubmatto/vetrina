@@ -6,7 +6,7 @@ const money = (text: string): number => Number(text.replace(/[^\d.]/g, ""));
 
 test("costs the best model against a cloud preset", async ({ page }) => {
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+  await page.goto("/cost/?gpu=RTX%204090&ram=64&vram=24");
 
   await expect(page.locator("#cost")).toBeVisible();
   await expect(page.locator(".cost-option-name")).toHaveText([
@@ -29,7 +29,7 @@ test("owning the machine drops the hardware and hides the chart", async ({
   page,
 }) => {
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+  await page.goto("/cost/?gpu=RTX%204090&ram=64&vram=24");
 
   const local = page.locator(".cost-option-value strong").first();
   const before = money(await local.innerText());
@@ -46,7 +46,7 @@ test("owning the machine drops the hardware and hides the chart", async ({
 
 test("shows the frontier and DeepSeek bills side by side", async ({ page }) => {
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+  await page.goto("/cost/?gpu=RTX%204090&ram=64&vram=24");
 
   const values = page.locator(".cost-option-value strong");
   const frontier = money(await values.nth(1).innerText());
@@ -60,7 +60,7 @@ test("more usage raises the cloud bill faster than the local one", async ({
   page,
 }) => {
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+  await page.goto("/cost/?gpu=RTX%204090&ram=64&vram=24");
 
   const cloud = page.locator(".cost-option-value strong").nth(1);
   const local = page.locator(".cost-option-value strong").first();
@@ -77,7 +77,7 @@ test("more usage raises the cloud bill faster than the local one", async ({
 test("keeps the calculator inside the page on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=64&vram=24");
+  await page.goto("/cost/?gpu=RTX%204090&ram=64&vram=24");
 
   await expect(page.locator("#cost")).toBeVisible();
   const overflow = await page.evaluate(

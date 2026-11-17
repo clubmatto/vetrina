@@ -111,7 +111,7 @@ test("stacks the terminal under the card on mobile", async ({ page }) => {
 
 test("shows no band for models that do not fit", async ({ page }) => {
   await skipReveal(page);
-  await page.goto("/?gpu=RTX%204090&ram=8&vram=8");
+  await page.goto("/models/?gpu=RTX%204090&ram=8&vram=8");
 
   await page.getByRole("tab", { name: /^Out of reach/ }).click();
   await expect(page.locator(".beyond-row").first()).toBeVisible();

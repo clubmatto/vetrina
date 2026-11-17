@@ -94,7 +94,7 @@ estimate is for the GGUF command shown on the card.
 
 ## Cost estimate
 
-The cost section compares the machine you have with the cloud. Local is a
+The cost page compares the machine you have with the cloud. Local is a
 fixed cost plus electricity; cloud is a marginal price per token. That is why
 the two lines cross, and why the crossing point matters more than the headline
 number.
@@ -114,7 +114,7 @@ Two cloud baselines are read from models.dev at build time: a frontier model
 prices, not to pick a winner. The comparison is per million output tokens,
 assuming four input tokens for every output token. Prices and the speed band
 move with the weekly catalog refresh, so the calculator does not age
-independently of the rest of the page.
+independently of the rest of the site.
 
 The chart is cumulative spend over 12 months, with the payback against each
 cloud price marked. The monthly-cost-by-usage chart put the local line on the
@@ -130,7 +130,7 @@ Two flavors, switchable in the UI and persisted in `localStorage`:
 - **Ollama**: `ollama run <tag>`, from `enrichment.json`, falling back to a slug
   of the model name.
 
-On Apple Silicon the page notes that both runners also ship MLX engines. The
+On Apple Silicon the site notes that both runners also ship MLX engines. The
 commands stay on GGUF, because that is the entry the catalog sizes.
 
 ## Sharing

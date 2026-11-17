@@ -127,3 +127,201 @@
     padding-inline: var(--ds-space-4);
   }
 }
+
+/* --- primary navigation ---------------------------------------------------- */
+
+.nav-inner {
+  position: relative;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-5);
+  margin-left: auto;
+  margin-right: var(--ds-space-4);
+}
+
+.nav-link {
+  padding: var(--ds-space-1) 0;
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--ds-text);
+  border-bottom-color: var(--ds-border);
+}
+
+.nav-link[aria-current="page"] {
+  color: var(--ds-text);
+  border-bottom-color: var(--ds-gradient-4);
+}
+
+.nav-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: var(--ds-text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+}
+
+.nav-menu-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.nav-menu-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+@media (max-width: 820px) {
+  .nav-links {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 0;
+    padding: var(--ds-space-2) var(--ds-space-4) var(--ds-space-3);
+    background: var(--ds-bg);
+    border-bottom: 1px solid var(--ds-border);
+    box-shadow: var(--ds-shadow-md);
+    z-index: 110;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: var(--ds-space-3) 0;
+    border-bottom: 1px solid var(--ds-border);
+    font-size: 0.9rem;
+  }
+
+  .nav-link:last-child {
+    border-bottom: 0;
+  }
+
+  .nav-link[aria-current="page"] {
+    border-bottom-color: var(--ds-gradient-4);
+  }
+
+  .nav-menu-toggle {
+    display: inline-flex;
+  }
+}
+
+/* --- machine bar on secondary pages --------------------------------------- */
+
+.has-machine-bar {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+}
+
+.machine-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 95;
+  background: var(--ds-surface);
+  border-top: 1px solid var(--ds-border);
+  box-shadow: 0 -4px 16px var(--ds-shadow-color-sm);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.machine-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--ds-space-2) var(--ds-space-8);
+}
+
+.machine-bar-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.machine-bar-block--model {
+  flex: 1;
+}
+
+.machine-bar-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-text-secondary);
+}
+
+.machine-bar-value {
+  overflow: hidden;
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.machine-bar-speed {
+  margin-left: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ds-text-secondary);
+}
+
+.machine-bar-link {
+  margin-left: auto;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ds-text-inverse);
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--ds-gradient-text);
+  border-radius: var(--ds-radius-full);
+}
+
+.machine-bar-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ds-focus-ring-strong);
+}
+
+@media (max-width: 640px) {
+  .machine-bar-inner {
+    gap: var(--ds-space-3);
+    padding-inline: var(--ds-space-4);
+  }
+
+  .machine-bar-block--model {
+    display: none;
+  }
+
+  .machine-bar-value {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,29 @@
+<section class="detection-credit" id="detection-credit">
+  <h2 class="section-heading ds-text-gradient ds-text-gradient--animated">How detection works</h2>
+  <dl class="detection-credit-list">
+    <div class="detection-credit-item">
+      <dt>GPU</dt>
+      <dd>WebGL renderer string</dd>
+    </div>
+    <div class="detection-credit-item">
+      <dt>VRAM</dt>
+      <dd>GPU database lookup, unified memory on Apple, or estimate from RAM</dd>
+    </div>
+    <div class="detection-credit-item">
+      <dt>RAM</dt>
+      <dd><code>navigator.deviceMemory</code>, cross-checked against the detected chip on Apple Silicon</dd>
+    </div>
+    <div class="detection-credit-item">
+      <dt>CPU</dt>
+      <dd><code>navigator.hardwareConcurrency</code></dd>
+    </div>
+    <div class="detection-credit-item">
+      <dt>OS</dt>
+      <dd>user agent parsing</dd>
+    </div>
+    <div class="detection-credit-item">
+      <dt>WebGPU</dt>
+      <dd><code>navigator.gpu</code> presence</dd>
+    </div>
+  </dl>
+</section>

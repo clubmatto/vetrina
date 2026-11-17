@@ -1,9 +1,9 @@
 # whatsmylocal.ai v2 plan
 
-Status: active. Workstreams 0 to 5 are shipped. Workstream 6 is built and
-waiting to ship. Recommended setups and the final accessibility pass are the
-remaining product work, ahead of the Product Hunt launch on 2026-11-23. Last
-updated: 2026-11-16.
+Status: active. Workstreams 0 to 6 and the site structure workstream are
+shipped. Recommended setups and the final accessibility pass are the remaining
+product work, ahead of the Product Hunt launch on 2026-11-23. Last updated:
+2026-11-17.
 
 The Product board is the source of truth. This file mirrors the plan on the
 `whatsmylocal.ai v2 roadmap` card (`97ebf5bb-5778-435c-9a24-faeeb20ac03b`).
@@ -248,6 +248,16 @@ data was last checked.
 
 Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
 2026-11-19.
+
+### 10. Site structure
+
+- [x] Split the home page into models, cost, setups, how it works, and use cases.
+- [x] Add the header navigation and the mobile menu.
+- [x] Remove the scrollspy TOC.
+- [x] Add the sticky machine bar on secondary pages.
+- [x] Persist a shared machine across pages.
+- [x] Add page metadata, sitemap entries, and llms.txt links.
+- [x] Cover navigation and the machine bar in e2e.
 
 ## Final pass
 

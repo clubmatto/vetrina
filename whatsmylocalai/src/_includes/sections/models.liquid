@@ -1,0 +1,176 @@
+<section class="models" id="models" :class="{ preview: !displayReady }">
+  <p class="ds-sr-only" role="status" aria-live="polite" x-effect="announceResults()" x-text="announcement"></p>
+
+  <div class="options-tabs" role="tablist" aria-label="model options">
+    <button
+      type="button"
+      role="tab"
+      id="tab-fits"
+      class="options-tab"
+      :class="{ active: effectiveTab === 'fits' }"
+      :aria-selected="effectiveTab === 'fits'"
+      :aria-label="'Fits, ' + alsoRuns.length + ' more models'"
+      aria-controls="panel-fits"
+      :tabindex="effectiveTab === 'fits' ? 0 : -1"
+      @click="setTab('fits')"
+      @keydown.arrow-right.prevent="setTab('beyond', true)"
+      @keydown.arrow-left.prevent="setTab('beyond', true)"
+      @keydown.home.prevent="setTab('fits', true)"
+      @keydown.end.prevent="setTab('beyond', true)"
+    >
+      <span x-text="'Fits (' + alsoRuns.length + ')'"></span>
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id="tab-beyond"
+      class="options-tab"
+      x-show="beyondModels.length > 0"
+      :class="{ active: effectiveTab === 'beyond' }"
+      :aria-selected="effectiveTab === 'beyond'"
+      :aria-label="'Out of reach, ' + beyondModels.length + ' models'"
+      aria-controls="panel-beyond"
+      :tabindex="effectiveTab === 'beyond' ? 0 : -1"
+      @click="setTab('beyond')"
+      @keydown.arrow-right.prevent="setTab('fits', true)"
+      @keydown.arrow-left.prevent="setTab('fits', true)"
+      @keydown.home.prevent="setTab('fits', true)"
+      @keydown.end.prevent="setTab('beyond', true)"
+    >
+      <span x-text="'Out of reach (' + beyondModels.length + ')'"></span>
+    </button>
+  </div>
+
+  <div id="panel-fits" role="tabpanel" aria-labelledby="tab-fits" x-show="effectiveTab === 'fits'" tabindex="0">
+    <div class="models-toolbar" x-show="alsoRuns.length > 0" x-cloak>
+      <input
+        type="search"
+        class="model-search"
+        placeholder="search name, capability…"
+        aria-label="search models"
+        x-model="filterQ"
+      >
+      <div class="filter-chips" role="group" aria-label="filter by capability">
+        <template x-for="cap in availableCaps" :key="cap">
+          <button
+            type="button"
+            class="filter-chip"
+            @click="toggleCap(cap)"
+            :class="{ active: filterCaps.includes(cap) }"
+            :aria-pressed="filterCaps.includes(cap)"
+            x-text="cap"
+          ></button>
+        </template>
+      </div>
+      <select class="model-sort" aria-label="sort models" x-model="filterSort">
+        <option value="size-desc">largest first</option>
+        <option value="size-asc">smallest first</option>
+        <option value="name">name a–z</option>
+      </select>
+    </div>
+
+    <template x-if="alsoRuns.length === 0">
+      <p
+        class="hint"
+        x-text="bestModel ? 'nothing smaller on the list — your pick above is the sweet spot.' : 'no other models fit in ' + vram + ' GB.'"
+      ></p>
+    </template>
+
+    <template x-if="alsoRuns.length > 0 && visibleAlsoRuns.length === 0">
+      <p class="hint">nothing matches — try clearing the search or filters.</p>
+    </template>
+
+    <template x-if="visibleAlsoRuns.length > 0">
+      <div>
+        <div class="model-grid" id="fits-grid">
+          <template x-for="model in shownAlsoRuns" :key="model.id">
+            <article class="model-card" :class="{ tight: isTight(model) }">
+              <h3 class="model-name" x-text="model.model_name"></h3>
+              <button
+                type="button"
+                class="run-cmd"
+                @click="copyCmd(model)"
+                :class="{ copied: copiedId === model.id }"
+                :aria-label="'copy command: ' + runCmd(model)"
+              >
+                <code x-text="runCmd(model)"></code>
+                <span class="run-cmd-hint" x-text="copiedId === model.id ? 'copied!' : 'copy'"></span>
+              </button>
+              <p class="model-blurb" x-show="model.blurb" x-text="model.blurb"></p>
+              <div class="model-meta">
+                <span class="chip" x-text="model.parameters"></span>
+                <span class="chip" x-text="'~' + model.vram_requirements_gb + ' GB Q4'"></span>
+                <span
+                  class="chip chip-speed"
+                  x-show="speedLabel(model)"
+                  :title="speedHint"
+                  x-text="speedLabel(model)"
+                ></span>
+                <template x-for="cap in model.capabilities" :key="cap">
+                  <span class="chip" x-text="cap"></span>
+                </template>
+                <span class="chip chip-tight" x-show="isTight(model)">tight fit</span>
+              </div>
+            </article>
+          </template>
+        </div>
+        <button
+          type="button"
+          class="show-all-toggle"
+          x-show="alsoRuns.length > 3"
+          @click="toggleShowAll"
+          :aria-expanded="showAll"
+          aria-controls="fits-grid"
+          x-text="showAll ? 'show top 3' : 'show all ' + alsoRuns.length + ' models'"
+        ></button>
+      </div>
+    </template>
+  </div>
+
+  <div
+    id="panel-beyond"
+    role="tabpanel"
+    aria-labelledby="tab-beyond"
+    x-show="effectiveTab === 'beyond'"
+    tabindex="0"
+  >
+    <h3 class="beyond-title">How far off you are</h3>
+    <p class="beyond-intro">Sorted by the smallest gap. Raise your VRAM above to pull the closest ones in.</p>
+    <ul class="beyond-rows" id="beyond-rows" role="list">
+      <template x-for="model in visibleBeyond" :key="model.id">
+        <li class="beyond-row">
+          <div class="beyond-row-main">
+            <span class="beyond-row-name" x-text="model.model_name"></span>
+            <span
+              class="beyond-row-specs"
+              x-text="model.parameters + ' · needs ~' + model.vram_requirements_gb + ' GB Q4'"
+            ></span>
+          </div>
+          <div class="beyond-row-gap">
+            <span class="beyond-row-gap-value" x-text="'~' + formatGap(model) + ' GB'"></span>
+            <span class="beyond-row-gap-label">short</span>
+          </div>
+          <div class="beyond-row-bar" aria-hidden="true">
+            <span class="beyond-row-bar-have" :style="'width:' + beyondShare(model) + '%'"></span>
+            <span class="beyond-row-bar-missing"></span>
+          </div>
+        </li>
+      </template>
+    </ul>
+    <button
+      type="button"
+      class="show-all-toggle"
+      x-show="beyondModels.length > 6"
+      @click="toggleBeyond"
+      :aria-expanded="showBeyond"
+      aria-controls="beyond-rows"
+      x-text="showBeyond ? 'show fewer' : 'show all ' + beyondModels.length + ' models'"
+    ></button>
+  </div>
+
+  <p class="catalog-note">
+    Model data: models.dev snapshot {{ models.sources.models_dev }}, model registry {{ models.sources.registry }}. Sizes
+    are Q4. Speeds are estimates for GGUF via llama.cpp or Metal, single device, 8k context. Refreshed weekly from the
+    upstream catalogs.
+  </p>
+</section>

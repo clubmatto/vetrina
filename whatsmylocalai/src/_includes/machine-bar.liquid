@@ -1,0 +1,20 @@
+<aside class="machine-bar" x-show="displayReady" x-cloak aria-label="Your machine">
+  <div class="machine-bar-inner">
+    <div class="machine-bar-block">
+      <span class="machine-bar-label">Your machine</span>
+      <span class="machine-bar-value" x-text="machineLabel"></span>
+    </div>
+    <div class="machine-bar-block machine-bar-block--model" x-show="bestModel">
+      <span class="machine-bar-label">Best fit</span>
+      <span class="machine-bar-value">
+        <strong x-text="bestModel ? bestModel.model_name : ''"></strong>
+        <span class="machine-bar-speed" x-text="bestModel ? speedLabel(bestModel) : ''"></span>
+      </span>
+    </div>
+    <a
+      class="machine-bar-link"
+      href="/#best-pick-row"
+      x-text="bestModel ? 'See your model' : 'See the closest fit'"
+    ></a>
+  </div>
+</aside>
