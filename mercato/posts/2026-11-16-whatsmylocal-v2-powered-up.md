@@ -3,7 +3,6 @@ title: "whatsmylocal.ai v2: same idea, powered up"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-16
 image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/demo-dark.gif
 topics:
   - whatsmylocalai
