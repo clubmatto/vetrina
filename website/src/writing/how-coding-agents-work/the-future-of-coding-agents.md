@@ -13,7 +13,6 @@ series: how-coding-agents-work
 image: /assets/writing/the-future-of-coding-agents.png
 image_width: 1280
 image_height: 720
-draft: true
 ---
 
 So far in this series we have spent time looking inside coding agents. That work
