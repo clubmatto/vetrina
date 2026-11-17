@@ -1,5 +1,5 @@
 ---
-title: "The compiler is not the IDE"
+title: "The future of coding agents"
 description:
   We spent a series reading coding agents from the inside. Our conclusion, and
   it is an opinion, is that an agent is the compiler of this era, and the IDE
@@ -10,7 +10,7 @@ tags:
   - agents
   - meta
 series: how-coding-agents-work
-image: /assets/writing/the-compiler-is-not-the-ide.png
+image: /assets/writing/the-future-of-coding-agents.png
 image_width: 1280
 image_height: 720
 draft: true
