@@ -107,7 +107,7 @@
   min-width: 0;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--wmla-radius);
   padding: var(--ds-space-2) var(--ds-space-3);
   transition: border-color var(--ds-transition-fast);
 }
@@ -186,7 +186,7 @@
   color: var(--ds-text);
   background: transparent;
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--wmla-radius);
   padding: 0.3rem 1.9rem 0.3rem 0.6rem;
   cursor: pointer;
   text-overflow: ellipsis;
@@ -218,7 +218,7 @@
 .spec-stepper button {
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--wmla-radius);
   border: 1px solid var(--ds-border);
   background: transparent;
   color: var(--ds-text);
@@ -253,7 +253,7 @@
   flex-shrink: 0;
   width: 2.4rem;
   height: 1.5rem;
-  border-radius: var(--ds-radius-full);
+  border-radius: var(--wmla-radius);
   border: 1px solid var(--ds-border);
   background: var(--ds-surface-hover);
   padding: 0;

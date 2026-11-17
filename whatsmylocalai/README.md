@@ -29,8 +29,8 @@ runs client-side; nothing leaves the browser.
 - A lean-to-performance slider, so a small model can win over a large one that
   barely fits.
 - A simulated machine: change GPU, RAM, VRAM, or OS and the picks update.
-- Separate pages for models, cost, setups, and how it works, with a sticky
-  machine bar so the context follows you.
+- Separate pages for models, cost, setups, and how it works, with a persistent
+  machine rail so the context and the form follow you.
 
 No account and no upload: detection never leaves the browser.
 

@@ -253,11 +253,13 @@ Board dates: the catalog post is due Mon 2026-11-16 and the MLX post Thu
 
 - [x] Split the home page into models, cost, setups, how it works, and use cases.
 - [x] Add the header navigation and the mobile menu.
+- [x] Group the menu on the left, updates and theme on the right.
 - [x] Remove the scrollspy TOC.
-- [x] Add the sticky machine bar on secondary pages.
+- [x] Replace the sticky machine bar with a machine rail on secondary pages.
+- [x] Normalize rounded controls and surfaces to the newsletter radius.
 - [x] Persist a shared machine across pages.
 - [x] Add page metadata, sitemap entries, and llms.txt links.
-- [x] Cover navigation and the machine bar in e2e.
+- [x] Cover navigation and the machine rail in e2e.
 
 ## Final pass
 

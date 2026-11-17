@@ -4,6 +4,7 @@
 @import "../../../../assets/css/design-system/utilities.css";
 
 @import "nav.css";
+@import "rail.css";
 @import "email-modal.css";
 @import "machine.css";
 @import "models.css";

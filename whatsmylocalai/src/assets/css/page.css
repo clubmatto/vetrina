@@ -2,6 +2,8 @@
 
 :root {
   --max-width: 880px;
+  --layout-max: 1280px;
+  --wmla-radius: 8px;
   --nav-height: 2.75rem;
 }
 
@@ -52,7 +54,7 @@ code {
   font-family: inherit;
   background: var(--ds-surface-hover);
   padding: 0.1em 0.35em;
-  border-radius: var(--ds-radius-sm);
+  border-radius: var(--wmla-radius);
 }
 
 /* --- headings & hero --------------------------------------------------------- */
@@ -143,7 +145,7 @@ code {
 .use-case {
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--wmla-radius);
   padding: var(--ds-space-5);
   box-shadow: var(--ds-shadow-sm);
 }
@@ -220,7 +222,7 @@ code {
 
 .footer-container {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: var(--layout-max);
   padding: 0 var(--ds-space-8);
 }
 
@@ -403,7 +405,7 @@ code {
   text-decoration: none;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--wmla-radius);
   box-shadow: var(--ds-shadow-sm);
   transition: border-color var(--ds-transition-fast);
 }
@@ -455,7 +457,7 @@ code {
   padding: var(--ds-space-4);
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--wmla-radius);
   box-shadow: var(--ds-shadow-sm);
 }
 

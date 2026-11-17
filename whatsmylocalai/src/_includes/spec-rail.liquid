@@ -1,0 +1,138 @@
+<aside class="spec-rail" x-cloak :class="{ 'is-open': railOpen }" aria-label="Your machine">
+  <button
+    class="spec-rail-toggle"
+    type="button"
+    @click="railOpen = !railOpen"
+    :aria-expanded="railOpen"
+    aria-controls="spec-rail-body"
+  >
+    <span class="spec-rail-toggle-label">Your machine</span>
+    <span class="spec-rail-toggle-value" x-text="probeDone.gpu ? machineLabel : 'Detecting…'"></span>
+    <svg
+      class="spec-rail-chevron"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </button>
+
+  <div class="spec-rail-body" id="spec-rail-body">
+    <div class="spec-rail-head">
+      <div>
+        <span class="spec-rail-kicker">Your machine</span>
+        <strong class="spec-rail-machine" x-text="probeDone.gpu ? machineLabel : 'Detecting…'"></strong>
+      </div>
+      <button class="spec-rail-reset" type="button" x-show="manual" x-cloak @click="resetSpecs">Reset</button>
+    </div>
+
+    <div class="spec-rail-fields">
+      <div class="rail-field">
+        <label class="rail-label" for="rail-gpu">GPU</label>
+        <select
+          id="rail-gpu"
+          class="rail-select"
+          :disabled="!probeDone.gpu"
+          @change="setGpu($event.target.value)"
+        >
+          <template x-for="group in gpuOptionGroups" :key="group.label">
+            <optgroup :label="group.label">
+              <template x-for="opt in group.options" :key="opt.value">
+                <option
+                  :value="opt.value"
+                  :disabled="!!opt.disabled"
+                  :selected="gpuSel === opt.value"
+                  x-text="opt.label"
+                ></option>
+              </template>
+            </optgroup>
+          </template>
+        </select>
+      </div>
+
+      <div class="rail-field-row">
+        <div class="rail-field">
+          <span class="rail-label" id="rail-ram-label">RAM</span>
+          <div class="rail-stepper" role="group" aria-labelledby="rail-ram-label">
+            <button type="button" aria-label="decrease RAM" @click="adjust('ram', -1)">−</button>
+            <span class="rail-stepper-value" x-text="probeDone.ram ? ramValue() : '-- GB'"></span>
+            <button type="button" aria-label="increase RAM" @click="adjust('ram', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="rail-field">
+          <span class="rail-label" id="rail-vram-label">VRAM</span>
+          <div class="rail-stepper" role="group" aria-labelledby="rail-vram-label">
+            <button type="button" aria-label="decrease VRAM" @click="adjust('vram', -1)">−</button>
+            <span class="rail-stepper-value" x-text="probeDone.vram ? vram + ' GB' : '-- GB'"></span>
+            <button type="button" aria-label="increase VRAM" @click="adjust('vram', 1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <details class="rail-more">
+        <summary>Platform</summary>
+        <div class="rail-field-row">
+          <div class="rail-field">
+            <span class="rail-label" id="rail-cpu-label">CPU</span>
+            <div class="rail-stepper" role="group" aria-labelledby="rail-cpu-label">
+              <button type="button" aria-label="decrease CPU cores" @click="adjustCores(-1)">−</button>
+              <span class="rail-stepper-value" x-text="probeDone.cpu ? (cores || '--') + ' cores' : '--'"></span>
+              <button type="button" aria-label="increase CPU cores" @click="adjustCores(1)">+</button>
+            </div>
+          </div>
+
+          <div class="rail-field">
+            <label class="rail-label" for="rail-os">OS</label>
+            <select id="rail-os" class="rail-select" :disabled="!probeDone.os" @change="setOS($event.target.value)">
+              <template x-for="opt in osOptions" :key="opt.value">
+                <option :value="opt.value" :selected="osSel === opt.value" x-text="opt.label"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+
+        <div class="rail-field rail-field--switch">
+          <span class="rail-label">WebGPU</span>
+          <button
+            type="button"
+            class="spec-switch"
+            :class="{ on: webgpu }"
+            role="switch"
+            :aria-checked="webgpu"
+            :aria-label="webgpu ? 'WebGPU supported — click to disable' : 'WebGPU not available — click to enable'"
+            @click="toggleWebGPU()"
+          >
+            <span class="spec-switch-knob"></span>
+          </button>
+        </div>
+      </details>
+    </div>
+
+    <div class="spec-rail-pick" x-show="displayReady" x-cloak aria-live="polite">
+      <span class="spec-rail-kicker">Best fit</span>
+      <template x-if="bestModel">
+        <div class="spec-rail-pick-body">
+          <strong class="spec-rail-model" x-text="bestModel.model_name"></strong>
+          <span class="spec-rail-speed" x-text="speedLabel(bestModel)"></span>
+          <a class="rail-cta" href="/#best-pick-row">See your result</a>
+        </div>
+      </template>
+      <p class="spec-rail-empty" x-show="!bestModel">Nothing fits yet. Raise VRAM or pick another GPU.</p>
+    </div>
+
+    <div class="spec-rail-actions">
+      <button
+        class="rail-share"
+        type="button"
+        @click="shareResult()"
+        x-text="shareCopied ? 'Link copied' : 'Share result'"
+      ></button>
+    </div>
+  </div>
+</aside>

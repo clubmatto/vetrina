@@ -14,7 +14,7 @@
 .email-modal {
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--wmla-radius);
   box-shadow: var(--ds-shadow-md);
   width: 100%;
   max-width: 420px;
@@ -69,7 +69,7 @@
   color: var(--ds-text);
   background: var(--ds-bg);
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--wmla-radius);
   padding: var(--ds-space-2) var(--ds-space-3);
 }
 
@@ -86,7 +86,7 @@
   color: var(--ds-text-inverse);
   background: var(--ds-gradient-text);
   border: none;
-  border-radius: var(--ds-radius-md);
+  border-radius: var(--wmla-radius);
   padding: var(--ds-space-2) var(--ds-space-4);
   cursor: pointer;
   white-space: nowrap;

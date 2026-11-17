@@ -219,6 +219,7 @@ document.addEventListener("alpine:init", () => {
       emailSubmitted: false,
       emailError: false,
       navOpen: false,
+      railOpen: false,
 
       init() {
         this.reducedMotion = window.matchMedia(
@@ -451,7 +452,7 @@ document.addEventListener("alpine:init", () => {
           this.vendor === "apple" && this.chip
             ? `Apple ${this.chip}`
             : this.gpuSel || "Unknown GPU";
-        return `${gpu} · ${this.vram} GB VRAM`;
+        return `${gpu} · ${this.ram} GB RAM · ${this.vram} GB VRAM`;
       },
 
       get alsoRuns(): MergedModel[] {

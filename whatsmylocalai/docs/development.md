@@ -35,11 +35,11 @@ whatsmylocalai/
 │   ├── robots.txt.liquid
 │   ├── sitemap.xml.liquid
 │   ├── llms.txt.liquid
-│   ├── _includes/              # base layout, head, header, footer, sections
+│   ├── _includes/              # base, header, footer, spec rail, sections
 │   ├── _lib/                   # merge, data tests
 │   ├── _data/                  # models, GPU, Apple, enrichment
 │   └── assets/
-│       ├── css/                # page modules plus the shared design system
+│       ├── css/                # page, rail, and shared design-system modules
 │       ├── js/                 # Alpine component, detection, model logic
 │       └── og.png              # social card
 ├── e2e/                        # Playwright specs
@@ -49,6 +49,12 @@ whatsmylocalai/
 ├── playwright.config.ts
 └── eleventy.config.ts
 ```
+
+Inner pages render inside `base.liquid`'s `.page-shell`: a two-column grid
+with the page content at 2fr and `spec-rail.liquid` at 1fr. The rail is sticky
+under the header; below 1080px it becomes a collapsible summary above the
+content. The home page keeps its full-width machine form and has no rail.
+`--wmla-radius` in `page.css` is the single UI radius (8px).
 
 ## Build
 

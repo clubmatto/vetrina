@@ -1,51 +1,12 @@
 <header class="nav">
   <div class="nav-inner">
-    <a href="/" class="wordmark" aria-label="What's my local AI — home">
-      <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff006e"/><stop offset=".5" stop-color="#8338ec"/><stop offset="1" stop-color="#3a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text>
-      </svg>
-    </a>
+    <div class="nav-left">
+      <a href="/" class="wordmark" aria-label="What's my local AI — home">
+        <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff006e"/><stop offset=".5" stop-color="#8338ec"/><stop offset="1" stop-color="#3a86ff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g)"/><text x="32" y="42" font-family="monospace" font-size="26" font-weight="bold" fill="white" text-anchor="middle">&gt;_</text>
+        </svg>
+      </a>
 
-    <nav class="nav-links" id="site-nav" :class="{ open: navOpen }" aria-label="Main">
-      <a
-        class="nav-link"
-        href="/models/"
-        {% if page.url == '/models/' %}
-          aria-current="page"
-        {% endif %}
-        @click="navOpen = false"
-        >Models</a
-      >
-      <a
-        class="nav-link"
-        href="/cost/"
-        {% if page.url == '/cost/' %}
-          aria-current="page"
-        {% endif %}
-        @click="navOpen = false"
-        >Cost</a
-      >
-      <a
-        class="nav-link"
-        href="/setups/"
-        {% if page.url == '/setups/' %}
-          aria-current="page"
-        {% endif %}
-        @click="navOpen = false"
-        >Setups</a
-      >
-      <a
-        class="nav-link"
-        href="/how-it-works/"
-        {% if page.url == '/how-it-works/' %}
-          aria-current="page"
-        {% endif %}
-        @click="navOpen = false"
-        >How it works</a
-      >
-    </nav>
-
-    <div class="nav-right">
       <button
         class="nav-menu-toggle"
         type="button"
@@ -57,6 +18,61 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
+      </button>
+
+      <nav class="nav-links" id="site-nav" :class="{ open: navOpen }" aria-label="Main">
+        <a
+          class="nav-link"
+          href="/models/"
+          {% if page.url == '/models/' %}
+            aria-current="page"
+          {% endif %}
+          @click="navOpen = false"
+          >Models</a
+        >
+        <a
+          class="nav-link"
+          href="/cost/"
+          {% if page.url == '/cost/' %}
+            aria-current="page"
+          {% endif %}
+          @click="navOpen = false"
+          >Cost</a
+        >
+        <a
+          class="nav-link"
+          href="/setups/"
+          {% if page.url == '/setups/' %}
+            aria-current="page"
+          {% endif %}
+          @click="navOpen = false"
+          >Setups</a
+        >
+        <a
+          class="nav-link"
+          href="/how-it-works/"
+          {% if page.url == '/how-it-works/' %}
+            aria-current="page"
+          {% endif %}
+          @click="navOpen = false"
+          >How it works</a
+        >
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <button class="email-trigger" id="emailTrigger" type="button" @click="openEmailForm()" aria-label="Get updates">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span>Get updates</span>
       </button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
         <span class="theme-icon theme-icon-light">
@@ -95,19 +111,6 @@
             <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
           </svg>
         </span>
-      </button>
-      <button class="email-trigger" id="emailTrigger" type="button" @click="openEmailForm()" aria-label="Get updates">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-        </svg>
-        <span>Get updates</span>
       </button>
     </div>
   </div>
