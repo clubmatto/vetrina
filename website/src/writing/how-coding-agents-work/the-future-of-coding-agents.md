@@ -48,9 +48,9 @@ code and command lines from the ground up.
 
 To understand the point better, it's useful to make a comparison with the past.
 Think about the move from assembly to high-level languages. The compiler made
-that possible, and it changed the job of developing programs: fewer people hand-
-wrote every instruction, more people expressed intent and let a program expand
-it to something usable by the machine.
+that possible, and it changed the job of developing programs: fewer people
+hand-wrote every instruction, more people expressed intent and let a program
+expand it to something usable by the machine.
 
 Yet this didn't wipe out the need for looking at, and touching, code. Raising
 the level of abstraction allowed for far more complex code and applications to
@@ -58,7 +58,7 @@ reach the production stage, and this additional complexity required additional
 tools to manage it. Editors evolved into (or got replaced by) IDEs with syntax
 highlighting, contextual navigation, refactoring operations and so on.
 
-If we transpose this transition to the present era, we argue that coding
+If we apply this transition to the present era, we argue that coding
 harnesses as they stand today are more like compilers than IDEs. They raise the
 level of abstraction and they act as output multipliers, but they don't yet
 provide the tools for users to interact effectively at this new level of
