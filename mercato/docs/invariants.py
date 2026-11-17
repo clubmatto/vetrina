@@ -2,8 +2,8 @@
 """Check the Marketing board (Lasagna) against mercato/ and report drift.
 
 Run it as `python3 mercato/docs/invariants.py` (or make it executable). It
-fetches the board through Cloudflare Access with the lasagna_* service-token
-secrets (evaluated from Infisical if not already in the environment — curl is
+fetches the board with the lasagna_api_token secret as a Bearer token
+(evaluated from Infisical if not already in the environment — curl is
 mandatory, urllib's TLS fingerprint gets blocked), then checks:
 
   1. every published card references an existing posts/ file, and every posts/
@@ -54,7 +54,7 @@ PARKED = {"9494acf6"}
 
 def fetch_board():
     env = dict(os.environ)
-    if not env.get("lasagna_api_client_id"):
+    if not env.get("lasagna_api_token"):
         out = subprocess.run(INFISICAL, shell=True, capture_output=True, text=True)
         for line in out.stdout.splitlines():
             if "=" in line:
@@ -63,8 +63,7 @@ def fetch_board():
     for _ in range(3):
         r = subprocess.run(
             ["curl", "-s", "-w", "%{http_code}", BOARD_URL,
-             "-H", f"CF-Access-Client-Id: {env['lasagna_api_client_id']}",
-             "-H", f"CF-Access-Client-Secret: {env['lasagna_api_client_secret']}"],
+             "-H", f"Authorization: Bearer {env.get('lasagna_api_token', '')}"],
             capture_output=True, text=True)
         if r.stdout.endswith("200"):
             return json.loads(r.stdout[:-3], strict=False)["data"]
