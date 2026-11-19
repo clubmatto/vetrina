@@ -14,10 +14,9 @@ image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets
 
 📢 The local AI cost calculator is live on whatsmylocal.ai. 📢
 
-Own the machine? Electricity only: $5.25 a month at the defaults.
-
-Buying? A $2,000 rig amortized over three years lands near $61 all-in, priced
-against GPT-5.5 and DeepSeek side by side.
+Own the machine? Electricity only: $5.25 a month at the defaults. Buying? A
+$2,000 rig amortized over three years lands near $61 all-in, priced against
+GPT-5.5 and DeepSeek side by side.
 
 https://whatsmylocal.ai/cost/
 
