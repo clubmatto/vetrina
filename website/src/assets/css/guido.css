@@ -801,6 +801,18 @@
   flex: none;
 }
 
+/* The first run is where a driver meets SmartScreen. Saying it next to the
+   button is what keeps an unsigned installer from reading as a broken
+   download. */
+.product-desktop-note {
+  max-width: 46ch;
+  margin: 1rem auto 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
 .product-roadmap {
   padding: 5rem 0;
 }
