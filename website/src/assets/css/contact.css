@@ -113,3 +113,13 @@
 .submit-btn:active {
   transform: translateY(0);
 }
+
+/* The consulting hint on the contact page: quieter than the subtitle, so the
+   form stays the thing you see first. */
+.contact-hint {
+  max-width: 70ch;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}

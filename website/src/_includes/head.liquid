@@ -49,6 +49,18 @@
       "name": "Club Matto",
       "url": "{{ site.url }}",
       "logo": "{{ site.url }}/assets/img/logo.png",
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Luca Pette",
+          "url": "https://www.linkedin.com/in/lucapette/"
+        },
+        {
+          "@type": "Person",
+          "name": "Stefano Zanella",
+          "url": "https://www.linkedin.com/in/szanella/"
+        }
+      ],
       "sameAs": [
         "https://github.com/clubmatto",
         "https://x.com/clubmatto",
@@ -56,6 +68,43 @@
       ]
     }
   </script>
+  {%- comment -%}
+    The consulting page is built but not linked, so it is also kept out of search.
+    Drop this noindex block when the page goes live, together with the links.
+  {%- endcomment -%}
+  {% if page.url == '/consulting/' %}
+    <meta name="robots" content="noindex">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Club Matto",
+        "url": "{{ site.url }}/consulting/",
+        "description": "Coding agents that work in your codebase. We audit the repo, set the agent up, and measure the result.",
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Club Matto",
+          "url": "{{ site.url }}"
+        },
+        "knowsAbout": [
+          "AI coding agents",
+          "agentic programming",
+          "developer tooling",
+          "Go",
+          "Kotlin",
+          "TypeScript",
+          "PostgreSQL",
+          "ClickHouse",
+          "Kubernetes",
+          "infrastructure as code",
+          "continuous integration",
+          "engineering leadership"
+        ],
+        "email": "hello@matto.club"
+      }
+    </script>
+  {% endif %}
+
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",

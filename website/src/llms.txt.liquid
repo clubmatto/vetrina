@@ -17,6 +17,7 @@ LinkedIn: https://linkedin.com/company/clubmatto
 ## Pages
 
 - [Home]({{ site.url }}/): A software artisans company building quality tools with care, creativity, and a touch of madness
+- [About]({{ site.url }}/about/): Luca Pette and Stefano Zanella, what a bottega is, and how the two of us work
 - [Contact]({{ site.url }}/contact/): Get in touch with Club Matto, a software bottega with a matto heart
 - [Credits]({{ site.url }}/credits/): A thank you note and list of technologies used to build this website
 
@@ -43,6 +44,7 @@ LinkedIn: https://linkedin.com/company/clubmatto
 ## Writing
 
 - [Writing overview]({{ site.url }}/writing/): Read writings from Club Matto: insights on software craftsmanship and creative development
+- [How coding agents work]({{ site.url }}/writing/how-coding-agents-work/): Ten open-source coding agents, the five parts they share, and what that means for how you run one
 {%- for post in collections.posts %}
 - [{{ post.data.title }}]({{ site.url }}{{ post.data.page.url }}) ({{ post.date | formatDate }}): {{ post.data.description | default: 'Club Matto blog post' }}
 {%- endfor %}
@@ -52,3 +54,20 @@ LinkedIn: https://linkedin.com/company/clubmatto
 - [GitHub](https://github.com/clubmatto): Club Matto organization on GitHub: source code for all projects
 - [Eleventy](https://www.11ty.dev/): Static site generator used to build matto.club
 - [PostCSS](https://postcss.org/): CSS processing tool used in the build pipeline
+
+{% comment %}
+Parked until the consulting page is linked from somewhere. Restore all three
+pieces together: the nav entry in _includes/navigation.liquid, the footer entry in
+_includes/footer.liquid, the line below under ## Pages, and the section below
+that. Then drop eleventyExcludeFromCollections from consulting.liquid.
+
+- [Consulting]({{ site.url }}/consulting/): Coding agents that work in your codebase. We audit the repo, set the agent up, and measure the result
+
+## Consulting
+
+We help teams get real work out of coding agents. The work is usually one of three engagements: an audit that finds where the agent loses time and tokens, a setup that installs the rules, skills, tools and verification loop in your repo, or a small tool that fills the gap in your stack. We also do fractional CTO and interim head of engineering work.
+
+Agents are the specialization, not the limit. Between us we ship Go, Kotlin, TypeScript and SQL in production, run our machines on OpenTofu, Kubernetes and Nix, and have built data platforms, mobile apps and web products. Two of our products are data tools (FakeData Pro, DB Diff Pro) and an operations one (Kube Shield, a Kubernetes scanner) is next.
+
+Our proof is our own work: we read ten open-source coding agents at the source, we built a coding agent in five versions, and we publish the measurements from our own repository, CI and model bill.
+{% endcomment %}

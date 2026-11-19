@@ -46,6 +46,8 @@ Do not use emoji in every line. Do not use emoji to replace a claim.
 - Name the limitation before the reader finds it.
 - No invented users, benchmarks, or quotes.
 - No fake urgency.
+- On consulting copy the caveat is the strongest line, not a disclaimer. Name
+  who the work is not for before the reader works it out.
 
 ## Calls to action
 
@@ -56,6 +58,7 @@ Do not use emoji in every line. Do not use emoji to replace a claim.
 - LinkedIn: one link at the end.
 - Instagram: `link in bio`.
 - Product pages: one primary CTA.
+- Consulting: `Work with us: <url>`, and the link is always `/consulting/`.
 
 ## Product names
 
@@ -63,6 +66,9 @@ Use these spellings:
 
 Club Matto, Vetrina, FakeData, FakeData Pro, ai-kit, DB Diff, DB Diff Pro,
 Guido, What's my local AI?
+
+The consulting work is just "consulting", lowercase, and never "AI consulting
+services" or "AI transformation". The page is `/consulting/`.
 
 Do not invent short forms.
 
@@ -82,6 +88,9 @@ Good:
   number, one link.
 - [Meet Guido](../../website/src/writing/meet-guido.md): scene, tension,
   product, caveat, CTA.
+- [The consulting page](../../website/src/consulting.liquid): the problem in
+  three failures, the offer in the order a team needs it, then the numbers and
+  the caveat. The message lives in `CONSULTING.md`.
 
 Avoid:
 

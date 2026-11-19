@@ -1,0 +1,200 @@
+/* About page, plus the person card it shares with the consulting page. A
+   person card is an avatar initial, a name, and two or three sentences: no
+   photos exist for the two founders, so the initials carry the identity. */
+
+.person-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: var(--ds-space-8) 0 var(--ds-space-12);
+}
+
+.person-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-6);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.person-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: var(--ds-space-2);
+  border-radius: var(--ds-radius-full);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  font-weight: 700;
+  color: var(--ds-text-inverse);
+  background: linear-gradient(
+    135deg,
+    var(--ds-gradient-5),
+    var(--ds-gradient-4)
+  );
+}
+
+.person-name {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  font-weight: 700;
+  color: var(--ds-text);
+}
+
+.person-role {
+  margin: 0 0 var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-text-muted);
+}
+
+.person-card p {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.about-lede {
+  max-width: 72ch;
+  margin: 0 0 var(--ds-space-10);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+.about-prose {
+  max-width: 72ch;
+  margin: 0 0 var(--ds-space-8);
+}
+
+.about-prose p {
+  margin: 0 0 var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-base);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.about-prose strong {
+  color: var(--ds-text);
+}
+
+.about-prose a {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--ds-gradient-5),
+    transparent 50%
+  );
+}
+
+.about-prose a:hover {
+  text-decoration-color: var(--ds-gradient-5);
+}
+
+/* The facts strip: founded, size, where. Short, and only what is true. */
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  max-width: 72ch;
+  margin: var(--ds-space-10) 0;
+}
+
+.about-fact {
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+}
+
+.about-fact-value {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-lg);
+  font-weight: 700;
+  color: var(--ds-text);
+}
+
+.about-fact-label {
+  display: block;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.5;
+  color: var(--ds-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .person-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .about-lede {
+    font-size: var(--ds-text-base);
+  }
+}
+
+/* The one link inside a feature card. The design system card has no link
+   style, and without an underline it reads as text. */
+.about-card-link {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--ds-gradient-5),
+    transparent 50%
+  );
+}
+
+.about-card-link:hover {
+  text-decoration-color: var(--ds-gradient-5);
+}
+
+/* The stack block: two short paragraphs, a mono label. It sits under the
+   lede so the breadth claim is visible before the two CVs, not after. */
+.about-stack {
+  max-width: 72ch;
+  margin: var(--ds-space-6) 0 var(--ds-space-10);
+  padding: var(--ds-space-5) var(--ds-space-6);
+  border-left: 2px solid var(--ds-gradient-4);
+  background: color-mix(in srgb, var(--ds-surface), transparent 40%);
+}
+
+.about-stack-label {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-gradient-4);
+}
+
+.about-stack p {
+  margin: 0 0 var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.about-stack p:last-child {
+  margin-bottom: 0;
+}

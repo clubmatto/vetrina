@@ -1,0 +1,333 @@
+---
+layout: page.liquid
+title: Consulting
+permalink: /consulting/
+# The page is built and reachable at /consulting/, but nothing links to it yet,
+# so it stays out of collections, the sitemap and the llms.txt loops. Remove
+# this line when the page goes live, together with the parked links.
+eleventyExcludeFromCollections: true
+description: "Coding agents that work in your codebase, plus the two engineers who ship the rest: Go, Kotlin, TypeScript, data and infrastructure."
+---
+<div class="showcase-header">
+  <div class="showcase-page-icon">{{ 'compass' | lucide }}</div>
+  <h1 class="showcase-page-title">Consulting</h1>
+  <p class="showcase-page-tagline">Coding agents that work in your codebase</p>
+  <p class="showcase-page-lede">
+    Most teams have tried a coding agent by now. Far fewer can point at a week where the agent did work they would have
+    paid for. The gap is rarely the model: it is the repo, the rules you hand the agent, the tools it can call, and the
+    loop that tells it whether it is right. We close that gap, and we measure the result. That is the deep end. We also
+    ship the rest of the stack, from Go and Kotlin to OpenTofu and Nix, so an engagement rarely stops at the agent.
+  </p>
+  <div class="ds-ctas">
+    <a href="/contact/" class="ds-btn ds-btn--primary">Tell us about your codebase</a>
+    <a href="/writing/how-coding-agents-work/" class="ds-btn ds-btn--secondary">Read how we work</a>
+  </div>
+  <div class="consulting-chips">
+    <span class="consulting-chips-label">Shipping in production:</span>
+    <span class="consulting-chip">Go</span>
+    <span class="consulting-chip">Kotlin</span>
+    <span class="consulting-chip">TypeScript</span>
+    <span class="consulting-chip">SQL</span>
+    <span class="consulting-chip">OpenTofu</span>
+    <span class="consulting-chip">Kubernetes</span>
+    <span class="consulting-chip">Nix</span>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Why agents stall</h2>
+
+<p class="consulting-lede">
+  In our experience, the model is the last thing to blame. These are the three reasons an agent that demos well stops
+  paying for itself in a real repo.
+</p>
+
+<div class="consulting-faults">
+  <div class="consulting-fault">
+    <span class="consulting-fault-label">No feedback loop</span>
+    <p>
+      The agent cannot tell whether it is right, so you become the compiler. If the suite takes fourteen minutes and
+      five tests fail on main, a better model changes nothing.
+    </p>
+  </div>
+  <div class="consulting-fault">
+    <span class="consulting-fault-label">No context</span>
+    <p>
+      No rules, no conventions, no map of the code. Every session begins by rediscovering the codebase, at your expense,
+      and the agent writes the same wrong thing twice.
+    </p>
+  </div>
+  <div class="consulting-fault">
+    <span class="consulting-fault-label">No measurement</span>
+    <p>
+      Adoption is a feeling. Without a before and an after, nobody can tell whether the spend bought anything, and the
+      renewal gets decided on vibes.
+    </p>
+  </div>
+</div>
+
+<h2 class="ds-section-title">What we do</h2>
+
+<p class="consulting-lede">
+  Three engagements, in the order most teams need them. Take one and stop, or run all three. If the constraint turns out
+  to be somewhere else in the stack, keep reading.
+</p>
+
+<div class="consulting-offers">
+  <article class="consulting-offer">
+    <span class="consulting-offer-label">01 / Audit</span>
+    <h3 class="consulting-offer-title">Find where the agent loses time</h3>
+    <p>
+      We read the repo, run your agents on real tasks, and measure where the time and the tokens go: the rules it loads,
+      the tools it calls, the checks it waits for, the review it creates. You get the five changes worth making, in
+      order, with the evidence behind each one.
+    </p>
+    <p class="consulting-offer-proof">
+      We ran the same kind of measurement before we trusted sub-agents: four of them finished
+      <a href="/writing/how-coding-agents-work/sub-agents/">11 seconds faster than one and read 73% more tokens</a>. An
+      audit gives you that answer for your repo.
+    </p>
+  </article>
+
+  <article class="consulting-offer">
+    <span class="consulting-offer-label">02 / Setup</span>
+    <h3 class="consulting-offer-title">Install the configuration</h3>
+    <p>
+      Rules and context files, skills, tool and permission boundaries, and the verification loop that lets the agent
+      check its own work. We open a branch you can review, and we leave the reasoning in the files themselves.
+    </p>
+    <p class="consulting-offer-proof">
+      Our rules ship as <a href="/vetrina/ai-kit/">ai-kit</a>, an open-source CLI that detects a project's languages and
+      installs the conventions, skills and commands that match.
+    </p>
+  </article>
+
+  <article class="consulting-offer">
+    <span class="consulting-offer-label">03 / Build</span>
+    <h3 class="consulting-offer-title">Build the tool the agent needs</h3>
+    <p>
+      A CLI, an internal agent, or a tool server that fits your stack. The work is usually small and specific: enough
+      tooling that the agent stops improvising around the gaps in your system.
+    </p>
+    <p class="consulting-offer-proof">
+      We built
+      <a href="/writing/how-coding-agents-work/building-pinocchio/">Pinocchio, a coding agent in five versions</a>, and
+      two Go tools, <a href="/vetrina/fakedata/">fakedata</a> and <a href="/vetrina/db-diff/">db-diff</a>, that ship
+      from a release pipeline we also wrote.
+    </p>
+  </article>
+</div>
+
+<h2 class="ds-section-title">The ground we cover</h2>
+
+<p class="consulting-lede">
+  The first card is where we spend our reading time. The rest are stacks we have put into production, in our own
+  products or in the companies we ran before this one. Two people cover a lot of ground, and every card below ends in
+  something you can open.
+</p>
+
+<div class="consulting-coverage">
+  <article class="consulting-cover consulting-cover--deep">
+    <div class="consulting-cover-head">
+      <span class="consulting-cover-label">Where we go deep</span>
+      <h3 class="consulting-cover-title">AI tooling for developers</h3>
+      <p class="consulting-cover-stack">agents · harnesses · MCP · context · evals</p>
+    </div>
+    <div class="consulting-cover-body">
+      <p>
+        Ten harnesses read at the source, a coding agent built in five versions, and a measurement of what sub-agents
+        actually cost. This is the part of the work we can defend line by line, because we have read the code that does
+        it.
+      </p>
+      <p class="consulting-cover-links">
+        <a href="/writing/how-coding-agents-work/">The series</a>
+        <span aria-hidden="true">·</span>
+        <a href="/writing/how-coding-agents-work/building-pinocchio/">Pinocchio</a>
+        <span aria-hidden="true">·</span>
+        <a href="/writing/how-coding-agents-work/a-comparative-analysis/">The ten agents</a>
+      </p>
+    </div>
+  </article>
+
+  <article class="consulting-cover">
+    <h3 class="consulting-cover-title">Backend and data</h3>
+    <p class="consulting-cover-stack">Go · Kotlin · SQL · Postgres · MySQL · ClickHouse</p>
+    <p>
+      Two of our products are data tools: FakeData Pro writes into four engines, DB Diff Pro compares across three.
+      Before Club Matto we built messaging and ordering platforms that carry production traffic, and tuned a query from
+      444MB read down to 28MB without changing its answer.
+    </p>
+    <p class="consulting-cover-links">
+      <a href="/products/fakedata/">FakeData Pro</a>
+      <span aria-hidden="true">·</span>
+      <a href="/products/db-diff/">DB Diff Pro</a>
+    </p>
+  </article>
+
+  <article class="consulting-cover">
+    <h3 class="consulting-cover-title">Product and web</h3>
+    <p class="consulting-cover-stack">TypeScript · React · Go · Eleventy · Vite</p>
+    <p>
+      ai-kit is a published npm CLI. This site and whatsmylocal.ai are Eleventy. The board that runs our content plan is
+      a Go server with a Vite and TypeScript UI. Frontend, CLI, and the API behind them, from the same two people.
+    </p>
+    <p class="consulting-cover-links">
+      <a href="/vetrina/ai-kit/">ai-kit</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://whatsmylocal.ai">whatsmylocal.ai</a>
+    </p>
+  </article>
+
+  <article class="consulting-cover">
+    <h3 class="consulting-cover-title">Mobile</h3>
+    <p class="consulting-cover-stack">Kotlin Multiplatform · Compose · Android · iOS</p>
+    <p>
+      Guido is one Kotlin Multiplatform codebase: the Android app, the iOS app and the Windows build all come from it.
+      Three platforms, one app to maintain, and no second codebase quietly drifting away from the first.
+    </p>
+    <p class="consulting-cover-links">
+      <a href="/products/guido/">Guido</a>
+    </p>
+  </article>
+
+  <article class="consulting-cover">
+    <h3 class="consulting-cover-title">Infrastructure and operations</h3>
+    <p class="consulting-cover-stack">OpenTofu · Kubernetes · Nix · Jenkins · Docker</p>
+    <p>
+      Our machines are OpenTofu, our dev environments are Nix, our clusters are k3s and our pipeline is Jenkins. That
+      pipeline went from 7m41s to 13s without a test changing. Kube Shield, a Kubernetes scanner, is the operations
+      product we are building next.
+    </p>
+    <p class="consulting-cover-links">
+      <a href="/products/kube-shield/">Kube Shield</a>
+    </p>
+  </article>
+</div>
+
+<p class="consulting-note">
+  If your stack is not on this list, ask anyway. The answer is either "we have done something close" or "we have not",
+  and we will tell you which one before you pay for anything.
+</p>
+
+<h2 class="ds-section-title">When the tooling is not the problem</h2>
+
+<div class="consulting-leadership">
+  <div class="consulting-leadership-text">
+    <p>
+      Sometimes the configuration is fine and the team is the bottleneck. A migration nobody wants, a review process
+      that adds a day to every change, a hiring plan that never becomes a hire. We have both run engineering through
+      that, at startups, a bank, and a company that grew its product team from ten people to twenty-five.
+    </p>
+    <p>
+      That is the fractional CTO and interim head of engineering work we do. It is the same job as the audit, applied to
+      people: find the constraint, change one thing, measure again.
+    </p>
+  </div>
+  <div class="person-grid">
+    <article class="person-card">
+      <span class="person-initials">LP</span>
+      <h3 class="person-name">Luca Pette</h3>
+      <p>
+        CTO at Marley Spoon, Head of Engineering at Airy, fractional CTO since 2022. He built and open-sourced Airy's
+        messaging platform, and he is at his best in infrastructure, data and backend systems.
+      </p>
+    </article>
+    <article class="person-card">
+      <span class="person-initials">SZ</span>
+      <h3 class="person-name">Stefano Zanella</h3>
+      <p>
+        Head of Engineering at Acto and trana, engineering manager at solarisBank. He built Marley Spoon's platform from
+        the ground up, then scaled five teams. He works on team design, delivery measurement and the honest
+        conversations that make a team faster.
+      </p>
+    </article>
+  </div>
+</div>
+
+<h2 class="ds-section-title">Numbers from our own work</h2>
+
+<p class="consulting-lede">
+  None of this is a vendor benchmark. It is our repository, our agents and our bill, and three of the four have a full
+  write-up.
+</p>
+
+<div class="consulting-stats">
+  <div class="consulting-stat">
+    <span class="consulting-stat-value">10</span>
+    <span class="consulting-stat-label"
+      >open-source coding agents read at the source, through the same five components</span
+    >
+    <a class="consulting-stat-source" href="/writing/how-coding-agents-work/a-comparative-analysis/"
+      >The comparative analysis</a
+    >
+  </div>
+  <div class="consulting-stat">
+    <span class="consulting-stat-value">5</span>
+    <span class="consulting-stat-label"
+      >versions to build a working coding agent: the loop, tools, permissions, compaction, sessions</span
+    >
+    <a class="consulting-stat-source" href="/writing/how-coding-agents-work/building-pinocchio/">Building Pinocchio</a>
+  </div>
+  <div class="consulting-stat">
+    <span class="consulting-stat-value">11s</span>
+    <span class="consulting-stat-label"
+      >faster with four sub-agents than with one, at 73% more input tokens. Wall time is not free</span
+    >
+    <a class="consulting-stat-source" href="/writing/how-coding-agents-work/sub-agents/">Sub-agents, measured</a>
+  </div>
+  <div class="consulting-stat">
+    <span class="consulting-stat-value">$41.58</span>
+    <span class="consulting-stat-label"
+      >a month of our coding agents on DeepSeek; the same tokens at frontier prices, $878 to $7,486</span
+    >
+    <span class="consulting-stat-source">Our own bill</span>
+  </div>
+</div>
+
+<h2 class="ds-section-title">How it starts</h2>
+
+<ol class="consulting-steps">
+  <li class="consulting-step">
+    <span class="consulting-step-number">01</span>
+    <h3 class="consulting-step-title">Talk</h3>
+    <p>
+      You tell us what the agent does well and where it wastes your day. We tell you if we are the right two people for
+      it.
+    </p>
+  </li>
+  <li class="consulting-step">
+    <span class="consulting-step-number">02</span>
+    <h3 class="consulting-step-title">Audit</h3>
+    <p>
+      A fixed scope and a quote before we start. We read, we run, we write it down. You keep the findings whether or not
+      we ever work together again.
+    </p>
+  </li>
+  <li class="consulting-step">
+    <span class="consulting-step-number">03</span>
+    <h3 class="consulting-step-title">Change, then measure again</h3>
+    <p>
+      We make the changes with you, or you make them from our notes. Then we run the same measurement as the audit, so
+      the difference is yours to keep and to argue about.
+    </p>
+  </li>
+</ol>
+
+<div class="ds-callout">
+  <div class="ds-limits">
+    <p class="ds-intro-text"><strong>What this is not.</strong> A model bake-off, a strategy deck, or a body shop.</p>
+    <p class="ds-intro-text">
+      <strong>What we promise.</strong> Two people who will tell you when the agent is the wrong answer, and a
+      measurement you can check.
+    </p>
+    <p class="ds-intro-text">
+      <strong>Availability.</strong> We take a few engagements at a time, because we do the work ourselves.
+    </p>
+    <p class="ds-intro-text">
+      <strong>First message.</strong> The languages, roughly how big the repo is, how long CI takes, which agent and
+      model you use, and what you have already tried.
+    </p>
+  </div>
+  <div class="ds-ctas">
+    <a href="/contact/" class="ds-btn ds-btn--primary">Start the conversation</a>
+  </div>
+</div>

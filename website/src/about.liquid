@@ -1,0 +1,156 @@
+---
+layout: page.liquid
+title: About
+permalink: /about/
+description: "Club Matto is a two-person software bottega. We build developer tools and write about how they work."
+---
+<div class="showcase-header">
+  <div class="showcase-page-icon">{{ 'users' | lucide }}</div>
+  <h1 class="showcase-page-title">About</h1>
+  <p class="showcase-page-tagline">Two people, one bottega</p>
+  <p class="showcase-page-lede">
+    We are Luca and Stefano. We build single-purpose tools, write about how they work, and keep the company small enough
+    to do both. That is the whole company.
+  </p>
+</div>
+
+<h2 class="ds-section-title">What a bottega is</h2>
+
+<div class="about-prose">
+  <p>
+    Club Matto started in Berlin as a collective of freelancers. The name is a wordplay on Club-Mate, the drink you find
+    in every Berlin fridge, and on <em>matto</em>, the Italian word for crazy. It became something smaller and more
+    deliberate: a bottega, the workshop where an artisan makes one thing at a time, by hand.
+  </p>
+  <p>
+    In practice, that means we keep the company small enough that the people who design a tool also build it, ship it,
+    and answer the email when it breaks. No meetings, no platform team, no roadmap written by someone who has not read
+    the code.
+  </p>
+</div>
+
+<div class="about-facts">
+  <div class="about-fact">
+    <span class="about-fact-value">6</span>
+    <span class="about-fact-label">Products, from a race engineer on your phone to a Kubernetes scanner</span>
+  </div>
+  <div class="about-fact">
+    <span class="about-fact-value">2</span>
+    <span class="about-fact-label">People. That is the whole company</span>
+  </div>
+  <div class="about-fact">
+    <span class="about-fact-value">1</span>
+    <span class="about-fact-label">Monorepo for every product, this site, and the pipeline that ships them</span>
+  </div>
+</div>
+
+<h2 class="ds-section-title">The two of us</h2>
+
+<p class="about-lede">
+  Between us, forty years of writing software and running the teams that write it, in corporations, banks, family
+  businesses and early-stage startups. We have shipped in languages that no longer have a community, and in ones that
+  did not exist when we started.
+</p>
+
+<div class="about-stack">
+  <span class="about-stack-label">What we write today</span>
+  <p>
+    Go, Kotlin and TypeScript for the products. SQL for the data, on Postgres, MySQL and ClickHouse. OpenTofu, Nix and
+    Kubernetes for the machines that run it all.
+  </p>
+  <p>
+    The list is short on purpose. We would rather be honest about the four things we run in production than claim twenty
+    from a CV.
+  </p>
+</div>
+
+<div class="person-grid">
+  <article class="person-card">
+    <span class="person-initials">LP</span>
+    <h3 class="person-name">Luca Pette</h3>
+    <p class="person-role">Co-founder</p>
+    <p>
+      Luca has run engineering in corporations, family businesses and early-stage startups. He was CTO at Marley Spoon,
+      where the product team grew from ten to twenty-five, and Head of Engineering at Airy, where he designed the
+      messaging platform, led the migration and open-sourced it. He has been a fractional CTO since 2022, and was an
+      independent consultant before that, including a stint as interim CTO at Grover. He is most at home in
+      infrastructure, data and backend systems.
+    </p>
+  </article>
+  <article class="person-card">
+    <span class="person-initials">SZ</span>
+    <h3 class="person-name">Stefano Zanella</h3>
+    <p class="person-role">Co-founder</p>
+    <p>
+      Stefano has spent twenty years building platforms and the teams around them. He built Marley Spoon's platform from
+      the ground up as a software developer, then led it as Head of Software Engineering while scaling five teams. He
+      grew that platform from a Rails MVP into a Postgres, Beanstalkd, Chef and Ansible architecture, which is where the
+      operations half of this company comes from. He was an engineering manager at solarisBank, and Head of Engineering
+      at trana and Acto. He works on lean software engineering, delivery measurement, team design and coaching: the
+      parts of engineering that decide whether a team of five ships like a team of twenty.
+    </p>
+  </article>
+</div>
+
+<h2 class="ds-section-title">How we work</h2>
+
+<div class="ds-features-grid">
+  <div class="ds-feature-card">
+    <h3>Two people, no handoffs</h3>
+    <p>The person you talk to is the person writing the code. There is nobody else to ask.</p>
+  </div>
+  <div class="ds-feature-card">
+    <h3>Agents write, we read</h3>
+    <p>
+      We do all our coding through agents and keep the reading. Most of the work is the rules and the loop that make the
+      output reviewable.
+    </p>
+  </div>
+  <div class="ds-feature-card">
+    <h3>We build our own tools</h3>
+    <p>Our CI, our time tracking, our release process and the licensing server that sells Guido are all ours.</p>
+  </div>
+  <div class="ds-feature-card">
+    <h3>We measure</h3>
+    <p>
+      Every number we publish comes from our own repository, our own CI or our own bill. Read the
+      <a class="about-card-link" href="/writing/how-coding-agents-work/">series on coding agents</a> for the long
+      version.
+    </p>
+  </div>
+</div>
+
+<h2 class="ds-section-title">The portfolio</h2>
+
+<div class="about-prose">
+  <p>
+    Six products, from a race engineer on your phone to a Kubernetes scanner, plus the
+    <a href="/vetrina/">open-source tools</a> we run the company on. Two are shipped, one is in beta, three are on the
+    way.
+  </p>
+  <p>
+    The range looks like a lack of focus. It is the opposite: we pick small problems we have felt ourselves, and we
+    solve them well, whichever field they come from.
+  </p>
+</div>
+
+<div class="ds-callout">
+  <div class="ds-limits">
+    <p class="ds-intro-text">
+      <strong>Talking to us.</strong> <a href="mailto:hello@matto.club">hello@matto.club</a>, or the form on the contact
+      page.
+    </p>
+  </div>
+  {%- comment -%}
+    The consulting CTA, parked with the nav entry. Uncomment it and delete the
+    contact button below when the page goes live.
+  {%- endcomment -%}
+  {%- comment -%}
+    <div class="ds-ctas">
+      <a href="/consulting/" class="ds-btn ds-btn--primary">How we work together</a>
+    </div>
+  {%- endcomment -%}
+  <div class="ds-ctas">
+    <a href="/contact/" class="ds-btn ds-btn--primary">Get in touch</a>
+  </div>
+</div>

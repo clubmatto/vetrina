@@ -1,0 +1,393 @@
+/* Consulting page. The layout follows the product pages: a showcase header,
+   then sections separated by .ds-section-title, so the page reads as part of
+   the same site. Everything here is content-specific, no new tokens. */
+
+.consulting-lede {
+  max-width: 72ch;
+  margin: 0 0 var(--ds-space-8);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+/* The three reasons an agent stalls. A top border in a different accent per
+   item, which is the only decoration on the page. */
+.consulting-faults {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-12);
+}
+
+.consulting-fault {
+  padding-top: var(--ds-space-5);
+  border-top: 2px solid var(--ds-gradient-1);
+}
+
+.consulting-fault:nth-child(2) {
+  border-top-color: var(--ds-gradient-2);
+}
+
+.consulting-fault:nth-child(3) {
+  border-top-color: var(--ds-gradient-4);
+}
+
+.consulting-fault p {
+  margin: var(--ds-space-3) 0 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.consulting-fault-label {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-text);
+}
+
+/* What we do: three engagements. */
+.consulting-offers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-12);
+}
+
+.consulting-offer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-6);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.consulting-offer-label {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-gradient-1);
+}
+
+.consulting-offer-title {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  font-weight: 700;
+  color: var(--ds-text);
+}
+
+.consulting-offer p {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.consulting-offer-proof {
+  margin-top: auto;
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+  font-size: var(--ds-text-sm);
+}
+
+.consulting-offer-proof a,
+.consulting-stat-source {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--ds-gradient-5),
+    transparent 50%
+  );
+}
+
+.consulting-offer-proof a:hover,
+.consulting-stat-source:hover {
+  text-decoration-color: var(--ds-gradient-5);
+}
+
+/* Leadership: one text column, then the two people (person card lives in
+   about.css, because the about page uses the same one). */
+.consulting-leadership {
+  margin: 0 0 var(--ds-space-12);
+}
+
+.consulting-leadership-text p {
+  max-width: 72ch;
+  margin: 0 0 var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-base);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+/* The four numbers. */
+.consulting-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ds-space-5);
+  margin: 0 0 var(--ds-space-12);
+}
+
+.consulting-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+}
+
+.consulting-stat-value {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xl);
+  font-weight: 800;
+  line-height: 1;
+  background: var(--ds-gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.consulting-stat-label {
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+.consulting-stat-source {
+  margin-top: auto;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+}
+
+/* How it starts: the three steps, in the same shape as the DB Diff
+   algorithm notes on the product pages. */
+.consulting-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-12);
+  padding: 0;
+  list-style: none;
+}
+
+.consulting-step {
+  padding-top: var(--ds-space-4);
+  border-top: 1px solid var(--ds-border);
+}
+
+.consulting-step-number {
+  display: block;
+  margin-bottom: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ds-gradient-1);
+}
+
+.consulting-step-title {
+  margin: 0 0 var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-base);
+  font-weight: 400;
+  color: var(--ds-text);
+}
+
+.consulting-step p {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-secondary);
+}
+
+@media (max-width: 1024px) {
+  .consulting-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .consulting-offers {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .consulting-faults,
+  .consulting-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .consulting-lede {
+    font-size: var(--ds-text-base);
+  }
+}
+
+@media (max-width: 560px) {
+  .consulting-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The hero stack row. One line of chips is the fastest way to say
+   "polyglot" without a paragraph about it. */
+.consulting-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-6);
+}
+
+.consulting-chips-label {
+  margin-right: var(--ds-space-1);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  letter-spacing: 0.04em;
+  color: var(--ds-text-muted);
+}
+
+.consulting-chip {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-full);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-secondary);
+  background: var(--ds-surface);
+}
+
+/* The ground we cover: one full-width card for the deep specialism, four
+   cards for the rest. The asymmetry is the point. */
+.consulting-coverage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-6);
+}
+
+.consulting-cover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-6);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.consulting-cover--deep {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: var(--ds-space-8);
+  grid-column: 1 / -1;
+  align-items: start;
+  border-color: color-mix(in srgb, var(--ds-gradient-4), transparent 55%);
+  box-shadow: inset 3px 0 0 var(--ds-gradient-4);
+}
+
+.consulting-cover-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+}
+
+.consulting-cover-label {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-gradient-4);
+}
+
+.consulting-cover-title {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  font-weight: 700;
+  color: var(--ds-text);
+}
+
+.consulting-cover-stack {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  line-height: 1.6;
+  color: var(--ds-text-muted);
+}
+
+.consulting-cover p {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-secondary);
+}
+
+.consulting-cover-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+
+.consulting-cover-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+}
+
+.consulting-cover-links a {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--ds-gradient-5),
+    transparent 50%
+  );
+}
+
+.consulting-cover-links a:hover {
+  text-decoration-color: var(--ds-gradient-5);
+}
+
+/* The please-ask-anyway line under the coverage grid. Deliberately not a
+   callout: it is a sentence, not a section. */
+.consulting-note {
+  max-width: 72ch;
+  margin: 0 0 var(--ds-space-12);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-sm);
+  line-height: 1.7;
+  color: var(--ds-text-muted);
+}
+
+@media (max-width: 900px) {
+  .consulting-coverage {
+    grid-template-columns: 1fr;
+  }
+
+  .consulting-cover--deep {
+    grid-template-columns: 1fr;
+    gap: var(--ds-space-4);
+  }
+}

@@ -31,6 +31,20 @@
         {% endif %}
         >Vetrina</a
       >
+      {%- comment -%}
+        The consulting page is built but not linked yet. Uncomment this block
+        when it goes live, and the footer entry at the same time.
+      {%- endcomment -%}
+      {%- comment -%}
+        <a
+          href="/consulting/"
+          class="{% if page.url contains '/consulting/' %}active{% endif %}"
+          {% if page.url contains '/consulting/' %}
+            aria-current="page"
+          {% endif %}
+          >Consulting</a
+        >
+      {%- endcomment -%}
       <a
         href="/writing/"
         class="{% if page.url contains '/writing/' %}active{% endif %}"

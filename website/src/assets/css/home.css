@@ -139,6 +139,28 @@
   font-style: normal;
 }
 
+/* The second line of the home page: the products manifesto, then the work
+   that pays for it. Quieter than the quote on purpose. */
+.who-we-are-note {
+  max-width: 40rem;
+  margin: 1.5rem auto 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.who-we-are-note a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--gradient-5), transparent 50%);
+}
+
+.who-we-are-note a:hover {
+  text-decoration-color: var(--gradient-5);
+}
+
 @media (max-width: 640px) {
   .hero {
     padding: 2rem 1rem 4rem;
