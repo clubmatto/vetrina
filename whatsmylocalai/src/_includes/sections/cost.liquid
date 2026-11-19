@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <template x-for="row in costRows" :key="row.preset.key">
+        <template x-for="row in sortedCostRows" :key="row.preset.key">
           <div class="cost-option">
             <div class="cost-option-head">
               <span class="cost-option-name" :title="row.preset.name" x-text="row.preset.label"></span>
@@ -78,40 +78,92 @@
       <p class="cost-verdict" x-text="costCrossoverSummary"></p>
     </div>
 
-    <figure class="cost-chart" x-show="costMode === 'buy'" :aria-label="costChart.caption">
+    <figure class="cost-chart" x-show="costMode === 'buy'">
       <div class="cost-chart-head">
-        <span class="cost-chart-title">When local pays for itself</span>
-        <span class="cost-chart-sub">Hardware and electricity vs the same cloud tokens</span>
-      </div>
-
-      <div class="cost-payback">
-        <template x-for="row in costChart.rows" :key="row.key">
-          <div class="cost-payback-row" :class="'cost-payback-row--' + row.key">
-            <span class="cost-payback-name" x-text="row.label"></span>
-            <div class="cost-payback-track" :class="{ 'is-none': row.position === null }" aria-hidden="true">
-              <span
-                class="cost-payback-fill"
-                x-show="row.position !== null"
-                :style="row.position !== null ? 'width:' + row.position + '%' : ''"
-              ></span>
-              <span
-                class="cost-payback-dot"
-                x-show="row.position !== null"
-                :style="row.position !== null ? 'left:' + row.position + '%' : ''"
-              ></span>
-            </div>
-            <span class="cost-payback-months" x-text="row.monthsLabel"></span>
-          </div>
-        </template>
-
-        <div class="cost-payback-axis" aria-hidden="true">
-          <span></span>
-          <div class="cost-payback-axis-track">
-            <span>0</span><span>3</span><span>6</span><span>9</span><span>12 months</span>
-          </div>
-          <span></span>
+        <span class="cost-chart-title">Total spend over 12 months</span>
+        <div class="cost-legend" aria-hidden="true">
+          <span class="cost-legend-item cost-legend-item--local">Local</span>
+          <span class="cost-legend-item cost-legend-item--deepseek">DeepSeek</span>
+          <span class="cost-legend-item cost-legend-item--frontier">Frontier</span>
         </div>
       </div>
+      <p class="cost-chart-sub">The dot is the month the local rig catches up.</p>
+
+      <svg viewBox="0 0 320 160" role="img" :aria-label="costChart.caption">
+        <line class="cost-grid-line" x1="52" x2="312" :y1="costChart.grid[0]?.y ?? 0" :y2="costChart.grid[0]?.y ?? 0"></line>
+        <line class="cost-grid-line" x1="52" x2="312" :y1="costChart.grid[1]?.y ?? 0" :y2="costChart.grid[1]?.y ?? 0"></line>
+        <line class="cost-grid-line" x1="52" x2="312" :y1="costChart.grid[2]?.y ?? 0" :y2="costChart.grid[2]?.y ?? 0"></line>
+        <line class="cost-grid-line" x1="52" x2="312" :y1="costChart.grid[3]?.y ?? 0" :y2="costChart.grid[3]?.y ?? 0"></line>
+
+        <line class="cost-tick" x1="52" x2="52" y1="136" y2="140"></line>
+        <line class="cost-tick" x1="117" x2="117" y1="136" y2="140"></line>
+        <line class="cost-tick" x1="182" x2="182" y1="136" y2="140"></line>
+        <line class="cost-tick" x1="247" x2="247" y1="136" y2="140"></line>
+        <line class="cost-tick" x1="312" x2="312" y1="136" y2="140"></line>
+
+        <line class="cost-axis-line" x1="52" y1="136" x2="312" y2="136"></line>
+        <line class="cost-axis-line" x1="52" y1="14" x2="52" y2="136"></line>
+
+        <path class="cost-line cost-line--frontier" :d="costChart.frontierPath"></path>
+        <path class="cost-line cost-line--deepseek" :d="costChart.deepseekPath"></path>
+        <path class="cost-line cost-line--local" :d="costChart.localPath"></path>
+
+        <g class="cost-marker cost-marker--frontier" x-show="costChart.frontierDot">
+          <line
+            class="cost-marker-line"
+            x1="52"
+            y1="136"
+            :x2="costChart.frontierDot ? costChart.frontierDot.x : 34"
+            :y2="costChart.frontierDot ? costChart.frontierDot.y : 136"
+          ></line>
+          <circle
+            class="cost-dot cost-dot--frontier"
+            :cx="costChart.frontierDot ? costChart.frontierDot.x : 0"
+            :cy="costChart.frontierDot ? costChart.frontierDot.y : 0"
+            r="5"
+          ></circle>
+          <text
+            class="cost-callout"
+            :x="costChart.frontierDot ? costChart.frontierDot.x + 7 : 0"
+            :y="costChart.frontierDot ? costChart.frontierDot.y - 6 : 0"
+            x-text="costChart.frontierLabel"
+          ></text>
+        </g>
+
+        <g class="cost-marker cost-marker--deepseek" x-show="costChart.deepseekDot">
+          <line
+            class="cost-marker-line"
+            x1="52"
+            y1="136"
+            :x2="costChart.deepseekDot ? costChart.deepseekDot.x : 34"
+            :y2="costChart.deepseekDot ? costChart.deepseekDot.y : 136"
+          ></line>
+          <circle
+            class="cost-dot cost-dot--deepseek"
+            :cx="costChart.deepseekDot ? costChart.deepseekDot.x : 0"
+            :cy="costChart.deepseekDot ? costChart.deepseekDot.y : 0"
+            r="5"
+          ></circle>
+          <text
+            class="cost-callout"
+            :x="costChart.deepseekDot ? costChart.deepseekDot.x : 0"
+            :y="costChart.deepseekDot ? costChart.deepseekDot.y - 7 : 0"
+            text-anchor="middle"
+            x-text="costChart.deepseekLabel"
+          ></text>
+        </g>
+
+        <text class="cost-axis-label" x="46" :y="(costChart.grid[0]?.y ?? 0) + 3" text-anchor="end" x-text="costChart.grid[0]?.label ?? ''"></text>
+        <text class="cost-axis-label" x="46" :y="(costChart.grid[1]?.y ?? 0) + 3" text-anchor="end" x-text="costChart.grid[1]?.label ?? ''"></text>
+        <text class="cost-axis-label" x="46" :y="(costChart.grid[2]?.y ?? 0) + 3" text-anchor="end" x-text="costChart.grid[2]?.label ?? ''"></text>
+        <text class="cost-axis-label" x="46" :y="(costChart.grid[3]?.y ?? 0) + 3" text-anchor="end" x-text="costChart.grid[3]?.label ?? ''"></text>
+
+        <text class="cost-axis-label" x="52" y="153" text-anchor="start">0</text>
+        <text class="cost-axis-label" x="117" y="153" text-anchor="middle">3</text>
+        <text class="cost-axis-label" x="182" y="153" text-anchor="middle">6</text>
+        <text class="cost-axis-label" x="247" y="153" text-anchor="middle">9</text>
+        <text class="cost-axis-label" x="312" y="153" text-anchor="end">12 months</text>
+      </svg>
 
       <div class="cost-chart-totals">
         <span class="cost-chart-totals-label">At 12 months</span>

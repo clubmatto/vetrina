@@ -105,11 +105,9 @@ interface CostRow {
   estimate: CostEstimate;
 }
 
-interface CostChartRow {
-  key: string;
+interface CostChartGridLine {
+  y: number;
   label: string;
-  monthsLabel: string;
-  position: number | null;
 }
 
 interface CostChartTotal {
@@ -119,7 +117,14 @@ interface CostChartTotal {
 }
 
 interface CostChart {
-  rows: CostChartRow[];
+  localPath: string;
+  frontierPath: string;
+  deepseekPath: string;
+  frontierDot: { x: number; y: number } | null;
+  deepseekDot: { x: number; y: number } | null;
+  frontierLabel: string;
+  deepseekLabel: string;
+  grid: CostChartGridLine[];
   totals: CostChartTotal[];
   caption: string;
 }
@@ -704,6 +709,13 @@ document.addEventListener("alpine:init", () => {
           .filter((row): row is CostRow => row.estimate !== null);
       },
 
+      /** Cheapest cloud first, matching the page's local, DeepSeek, Frontier order. */
+      get sortedCostRows(): CostRow[] {
+        return [...this.costRows].sort(
+          (a, b) => a.estimate.cloudMonthly - b.estimate.cloudMonthly,
+        );
+      },
+
       get costLocalEstimate(): CostEstimate | null {
         return this.costRows[0]?.estimate ?? null;
       },
@@ -771,14 +783,14 @@ document.addEventListener("alpine:init", () => {
       paybackLabel(estimate: CostEstimate): string {
         if (this.costMode === "own") return "—";
         if (estimate.paybackMonths === null) return "does not pay back";
-        return `pays back in ${this.formatMonths(estimate.paybackMonths)}`;
+        return `rig pays back in ${this.formatMonths(estimate.paybackMonths)}`;
       },
 
       get costCrossoverSummary(): string {
         if (this.costMode === "own") {
           return "You already own the machine, so local costs electricity only.";
         }
-        const rows = this.costRows;
+        const rows = this.sortedCostRows;
         if (!rows.length) return "";
         const parts = rows.map(({ preset, estimate }) => {
           const crossover = estimate.crossoverHoursPerDay;
@@ -808,11 +820,22 @@ document.addEventListener("alpine:init", () => {
         ) {
           return "The hardware does not pay back against either cloud price within 12 months.";
         }
-        return `Pays back in ${parts.join(", and ")}.`;
+        return `The local rig pays back in ${parts.join(", and ")}.`;
       },
 
       get costChart(): CostChart {
-        const empty: CostChart = { rows: [], totals: [], caption: "" };
+        const empty: CostChart = {
+          localPath: "",
+          frontierPath: "",
+          deepseekPath: "",
+          frontierDot: null,
+          deepseekDot: null,
+          frontierLabel: "",
+          deepseekLabel: "",
+          grid: [],
+          totals: [],
+          caption: "",
+        };
         const rows = this.costRows;
         const estimate = this.costLocalEstimate;
         if (!estimate || rows.length === 0 || this.costMode !== "buy") {
@@ -820,41 +843,80 @@ document.addEventListener("alpine:init", () => {
         }
 
         const maxMonths = 12;
-        const paybackRows = rows.map(({ preset, estimate: cloud }) => {
-          const payback = cloud.paybackMonths;
-          const within = payback !== null && payback <= maxMonths;
-          const position = within
-            ? Math.min(98, Math.max(2, (payback / maxMonths) * 100))
-            : null;
-          const monthsLabel =
-            payback === null
-              ? "does not pay back"
-              : payback > maxMonths
-                ? "not within 12 months"
-                : this.formatMonths(payback);
-          return {
-            key: preset.key,
-            label: preset.label,
-            monthsLabel,
-            position,
-          };
-        });
+        const width = 320;
+        const height = 160;
+        const padLeft = 52;
+        const padRight = 8;
+        const padTop = 14;
+        const padBottom = 24;
 
-        const localTotal =
-          this.costHardware + estimate.electricityMonthly * maxMonths;
+        const local = (months: number) =>
+          this.costHardware + estimate.electricityMonthly * months;
+        const maxCost = Math.max(
+          local(maxMonths),
+          ...rows.map((row) => row.estimate.cloudMonthly * maxMonths),
+          1,
+        );
+
+        const x = (months: number) =>
+          padLeft + (months / maxMonths) * (width - padLeft - padRight);
+        const y = (cost: number) =>
+          padTop + (1 - cost / maxCost) * (height - padTop - padBottom);
+        const path = (costAt: (months: number) => number) =>
+          `M${x(0)},${y(costAt(0))} L${x(maxMonths)},${y(costAt(maxMonths))}`;
+
+        const frontier =
+          rows.find((row) => row.preset.key === "frontier") ?? null;
+        const deepseek =
+          rows.find((row) => row.preset.key === "deepseek") ?? null;
+
+        const dot = (row: CostRow | null) => {
+          if (!row) return null;
+          const payback = row.estimate.paybackMonths;
+          if (payback === null || payback <= 0 || payback > maxMonths) {
+            return null;
+          }
+          return { x: x(payback), y: y(row.estimate.cloudMonthly * payback) };
+        };
+
+        const frontierDot = dot(frontier);
+        const deepseekDot = dot(deepseek);
+        const monthsLabel = (row: CostRow | null): string => {
+          if (!row) return "";
+          const payback = row.estimate.paybackMonths;
+          if (payback === null || payback > maxMonths) return "";
+          return this.formatMonths(payback);
+        };
+
+        const grid = [0, 1 / 3, 2 / 3, 1].map((fraction) => {
+          const value = maxCost * fraction;
+          return { y: y(value), label: this.formatMoney(value) };
+        });
+        const localTotal = this.costHardware + estimate.electricityMonthly * 12;
         const totals = [
           { key: "local", label: "Local", value: this.formatMoney(localTotal) },
-          ...rows.map(({ preset, estimate: cloud }) => ({
-            key: preset.key,
-            label: preset.label,
-            value: this.formatMoney(cloud.cloudMonthly * maxMonths),
+          ...this.sortedCostRows.map((row) => ({
+            key: row.preset.key,
+            label: row.preset.label,
+            value: this.formatMoney(row.estimate.cloudMonthly * 12),
           })),
         ];
 
         return {
-          rows: paybackRows,
+          localPath: path(local),
+          frontierPath: frontier
+            ? path((months) => frontier.estimate.cloudMonthly * months)
+            : "",
+          deepseekPath: deepseek
+            ? path((months) => deepseek.estimate.cloudMonthly * months)
+            : "",
+          frontierDot,
+          deepseekDot,
+          frontierLabel: monthsLabel(frontier),
+          deepseekLabel: monthsLabel(deepseek),
+          grid,
           totals,
-          caption: this.costPaybackCaption(rows),
+          caption: this.costPaybackCaption(this.sortedCostRows),
         };
       },
 

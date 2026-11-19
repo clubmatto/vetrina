@@ -187,9 +187,9 @@ at runtime, and the estimate is labelled honestly.
 - [x] Test the formulas and the empty and zero cases.
 - [x] Add the two modes: "I own it" (electricity only) and "I'm buying it"
       (hardware amortized, payback, crossover).
-- [x] Replace the cumulative chart with a payback timeline and 12-month
-      totals. The three-line chart collapsed local and DeepSeek onto the axis
-      because Frontier dominates the yearly scale.
+- [x] Chart the cumulative spend over 12 months with the payback marked. The
+      usage chart collapsed the local line onto the axis because cloud
+      dominates at high usage.
 - [x] Price everything in USD, matching models.dev, with four input tokens per
       output token.
 
