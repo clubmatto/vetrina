@@ -44,7 +44,7 @@ source code of our shortlisted coding agents and looked at how each one builds
 its system prompt.
 
 :::note[TL;DR]
-None harnesses ships a single prompt string. Each of them assembles the
+No harness ships a single prompt string. Each of them assembles the
 prompt from parts, and they diverge on two things: how the tool surface is
 exposed and what
 belongs to the stable context prefix.
@@ -184,12 +184,12 @@ What the harness assembles into it varies just as much:
 - Aider is the most
   explicit about the order: eight chunks, `system`, `examples`,
   `readonly_files`, `repo`,
-  `done`,`chat_files`, `cur`, `reminder`, shaped per model by `ModelSettings`.
+  `done`, `chat_files`, `cur`, `reminder`, shaped per model by `ModelSettings`.
   Aider
   leans on the same trick whenever it needs to
   put something in the conversation that has no dedicated slot: a user message
   plus an
-  assistant` "Ok."` agreeing to it. That is how file contents, the done-turn
+  assistant message saying "Ok." agreeing to it. That is how file contents, the done-turn
   markers, and the system text itself travel when `use_system_prompt` is off.
 - Qwen Code renders five layers separated by `---`: a base section with
   identity,

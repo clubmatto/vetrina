@@ -56,7 +56,7 @@ function toggleDemoTheme() {
 }
 </script>
 
-VHS can handle typing speed, color schemes, windows styles, and much more.
+VHS can handle typing speed, color schemes, window styles, and much more.
 It's a lovely little tool!
 
 ## Real world demos
@@ -115,5 +115,5 @@ Running a specific demo in light mode only:
 go run tools/vhs-generate/main.go -t light fakedata basic
 ```
 
-If you'd like to use our generate tool, please reach out and we'll package
-it as a small, installable CLI.
+If you'd like to use our generate tool, [get in touch](/contact/) and we'll
+package it as a small, installable CLI.

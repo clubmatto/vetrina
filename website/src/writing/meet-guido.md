@@ -88,13 +88,9 @@ Join the closed beta and Pro stays free for 6 months after the public launch.
 
 ## What's next
 
-Guido speaks GT7 today, and it's not staying monolingual for long: Le Mans
-Ultimate is the most likely next stop, quite possibly with the Assetto Corsa
-family in the same release, with F1 and iRacing queued up behind those. The
-engineer keeps learning too: tire and shift
-intelligence, richer race strategy, more questions it can answer. The
-[roadmap on the product page](/products/guido/#roadmap) stays current as that
-lands.
+The engineer keeps learning: tire and shift intelligence, richer race strategy,
+more questions it can answer. The [roadmap on the product page](/products/guido/#roadmap)
+stays current as that lands.
 
 ## Get in
 

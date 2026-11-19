@@ -66,7 +66,7 @@ source](https://github.com/clubmatto/vetrina/blob/main/website/src/writing/pinoc
 
 You may be tempted to think that this code is overly simplified for
 editorial reasons but the truth is **the agent loop is genuinely tiny**. In
-a production grade coding agent the part that take thousands of engineering
+a production grade coding agent the part that takes thousands of engineering
 hours lives _around_ the loop.
 
 Also notice that the conversation has strictly defined roles for each message so

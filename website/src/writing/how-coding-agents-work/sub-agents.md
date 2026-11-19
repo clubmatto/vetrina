@@ -52,7 +52,7 @@ makes it dumber).
 ## Who decides, and who spawns
 
 In every harness we read, the model decides and the harness spawns. The model
-calls a tool: `task` in OpenCode and Crush, `Agent` in Kimi CLI, `spawn_agent`
+calls a tool: `task` in OpenCode, `agent` in Crush, `Agent` in Kimi CLI, `spawn_agent`
 in Codex, `delegate` in Goose's Summon extension. The harness then builds the
 sub-agent with its own session, its own prompt and its own tool list, runs its
 loop, and returns one thing to the parent: the final report, as a tool result.

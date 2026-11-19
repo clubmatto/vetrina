@@ -1,6 +1,8 @@
 ---
 title: Hello, world
-description: Club Matto origin story
+description:
+  How a Berlin collective of freelancers became a two-person bottega for
+  small, single-purpose tools.
 date: 2026-06-08
 tags:
   - company
@@ -8,9 +10,9 @@ tags:
 ---
 
 Club Matto didn't start as a company. Initially, it was an attempt at building a
-small collective of like-minded freelancers, mostly based out of Berlin. In
-fact, Club Matto is an Italian wordplay on a drink you can find everywhere in
-the city.
+small collective of like-minded freelancers, mostly based out of Berlin. The
+name is a wordplay on Club-Mate, the drink you find in every Berlin fridge, and
+on _matto_, the Italian word for crazy.
 
 With time Club Matto evolved into a tiny company... a bottega!
 

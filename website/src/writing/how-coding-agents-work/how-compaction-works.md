@@ -163,7 +163,7 @@ replaces the head of the conversation. The operation is lossy by construction: a
 summary cannot keep everything, and deleting context is irreversible.
 
 What the summary looks like is where the design philosophies part ways. Here
-are a couple of example that highlight how far you can go in either direction:
+are two examples that show how far you can go in either direction:
 
 - **Pi** treats the summary as a living document. Instead of re-summarizing from
   scratch every time, it updates the existing summary incrementally, in a

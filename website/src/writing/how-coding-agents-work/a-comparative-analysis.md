@@ -150,7 +150,7 @@ Almost every agent deals with some variation of gated rules. Only DeepSeek
 Harness and Codex make _isolation_ the default. Aider gates actions case by case, and Pi does not gate them at all.
 :::
 
-In the first post we laid out the four general strategies currently employed by the coding agents in the shortlist:
+In [the Pinocchio post](/writing/how-coding-agents-work/building-pinocchio/) we laid out the four general strategies currently employed by the coding agents in the shortlist:
 
 - **Rule-based ask-approval.** A per-call engine answers allow, ask, or deny.
 - **OS-level sandboxing.** A kernel boundary is the baseline.

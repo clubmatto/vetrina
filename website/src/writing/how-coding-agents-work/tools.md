@@ -41,7 +41,7 @@ with everything declared.
 
 ## What is a tool, anyway?
 
-You can describe a tool with five parts is:
+You can describe a tool with five parts:
 
 - **declaration**: a name, a description and a parameter schema, sent in the
   prompt.

@@ -1,7 +1,7 @@
 ---
 title: "How coding agents work"
-description: An intro to a new series of blog posts where we intend to
-  understand coding agents in depth.
+description: Ten open-source coding agents, the criteria we used to pick them,
+  and the five parts every one of them has to solve.
 date: 2026-09-07
 tags:
   - ai
@@ -71,8 +71,9 @@ agents produce.
 When we set out to explore the coding agent market, we used the following
 criteria:
 
-- The project _must_ be open-source. We want to know how things work in detail,
-  we want to look at the code.
+- The project _must_ be open source, or source-available with a date for it
+  (Crush is FSL today and MIT in two years). We want to know how things work in
+  detail, we want to look at the code.
 - The project _must_ be multi-provider. We want harnesses we can point at
   whatever model we like (BYO key / OpenAI-compatible / local), no lock-in.
 

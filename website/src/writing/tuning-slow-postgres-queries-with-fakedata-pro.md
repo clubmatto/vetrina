@@ -1,7 +1,7 @@
 ---
 title: Tuning a slow Postgres query with FakeData Pro
-description: Fakedata loads a realistic Postgres fact table in one command, so
-  EXPLAIN ANALYZE stops being a guessing game
+description: FakeData Pro loads five million realistic Postgres rows in one
+  command, so EXPLAIN ANALYZE stops being a guessing game
 date: 2026-08-12
 tags:
   - fakedata-pro
@@ -255,3 +255,6 @@ Want to know how the query behaves at 50M rows? Change the `-t` count and
 re-run. Wonder if the window makes the index worth it? Try both. Generate, load,
 explain, repeat: the data is one command away, so the question stops being a
 guessing game and becomes a measurement.
+
+FakeData Pro is [free during early access](/products/fakedata/), and it takes
+one command to point at your own database.
