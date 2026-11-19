@@ -7,7 +7,6 @@ topics:
   - db-diff
   - reshare
 image: https://github.com/clubmatto/vetrina/blob/main/assets/vhs/db-diff/basic-postgres-light.gif
-publish_date: 2026-11-08
 ---
 
 ## Twitter
