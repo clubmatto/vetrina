@@ -78,38 +78,51 @@
       <p class="cost-verdict" x-text="costCrossoverSummary"></p>
     </div>
 
-    <figure class="cost-chart" x-show="costMode === 'buy'">
+    <figure class="cost-chart" x-show="costMode === 'buy'" :aria-label="costChart.caption">
       <div class="cost-chart-head">
-        <span class="cost-chart-title">Total spend over 12 months</span>
-        <div class="cost-legend" aria-hidden="true">
-          <span class="cost-legend-item cost-legend-item--local">Local</span>
-          <span class="cost-legend-item cost-legend-item--frontier">Frontier</span>
-          <span class="cost-legend-item cost-legend-item--deepseek">DeepSeek</span>
+        <span class="cost-chart-title">When local pays for itself</span>
+        <span class="cost-chart-sub">Hardware and electricity vs the same cloud tokens</span>
+      </div>
+
+      <div class="cost-payback">
+        <template x-for="row in costChart.rows" :key="row.key">
+          <div class="cost-payback-row" :class="'cost-payback-row--' + row.key">
+            <span class="cost-payback-name" x-text="row.label"></span>
+            <div class="cost-payback-track" :class="{ 'is-none': row.position === null }" aria-hidden="true">
+              <span
+                class="cost-payback-fill"
+                x-show="row.position !== null"
+                :style="row.position !== null ? 'width:' + row.position + '%' : ''"
+              ></span>
+              <span
+                class="cost-payback-dot"
+                x-show="row.position !== null"
+                :style="row.position !== null ? 'left:' + row.position + '%' : ''"
+              ></span>
+            </div>
+            <span class="cost-payback-months" x-text="row.monthsLabel"></span>
+          </div>
+        </template>
+
+        <div class="cost-payback-axis" aria-hidden="true">
+          <span></span>
+          <div class="cost-payback-axis-track">
+            <span>0</span><span>3</span><span>6</span><span>9</span><span>12 months</span>
+          </div>
+          <span></span>
         </div>
       </div>
-      <svg viewBox="0 0 320 160" role="img" :aria-label="costChart.caption">
-        <line class="cost-axis-line" x1="8" y1="138" x2="312" y2="138"></line>
-        <path class="cost-line cost-line--frontier" :d="costChart.frontierPath"></path>
-        <path class="cost-line cost-line--deepseek" :d="costChart.deepseekPath"></path>
-        <path class="cost-line cost-line--local" :d="costChart.localPath"></path>
-        <circle
-          class="cost-dot cost-dot--frontier"
-          x-show="costChart.frontierDot"
-          :cx="costChart.frontierDot ? costChart.frontierDot.x : 0"
-          :cy="costChart.frontierDot ? costChart.frontierDot.y : 0"
-          r="4"
-        ></circle>
-        <circle
-          class="cost-dot cost-dot--deepseek"
-          x-show="costChart.deepseekDot"
-          :cx="costChart.deepseekDot ? costChart.deepseekDot.x : 0"
-          :cy="costChart.deepseekDot ? costChart.deepseekDot.y : 0"
-          r="4"
-        ></circle>
-        <text class="cost-axis-label" x="8" y="154">0</text>
-        <text class="cost-axis-label" x="312" y="154" text-anchor="end">12 months</text>
-        <text class="cost-axis-label" x="8" y="10" x-text="costChart.maxLabel"></text>
-      </svg>
+
+      <div class="cost-chart-totals">
+        <span class="cost-chart-totals-label">At 12 months</span>
+        <template x-for="total in costChart.totals" :key="total.key">
+          <span class="cost-chart-total">
+            <span x-text="total.label"></span>
+            <strong x-text="total.value"></strong>
+          </span>
+        </template>
+      </div>
+
       <figcaption x-text="costChart.caption"></figcaption>
     </figure>
 

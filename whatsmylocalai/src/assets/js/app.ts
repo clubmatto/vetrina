@@ -105,14 +105,23 @@ interface CostRow {
   estimate: CostEstimate;
 }
 
+interface CostChartRow {
+  key: string;
+  label: string;
+  monthsLabel: string;
+  position: number | null;
+}
+
+interface CostChartTotal {
+  key: string;
+  label: string;
+  value: string;
+}
+
 interface CostChart {
-  localPath: string;
-  frontierPath: string;
-  deepseekPath: string;
-  frontierDot: { x: number; y: number } | null;
-  deepseekDot: { x: number; y: number } | null;
+  rows: CostChartRow[];
+  totals: CostChartTotal[];
   caption: string;
-  maxLabel: string;
 }
 
 const PROBE_SEEN_KEY = "wmla-probe-seen";
@@ -803,15 +812,7 @@ document.addEventListener("alpine:init", () => {
       },
 
       get costChart(): CostChart {
-        const empty: CostChart = {
-          localPath: "",
-          frontierPath: "",
-          deepseekPath: "",
-          frontierDot: null,
-          deepseekDot: null,
-          caption: "",
-          maxLabel: "",
-        };
+        const empty: CostChart = { rows: [], totals: [], caption: "" };
         const rows = this.costRows;
         const estimate = this.costLocalEstimate;
         if (!estimate || rows.length === 0 || this.costMode !== "buy") {
@@ -819,54 +820,41 @@ document.addEventListener("alpine:init", () => {
         }
 
         const maxMonths = 12;
-        const width = 320;
-        const height = 160;
-        const padLeft = 8;
-        const padRight = 8;
-        const padTop = 12;
-        const padBottom = 22;
+        const paybackRows = rows.map(({ preset, estimate: cloud }) => {
+          const payback = cloud.paybackMonths;
+          const within = payback !== null && payback <= maxMonths;
+          const position = within
+            ? Math.min(98, Math.max(2, (payback / maxMonths) * 100))
+            : null;
+          const monthsLabel =
+            payback === null
+              ? "does not pay back"
+              : payback > maxMonths
+                ? "not within 12 months"
+                : this.formatMonths(payback);
+          return {
+            key: preset.key,
+            label: preset.label,
+            monthsLabel,
+            position,
+          };
+        });
 
-        const local = (months: number) =>
-          this.costHardware + estimate.electricityMonthly * months;
-        const maxCost = Math.max(
-          local(maxMonths),
-          ...rows.map((row) => row.estimate.cloudMonthly * maxMonths),
-          1,
-        );
-
-        const x = (months: number) =>
-          padLeft + (months / maxMonths) * (width - padLeft - padRight);
-        const y = (cost: number) =>
-          padTop + (1 - cost / maxCost) * (height - padTop - padBottom);
-        const path = (costAt: (months: number) => number) =>
-          `M${x(0)},${y(costAt(0))} L${x(maxMonths)},${y(costAt(maxMonths))}`;
-
-        const frontier =
-          rows.find((row) => row.preset.key === "frontier") ?? null;
-        const deepseek =
-          rows.find((row) => row.preset.key === "deepseek") ?? null;
-
-        const dot = (row: CostRow | null) => {
-          if (!row) return null;
-          const payback = row.estimate.paybackMonths;
-          if (payback === null || payback <= 0 || payback > maxMonths) {
-            return null;
-          }
-          return { x: x(payback), y: y(row.estimate.cloudMonthly * payback) };
-        };
+        const localTotal =
+          this.costHardware + estimate.electricityMonthly * maxMonths;
+        const totals = [
+          { key: "local", label: "Local", value: this.formatMoney(localTotal) },
+          ...rows.map(({ preset, estimate: cloud }) => ({
+            key: preset.key,
+            label: preset.label,
+            value: this.formatMoney(cloud.cloudMonthly * maxMonths),
+          })),
+        ];
 
         return {
-          localPath: path(local),
-          frontierPath: frontier
-            ? path((months) => frontier.estimate.cloudMonthly * months)
-            : "",
-          deepseekPath: deepseek
-            ? path((months) => deepseek.estimate.cloudMonthly * months)
-            : "",
-          frontierDot: dot(frontier),
-          deepseekDot: dot(deepseek),
+          rows: paybackRows,
+          totals,
           caption: this.costPaybackCaption(rows),
-          maxLabel: this.formatMoney(maxCost),
         };
       },
 

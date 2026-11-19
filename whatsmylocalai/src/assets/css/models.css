@@ -948,90 +948,148 @@
 
 .cost-chart-head {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: var(--ds-space-3);
+  gap: var(--ds-space-2);
+  flex-wrap: wrap;
+}
+
+.cost-chart-title {
+  font-family: var(--ds-font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-text);
+}
+
+.cost-chart-sub {
   font-family: var(--ds-font-sans);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--ds-text-secondary);
 }
 
-.cost-legend {
-  display: flex;
+.cost-payback {
+  display: grid;
+  gap: var(--ds-space-1);
+  margin-top: var(--ds-space-4);
+}
+
+.cost-payback-row,
+.cost-payback-axis {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) 7rem;
+  align-items: center;
   gap: var(--ds-space-3);
 }
 
-.cost-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+.cost-payback-row {
+  min-height: 2.5rem;
 }
 
-.cost-legend-item::before {
-  content: "";
-  width: 0.7rem;
-  height: 2px;
-  background: currentColor;
+.cost-payback-row--frontier {
+  --payback-color: var(--ds-gradient-1);
 }
 
-.cost-legend-item--local {
-  color: var(--ds-gradient-4);
+.cost-payback-row--deepseek {
+  --payback-color: var(--ds-gradient-5);
 }
 
-.cost-legend-item--frontier {
-  color: var(--ds-gradient-1);
-}
-
-.cost-legend-item--deepseek {
-  color: var(--ds-gradient-5);
-}
-
-.cost-chart svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-top: var(--ds-space-2);
-}
-
-.cost-line {
-  fill: none;
-  stroke-width: 2;
-}
-
-.cost-line--local {
-  stroke: var(--ds-gradient-4);
-}
-
-.cost-line--frontier {
-  stroke: var(--ds-gradient-1);
-}
-
-.cost-line--deepseek {
-  stroke: var(--ds-gradient-5);
-}
-
-.cost-dot {
-  stroke: var(--ds-surface);
-  stroke-width: 2;
-}
-
-.cost-dot--frontier {
-  fill: var(--ds-gradient-1);
-}
-
-.cost-dot--deepseek {
-  fill: var(--ds-gradient-5);
-}
-
-.cost-axis-line {
-  stroke: var(--ds-border);
-  stroke-width: 1;
-}
-
-.cost-axis-label {
+.cost-payback-name {
   font-family: var(--ds-font-mono);
-  font-size: 10px;
-  fill: var(--ds-text-secondary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--ds-text);
+}
+
+.cost-payback-track {
+  position: relative;
+  height: 2px;
+  background: var(--ds-border);
+  border-radius: var(--wmla-radius);
+}
+
+.cost-payback-track.is-none {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ds-border) 0 6px,
+    transparent 6px 10px
+  );
+}
+
+.cost-payback-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--payback-color);
+  border-radius: var(--wmla-radius);
+}
+
+.cost-payback-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--payback-color);
+  border: 2px solid var(--ds-surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--payback-color);
+  transform: translate(-50%, -50%);
+}
+
+.cost-payback-months {
+  font-family: var(--ds-font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  text-align: right;
+}
+
+.cost-payback-axis {
+  min-height: 1rem;
+}
+
+.cost-payback-axis-track {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--ds-font-mono);
+  font-size: 0.6rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-chart-totals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  margin-top: var(--ds-space-3);
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-border);
+}
+
+.cost-chart-totals-label {
+  font-family: var(--ds-font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-text-secondary);
+}
+
+.cost-chart-total {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--ds-font-sans);
+  font-size: 0.7rem;
+  color: var(--ds-text-secondary);
+}
+
+.cost-chart-total strong {
+  font-family: var(--ds-font-mono);
+  font-size: 0.72rem;
+  color: var(--ds-text);
 }
 
 .cost-chart figcaption {
@@ -1054,6 +1112,16 @@
 @media (max-width: 760px) {
   .cost-panel {
     padding: var(--ds-space-4);
+  }
+
+  .cost-chart-sub {
+    display: none;
+  }
+
+  .cost-payback-row,
+  .cost-payback-axis {
+    grid-template-columns: 5.5rem minmax(0, 1fr) 6rem;
+    gap: var(--ds-space-2);
   }
 
   .cost-grid {

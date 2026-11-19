@@ -84,8 +84,8 @@ test("the desktop rail fills the right side and the footer spans the page", asyn
 
 test("the rail sticks while a long page scrolls", async ({ page }) => {
   await skipReveal(page);
-  await page.goto("/cost/?gpu=Apple%20M1&ram=16&vram=11");
-  await expect(page.locator(".cost-panel")).toBeVisible();
+  await page.goto("/how-it-works/?gpu=Apple%20M1&ram=16&vram=11");
+  await expect(page.locator(".how-section")).toBeVisible();
 
   const viewport = page.viewportSize();
   const rail = page.locator(".spec-rail");

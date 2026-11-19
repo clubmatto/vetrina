@@ -38,7 +38,7 @@ refresh moves those prices too. At the default rig, one month of local is
 worth about 1.2M output tokens on GPT-5.5, or 13M on DeepSeek.
 
 The page also computes the payback months for each, the usage crossover, and
-a 12-month cumulative chart with both crossings. When the cloud wins, it says
-so.
+a payback timeline with both crossings, plus the 12-month totals. When the
+cloud wins, it says so.
 
 Check it out: https://whatsmylocal.ai/cost/
