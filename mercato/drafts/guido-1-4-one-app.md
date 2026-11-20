@@ -3,7 +3,7 @@ title: "Guido 1.4: Assetto Corsa EVO, and one app everywhere"
 platforms:
   - twitter
   - linkedin
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/screen-dashboard.png
+image: https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-card.png
 publish_date: 2026-11-20
 topics:
   - guido
