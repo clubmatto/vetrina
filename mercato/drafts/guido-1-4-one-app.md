@@ -3,7 +3,7 @@ title: "Guido 1.4: Assetto Corsa EVO, and one app everywhere"
 platforms:
   - twitter
   - linkedin
-image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/products/guido/screen-dashboard.png
+image: https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-card.png
 publish_date: 2026-11-20
 topics:
   - guido
@@ -27,7 +27,7 @@ One installer, one version, no second program to look after.
 
 #### 3/3
 
-Closed beta and free, on Android and TestFlight. If you race EVO, you are the rig we are looking for.
+Closed beta and free, on Android and TestFlight. If you race EVO, you're exactly who we want testing this.
 
 Update both ends to 1.4: a mismatch now says so instead of showing an empty dashboard.
 
@@ -37,10 +37,12 @@ https://matto.club/guido
 
 🏎️ Assetto Corsa EVO is on Guido, and 1.4 makes it one app everywhere. 🏎️
 
-EVO joins the beta with the full dashboard: speed, gear, revs, tyre temperatures, fuel and laps. The fuel gauge reads EVO's own percentage, and the laps-in-fuel call works off the track position the sim publishes. Honesty note: EVO is still the thinnest sim we read, and the tyre detail the other Kunos games carry is not in yet.
+EVO joins the beta with the full dashboard: speed, gear, revs, tyre temperatures, fuel and laps. The fuel gauge reads EVO's own percentage, and the laps-in-fuel call works off the track position the sim publishes.
+
+EVO is the newest sim we read, so its numbers have the least testing behind them. If something disagrees with the game's HUD, tell us.
 
 The structure got simpler too. PC sims keep their telemetry in shared memory, where a phone cannot reach it, so that job used to belong to a second program you had to install, update and remember. Not anymore: the same Guido now runs on the PC as well, reading Le Mans Ultimate and the Assetto Corsa games and carrying them to your phone over your own network. One product, one installer, one version.
 
-Closed beta and free, on Android and TestFlight. If you race EVO, you are the rig we are looking for.
+Closed beta and free, on Android and TestFlight. If you race EVO, you're exactly who we want testing this.
 
-https://matto.club/guido
+Check it out: https://matto.club/guido
