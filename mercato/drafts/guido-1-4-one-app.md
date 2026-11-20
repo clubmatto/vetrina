@@ -3,7 +3,10 @@ title: "Guido 1.4: Assetto Corsa EVO, and one app everywhere"
 platforms:
   - twitter
   - linkedin
-image: https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-card.png
+  - instagram
+images:
+  - https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-card.png
+  - https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-instagram.png
 publish_date: 2026-11-20
 topics:
   - guido
@@ -46,3 +49,17 @@ The structure got simpler too. PC sims keep their telemetry in shared memory, wh
 Closed beta and free, on Android and TestFlight. If you race EVO, you're exactly who we want testing this.
 
 Check it out: https://matto.club/guido
+
+## Instagram
+
+🏎️ Assetto Corsa EVO is on Guido 🏎️
+
+EVO joins the beta with the full dashboard: speed, gear, revs, tyre temperatures, fuel and laps, on a spare screen while you drive.
+
+Guido 1.4 is one app: the same Guido now runs on your PC, carrying Le Mans Ultimate and the Assetto Corsa games to your phone. One installer, one version.
+
+EVO is the newest sim we read, so its numbers have the least testing behind them. If something disagrees with the game's HUD, tell us.
+
+Free during the beta, on Android and TestFlight. Link in bio.
+
+#assettocorsaevo #assettocorsa #simracing #lemansultimate #guido
