@@ -7,7 +7,7 @@ topics:
   - ci
   - gradle
   - how-we-work
-publish_date: 2026-11-27
+publish_date: 2026-12-04
 ---
 
 ## Twitter
