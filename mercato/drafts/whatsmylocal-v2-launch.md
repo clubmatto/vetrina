@@ -9,6 +9,12 @@ topics:
   - whatsmylocalai
   - launch
   - open-source
+images:
+  - https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/03-terminal.png
+  - https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/01-hero.png
+  - https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/02-gap.png
+  - https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/04-cost.png
+  - https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/05-setups.png
 ---
 
 ## Twitter
