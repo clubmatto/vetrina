@@ -4,7 +4,7 @@ platforms:
   - twitter
   - linkedin
   - producthunt
-publish_date: 2026-11-23
+publish_date: 2026-11-24
 topics:
   - whatsmylocalai
   - launch
