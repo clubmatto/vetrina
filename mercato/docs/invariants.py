@@ -13,7 +13,8 @@ mandatory, urllib's TLS fingerprint gets blocked), then checks:
      still sitting in ideas/drafting
   3. no draft carries a publish_date that has already passed — that means the
      post shipped somewhere but the move-to-posts/ flow never ran
-  4. image frontmatter pointing at a github blob URL resolves to a local asset
+  4. image and images frontmatter (single value or list) pointing at github
+     blob URLs resolve to local assets
   5. due-date hygiene: nothing overdue in editing/review/ready, nothing due
      today or earlier still in ideas/drafting
   6. every tweet in a Twitter section fits in 280 chars with links as 23
@@ -117,10 +118,22 @@ def main():
             viol.append(f"publish_date {m.group(1)} passed but still in drafts/: {d.name}")
 
     for f in posts + drafts:
-        m = re.search(r"^image:\s*(\S+)", f.read_text(), re.M)
-        if m and "github.com/clubmatto/vetrina/blob/main/" in m.group(1):
-            if not (ROOT / m.group(1).split("/blob/main/")[1]).exists():
-                viol.append(f"image asset missing: {f.name}")
+        urls, in_list = [], False
+        for line in f.read_text().splitlines():
+            m = re.match(r"^(images?):(.*)$", line)
+            if m:
+                rest = m.group(2).strip()
+                if rest:
+                    urls.append(rest)
+                in_list = not rest
+            elif in_list and re.match(r"^\s*- ", line):
+                urls.append(re.sub(r"^\s*- ", "", line).strip())
+            elif line.strip() and not line.startswith((" ", "-", "\t")):
+                in_list = False
+        for url in urls:
+            if "github.com/clubmatto/vetrina/blob/main/" in url:
+                if not (ROOT / url.split("/blob/main/")[1]).exists():
+                    viol.append(f"image asset missing: {f.name}")
 
     for c in cards:
         d = (c.get("due_date") or "")[:10]
