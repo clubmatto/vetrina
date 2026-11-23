@@ -7,7 +7,6 @@ platforms:
 images:
   - https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-card.png
   - https://github.com/clubmatto/vetrina/blob/main/assets/posts/guido-1-4-instagram.png
-publish_date: 2026-11-23
 topics:
   - guido
   - sim-racing
