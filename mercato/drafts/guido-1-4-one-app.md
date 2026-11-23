@@ -18,21 +18,19 @@ topics:
 
 #### 1/3
 
-🏎️ Assetto Corsa EVO is on Guido.
+🏎️ Assetto Corsa EVO is on Guido!
 
-Speed, gear, revs, tyre temperatures, fuel and laps, live on a spare screen while you drive. The fuel gauge reads EVO's own percentage, and the laps-in-fuel call works off the track position the sim publishes.
+Live telemetry on a spare screen while you drive. And yes, we're always looking for more testers.
 
 #### 2/3
 
-Guido 1.4 is one app everywhere. The same Guido runs on your PC too, reading Le Mans Ultimate and the Assetto Corsa games from shared memory and carrying them to your phone.
+We also simplified the structure: it's just Guido now, on your PC and on your phone.
 
-One installer, one version, no second program to look after.
+As long as you're on 1.4, you're good.
 
 #### 3/3
 
 Closed beta and free, on Android and TestFlight. If you race EVO, you're exactly who we want testing this.
-
-Update both ends to 1.4: a mismatch now says so instead of showing an empty dashboard.
 
 https://matto.club/guido
 
@@ -40,11 +38,12 @@ https://matto.club/guido
 
 🏎️ Assetto Corsa EVO is on Guido, and 1.4 makes it one app everywhere. 🏎️
 
-EVO joins the beta with the full dashboard: speed, gear, revs, tyre temperatures, fuel and laps. The fuel gauge reads EVO's own percentage, and the laps-in-fuel call works off the track position the sim publishes.
+EVO joins the beta! And yes we're always looking for more testers!
 
-EVO is the newest sim we read, so its numbers have the least testing behind them. If something disagrees with the game's HUD, tell us.
+EVO is the newest sim we integrated so if something disagrees with the game's HUD, tell us!
 
-The structure got simpler too. PC sims keep their telemetry in shared memory, where a phone cannot reach it, so that job used to belong to a second program you had to install, update and remember. Not anymore: the same Guido now runs on the PC as well, reading Le Mans Ultimate and the Assetto Corsa games and carrying them to your phone over your own network. One product, one installer, one version.
+We also simplified the structure of our little suite of programs. Now it's 
+just Guido on PC and on your phone! As long as you're on 1.4 you're good!
 
 Closed beta and free, on Android and TestFlight. If you race EVO, you're exactly who we want testing this.
 
@@ -54,11 +53,11 @@ Check it out: https://matto.club/guido
 
 🏎️ Assetto Corsa EVO is on Guido 🏎️
 
-EVO joins the beta with the full dashboard: speed, gear, revs, tyre temperatures, fuel and laps, on a spare screen while you drive.
+EVO joins the beta! Live telemetry on a spare screen while you drive.
 
-Guido 1.4 is one app: the same Guido now runs on your PC, carrying Le Mans Ultimate and the Assetto Corsa games to your phone. One installer, one version.
+It's just Guido now, on your PC and on your phone. As long as you're on 1.4, you're good.
 
-EVO is the newest sim we read, so its numbers have the least testing behind them. If something disagrees with the game's HUD, tell us.
+Newest sim we integrated: if something disagrees with the game's HUD, tell us!
 
 Free during the beta, on Android and TestFlight. Link in bio.
 
