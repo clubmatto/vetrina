@@ -32,6 +32,9 @@ longer sentences when the idea needs them.
   ("you may think", "the vocabulary helped us see").
 - Prefer "use" to "leverage", "start" to "initiate", "help" to "facilitate".
 - Cut filler: "in order to", "due to the fact that", "it is important to note".
+- No weapon or military metaphors: "blast radius", "take out", "in the
+  crosshairs", "nuclear option". Describe the actual consequence instead: a
+  "blast radius" is what a wrong yes can do.
 - Contractions are fine.
 - Humor and personality are allowed where the profile allows them.
 
@@ -118,4 +121,4 @@ conflict and the profile does not resolve it, ask.
 - Is there exactly one next step?
 - Would I publish this under my name?
 
-Last updated: 2026-11-10. This file extends the global rules in @AGENTS.md. Always check both files.
+Last updated: 2026-11-24. This file extends the global rules in @AGENTS.md. Always check both files.
