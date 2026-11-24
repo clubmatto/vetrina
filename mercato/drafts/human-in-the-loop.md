@@ -1,5 +1,5 @@
 ---
-title: "\"Human in the loop\" is meaningless without a blast radius"
+title: "\"Human in the loop\" only means something if a wrong yes stays small"
 platforms:
   - twitter
   - linkedin
@@ -13,7 +13,7 @@ topics:
 
 ## Twitter
 
-"Human in the loop" is meaningless without a blast radius.
+"Human in the loop" only means something if a wrong yes stays small.
 
 A permission prompt shows a proposal, not a result: `rm -rf build` and `rm -rf
 ~` differ by four characters and by everything.
@@ -22,7 +22,7 @@ https://matto.club/writing/how-coding-agents-work/permissions/
 
 ## LinkedIn
 
-"Human in the loop" is meaningless without a blast radius.
+"Human in the loop" only means something if a wrong yes stays small.
 
 Every coding agent asks permission at some point, and the prompt makes it look
 like a human decision. What lands in front of you is a proposal, not a result:
@@ -31,7 +31,7 @@ everything else.
 
 The decisions that most need a person are exactly the ones that cost that
 person the most to evaluate. Ask too often and approval becomes a reflex. Ask
-too rarely and one bad judgment takes out a directory you cared about.
+too rarely and one wrong approval deletes a directory you cared about.
 
 That tension is why the ten open-source harnesses we read share no single
 permissions model: prompts, allowlists, sandboxes. Anthropic open-sourced the
