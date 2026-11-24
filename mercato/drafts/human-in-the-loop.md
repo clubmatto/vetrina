@@ -13,30 +13,28 @@ topics:
 
 ## Twitter
 
-"Human in the loop" only means something if a wrong yes stays small.
+"Human in the loop" only works if agents ask for permission when it really
+matters.
 
-A permission prompt shows a proposal, not a result: `rm -rf build` and `rm -rf
-~` differ by four characters and by everything.
+So when does it really matter?
 
-https://matto.club/writing/how-coding-agents-work/permissions/
+Read more here: https://matto.club/writing/how-coding-agents-work/permissions/
 
 ## LinkedIn
 
-"Human in the loop" only means something if a wrong yes stays small.
+"Human in the loop" only works if agents ask for permission when it really
+matters.
 
-Every coding agent asks permission at some point, and the prompt makes it look
-like a human decision. What lands in front of you is a proposal, not a result:
-`bash("rm -rf build")` and `bash("rm -rf ~")` differ by four characters and by
-everything else.
+So when does it really matter?
 
-The decisions that most need a person are exactly the ones that cost that
-person the most to evaluate. Ask too often and approval becomes a reflex. Ask
-too rarely and one wrong approval deletes a directory you cared about.
+If the agent asks too often, approval becomes a reflex. If it asks
+too rarely, the agent may end up deleting a dir it really shouldn't have.
 
 That tension is why the ten open-source harnesses we read share no single
 permissions model: prompts, allowlists, sandboxes. Anthropic open-sourced the
 sandbox runtime behind Claude Code, which denies filesystem writes and network
-by default. That is the honest admission: the real answer is to shrink what a
-wrong yes can do.
+by default. The best answer seems to be: limit the kind of damage an agent can
+do.
 
-Read it here: https://matto.club/writing/how-coding-agents-work/permissions/
+But there's lot of nuance. Read more
+here: https://matto.club/writing/how-coding-agents-work/permissions/
