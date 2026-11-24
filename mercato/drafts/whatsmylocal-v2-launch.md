@@ -19,35 +19,32 @@ images:
 
 ## Twitter
 
-🚀 What's my local AI? v2 is live 🚀
+🚀 What's my local AI? is live on Product Hunt! 🚀
 
-v1 told you which local models fit your machine. v2 adds the gap in GB, a tok/s
-estimate, a local vs cloud cost calculator, and four recommended setups that
-clear 20 tok/s.
+Which local models fit your machine, how fast they run, and what they cost
+against the cloud. Free, no install, open source.
 
-https://whatsmylocal.ai
+Support us here: https://www.producthunt.com/posts/what-s-my-local-ai-2
 
 ## LinkedIn
 
-🚀 What's my local AI? v2 is live 🚀
+🚀 We're live on Product Hunt! 🚀
 
-In August we launched a small browser tool that tells you which local AI models
-your machine can actually run. It detects your GPU, RAM, and VRAM, and gives
-you a command for Ollama or LM Studio. No install, no upload.
+What's my local AI? started in August as a small browser tool answering one
+question: which local AI models can your machine actually run?
 
-v2 answers the next four questions:
+v2 is out today, and it answers the rest: how far off you are when a model
+doesn't fit, how fast it runs, what it costs against the cloud, and what
+hardware to buy.
 
-- How far off a model is when it doesn't fit, in GB.
-- How fast it should run, with a tok/s band and a simulated terminal.
-- What local costs against GPT-5.5 and DeepSeek, with payback and crossover.
-- What to run it on: four setups that clear 20 tok/s, with the model and speed
-  computed from the catalog.
+Everything runs in your browser. No install, no account, nothing uploaded.
+Free and open source.
 
-The caveats matter: speed is an estimate, not a benchmark. The cost comparison
-uses the same tokens, not the same quality. A tight fit leaves less room for
-context.
+If you've ever wondered whether your laptop can run a model locally, this is
+the tool. And if you like it, an upvote on Product Hunt today makes a real
+difference.
 
-No install, free, open source. Check it out: https://whatsmylocal.ai
+Check it out: https://www.producthunt.com/posts/what-s-my-local-ai-2
 
 ## Product Hunt
 
@@ -72,7 +69,7 @@ Local AI: what fits, how fast, what it costs
 
 In August, What's my local AI? answered one question: which local models can
 your machine actually run? v2 answers the next four: how far off the ones that
-do not fit are, how fast they run, what local costs against GPT-5.5 and
+do not fit are, how fast they run, what local costs against frontier and
 DeepSeek, and what to run it on.
 
 Detection stays in your browser. No install, no account, nothing uploaded. 90+
@@ -96,8 +93,8 @@ GB M1, 46 models fit and 46 do not; the closest are about 2.5 GB short.
 
 Speed is an estimate, not a benchmark. It uses the llmspeed bandwidth model for
 a single device at 8k context, and shows a band because real numbers move with
-the engine, drivers, and thermals. The terminal streams at that speed so the
-number is something you feel.
+the engine, drivers, and thermals. The terminal streams at that speed so you 
+you can feel it.
 
 The cost page compares the same tokens, not the same quality. Local is a fixed
 cost with a low marginal cost; GPT-5.5 and DeepSeek are marginal. The
@@ -112,4 +109,5 @@ affiliate money.
 Everything runs in the browser. No install, no account, nothing uploaded. 90+
 Q4 models, Ollama and LM Studio, open source.
 
-What does it detect on your machine? I would love to see the specs and the pick.
+What does it detect on your machine? I would love to see the specs and the 
+pick.
