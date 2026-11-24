@@ -32,6 +32,9 @@ longer sentences when the idea needs them.
   ("you may think", "the vocabulary helped us see").
 - Prefer "use" to "leverage", "start" to "initiate", "help" to "facilitate".
 - Cut filler: "in order to", "due to the fact that", "it is important to note".
+- No weapon or military metaphors: "blast radius", "take out", "in the
+  crosshairs", "nuclear option". Describe the actual consequence instead: a
+  "blast radius" is what a wrong yes can do.
 - Contractions are fine.
 - Humor and personality are allowed where the profile allows them.
 
