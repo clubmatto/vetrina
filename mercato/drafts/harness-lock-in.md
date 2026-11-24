@@ -1,0 +1,48 @@
+---
+title: "Harness lock-in is the new framework lock-in"
+platforms:
+  - twitter
+  - linkedin
+publish_date: 2026-11-26
+image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-future-of-coding-agents.png
+topics:
+  - agents
+  - from-the-series
+---
+
+## Twitter
+
+Harness lock-in is the new framework lock-in.
+
+Sessions that don't travel, plugins that only fit one loop, and pricing that
+rewards staying. Pick your harness assuming the exit costs more than the
+entrance.
+
+https://matto.club/writing/how-coding-agents-work/the-future-of-coding-agents/
+
+## LinkedIn
+
+Harness lock-in is the new framework lock-in.
+
+A few years ago the bet was the framework: migrations hurt, but your code
+moved with you. Today the bet is the coding harness, and the walls are
+subtler.
+
+Sessions that don't travel. We tried passing a complete session to another
+person in OpenCode and the only way to make it work was clunky and
+error-prone. Your conversation history, the most valuable artifact of the
+work, is trapped in one product's format.
+
+Plugins that only fit one loop. Each ecosystem assumes its own harness's
+extension points, so the investment doesn't carry across.
+
+Ergonomics, quietly the strongest wall: your team learns one UI, one config
+format, one set of commands.
+
+And the newest lever is money: subscriptions and usage perks that reward you
+for staying inside a single harness.
+
+None of this is evil. It is just how platforms behave. So choose a harness
+the way you chose a framework: assuming the exit costs more than the entrance.
+
+Read it here: https://matto.club/writing/how-coding-agents-work/the-future-of-coding-agents/
