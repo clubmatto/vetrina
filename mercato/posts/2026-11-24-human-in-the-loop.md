@@ -3,7 +3,6 @@ title: "\"Human in the loop\" only means something if a wrong yes stays small"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-24
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/permissions.png
 topics:
   - agents
@@ -36,5 +35,4 @@ sandbox runtime behind Claude Code, which denies filesystem writes and network
 by default. The best answer seems to be: limit the kind of damage an agent can
 do.
 
-But there's lot of nuance. Read more
-here: https://matto.club/writing/how-coding-agents-work/permissions/
+But there's lot of nuance. Read more here: https://matto.club/writing/how-coding-agents-work/permissions/

@@ -3,7 +3,6 @@ title: "Agents are compilers, not editors"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-25
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/the-future-of-coding-agents.png
 topics:
   - agents
