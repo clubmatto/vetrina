@@ -1,0 +1,67 @@
+// Vetrina's Renovate run. The job (defined by the bottega internal-tools stack) checks this
+// repository out; Renovate itself runs from the official image, because this repository has no
+// devshell to inherit.
+pipeline {
+  agent any
+
+  options {
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr: '30'))
+    timeout(time: 2, unit: 'HOURS')
+  }
+
+  environment {
+    RENOVATE_PLATFORM        = 'github'
+    RENOVATE_GIT_AUTHOR      = credentials('renovate-git-author')
+    // Each job passes the repository it renovates as a build parameter.
+    RENOVATE_REPOSITORIES    = "${params.RENOVATE_REPOSITORIES}"
+    RENOVATE_AUTODISCOVER    = 'false'
+    RENOVATE_ONBOARDING      = 'false'
+    RENOVATE_REQUIRE_CONFIG  = 'optional'
+    NODE_OPTIONS             = '--max-old-space-size=3072'
+    DISCORD_NOTIFICATION_URL = credentials('discord-notification-url')
+  }
+
+  stages {
+    stage('Renovate') {
+      steps {
+        // The same bot credential checks the job out and authenticates Renovate to GitHub.
+        withCredentials([usernamePassword(
+          credentialsId: 'renovate-git',
+          usernameVariable: 'RENOVATE_GIT_USER',
+          passwordVariable: 'RENOVATE_TOKEN'
+        )]) {
+          // -e NAME passes the value from this shell's environment, so the token never appears
+          // in the command line.
+          sh '''
+            docker run --rm \
+              -e RENOVATE_PLATFORM \
+              -e RENOVATE_GIT_AUTHOR \
+              -e RENOVATE_REPOSITORIES \
+              -e RENOVATE_AUTODISCOVER \
+              -e RENOVATE_ONBOARDING \
+              -e RENOVATE_REQUIRE_CONFIG \
+              -e RENOVATE_TOKEN \
+              -e NODE_OPTIONS \
+              ghcr.io/renovatebot/renovate:44.229.0
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    failure {
+      script {
+        discordSend(
+          webhookURL: DISCORD_NOTIFICATION_URL,
+          result: 'FAILURE',
+          title: "🚨 Renovate failed - ${env.RENOVATE_REPOSITORIES}",
+          link: env.BUILD_URL,
+          description: 'See the build log.',
+          footer: env.RENOVATE_REPOSITORIES
+        )
+      }
+    }
+  }
+}
