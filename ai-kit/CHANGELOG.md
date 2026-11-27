@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2026-11-27
+
+### Changed
+
+- Go rules default to flat domain packages; `internal/`, `pkg/`, and `cmd/`
+  only appear when a concrete need does
+- Go rules: import grouping example shows stdlib, third-party, and same-module
+  packages
+- Editorial profile: announce the shape before the detail, name sections after
+  the reader's question, and state the count behind a finding
+- Editorial profile: openings address the subject instead of the piece
+- Writing rules: name the actor instead of letting an abstraction do the work,
+  and drop weapon and military metaphors
+- Marketing profile: examples use Guido 1.4 copy
+
 ## [0.1.0] - 2026-11-09
 
 ### Added
