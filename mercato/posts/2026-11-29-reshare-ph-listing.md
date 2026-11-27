@@ -3,7 +3,6 @@ title: "Reshare: the Product Hunt listing"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-29
 image: https://github.com/clubmatto/vetrina/blob/main/whatsmylocalai/docs/assets/product-hunt/01-hero.png
 topics:
   - whatsmylocalai

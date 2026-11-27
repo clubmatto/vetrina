@@ -3,7 +3,6 @@ title: "Give an agent fewer, better tools"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-28
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/comparative-analysis-of-coding-agents.png
 topics:
   - agents
