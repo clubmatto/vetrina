@@ -52,16 +52,33 @@ pipeline {
   }
 
   post {
-    failure {
+    always {
       script {
-        discordSend(
-          webhookURL: DISCORD_NOTIFICATION_URL,
-          result: 'FAILURE',
-          title: "🚨 Renovate failed - ${env.RENOVATE_REPOSITORIES}",
-          link: env.BUILD_URL,
-          description: 'See the build log.',
-          footer: env.RENOVATE_REPOSITORIES
-        )
+        try {
+          def result = currentBuild.currentResult
+          def emoji = 'ℹ️'
+          if (result == 'SUCCESS') {
+            emoji = '✅'
+          } else if (result == 'UNSTABLE') {
+            emoji = '⚠️'
+          } else if (result == 'FAILURE') {
+            emoji = '🚨'
+          } else if (result == 'ABORTED') {
+            emoji = '⏹️'
+          }
+          discordSend(
+            webhookURL: DISCORD_NOTIFICATION_URL,
+            result: result,
+            title: "${emoji} Renovate ${result.toLowerCase()} - ${env.RENOVATE_REPOSITORIES}",
+            link: env.BUILD_URL,
+            description: result == 'SUCCESS'
+              ? "Completed in ${currentBuild.durationString}. See the build log for the branches and PRs Renovate handled."
+              : 'See the build log.',
+            footer: "${env.RENOVATE_REPOSITORIES} #${env.BUILD_NUMBER}"
+          )
+        } catch (err) {
+          echo "Discord notification failed: ${err}"
+        }
       }
     }
   }
