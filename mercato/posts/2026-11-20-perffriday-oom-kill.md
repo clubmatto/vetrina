@@ -8,7 +8,6 @@ topics:
   - gradle
   - we-measured
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/perffriday-oom-kill.png
-publish_date: 2026-11-27
 ---
 
 ## Twitter
