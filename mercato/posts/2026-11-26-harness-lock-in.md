@@ -3,7 +3,6 @@ title: "Harness lock-in is the new framework lock-in"
 platforms:
   - twitter
   - linkedin
-publish_date: 2026-11-26
 image: https://github.com/clubmatto/vetrina/blob/main/website/src/assets/writing/harness-lock-in.png
 topics:
   - agents
