@@ -8,6 +8,7 @@ topics:
   - release
   - open-source
 publish_date: 2026-11-27
+image: https://github.com/clubmatto/vetrina/blob/main/assets/posts/ai-kit-v0-1-1-card.png
 ---
 
 ## Twitter
